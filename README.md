@@ -12,8 +12,8 @@ online_worksheet_juni/
 │   └── content.html
 ├── n_7_2/
 │   └── content.html
-└── assets/
-    └── style.css
+└── .../
+    └── content.html
 ```
 
 ## 📁 1. 建立資料夾
