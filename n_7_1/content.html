@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100 以內的質數</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .prime-number-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+        }
+        .grid-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 40px;
+            background-color: #e0e7ff;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .prime {
+            background-color: #6ee7b7; /* green */
+            color: #166534;
+        }
+        .not-prime {
+            background-color: #fca5a5; /* red */
+            color: #991b1b;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        .sieve-step-button {
+            transition: background-color 0.2s;
+        }
+        .sieve-step-button:disabled {
+            background-color: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-10">
+    <div class="container mx-auto bg-white shadow-xl rounded-2xl p-6 md:p-12">
+        <!-- Header -->
+        <header class="mb-8 text-center">
+            <h1 class="4xl md:text-5xl font-extrabold text-gray-800 mb-2">100 以內的質數</h1>
+            <p class="lg text-gray-500">互動式學習講義 (N-7-1)</p>
+        </header>
+
+        <!-- 1. Learning Objectives -->
+        <section class="mb-10 p-6 bg-gray-50 rounded-xl">
+            <h2 class="2xl font-bold text-gray-700 mb-4">1. 學習目標</h2>
+            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                <li>了解質數與合數的定義，並能清楚區分。</li>
+                <li>能判斷 100 以內的整數是質數還是合數。</li>
+                <li>學會利用簡單的判別法（2, 3, 5, 11 的倍數規則）來快速檢查質數。</li>
+                <li>體驗「篩法」找出 100 以內所有質數的過程。</li>
+            </ul>
+        </section>
+
+        <!-- 2. Concept Explanation -->
+        <section class="mb-10">
+            <h2 class="2xl font-bold text-gray-700 mb-4">2. 概念講解</h2>
+            <div class="space-y-6 text-gray-700">
+                <div>
+                    <h3 class="xl font-bold text-gray-800 mb-2">質數的定義</h3>
+                    <p class="pl-4">一個大於 1 的整數，若除了 1 和它本身外，沒有其他因數，就叫做「質數」。<br>例：2, 3, 5, 7, 11...</p>
+                </div>
+                <div>
+                    <h3 class="xl font-bold text-gray-800 mb-2">合數的定義</h3>
+                    <p class="pl-4">一個大於 1 的整數，若除了 1 和它本身之外，還有其他因數，就叫做「合數」。<br>例：4（因數為 1, 2, 4）、9（因數為 1, 3, 9）。</p>
+                </div>
+                <div>
+                    <h3 class="xl font-bold text-gray-800 mb-2">特例：1</h3>
+                    <p class="pl-4 font-bold text-red-500">1 不是質數，也不是合數，要特別注意！</p>
+                </div>
+                <div>
+                    <h3 class="xl font-bold text-gray-800 mb-2">快速判別法（常見倍數檢查）</h3>
+                    <ul class="list-disc list-inside pl-4 space-y-2">
+                        <li>偶數（除了 2）都不是質數。</li>
+                        <li>數字的和能被 3 整除 → 不是質數（例如 39，因為 3+9=12，可被 3 整除）。</li>
+                        <li>末位是 5 或 0 → 不是質數（除了 5 本身）。</li>
+                        <li>若一個數大於 11，但能被 11 整除，也不是質數。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Example -->
+        <section class="mb-10 p-6 bg-blue-50 rounded-xl">
+            <h2 class="2xl font-bold text-gray-700 mb-4">3. 例題與解答</h2>
+            <div class="bg-white p-6 rounded-lg shadow-inner">
+                <p class="lg font-semibold text-gray-800">例題：判斷 29 是否為質數。</p>
+                <div class="mt-4 space-y-2 text-gray-700">
+                    <p><span class="font-bold">解答步驟：</span></p>
+                    <ul class="list-disc list-inside space-y-1 pl-4">
+                        <li>29 大於 1。</li>
+                        <li>檢查是否能被 2 整除：29 ÷ 2 = 14 餘 1 → 不是。</li>
+                        <li>檢查是否能被 3 整除：2+9=11，不能被 3 整除 → 不是。</li>
+                        <li>檢查是否能被 5 整除：末位不是 0 或 5 → 不是。</li>
+                        <li>檢查是否能被 7 整除：29 ÷ 7 = 4 餘 1 → 不是。</li>
+                    </ul>
+                    <p class="mt-4 p-3 bg-green-100 rounded-lg text-green-700 font-bold">👉 因為 29 沒有其他因數，所以 29 是質數。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Interactive Practice -->
+        <section class="mb-10 p-6 bg-yellow-50 rounded-xl">
+            <h2 class="2xl font-bold text-gray-700 mb-4">4. 互動練習</h2>
+            <div class="bg-white p-6 rounded-lg shadow-inner space-y-4">
+                <p class="lg font-semibold text-gray-800">題目：請你一步步判斷 91 是否為質數。</p>
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <p>1. 91 大於 1 嗎？</p>
+                        <button onclick="checkAnswer(0, '是')" class="px-4 py-2 rounded-full bg-yellow-400 text-white font-bold hover:bg-yellow-500 transition-colors">檢查答案</button>
+                        <span id="answer-0" class="hidden text-green-600 font-semibold">✅ 答：是。</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <p>2. 能被 2 整除嗎？</p>
+                        <button onclick="checkAnswer(1, '不能')" class="px-4 py-2 rounded-full bg-yellow-400 text-white font-bold hover:bg-yellow-500 transition-colors">檢查答案</button>
+                        <span id="answer-1" class="hidden text-green-600 font-semibold">✅ 91 ÷ 2 = 45 餘 1 → 不能。</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <p>3. 數字和 9+1=10，能被 3 整除嗎？</p>
+                        <button onclick="checkAnswer(2, '不能')" class="px-4 py-2 rounded-full bg-yellow-400 text-white font-bold hover:bg-yellow-500 transition-colors">檢查答案</button>
+                        <span id="answer-2" class="hidden text-green-600 font-semibold">✅ 不能。</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <p>4. 末位是 0 或 5 嗎？</p>
+                        <button onclick="checkAnswer(3, '不是')" class="px-4 py-2 rounded-full bg-yellow-400 text-white font-bold hover:bg-yellow-500 transition-colors">檢查答案</button>
+                        <span id="answer-3" class="hidden text-green-600 font-semibold">✅ 不是。</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <p>5. 試試 7：91 ÷ 7 = 13</p>
+                        <button onclick="checkAnswer(4, '能')" class="px-4 py-2 rounded-full bg-yellow-400 text-white font-bold hover:bg-yellow-500 transition-colors">檢查答案</button>
+                        <span id="answer-4" class="hidden text-green-600 font-semibold">✅ 可以整除！</span>
+                    </div>
+                </div>
+                <div id="result" class="hidden mt-6 p-4 bg-red-100 rounded-lg text-red-700 font-bold">
+                    <p>👉 所以 91 是 合數。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Application and Challenge -->
+        <section class="mb-10">
+            <h2 class="2xl font-bold text-gray-700 mb-4">5. 應用題或挑戰題</h2>
+            <div class="space-y-8">
+                <div class="p-6 bg-pink-50 rounded-xl">
+                    <h3 class="xl font-bold text-gray-800 mb-2">生活應用題</h3>
+                    <p class="text-gray-700">小明要分 37 顆糖果給朋友，如果要分成相同數量的小組，每組至少有 2 個人，能分得剛剛好嗎？</p>
+                    <p class="mt-2 text-gray-500">（提示：檢查 37 是否為質數）</p>
+                    <div class="mt-4">
+                        <button onclick="alert('提示：因為 37 是質數，它除了 1 和 37 以外沒有其他因數。所以小明只能分成 1 組（每組 37 人）或是 37 組（每組 1 人），都無法符合「每組至少有 2 個人」的條件。因此，不能分得剛剛好。')" class="px-6 py-2 rounded-full bg-pink-400 text-white font-bold hover:bg-pink-500 transition-colors">顯示解答</button>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-purple-50 rounded-xl">
+                    <h3 class="xl font-bold text-gray-800 mb-4">挑戰題：埃拉托斯特尼篩法</h3>
+                    <p class="text-gray-700 mb-4">請使用下面的工具，找出 100 以內所有的質數！</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <button id="sieve-step-1" onclick="sieveStep(2)" class="sieve-step-button px-4 py-2 rounded-full bg-purple-400 text-white font-bold hover:bg-purple-500">刪去 2 的倍數</button>
+                        <button id="sieve-step-2" onclick="sieveStep(3)" disabled class="sieve-step-button px-4 py-2 rounded-full bg-purple-400 text-white font-bold hover:bg-purple-500">刪去 3 的倍數</button>
+                        <button id="sieve-step-3" onclick="sieveStep(5)" disabled class="sieve-step-button px-4 py-2 rounded-full bg-purple-400 text-white font-bold hover:bg-purple-500">刪去 5 的倍數</button>
+                        <button id="sieve-step-4" onclick="sieveStep(7)" disabled class="sieve-step-button px-4 py-2 rounded-full bg-purple-400 text-white font-bold hover:bg-purple-500">刪去 7 的倍數</button>
+                        <button onclick="resetSieve()" class="px-4 py-2 rounded-full bg-gray-400 text-white font-bold hover:bg-gray-500">重新開始</button>
+                    </div>
+                    <div id="prime-grid" class="prime-number-grid"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Reflection Questions -->
+        <section class="mb-10 p-6 bg-gray-50 rounded-xl">
+            <h2 class="2xl font-bold text-gray-700 mb-4">6. 反思問題</h2>
+            <div class="space-y-4 text-gray-700">
+                <p>1. 為什麼「1」既不是質數也不是合數？</p>
+                <p>2. 你覺得快速判別法（2, 3, 5, 11 的倍數檢查）有什麼限制？</p>
+                <p>3. 如果要檢查一個大於 100 的數是不是質數，你會怎麼做？</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Interactive Practice for 91
+        const answers = ['是。', '91 ÷ 2 = 45 餘 1 → 不能。', '不能。', '不是。', '可以整除！'];
+        const resultEl = document.getElementById('result');
+        const practiceButtons = document.querySelectorAll('#interactive-practice button');
+        let correctCount = 0;
+
+        function checkAnswer(step, userText) {
+            const answerEl = document.getElementById(`answer-${step}`);
+            answerEl.textContent = `✅ 答：${userText}。`;
+            answerEl.classList.remove('hidden');
+
+            if (step === 4) {
+                setTimeout(() => {
+                    resultEl.classList.remove('hidden');
+                }, 500);
+            }
+        }
+
+        // Sieve of Eratosthenes
+        const gridContainer = document.getElementById('prime-grid');
+        const numbers = Array.from({ length: 100 }, (_, i) => i + 1);
+        const sieveState = Array(101).fill(true);
+        sieveState[1] = false; // 1 is not prime
+
+        function renderGrid() {
+            gridContainer.innerHTML = '';
+            numbers.forEach(num => {
+                const item = document.createElement('div');
+                item.className = 'grid-item';
+                item.textContent = num;
+                item.id = `num-${num}`;
+                gridContainer.appendChild(item);
+                
+                if (num === 1) {
+                    item.classList.add('not-prime');
+                }
+            });
+        }
+
+        function sieveStep(prime) {
+            const stepButtons = document.querySelectorAll('.sieve-step-button');
+            let currentButtonIndex = 0;
+            switch(prime) {
+                case 2: currentButtonIndex = 0; break;
+                case 3: currentButtonIndex = 1; break;
+                case 5: currentButtonIndex = 2; break;
+                case 7: currentButtonIndex = 3; break;
+            }
+
+            // Disable current button and enable next
+            if (currentButtonIndex < stepButtons.length) {
+                stepButtons[currentButtonIndex].disabled = true;
+                if (currentButtonIndex + 1 < stepButtons.length) {
+                    stepButtons[currentButtonIndex + 1].disabled = false;
+                }
+            }
+            
+            // Apply sieve logic
+            for (let i = prime * prime; i <= 100; i += prime) {
+                sieveState[i] = false;
+                const element = document.getElementById(`num-${i}`);
+                if (element) {
+                    element.classList.add('not-prime');
+                }
+            }
+        }
+        
+        function resetSieve() {
+            renderGrid();
+            sieveState.fill(true);
+            sieveState[1] = false;
+            const stepButtons = document.querySelectorAll('.sieve-step-button');
+            stepButtons.forEach((btn, index) => {
+                btn.disabled = index !== 0;
+            });
+            document.querySelectorAll('.grid-item').forEach(item => {
+                item.classList.remove('prime', 'not-prime');
+            });
+        }
+        
+        window.onload = function() {
+            renderGrid();
+        };
+
+        // Custom alert function
+        window.alert = function(message) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4 z-50';
+            modal.innerHTML = `
+                <div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm text-center">
+                    <p class="mb-4 text-gray-800">${message}</p>
+                    <button onclick="this.parentNode.parentNode.remove()" class="px-6 py-2 rounded-full bg-blue-500 text-white font-bold hover:bg-blue-600 transition-colors">確定</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        };
+
+    </script>
+</body>
+</html>
