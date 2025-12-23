@@ -22,6 +22,8 @@
 
         /* 讓按鈕內的內容居中 */
         .btn-fraction { display: inline-flex; align-items: center; justify-content: center; min-width: 80px; padding: 8px 16px; }
+        
+        .challenge-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -244,6 +246,51 @@
             </div>
         </section>
 
+        <!-- Comprehensive Practice -->
+        <section class="bg-slate-50 rounded-2xl p-6 mb-8 border-2 border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i data-lucide="rocket" class="mr-2 text-orange-500"></i> 實戰挑戰：綜合練習
+            </h2>
+            
+            <div class="space-y-8">
+                <!-- Challenge 1 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-3">1. 比例尺應用</h3>
+                    <p class="text-sm text-slate-600 mb-4">地圖比例尺為 <span class="font-bold">1 : 20000</span>。若在地圖上量得一段路長 <span class="font-bold">5 公分</span>，請問實際距離是多少公里？</p>
+                    <div class="flex items-center gap-3">
+                        <input type="number" id="chal1-ans" class="p-2 border rounded-lg w-24 text-center" placeholder="數字">
+                        <span class="font-bold">公里</span>
+                        <button onclick="checkChal(1, 1)" class="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 text-sm transition-all">檢查結果</button>
+                    </div>
+                    <div id="chal1-feedback" class="mt-4 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- Challenge 2 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-3">2. 正比生活應用</h3>
+                    <p class="text-sm text-slate-600 mb-4">一輛車子穩定行駛，行駛了 <span class="font-bold">3 小時</span> 共前進了 <span class="font-bold">180 公里</span>。若以同樣速度行駛 <span class="font-bold">300 公里</span>，共需多少小時？</p>
+                    <div class="flex items-center gap-3">
+                        <input type="number" id="chal2-ans" class="p-2 border rounded-lg w-24 text-center" placeholder="數字">
+                        <span class="font-bold">小時</span>
+                        <button onclick="checkChal(2, 5)" class="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 text-sm transition-all">檢查結果</button>
+                    </div>
+                    <div id="chal2-feedback" class="mt-4 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- Challenge 3 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-3">3. 比例分配應用</h3>
+                    <p class="text-sm text-slate-600 mb-4">綜合果汁的配方是「果汁：水 = <span class="font-bold">2 : 5</span>」。若老闆想調製出總量 <span class="font-bold">1400 毫升</span> 的果汁，需要加入多少毫升的純果汁？</p>
+                    <div class="flex items-center gap-3">
+                        <input type="number" id="chal3-ans" class="p-2 border rounded-lg w-24 text-center" placeholder="數字">
+                        <span class="font-bold">毫升</span>
+                        <button onclick="checkChal(3, 400)" class="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 text-sm transition-all">檢查結果</button>
+                    </div>
+                    <div id="chal3-feedback" class="mt-4 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+            </div>
+        </section>
+
         <!-- Cheat Sheet & Reflection -->
         <footer class="grid md:grid-cols-2 gap-6 mb-12">
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
@@ -458,6 +505,35 @@
             }
             f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 " + color;
             f.innerHTML = content;
+        }
+
+        // Comprehensive Challenge Logic
+        function checkChal(qNum, correctVal) {
+            const input = document.getElementById(`chal${qNum}-ans`);
+            const feedback = document.getElementById(`chal${qNum}-feedback`);
+            const userVal = parseFloat(input.value);
+            
+            feedback.classList.remove('hidden');
+            
+            if (userVal === correctVal) {
+                feedback.className = "mt-4 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
+                if (qNum === 1) {
+                    feedback.innerHTML = `✅ 太棒了！計算過程：5 公分 × 20000 = 100000 公分。因為 1 公里 = 100000 公分，所以實際距離是 1 公里。`;
+                } else if (qNum === 2) {
+                    feedback.innerHTML = `✅ 太棒了！計算過程：180 ÷ 3 = 60 (公里/小時)。行駛 300 公里共需 300 ÷ 60 = 5 小時。`;
+                } else if (qNum === 3) {
+                    feedback.innerHTML = `✅ 太棒了！計算過程：比例總合為 2 + 5 = 7 等份。果汁占了 2/7，所以需要 1400 × (2/7) = 400 毫升。`;
+                }
+            } else {
+                feedback.className = "mt-4 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                if (qNum === 1) {
+                    feedback.innerHTML = `❌ 再想想看，地圖上的 1 公分代表實際 20000 公分，那 5 公分是多少公分？別忘了換算成公里喔！`;
+                } else if (qNum === 2) {
+                    feedback.innerHTML = `❌ 先算出一小時跑多少公里，或者用比例式 3 : 180 = x : 300 來看看？`;
+                } else if (qNum === 3) {
+                    feedback.innerHTML = `❌ 提示：果汁與水的總份數是 7 份。1400 毫升裡面有幾份是果汁？`;
+                }
+            }
         }
     </script>
 </body>
