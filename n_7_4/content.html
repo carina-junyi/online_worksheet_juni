@@ -1,376 +1,79 @@
-import React, { useState } from 'react';
-import { 
-  BookOpen, 
-  CheckCircle2, 
-  AlertCircle, 
-  Lightbulb, 
-  Trophy,
-  RefreshCcw,
-  MessageSquare,
-  ChevronRight,
-  ArrowRight,
-  Send,
-  HelpCircle,
-  Plus,
-  Minus,
-  Pencil,
-  ClipboardCheck,
-  RotateCcw,
-  FileText,
-  Check
-} from 'lucide-react';
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>N-7-4 數的運算規律｜互動式學習講義</title>
 
-// --- 靜態資料定義 ---
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-const lawQuiz = [
-  { q: "7 + 9 = 9 + 7", a: "交換律", detail: "這是把數字的順序對換，結果不變。" },
-  { q: "(3 + 5) + 2 = 3 + (5 + 2)", a: "結合律", detail: "括號先圍住誰都一樣，常用來湊整數。" },
-  { q: "6 × (4 + 1) = 6 × 4 + 6 × 1", a: "分配律", detail: "將括號外的 6 分別乘進去。" }
-];
+  <!-- Noto Sans TC -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 
-const testQuestions = [
-  {
-    id: 1,
-    title: "基礎計算 (分配律)",
-    q: "計算 123 × 45 + 123 × 55 = ?",
-    answer: "12300",
-    hint: "觀察兩項都有公因數 123，先合併後面的 (45 + 55)。"
-  },
-  {
-    id: 2,
-    title: "去括號規則",
-    q: "化簡算式 -(15 - 8 + 22) 的最後數值為？",
-    answer: "-29",
-    hint: "先去括號變號為 -15 + 8 - 22，再由左向右計算。"
-  },
-  {
-    id: 3,
-    title: "進階速算 (拆解法)",
-    q: "計算 99 × 13 = ?",
-    answer: "1287",
-    hint: "將 99 拆成 (100 - 1)，利用分配律 100 × 13 - 1 × 13。"
-  },
-  {
-    id: 4,
-    title: "混合運算與正負號",
-    q: "計算 -(-18) + (-25) - 13 = ?",
-    answer: "-20",
-    hint: "-(-18) 變號為 18，算式變為 18 - 25 - 13。"
-  },
-  {
-    id: 5,
-    title: "觀念判斷",
-    q: "若 a = 15, b = 20，則 (a - b) 是否等於 (b - a)？(請填「是」或「否」)",
-    answer: "否",
-    hint: "減法不符合交換律，15-20 = -5 而 20-15 = 5。"
-  }
-];
+  <style>
+    body { font-family: "Noto Sans TC", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+    .test-input {
+      width: 100%;
+      max-width: 12rem;
+      padding: 0.5rem 1rem;
+      border-width: 2px;
+      border-radius: 0.5rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 1.125rem;
+      outline: none;
+      transition: all .15s ease;
+    }
+    .section-card { background: white; border-radius: 1rem; border: 1px solid rgb(226 232 240); padding: 1.5rem; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    .section-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+    .animate-in { animation: fadeIn .35s ease both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px);} to { opacity:1; transform:none; } }
+  </style>
+</head>
 
-const MathFact = ({ children }) => (
-  <span className="bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-mono font-bold mx-1 border border-amber-200">
-    {children}
-  </span>
-);
-
-const App = () => {
-  const [quizFeedbacks, setQuizFeedbacks] = useState({});
-  const [testUserAnswers, setTestUserAnswers] = useState({});
-  const [checkedQuestions, setCheckedQuestions] = useState({}); // 紀錄哪些題目已經對過答案
-
-  const handleQuizAnswer = (idx, selected, correct, detail) => {
-    setQuizFeedbacks(prev => ({
-      ...prev,
-      [idx]: {
-        show: true,
-        message: selected === correct ? `✅ 正確！${detail}` : `❌ 可惜！${detail}`,
-        isCorrect: selected === correct
-      }
-    }));
-  };
-
-  const handleCheckAnswer = (id) => {
-    setCheckedQuestions(prev => ({ ...prev, [id]: true }));
-  };
-
-  const resetTest = () => {
-    setTestUserAnswers({});
-    setCheckedQuestions({});
-  };
-
-  const correctCount = testQuestions.filter(q => checkedQuestions[q.id] && testUserAnswers[q.id]?.trim() === q.answer).length;
-
-  return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans p-4 md:p-8">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
-        body { font-family: 'Noto Sans TC', sans-serif; }
-        .section-card { @apply bg-white rounded-2xl shadow-sm p-6 mb-8 border border-slate-200 transition-all hover:shadow-md; }
-        .test-input { @apply w-full md:w-48 px-4 py-2 border-2 rounded-lg font-mono text-lg focus:outline-none focus:ring-2 transition-all; }
-      `}</style>
-
-      {/* Header */}
-      <header className="max-w-4xl mx-auto text-center mb-10">
-        <h1 className="text-4xl md:text-5xl font-black text-slate-800 mb-3 tracking-tight">
-          📘 數的運算規律
-        </h1>
-        <div className="inline-block px-4 py-1 bg-indigo-100 text-indigo-700 rounded-full font-bold text-sm">
-          N-7-4 互動式學習講義
-        </div>
-      </header>
-
-      <div className="max-w-4xl mx-auto">
-        
-        {/* 1. 學習目標 */}
-        <section className="bg-white rounded-2xl shadow-sm p-6 mb-8 border-l-8 border-blue-500">
-          <h2 className="text-xl font-bold text-blue-700 mb-4 flex items-center gap-2">
-            <CheckCircle2 className="w-6 h-6" /> 🎯 學習目標
-          </h2>
-          <ul className="grid md:grid-cols-2 gap-3 text-slate-700 font-medium">
-            <li className="flex items-center gap-2">● 掌握加法與乘法的交換律、結合律</li>
-            <li className="flex items-center gap-2">● 靈活運用乘法對加法的分配律</li>
-            <li className="flex items-center gap-2">● 破解負號去括號的變號陷阱</li>
-            <li className="flex items-center gap-2">● 養成「先觀察、再計算」的數感</li>
-          </ul>
-        </section>
-
-        {/* 2. 核心概念卡片 */}
-        <div className="grid md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-green-50 p-5 rounded-xl border border-green-200 shadow-sm">
-            <h3 className="font-bold text-green-700 text-lg mb-2">1️⃣ 交換律</h3>
-            <div className="space-y-2 text-xs font-mono">
-              <MathFact>a + b = b + a</MathFact>
-              <MathFact>a × b = b × a</MathFact>
-            </div>
-          </div>
-          <div className="bg-slate-100 p-5 rounded-xl border border-slate-200 shadow-sm">
-            <h3 className="font-bold text-slate-700 text-lg mb-2">2️⃣ 結合律</h3>
-            <div className="space-y-2 text-xs font-mono">
-              <MathFact>(a+b)+c = a+(b+c)</MathFact>
-              <MathFact>(a×b)×c = a×(b×c)</MathFact>
-            </div>
-          </div>
-          <div className="bg-orange-50 p-5 rounded-xl border border-orange-200 shadow-sm">
-            <h3 className="font-bold text-orange-700 text-lg mb-2">3️⃣ 分配律</h3>
-            <div className="text-xs font-mono">
-              <MathFact>a(b + c) = ab + ac</MathFact>
-            </div>
-          </div>
-        </div>
-
-        {/* 3. 去括號規則區塊 */}
-        <section className="bg-red-50 p-6 rounded-2xl border border-red-200 shadow-sm border-l-8 border-l-red-500 mb-8">
-          <h2 className="text-xl font-bold text-red-700 mb-2 flex items-center gap-2">
-            <AlertCircle className="w-6 h-6" /> 4️⃣ 去括號陷阱
-          </h2>
-          <p className="text-sm text-red-800 font-bold mb-4">💡 訣竅：負號進入括號，內部「每一項」都要變號。</p>
-          <div className="grid md:grid-cols-2 gap-4 font-mono font-bold">
-            <div className="bg-white p-3 rounded-xl border border-red-100 text-center">
-              -(a + b) = - a - b
-            </div>
-            <div className="bg-white p-3 rounded-xl border border-red-100 text-center">
-              -(a - b) = - a + b
-            </div>
-          </div>
-        </section>
-
-        {/* 4. 規律快速判斷 */}
-        <section className="section-card">
-          <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-            🧩 熱身練習：規律辨識
-          </h2>
-          <div className="space-y-4">
-            {lawQuiz.map((item, idx) => (
-              <div key={idx} className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                <p className="text-lg font-mono font-bold text-slate-700 mb-3">{item.q}</p>
-                <div className="flex flex-wrap gap-2">
-                  {["交換律", "結合律", "分配律"].map(btn => (
-                    <button
-                      key={btn}
-                      onClick={() => handleQuizAnswer(idx, btn, item.a, item.detail)}
-                      className="px-4 py-1.5 bg-white border border-slate-300 hover:border-indigo-500 rounded-lg text-sm font-bold transition-all"
-                    >
-                      {btn}
-                    </button>
-                  ))}
-                </div>
-                {quizFeedbacks[idx]?.show && (
-                  <p className={`mt-2 text-sm font-bold ${quizFeedbacks[idx].isCorrect ? 'text-green-600' : 'text-red-600'}`}>
-                    {quizFeedbacks[idx].message}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* 5. 全能挑戰測驗 (即時對答案版) */}
-        <section className="bg-white rounded-3xl shadow-xl border-2 border-indigo-100 overflow-hidden mb-12 animate-in fade-in duration-700">
-          <div className="bg-indigo-600 p-6 text-white flex justify-between items-center">
-            <div>
-              <h2 className="text-2xl font-bold flex items-center gap-2">
-                🚀 全能挑戰：即時對答案
-              </h2>
-              <p className="text-indigo-100 text-sm mt-1">寫完一題，立刻按「對答案」檢查結果！</p>
-            </div>
-            <FileText className="w-10 h-10 opacity-30" />
-          </div>
-
-          <div className="p-6 md:p-10 space-y-12">
-            {testQuestions.map((q, idx) => {
-              const isChecked = checkedQuestions[q.id];
-              const isCorrect = testUserAnswers[q.id]?.trim() === q.answer;
-
-              return (
-                <div key={q.id} className="relative pl-8 transition-all duration-300">
-                  <span className="absolute left-0 top-0 text-3xl font-black text-indigo-100 leading-none">{idx + 1}</span>
-                  <div className="mb-4">
-                    <h3 className="font-bold text-indigo-900 text-lg mb-1">{q.title}</h3>
-                    <p className="text-slate-800 text-xl font-mono bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-inner">
-                      {q.q}
-                    </p>
-                  </div>
-                  
-                  <div className="flex flex-wrap items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-slate-500">答：</span>
-                      <input 
-                        type="text" 
-                        value={testUserAnswers[q.id] || ""}
-                        onChange={(e) => setTestUserAnswers({...testUserAnswers, [q.id]: e.target.value})}
-                        disabled={isChecked}
-                        className={`test-input ${
-                          isChecked 
-                            ? (isCorrect ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50') 
-                            : 'border-slate-200 focus:border-indigo-500'
-                        }`}
-                        placeholder="填入數字"
-                      />
-                    </div>
-                    
-                    {!isChecked ? (
-                      <button 
-                        onClick={() => handleCheckAnswer(q.id)}
-                        disabled={!testUserAnswers[q.id]}
-                        className="px-6 py-2 bg-indigo-500 text-white rounded-lg font-bold hover:bg-indigo-600 disabled:opacity-30 flex items-center gap-1 shadow-sm transition-all"
-                      >
-                        <Send className="w-4 h-4" /> 對答案
-                      </button>
-                    ) : (
-                      <div className="animate-in slide-in-from-left duration-300 flex items-center gap-3">
-                        {isCorrect ? (
-                          <span className="flex items-center gap-1 text-green-600 font-bold text-lg bg-green-100 px-3 py-1 rounded-full">
-                            <CheckCircle2 className="w-5 h-5" /> 正確
-                          </span>
-                        ) : (
-                          <div className="text-red-600 font-bold bg-red-100 px-3 py-1 rounded-full flex items-center gap-1">
-                            <AlertCircle className="w-5 h-5" /> 錯誤
-                          </div>
-                        )}
-                        <button 
-                          onClick={() => setCheckedQuestions(prev => {
-                            const newStatus = {...prev};
-                            delete newStatus[q.id];
-                            return newStatus;
-                          })}
-                          className="text-slate-400 hover:text-indigo-600 text-sm underline flex items-center gap-1"
-                        >
-                          <RotateCcw className="w-3 h-3" /> 重寫
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  {isChecked && (
-                    <div className="mt-4 p-4 bg-indigo-50 rounded-xl border border-indigo-100 text-sm text-indigo-900 animate-in fade-in">
-                      {!isCorrect && <p className="mb-2 font-black text-red-600 italic">正確答案是：{q.answer}</p>}
-                      <span className="font-bold flex items-center gap-1 mb-1">
-                        <Lightbulb className="w-4 h-4" /> 解題建議：
-                      </span>
-                      {q.hint}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-
-            {/* 進度總結 */}
-            <div className="pt-8 text-center border-t border-slate-100">
-              <div className="flex flex-col items-center">
-                <div className="flex gap-2 mb-4">
-                  {testQuestions.map(q => (
-                    <div 
-                      key={q.id}
-                      className={`w-4 h-4 rounded-full ${
-                        checkedQuestions[q.id] 
-                          ? (testUserAnswers[q.id]?.trim() === q.answer ? 'bg-green-500' : 'bg-red-500') 
-                          : 'bg-slate-200'
-                      }`}
-                    />
-                  ))}
-                </div>
-                <p className="text-slate-500 font-bold">
-                  目前進度：已完成 {Object.keys(checkedQuestions).length} / {testQuestions.length} 題
-                  {Object.keys(checkedQuestions).length > 0 && ` (答對 ${correctCount} 題)`}
-                </p>
-                {Object.keys(checkedQuestions).length === testQuestions.length && (
-                  <div className="mt-6 animate-in zoom-in">
-                    <Trophy className="w-12 h-12 text-yellow-400 mx-auto mb-2" />
-                    <p className="text-2xl font-black text-indigo-900">
-                      總結：{correctCount * 20} 分！
-                    </p>
-                    <button 
-                      onClick={resetTest}
-                      className="mt-4 px-6 py-2 bg-slate-200 text-slate-700 rounded-full font-bold hover:bg-slate-300 transition-all flex items-center gap-2 mx-auto"
-                    >
-                      <RotateCcw className="w-4 h-4" /> 全部重來
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 6. 常見迷思與反思 */}
-        <footer className="grid md:grid-cols-2 gap-6 mb-12">
-          <div className="section-card border-t-4 border-red-400">
-            <h3 className="font-bold text-red-600 mb-4 flex items-center gap-2">
-              <AlertCircle className="w-5 h-5" /> 常見迷思
-            </h3>
-            <ul className="text-sm space-y-4 font-medium text-slate-600">
-              <li className="flex items-start gap-2">
-                <span className="text-red-500">❌</span>
-                <div>
-                  <span className="font-bold">減法交換律</span>
-                  <p className="text-slate-400 font-normal">3 - 5 不等於 5 - 3，順序不可隨便換。</p>
-                </div>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-red-500">❌</span>
-                <div>
-                  <span className="font-bold">漏掉分配律的後項</span>
-                  <p className="text-slate-400 font-normal">2 × (3 + 5) 必須兩項都乘到，不能只乘 3。</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div className="bg-slate-800 text-slate-100 p-6 rounded-2xl shadow-sm">
-            <h3 className="font-bold mb-4 border-b border-slate-700 pb-2 flex items-center gap-2">
-              <MessageSquare className="w-5 h-5 text-indigo-400" /> 思考題
-            </h3>
-            <p className="text-sm leading-relaxed italic text-slate-400">
-              「如果一個算式裡有加、減、乘、除，什麼時候最適合使用分配律來簡化運算呢？」
-            </p>
-          </div>
-        </footer>
-
-      </div>
-
-      <div className="max-w-4xl mx-auto text-center text-slate-400 text-xs pb-10">
-        十二年國教數學領域 N-7-4 規範製作 • 互動式數位練習系統
-      </div>
+<body class="min-h-screen bg-slate-50 text-slate-900 p-4 md:p-8">
+  <!-- Header -->
+  <header class="max-w-4xl mx-auto text-center mb-10">
+    <h1 class="text-4xl md:text-5xl font-black text-slate-800 mb-3 tracking-tight">📘 數的運算規律</h1>
+    <div class="inline-block px-4 py-1 bg-indigo-100 text-indigo-700 rounded-full font-bold text-sm">
+      N-7-4 互動式學習講義
     </div>
-  );
-};
+  </header>
 
-export default App;
+  <main class="max-w-4xl mx-auto">
+
+    <!-- 1. 學習目標 -->
+    <section class="bg-white rounded-2xl shadow-sm p-6 mb-8 border-l-8 border-blue-500">
+      <h2 class="text-xl font-bold text-blue-700 mb-4 flex items-center gap-2">
+        ✅ 🎯 學習目標
+      </h2>
+      <ul class="grid md:grid-cols-2 gap-3 text-slate-700 font-medium">
+        <li class="flex items-center gap-2">● 掌握加法與乘法的交換律、結合律</li>
+        <li class="flex items-center gap-2">● 靈活運用乘法對加法的分配律</li>
+        <li class="flex items-center gap-2">● 破解負號去括號的變號陷阱</li>
+        <li class="flex items-center gap-2">● 養成「先觀察、再計算」的數感</li>
+      </ul>
+    </section>
+
+    <!-- 2. 核心概念卡片 -->
+    <section class="grid md:grid-cols-3 gap-4 mb-8">
+      <div class="bg-green-50 p-5 rounded-xl border border-green-200 shadow-sm">
+        <h3 class="font-bold text-green-700 text-lg mb-2">1️⃣ 交換律</h3>
+        <div class="space-y-2 text-xs font-mono">
+          <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-mono font-bold mx-1 border border-amber-200 inline-block">a + b = b + a</span>
+          <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-mono font-bold mx-1 border border-amber-200 inline-block">a × b = b × a</span>
+        </div>
+      </div>
+      <div class="bg-slate-100 p-5 rounded-xl border border-slate-200 shadow-sm">
+        <h3 class="font-bold text-slate-700 text-lg mb-2">2️⃣ 結合律</h3>
+        <div class="space-y-2 text-xs font-mono">
+          <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-mono font-bold mx-1 border border-amber-200 inline-block">(a+b)+c = a+(b+c)</span>
+          <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-mono font-bold mx-1 border border-amber-200 inline-block">(a×b)×c = a×(b×c)</span>
+        </div>
+      </div>
+      <div class="bg-orange-50 p-5 rounded-xl border border-orange-200 shadow-sm">
+        <h3 class="font-bold text-orange-700 text-lg mb-2">3️⃣ 分配律</h3>
+        <div class="text-xs font-mono">
+          <span class="bg-amber-100
