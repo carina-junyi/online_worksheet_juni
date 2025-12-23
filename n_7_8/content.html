@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科學記號互動講義</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        
+        .animate-bounce-short {
+            animation: bounce-short 0.5s ease-in-out;
+        }
+        @keyframes bounce-short {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        
+        /* 讓指數符號更美觀 */
+        sup {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 科學記號</h1>
+            <p class="text-slate-600">N-7-8 互動式學習講義</p>
+        </header>
+
+        <!-- 1. Learning Objectives -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center gap-2">
+                <span class="text-2xl">🎯</span> 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>理解科學記號的表示方式 a × 10<sup>n</sup> 與用途。</li>
+                <li>將很大的數或很小的正數改寫成科學記號。</li>
+                <li>將科學記號還原成一般的數。</li>
+                <li>掌握係數 a 的範圍限制 (1 ≤ a ＜ 10)。</li>
+                <li>比較兩個科學記號表示數的大小。</li>
+            </ul>
+        </section>
+
+        <!-- 2. Concept Cards -->
+        <div class="grid md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-green-50 p-5 rounded-lg border border-green-200 shadow-sm text-center">
+                <h3 class="font-bold text-green-700 text-lg mb-2">1️⃣ 科學記號</h3>
+                <p class="text-sm text-green-800">用來簡潔表示極大或極小數值的方式。</p>
+                <p class="mt-2 font-mono text-xs text-green-600">形式：a × 10<sup>n</sup></p>
+            </div>
+            <div class="bg-slate-100 p-5 rounded-lg border border-slate-200 shadow-sm text-center">
+                <h3 class="font-bold text-slate-700 text-lg mb-2">2️⃣ 係數限制</h3>
+                <p class="text-sm text-slate-800 font-bold underline">1 ≤ a ＜ 10</p>
+                <p class="mt-2 text-xs text-slate-500">a 可以是 1，但不能等於 10！</p>
+            </div>
+            <div class="bg-red-50 p-5 rounded-lg border border-red-200 shadow-sm text-center">
+                <h3 class="font-bold text-red-700 text-lg mb-2">3️⃣ 指數 n</h3>
+                <p class="text-sm text-red-800 font-bold">n 必須是「整數」</p>
+                <p class="mt-2 text-xs text-red-600">表示小數點移動的位數。</p>
+            </div>
+        </div>
+
+        <!-- 3. Interactive Simulation -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                    <span class="text-indigo-500">#️⃣</span> 互動轉換模擬
+                </h2>
+                <button onclick="resetConverter()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium transition-colors flex items-center gap-1">
+                    🔄 重置
+                </button>
+            </div>
+            <p class="text-slate-600 mb-6 text-sm">請在下方輸入任意正數，系統將自動轉換為科學記號：</p>
+            
+            <div class="flex flex-col items-center gap-6 mb-8">
+                <div class="w-full max-w-md">
+                    <label class="block text-xs font-bold text-slate-400 mb-1 uppercase tracking-wider">輸入一般數值</label>
+                    <input 
+                        type="number" 
+                        id="mainInput"
+                        oninput="convertNumber()"
+                        value="32100000"
+                        class="w-full p-4 text-2xl font-mono bg-slate-50 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:bg-white focus:outline-none transition-all shadow-inner text-center"
+                    />
+                </div>
+
+                <div class="flex items-center justify-center gap-4 w-full py-8 bg-slate-900 rounded-2xl text-white shadow-xl relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+                    <div class="text-center">
+                        <div id="displayA" class="text-4xl md:text-5xl font-mono text-amber-400 font-bold">3.21</div>
+                        <div class="text-[10px] text-slate-500 mt-2 font-bold tracking-widest uppercase">係數 (a)</div>
+                    </div>
+                    <div class="text-3xl text-slate-600 font-light">×</div>
+                    <div class="flex items-start">
+                        <div class="text-4xl md:text-5xl font-mono text-white font-bold">10</div>
+                        <div id="displayN" class="text-2xl md:text-3xl font-mono text-cyan-400 font-bold -mt-2 ml-1">7</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 flex items-center gap-3">
+                    <div class="text-xl">⬅️</div>
+                    <p class="text-blue-700"><strong>大數：</strong>小數點向左移，n 為正。</p>
+                </div>
+                <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-100 flex items-center gap-3">
+                    <div class="text-xl">➡️</div>
+                    <p class="text-emerald-700"><strong>小數：</strong>小數點向右移，n 為負。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Step-by-Step Quiz -->
+        <section class="bg-amber-50 rounded-xl shadow-sm p-6 mb-8 border border-amber-200">
+            <h2 class="text-xl font-bold text-amber-800 mb-4 flex items-center gap-2">
+                <span>❓</span> 引導練習：改寫 0.00084
+            </h2>
+            <div id="quizContainer" class="space-y-6">
+                <!-- Step 1 -->
+                <div id="step1">
+                    <p class="text-slate-800 mb-3 font-medium">1️⃣ 0.00084 是大於 1 還是小於 1 的數？</p>
+                    <div class="flex gap-2">
+                        <button onclick="handleStep(1, false)" class="px-6 py-2 bg-white border border-amber-300 rounded-md hover:bg-amber-100 transition-colors shadow-sm">大於 1</button>
+                        <button onclick="handleStep(1, true)" class="px-6 py-2 bg-white border border-amber-300 rounded-md hover:bg-amber-100 transition-colors shadow-sm">小於 1</button>
+                    </div>
+                </div>
+                <!-- Step 2 (hidden) -->
+                <div id="step2" class="hidden opacity-0 transition-opacity duration-500">
+                    <p class="text-slate-800 mb-3 font-medium">2️⃣ 小數點要往哪邊移才能符合 1 ≤ a ＜ 10？</p>
+                    <div class="flex gap-2">
+                        <button onclick="handleStep(2, false)" class="px-6 py-2 bg-white border border-amber-300 rounded-md hover:bg-amber-100 transition-colors shadow-sm">向左</button>
+                        <button onclick="handleStep(2, true)" class="px-6 py-2 bg-white border border-amber-300 rounded-md hover:bg-amber-100 transition-colors shadow-sm">向右</button>
+                    </div>
+                </div>
+                <!-- Step 3 (hidden) -->
+                <div id="step3" class="hidden opacity-0 transition-opacity duration-500">
+                    <p class="text-slate-800 mb-3 font-medium">3️⃣ 從原位移到 8 之後，一共移動了幾位？</p>
+                    <div class="flex gap-2">
+                        <button onclick="handleStep(3, false)" class="px-6 py-2 bg-white border border-amber-300 rounded-md hover:bg-amber-100 transition-colors shadow-sm">3 位</button>
+                        <button onclick="handleStep(3, true)" class="px-6 py-2 bg-white border border-amber-300 rounded-md hover:bg-amber-100 transition-colors shadow-sm">4 位</button>
+                    </div>
+                </div>
+                <!-- Feedback Area -->
+                <div id="quizFeedback" class="hidden p-4 rounded-lg font-bold text-center border-2"></div>
+                <!-- Result Card -->
+                <div id="quizResult" class="hidden bg-indigo-600 text-white p-6 rounded-xl text-center shadow-lg animate-bounce-short">
+                    <p class="text-lg font-bold mb-2">🎉 引導完成！</p>
+                    <div class="text-3xl font-mono font-bold bg-white/20 p-4 rounded-lg inline-block text-white">8.4 × 10<sup>-4</sup></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Comprehensive Exercises -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <span class="text-amber-500">🚀</span> 實戰挑戰：綜合練習
+            </h2>
+            <div class="space-y-8">
+                <!-- Q1 -->
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-100">
+                    <p class="text-lg font-medium mb-4 flex items-center gap-2">
+                        <span class="bg-indigo-100 text-indigo-600 w-6 h-6 flex items-center justify-center rounded-full text-xs">1</span>
+                        下列表示法是否為科學記號？
+                    </p>
+                    <div class="flex items-center gap-6 mb-4">
+                        <span class="text-xl font-mono font-bold bg-white px-3 py-1 rounded border">0.45 × 10<sup>3</sup></span>
+                        <div class="flex gap-2">
+                            <button onclick="checkQ1(true)" id="btnQ1T" class="px-4 py-2 bg-white border rounded font-bold hover:bg-slate-50 transition-all">是</button>
+                            <button onclick="checkQ1(false)" id="btnQ1F" class="px-4 py-2 bg-white border rounded font-bold hover:bg-slate-50 transition-all">不是</button>
+                        </div>
+                    </div>
+                    <div id="feedbackQ1" class="hidden p-4 rounded-lg text-sm"></div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-100">
+                    <p class="text-lg font-medium mb-4 flex items-center gap-2">
+                        <span class="bg-indigo-100 text-indigo-600 w-6 h-6 flex items-center justify-center rounded-full text-xs">2</span>
+                        點選較大的數值：
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="checkQ2('A')" id="btnQ2A" class="p-4 bg-white border-2 rounded-xl font-mono text-xl hover:border-indigo-300 transition-all text-center">9.8 × 10<sup>-2</sup></button>
+                        <button onclick="checkQ2('B')" id="btnQ2B" class="p-4 bg-white border-2 rounded-xl font-mono text-xl hover:border-indigo-300 transition-all text-center">9.8 × 10<sup>-1</sup></button>
+                    </div>
+                    <div id="feedbackQ2" class="hidden mt-4 p-4 rounded-lg text-sm"></div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-100 text-center">
+                    <p class="text-lg font-medium mb-4 flex items-center justify-center gap-2">
+                        <span class="bg-indigo-100 text-indigo-600 w-6 h-6 flex items-center justify-center rounded-full text-xs">3</span>
+                        將 45,000 改寫成科學記號：
+                    </p>
+                    <div class="flex flex-wrap items-center gap-3 bg-white p-6 rounded-xl border border-slate-200 justify-center">
+                        <span class="text-xl font-mono">45,000 = </span>
+                        <input type="text" id="q3a" class="w-20 p-2 border-2 rounded text-center font-mono focus:border-indigo-500 outline-none" placeholder="a">
+                        <span class="text-xl font-mono">× 10</span>
+                        <input type="text" id="q3n" class="w-12 p-2 border-2 rounded text-center font-mono focus:border-indigo-500 outline-none -mt-4" placeholder="n">
+                        <button onclick="checkQ3()" class="px-6 py-2 bg-indigo-600 text-white rounded-md font-bold hover:bg-indigo-700 transition-colors shadow-md">檢查</button>
+                    </div>
+                    <div id="feedbackQ3" class="hidden mt-4 p-4 rounded-lg font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Myths & Reflection -->
+        <footer class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center gap-2 text-red-600">
+                    <span>⚠️</span> 常見迷思（易錯陷阱）
+                </h3>
+                <ul class="text-sm space-y-4 text-slate-600">
+                    <li class="flex items-start gap-2">
+                        <span class="text-red-500 font-bold">❌</span> 
+                        <div>
+                            <span class="font-bold text-slate-800">12 × 10<sup>5</sup> 是科學記號</span>
+                            <p class="text-xs mt-1 bg-slate-100 p-2 rounded">錯。a 必須小於 10。應為 1.2 × 10<sup>6</sup>。</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-red-500 font-bold">❌</span> 
+                        <div>
+                            <span class="font-bold text-slate-800">指數 n 是看 0 的個數</span>
+                            <p class="text-xs mt-1 bg-slate-100 p-2 rounded">錯。n 是看「小數點移動的位數」。</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-red-500 font-bold">❌</span> 
+                        <div>
+                            <span class="font-bold text-slate-800">小數點向右移，n 是正的</span>
+                            <p class="text-xs mt-1 bg-slate-100 p-2 rounded">錯。小於 1 的數往右移，指數為「負」。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-indigo-900 text-indigo-50 p-6 rounded-xl shadow-sm">
+                <h3 class="font-bold mb-3 border-b border-indigo-700 pb-2 text-white">💡 反思與討論</h3>
+                <div class="text-sm leading-relaxed italic space-y-4 text-indigo-100">
+                    <p>「為什麼科學記號規定 a 不能等於 10？」</p>
+                    <p>「如果一個數字剛好介於 1 到 10 之間，它的指數會是多少？」</p>
+                    <p>「在日常生活中，還有哪些地方會用到極大或極小的數字？」</p>
+                </div>
+            </div>
+        </footer>
+
+        <div class="text-center mt-12 text-slate-400 text-xs">
+            依據 108 課綱 N-7-8 設計 • 互動式數位講義
+        </div>
+    </div>
+
+    <script>
+        // 1. Converter Logic
+        function convertNumber() {
+            const input = document.getElementById('mainInput').value;
+            const displayA = document.getElementById('displayA');
+            const displayN = document.getElementById('displayN');
+            
+            const num = parseFloat(input);
+            if (isNaN(num) || num <= 0) {
+                displayA.innerText = "?";
+                displayN.innerText = "0";
+                return;
+            }
+
+            const exponential = num.toExponential();
+            const [a, n] = exponential.split('e');
+            displayA.innerText = parseFloat(parseFloat(a).toFixed(4));
+            displayN.innerText = parseInt(n);
+        }
+
+        function resetConverter() {
+            document.getElementById('mainInput').value = "32100000";
+            convertNumber();
+        }
+
+        // 2. Guided Quiz Logic
+        function handleStep(step, isCorrect) {
+            const feedback = document.getElementById('quizFeedback');
+            feedback.classList.remove('hidden');
+
+            if (!isCorrect) {
+                feedback.innerText = "❌ 答錯囉，請再仔細想一下。";
+                feedback.className = "p-4 rounded-lg font-bold text-center border-2 bg-red-100 text-red-800 border-red-200 mb-4";
+                return;
+            }
+
+            feedback.innerText = "✅ 正確！繼續下一步。";
+            feedback.className = "p-4 rounded-lg font-bold text-center border-2 bg-green-100 text-green-800 border-green-200 mb-4";
+
+            // Hide current step, show next
+            const currentEl = document.getElementById('step' + step);
+            currentEl.classList.add('opacity-40');
+            currentEl.querySelectorAll('button').forEach(b => b.disabled = true);
+
+            const nextStep = step + 1;
+            const nextEl = document.getElementById('step' + nextStep);
+            
+            if (nextEl) {
+                setTimeout(() => {
+                    nextEl.classList.remove('hidden');
+                    setTimeout(() => nextEl.classList.add('opacity-100'), 10);
+                    feedback.classList.add('hidden');
+                }, 1000);
+            } else {
+                // All steps complete
+                setTimeout(() => {
+                    document.getElementById('quizResult').classList.remove('hidden');
+                    feedback.classList.add('hidden');
+                }, 1000);
+            }
+        }
+
+        // 3. Comp Exercises Logic
+        function checkQ1(isYes) {
+            const f = document.getElementById('feedbackQ1');
+            const btnT = document.getElementById('btnQ1T');
+            const btnF = document.getElementById('btnQ1F');
+            f.classList.remove('hidden');
+            
+            if (isYes) {
+                f.innerHTML = "❌ 答錯了！係數 0.45 小於 1，不符合 1 ≤ a ＜ 10 的定義。";
+                f.className = "p-4 rounded-lg text-sm bg-red-50 text-red-800 mt-4";
+                btnT.classList.add('bg-red-500', 'text-white');
+                btnF.classList.remove('bg-green-500', 'text-white');
+            } else {
+                f.innerHTML = "✅ 答對了！因為 0.45 不在 1 到 10 的範圍內。";
+                f.className = "p-4 rounded-lg text-sm bg-green-50 text-green-800 mt-4";
+                btnF.classList.add('bg-green-500', 'text-white');
+                btnT.classList.remove('bg-red-500', 'text-white');
+            }
+        }
+
+        function checkQ2(choice) {
+            const f = document.getElementById('feedbackQ2');
+            const btnA = document.getElementById('btnQ2A');
+            const btnB = document.getElementById('btnQ2B');
+            f.classList.remove('hidden');
+
+            if (choice === 'B') {
+                f.innerHTML = "✅ 答對了！指數 -1 代表 0.98，指數 -2 代表 0.098，所以 -1 比較大。";
+                f.className = "mt-4 p-4 rounded-lg text-sm bg-green-50 text-green-800";
+                btnB.classList.add('bg-green-100', 'border-green-500');
+                btnA.classList.remove('bg-red-100', 'border-red-500');
+            } else {
+                f.innerHTML = "❌ 答錯囉！負數指數越接近 0，數值其實越大。";
+                f.className = "mt-4 p-4 rounded-lg text-sm bg-red-50 text-red-800";
+                btnA.classList.add('bg-red-100', 'border-red-500');
+                btnB.classList.remove('bg-green-100', 'border-green-500');
+            }
+        }
+
+        function checkQ3() {
+            const a = document.getElementById('q3a').value.trim();
+            const n = document.getElementById('q3n').value.trim();
+            const f = document.getElementById('feedbackQ3');
+            f.classList.remove('hidden');
+
+            if (a === "4.5" && n === "4") {
+                f.innerText = "🎉 完全正確！45,000 = 4.5 × 10⁴";
+                f.className = "mt-4 p-4 rounded-lg font-bold bg-green-100 text-green-800";
+            } else {
+                f.innerText = "❌ 填錯了，再數一下小數點往左移了幾位？";
+                f.className = "mt-4 p-4 rounded-lg font-bold bg-red-100 text-red-800";
+            }
+        }
+
+        // Initialize display
+        window.onload = convertNumber;
+    </script>
+</body>
+</html>
