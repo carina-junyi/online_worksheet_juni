@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N-7-7 指數律</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .exponent-box { transition: all 0.3s ease; }
+        .law-active { border-color: #3b82f6; background-color: #eff6ff; transform: scale(1.02); }
+        .math-fact { background-color: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-family: 'Times New Roman', serif; }
+        .step-inactive { opacity: 0.5; pointer-events: none; }
+        sub, sup { font-family: 'Times New Roman', serif; }
+        .challenge-card { transition: transform 0.2s; }
+        .challenge-card:hover { transform: translateY(-4px); }
+        
+        /* 指數專用輸入框樣式 */
+        .exp-input-small {
+            width: 40px;
+            height: 32px;
+            padding: 2px;
+            background-color: #1e1b4b; /* indigo-950 */
+            border: 1px solid #6366f1; /* indigo-500 */
+            border-radius: 4px;
+            text-align: center;
+            color: white;
+            font-size: 0.875rem;
+            margin-top: -12px; /* 向上移動到指數位置 */
+            margin-left: 2px;
+        }
+        .exp-input-small:focus {
+            outline: none;
+            border-color: #a5b4fc; /* indigo-300 */
+            box-shadow: 0 0 0 2px rgba(165, 180, 252, 0.5);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 指數律</h1>
+            <p class="text-slate-600">N-7-7 互動式學習講義</p>
+        </header>
+
+        <!-- Learning Objectives -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3">🎯 學習目標</h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>理解並使用<span class="font-bold">同底數的乘法</span>指數律。</li>
+                <li>理解並使用<span class="font-bold">同底數的除法</span>指數律（指數相減）。</li>
+                <li>正確處理<span class="font-bold">指數為 0</span> 的情況（a ≠ 0）。</li>
+                <li>不需算出數值，即可判斷指數運算的結果。</li>
+            </ul>
+        </section>
+
+        <!-- Concept Cards -->
+        <div class="grid md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                <h3 class="font-bold text-blue-700 text-lg mb-2">1️⃣ 乘法規律</h3>
+                <p class="text-sm text-blue-800">底數相同時，相乘則指數相加。</p>
+                <p class="mt-2 font-serif text-lg text-blue-600">a<sup>m</sup> × a<sup>n</sup> = a<sup>m+n</sup></p>
+            </div>
+            <div class="bg-indigo-50 p-5 rounded-lg border border-indigo-200">
+                <h3 class="font-bold text-indigo-700 text-lg mb-2">2️⃣ 除法規律</h3>
+                <p class="text-sm text-indigo-800">底數相同時，相除則指數相減。</p>
+                <p class="mt-2 font-serif text-lg text-indigo-600">a<sup>m</sup> ÷ a<sup>n</sup> = a<sup>m-n</sup></p>
+            </div>
+            <div class="bg-purple-50 p-5 rounded-lg border border-purple-200">
+                <h3 class="font-bold text-purple-700 text-lg mb-2">3️⃣ 零次方</h3>
+                <p class="text-sm text-purple-800 font-bold underline">任何非零數的 0 次方都是 1。</p>
+                <p class="mt-2 font-serif text-lg text-purple-600">a<sup>0</sup> = 1 (a≠0)</p>
+            </div>
+        </div>
+
+        <!-- Interactive Visualization -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-slate-800">🧮 互動展開觀察室</h2>
+                <button onclick="resetVis()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium">重置觀察</button>
+            </div>
+            <p class="text-slate-600 mb-6 text-sm">點擊按鈕觀察底數如何透過連乘與抵消，形成指數律的結果。</p>
+            
+            <div class="bg-slate-50 p-8 rounded-xl mb-6 text-center">
+                <div id="vis-display" class="text-3xl font-serif font-bold text-slate-800 mb-4 h-20 flex items-center justify-center gap-2">
+                    <!-- Dynamic math display -->
+                    請選擇下方的操作
+                </div>
+                <div id="vis-expansion" class="text-sm text-slate-400 italic min-h-[1.5rem]">
+                    <!-- Expansion text -->
+                </div>
+            </div>
+
+            <div class="bg-blue-50 p-4 rounded-lg flex flex-wrap gap-2 items-center justify-center">
+                <span class="text-sm font-bold text-blue-800 mr-2">動態演示：</span>
+                <button onclick="showMult()" class="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600">2³ × 2²</button>
+                <button onclick="showDiv()" class="px-3 py-1 bg-indigo-500 text-white rounded text-sm hover:bg-indigo-600">3⁵ ÷ 3²</button>
+                <button onclick="showZero()" class="px-3 py-1 bg-purple-500 text-white rounded text-sm hover:bg-purple-600">為什麼 5⁰ = 1？</button>
+            </div>
+        </section>
+
+        <!-- Step-by-Step Quiz -->
+        <section class="bg-amber-50 rounded-xl shadow-sm p-6 mb-8 border border-amber-200">
+            <h2 class="text-xl font-bold text-amber-800 mb-4">🔍 基礎練習：計算 5⁴ ÷ 5² </h2>
+            <div id="quiz-container" class="space-y-4">
+                <!-- Step 1 -->
+                <div id="q1">
+                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 底數是否相同？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerQ(1, true)" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100">是 (都是 5)</button>
+                        <button onclick="answerQ(1, false)" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100">否</button>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div id="q2" class="hidden">
+                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 這是除法，指數要如何運算？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerQ(2, false)" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100">相加 (4 + 2)</button>
+                        <button onclick="answerQ(2, true)" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100">相減 (4 - 2)</button>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div id="q3" class="hidden">
+                    <p class="text-slate-800 mb-2 font-medium">3️⃣ 最後的指數結果是？ (寫成 5<sup>?</sup>)</p>
+                    <div class="flex gap-2 items-center">
+                        <input type="number" id="exp-ans" class="w-20 p-2 border border-amber-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="?">
+                        <button onclick="answerQ(3, 'check')" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">檢查指數</button>
+                    </div>
+                </div>
+                <!-- Step 4 -->
+                <div id="q4" class="hidden">
+                    <p class="text-slate-800 mb-2 font-medium">4️⃣ 算出最終數值： 5² 等於多少？</p>
+                    <div class="flex gap-2 items-center">
+                        <input type="number" id="final-ans" class="w-24 p-2 border border-amber-300 rounded focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="?">
+                        <button onclick="answerQ(4, 'check')" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">算出答案</button>
+                    </div>
+                </div>
+                <div id="quiz-feedback" class="hidden p-4 rounded-lg font-bold text-center"></div>
+            </div>
+        </section>
+
+        <!-- Advanced Challenges -->
+        <section class="bg-indigo-900 rounded-xl shadow-md p-6 mb-8 text-white">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="mr-2">🚀</span> 進階挑戰區
+            </h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Challenge 1 -->
+                <div class="bg-indigo-800 p-5 rounded-lg border border-indigo-700 challenge-card">
+                    <h3 class="font-bold text-indigo-200 mb-3">挑戰 A：綜合運算</h3>
+                    <p class="text-sm mb-4">計算：2<sup>3</sup> × 2<sup>4</sup> ÷ 2<sup>5</sup></p>
+                    <div class="flex gap-2 items-center">
+                        <div class="inline-flex items-start">
+                            <span class="text-3xl font-serif">2</span>
+                            <input type="number" id="challenge-a-ans" class="exp-input-small" placeholder="?">
+                        </div>
+                        <button onclick="checkChallenge('a', 2)" class="px-3 py-1 bg-indigo-500 hover:bg-indigo-400 rounded text-sm ml-4">檢查</button>
+                    </div>
+                    <p id="feedback-a" class="mt-3 text-xs font-bold min-h-[1rem]"></p>
+                </div>
+
+                <!-- Challenge 2 -->
+                <div class="bg-indigo-800 p-5 rounded-lg border border-indigo-700 challenge-card">
+                    <h3 class="font-bold text-indigo-200 mb-3">挑戰 B：尋找未知指數</h3>
+                    <p class="text-sm mb-4">若 7<sup>x</sup> ÷ 7<sup>3</sup> = 7<sup>4</sup>，則 x = ?</p>
+                    <div class="flex gap-2 items-center">
+                        <span class="text-lg font-serif italic text-indigo-300">x = </span>
+                        <input type="number" id="challenge-b-ans" class="w-16 p-1 bg-indigo-950 border border-indigo-500 rounded text-center text-white focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="?">
+                        <button onclick="checkChallenge('b', 7)" class="px-3 py-1 bg-indigo-500 hover:bg-indigo-400 rounded text-sm ml-2">檢查</button>
+                    </div>
+                    <p id="feedback-b" class="mt-3 text-xs font-bold min-h-[1rem]"></p>
+                </div>
+
+                <!-- Challenge 3 -->
+                <div class="bg-indigo-800 p-5 rounded-lg border border-indigo-700 challenge-card">
+                    <h3 class="font-bold text-indigo-200 mb-3">挑戰 C：比大小判斷</h3>
+                    <p class="text-sm mb-4">下列何者較大？<br>A: 3<sup>4</sup> × 3<sup>0</sup> 　B: 3<sup>5</sup> ÷ 3<sup>2</sup></p>
+                    <div class="flex gap-2">
+                        <button onclick="checkChallenge('c', 'A')" class="px-4 py-1 bg-indigo-600 hover:bg-indigo-500 rounded text-sm">A 比較大</button>
+                        <button onclick="checkChallenge('c', 'B')" class="px-4 py-1 bg-indigo-600 hover:bg-indigo-500 rounded text-sm">B 比較大</button>
+                    </div>
+                    <p id="feedback-c" class="mt-3 text-xs font-bold min-h-[1rem]"></p>
+                </div>
+
+                <!-- Challenge 4 -->
+                <div class="bg-indigo-800 p-5 rounded-lg border border-indigo-700 challenge-card">
+                    <h3 class="font-bold text-indigo-200 mb-3">挑戰 D：指數為 0 的陷阱</h3>
+                    <p class="text-sm mb-4">計算：(5<sup>2</sup> ÷ 5<sup>2</sup>) × 2<sup>3</sup></p>
+                    <div class="flex gap-2 items-center">
+                        <span class="text-sm italic text-indigo-300">最後結果：</span>
+                        <input type="number" id="challenge-d-ans" class="w-16 p-1 bg-indigo-950 border border-indigo-500 rounded text-center text-white focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="?">
+                        <button onclick="checkChallenge('d', 8)" class="px-3 py-1 bg-indigo-500 hover:bg-indigo-400 rounded text-sm ml-2">檢查</button>
+                    </div>
+                    <p id="feedback-d" class="mt-3 text-xs font-bold min-h-[1rem]"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cheat Sheet & Reflection -->
+        <footer class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2">⚠️ 指數律常見迷思</h3>
+                <ul class="text-sm space-y-3 text-slate-600">
+                    <li class="flex items-center gap-2">
+                        ❌ <span class="text-red-500 font-bold">2³ × 3² = 6⁵</span> 
+                        <span class="text-slate-400">→</span> 
+                        <span class="bg-slate-100 px-2 py-1 rounded text-slate-700">錯誤！底數不同不可相加指數。</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        ❌ <span class="text-red-500 font-bold">5⁰ = 0</span> 
+                        <span class="text-slate-400">→</span> 
+                        <span class="bg-amber-50 border border-amber-200 px-2 py-1 rounded text-amber-800 font-medium">
+                            不對，<span class="math-fact">5⁰ = 1</span>
+                        </span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        ❌ <span class="text-red-500 font-bold">2⁶ ÷ 2² = 2³</span> 
+                        <span class="text-slate-400">→</span> 
+                        <span class="bg-amber-50 border border-amber-200 px-2 py-1 rounded text-amber-800 font-medium">
+                            不對，指數應相減：<span class="math-fact">6 - 2 = 4</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                <h3 class="font-bold mb-3 border-b border-slate-700 pb-2">🤔 思考一下</h3>
+                <p class="text-sm leading-relaxed italic">
+                    「為什麼底數相乘時，我們是將指數『相加』而不是『相乘』呢？」<br><br>
+                    「如果底數是 0，還會有 0 次方嗎？（目前國中階段不討論底數為 0 的 0 次方喔！）」
+                </p>
+                <div class="mt-4 p-3 bg-slate-800 rounded text-xs text-slate-400">
+                    💡 提示：指數代表底數出現的「次數」。
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const visDisplay = document.getElementById('vis-display');
+        const visExpansion = document.getElementById('vis-expansion');
+        const feedback = document.getElementById('quiz-feedback');
+
+        function resetVis() {
+            visDisplay.innerHTML = '請選擇下方的操作';
+            visExpansion.innerText = '';
+        }
+
+        function showMult() {
+            visDisplay.innerHTML = '2³ × 2² = 2<sup>3+2</sup> = <span class="text-blue-600 ml-2">2⁵</span>';
+            visExpansion.innerText = '展開觀察： (2×2×2) × (2×2) = 總共 5 個 2 相乘';
+        }
+
+        function showDiv() {
+            visDisplay.innerHTML = '3⁵ ÷ 3² = 3<sup>5-2</sup> = <span class="text-indigo-600 ml-2">3³</span>';
+            visExpansion.innerText = '展開觀察： (3×3×3×3×3) / (3×3) = 分母消掉 2 個，剩 3 個';
+        }
+
+        function showZero() {
+            visDisplay.innerHTML = '5³ ÷ 5³ = 5<sup>3-3</sup> = <span class="text-purple-600 ml-2">5⁰ = 1</span>';
+            visExpansion.innerText = '展開觀察： 因為自己除以自己，結果當然是 1';
+        }
+
+        function answerQ(step, ans) {
+            const q1 = document.getElementById('q1');
+            const q2 = document.getElementById('q2');
+            const q3 = document.getElementById('q3');
+            const q4 = document.getElementById('q4');
+            
+            feedback.classList.remove('hidden');
+            
+            if (step === 1) {
+                if (ans === true) {
+                    feedback.innerHTML = "✅ 正確！底數都是 5，我們可以使用指數律。";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4";
+                    q1.classList.add('opacity-50', 'pointer-events-none');
+                    q2.classList.remove('hidden');
+                } else {
+                    feedback.innerHTML = "❌ 底數都是 5 喔，請再看一次算式。";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4";
+                }
+            } else if (step === 2) {
+                if (ans === true) {
+                    feedback.innerHTML = "✅ 沒錯！同底數相除，指數要「相減」。";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4";
+                    q2.classList.add('opacity-50', 'pointer-events-none');
+                    q3.classList.remove('hidden');
+                } else {
+                    feedback.innerHTML = "❌ 這是除法喔，指數相加是用在乘法的時候。";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4";
+                }
+            } else if (step === 3) {
+                const expVal = document.getElementById('exp-ans').value;
+                if (expVal == '2') {
+                    feedback.innerHTML = "✅ 太棒了！5⁴ ÷ 5² = 5<sup>4-2</sup> = 5²。最後一關，把它算出來！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4";
+                    q3.classList.add('opacity-50', 'pointer-events-none');
+                    q4.classList.remove('hidden');
+                } else {
+                    feedback.innerHTML = "❌ 算算看，4 減 2 等於多少？";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4";
+                }
+            } else if (step === 4) {
+                const finalVal = document.getElementById('final-ans').value;
+                if (finalVal == '25') {
+                    feedback.innerHTML = "🎉 完美達成！ 5² = 5 × 5 = 25。你已經掌握除法指數律了！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4";
+                    q4.classList.add('opacity-50', 'pointer-events-none');
+                } else {
+                    feedback.innerHTML = "❌ 再試一下，5 的 2 次方是 5 乘以 5 喔！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4";
+                }
+            }
+        }
+
+        function checkChallenge(id, correctVal) {
+            const input = document.getElementById(`challenge-${id}-ans`);
+            const feedbackEl = document.getElementById(`feedback-${id}`);
+            let userVal;
+            
+            if (id === 'c') {
+                userVal = correctVal; // 比大小使用按鈕傳入
+            } else {
+                userVal = input.value;
+            }
+
+            if (userVal == correctVal) {
+                feedbackEl.innerText = id === 'c' ? (correctVal === 'A' ? "✅ 正確！A 是 3⁴，B 是 3³。" : "✅ 正確！") : "✅ 太厲害了，答對了！";
+                feedbackEl.className = "mt-3 text-xs font-bold text-green-400";
+            } else {
+                let hint = "";
+                if (id === 'a') hint = "提示：先做乘法(3+4)，再做除法(-5)。";
+                if (id === 'b') hint = "提示：(?) - 3 = 4，(?) 是多少？";
+                if (id === 'c') hint = "提示：A 是 3⁴ × 1，B 是 3³。再想一下！";
+                if (id === 'd') hint = "提示：括號內是 5⁰，也就是 1。";
+                
+                feedbackEl.innerText = "❌ 再想一下！" + hint;
+                feedbackEl.className = "mt-3 text-xs font-bold text-red-400";
+            }
+        }
+    </script>
+</body>
+</html>
