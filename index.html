@@ -2,7 +2,9 @@
 <script>
 window.onload = function() {
   var hash = window.location.hash; // 例如 "#page1"
+  console.log("當前 hash:", hash);
   // 根據 hash 決定要導向的頁面
+  
   if (hash === "#n-7-1") {
     window.location.replace("/online_worksheet_juni/n_7_1/content.html");
   } else if (hash === "#n-7-2") {
