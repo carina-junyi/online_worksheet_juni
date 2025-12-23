@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N-7-9 比與比例式互動講義</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .math-fact { background-color: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 6px; font-weight: bold; }
+        .step-badge { background-color: #3b82f6; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .feedback-box { transition: all 0.3s ease; }
+        
+        /* 好閱讀的分數樣式 */
+        .fraction-ui { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.1; margin: 0 4px; }
+        .fraction-ui .num { border-bottom: 2px solid currentColor; padding: 0 4px; font-weight: bold; }
+        .fraction-ui .den { padding: 0 4px; font-weight: bold; }
+        
+        .equation-box { font-size: 1.25rem; color: #1e40af; background: #eff6ff; padding: 8px 16px; border-radius: 8px; border: 1px solid #dbeafe; display: inline-block; font-weight: bold; }
+
+        /* 讓按鈕內的內容居中 */
+        .btn-fraction { display: inline-flex; align-items: center; justify-content: center; min-width: 80px; padding: 8px 16px; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 比與比例式</h1>
+            <p class="text-slate-600">N-7-9 互動式學習講義</p>
+        </header>
+
+        <!-- Learning Objectives -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="mr-2 w-5 h-5"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>理解「比」的意義與前項、後項的定義。</li>
+                <li>學會計算比值並化簡比例。</li>
+                <li>判斷並列出「比例式」。</li>
+                <li>認識並分辨「正比」與「反比」的數量關係。</li>
+                <li>解決食鹽水、時速與比例尺等生活應用題。</li>
+            </ul>
+        </section>
+
+        <!-- Concept Cards -->
+        <div class="grid md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                <h3 class="font-bold text-blue-700 text-lg mb-2">1️⃣ 比 (Ratio)</h3>
+                <p class="text-sm text-blue-800">表示兩個數之間的關係，寫作 <b>a : b</b>。</p>
+                <p class="mt-2 text-xs text-blue-600 font-bold">比值 = a ÷ b</p>
+            </div>
+            <div class="bg-green-50 p-5 rounded-lg border border-green-200">
+                <h3 class="font-bold text-green-700 text-lg mb-2">2️⃣ 正比 (Direct)</h3>
+                <p class="text-sm text-green-800">倍數關係固定：一個增加，另一個也依比例增加。</p>
+                <p class="mt-2 font-mono text-xs text-green-600 font-bold">公式：y = kx</p>
+            </div>
+            <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200">
+                <h3 class="font-bold text-emerald-700 text-lg mb-2">3️⃣ 反比 (Inverse)</h3>
+                <p class="text-sm text-emerald-800">乘積固定：一個增加，另一個反而縮小。</p>
+                <p class="mt-2 font-mono text-xs text-emerald-600 font-bold">公式：x × y = k</p>
+            </div>
+        </div>
+
+        <!-- Worked Example: Salt Water -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil" class="mr-2 text-blue-600"></i> 解題示範：直觀倍數法
+            </h2>
+            <div class="p-4 bg-slate-50 rounded-lg mb-4">
+                <p class="text-slate-700 font-bold">題目：500g 食鹽水中有 70g 食鹽。若同樣濃度，750g 食鹽水含有多少食鹽？</p>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">1</span>
+                    <p class="text-slate-600">觀察總量變化：750 ÷ 500 = <b>1.5</b>，代表總量變成了 <span class="font-bold text-blue-600">1.5 倍</span>。</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">2</span>
+                    <p class="text-slate-600">運用比例關係：因為濃度相同，食鹽量也要跟著變成 <span class="font-bold text-blue-600">1.5 倍</span>。</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">3</span>
+                    <p class="text-slate-600 font-bold">得出答案：70 × 1.5 = 105，所以含有 <span class="math-fact text-blue-700">105g</span> 食鹽。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Visualization / Interactive Tool -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-slate-800">🧮 互動比例式模擬</h2>
+                <button onclick="resetSim()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium">重置數值</button>
+            </div>
+            <p class="text-slate-600 mb-6 text-sm">調整左方的比，看看右方數值如何連動來維持相等的「比值」：</p>
+            
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
+                <div class="flex items-center gap-2 bg-slate-100 p-4 rounded-lg">
+                    <input type="number" id="sim-a" value="2" oninput="updateSim()" class="w-16 p-2 border rounded text-center font-bold">
+                    <span class="text-xl font-bold">:</span>
+                    <input type="number" id="sim-b" value="3" oninput="updateSim()" class="w-16 p-2 border rounded text-center font-bold">
+                </div>
+                <div class="text-3xl font-bold text-blue-500">=</div>
+                <div class="flex items-center gap-2 bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <input type="number" id="sim-c" value="4" oninput="updateSim()" class="w-16 p-2 border rounded text-center font-bold text-blue-700">
+                    <span class="text-xl font-bold text-blue-700">:</span>
+                    <div id="sim-d-display" class="w-16 p-2 bg-white border border-blue-300 rounded text-center font-bold text-blue-700">6</div>
+                </div>
+            </div>
+
+            <div id="sim-explanation" class="bg-amber-50 p-6 rounded-lg text-center text-amber-800 shadow-inner">
+                <!-- Content will be updated by JS -->
+            </div>
+        </section>
+
+        <!-- Step-by-Step Quiz: Scaling Logic -->
+        <section class="bg-indigo-50 rounded-xl shadow-sm p-6 mb-8 border border-indigo-200">
+            <h2 class="text-xl font-bold text-indigo-800 mb-4 flex items-center">
+                <i data-lucide="check-square" class="mr-2 w-5 h-5"></i> 🔍 練習：觀察倍數關係
+            </h2>
+            <div class="mb-4 text-slate-700 p-3 bg-white rounded-lg border border-indigo-100 italic text-sm">
+                挑戰：如果 3 : 5 = 12 : x，請問 x 是多少？請用倍數思考。
+            </div>
+            <div id="scaling-quiz" class="space-y-4">
+                <div id="sq1">
+                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 觀察前項的變化：從 3 變 12，是變為幾倍？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerScaling(1, 4)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold">4 倍</button>
+                        <button onclick="answerScaling(1, 9)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold">9 倍</button>
+                    </div>
+                </div>
+                <div id="sq2" class="hidden">
+                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 為了維持比例，後項 5 也必須跟著變大相同的倍數：</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerScaling(2, 20)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold">5 × 4 = 20</button>
+                        <button onclick="answerScaling(2, 25)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold">5 × 5 = 25</button>
+                    </div>
+                </div>
+                <div id="scaling-feedback" class="hidden p-4 rounded-lg font-bold text-center"></div>
+            </div>
+        </section>
+
+        <!-- Practice 1: Ratio and Value -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-blue-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil-line" class="mr-2 text-blue-600"></i> 🧩 練習 1：比與比值（引導式）
+            </h2>
+            <div class="p-4 bg-blue-50 rounded-lg mb-6 border border-blue-100">
+                <p class="text-blue-900 font-bold">題目情境：一盒彩筆中，紅筆有 6 支，藍筆有 9 支。</p>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Step 1 -->
+                <div id="p1-s1">
+                    <p class="text-slate-700 mb-2 font-medium">步驟 1️⃣：紅筆對藍筆的「比」是多少？</p>
+                    <p class="text-xs text-slate-500 mb-2 underline decoration-blue-200">請依題目原始數量填寫，不需要化簡</p>
+                    <div class="flex gap-2">
+                        <input type="text" id="p1-ans1" placeholder="請輸入比" class="p-2 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none w-48 font-bold text-center bg-slate-50">
+                        <button onclick="checkP1(1)" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">檢查答案</button>
+                    </div>
+                    <div id="p1-f1" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div id="p1-s2" class="hidden opacity-0 transition-all duration-500">
+                    <p class="text-slate-700 mb-2 font-medium border-t pt-4">步驟 2️⃣：比值要怎麼算？</p>
+                    <p class="text-xs text-slate-500 mb-2 underline decoration-blue-200">計算「前項 ÷ 後項」，並化簡至【最簡分數】</p>
+                    <div class="flex gap-4">
+                        <button onclick="checkP1_Step2('2/3')" class="btn-fraction bg-white border border-blue-300 rounded-lg hover:bg-blue-100 font-bold text-blue-700 transition-all">
+                            <div class="fraction-ui"><span class="num">2</span><span class="den">3</span></div>
+                        </button>
+                        <button onclick="checkP1_Step2('3/2')" class="btn-fraction bg-white border border-blue-300 rounded-lg hover:bg-blue-100 font-bold text-blue-700 transition-all">
+                            <div class="fraction-ui"><span class="num">3</span><span class="den">2</span></div>
+                        </button>
+                    </div>
+                    <div id="p1-f2" class="text-sm mt-3 hidden rounded-lg border p-3 font-bold"></div>
+                </div>
+
+                <!-- Result -->
+                <div id="p1-s3" class="hidden opacity-0 transition-all duration-500">
+                    <div class="bg-green-50 p-6 border border-green-200 rounded-lg shadow-inner">
+                        <p class="text-green-800 font-bold flex items-center mb-4 text-lg">
+                            <i data-lucide="party-popper" class="mr-2 w-6 h-6"></i> 挑戰成功！
+                        </p>
+                        <div class="text-green-700 leading-relaxed">
+                            <p class="mb-4">這題的比是 <span class="font-bold underline text-green-900">6 : 9</span>。化簡後為 <span class="font-bold underline text-green-900">2 : 3</span>。</p>
+                            <div class="flex flex-wrap items-center gap-3">
+                                <span class="font-bold">比值計算過程：</span>
+                                <div class="equation-box">6 ÷ 9 = <div class="fraction-ui"><span class="num">6</span><span class="den">9</span></div></div>
+                                <span class="font-bold">化簡後結果：</span>
+                                <div class="bg-white px-4 py-2 rounded-lg border-2 border-green-400 shadow-sm text-3xl text-blue-800">
+                                    <div class="fraction-ui"><span class="num">2</span><span class="den">3</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice 2: Classification -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-emerald-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="layers" class="mr-2 text-emerald-600"></i> 🧮 練習 2：判斷正比或反比
+            </h2>
+            <p class="text-slate-600 mb-6 text-sm font-medium">請判斷下列情境屬於哪一種關係，點擊後看理由說明：</p>
+            
+            <div class="space-y-6">
+                <!-- Case 1 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">1. 行駛時間固定，速度與距離的關係</p>
+                    <div class="flex gap-2 mb-3">
+                        <button onclick="checkP2(1, '正比')" class="px-6 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">正比</button>
+                        <button onclick="checkP2(1, '反比')" class="px-6 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">反比</button>
+                        <button onclick="checkP2(1, '都不是')" class="px-6 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 font-bold text-slate-700 transition-all">都不是</button>
+                    </div>
+                    <div id="p2-f1" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">2. 工作量固定，工人數與完成時間的關係</p>
+                    <div class="flex gap-2 mb-3">
+                        <button onclick="checkP2(2, '正比')" class="px-6 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">正比</button>
+                        <button onclick="checkP2(2, '反比')" class="px-6 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">反比</button>
+                        <button onclick="checkP2(2, '都不是')" class="px-6 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 font-bold text-slate-700 transition-all">都不是</button>
+                    </div>
+                    <div id="p2-f2" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+
+                <!-- Case 3 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">3. 考試的分數與你的座號之關係</p>
+                    <div class="flex gap-2 mb-3">
+                        <button onclick="checkP2(3, '正比')" class="px-6 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">正比</button>
+                        <button onclick="checkP2(3, '反比')" class="px-6 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">反比</button>
+                        <button onclick="checkP2(3, '都不是')" class="px-6 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 font-bold text-slate-700 transition-all">都不是</button>
+                    </div>
+                    <div id="p2-f3" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cheat Sheet & Reflection -->
+        <footer class="grid md:grid-cols-2 gap-6 mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center">
+                    <i data-lucide="alert-circle" class="mr-2 text-red-500"></i> ⚠️ 易錯迷思陷阱
+                </h3>
+                <ul class="text-sm space-y-3 text-slate-600 font-medium">
+                    <li class="flex items-center gap-2">
+                        ❌ <span class="text-red-500 font-bold">2:3 = 3:2</span> 
+                        <span class="text-slate-400">→</span> 
+                        <span class="bg-slate-100 px-2 py-1 rounded text-slate-700 italic text-xs">前項與後項不能隨意對調。</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        ❌ <span class="text-red-500 font-bold">一增一增必正比</span> 
+                        <span class="text-slate-400">→</span> 
+                        <span class="bg-slate-100 px-2 py-1 rounded text-slate-700 italic text-xs">還需要「倍數固定」才是正比。</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        ❌ <span class="text-red-500 font-bold">比值與比混淆</span> 
+                        <span class="text-slate-400">→</span> 
+                        <span class="bg-amber-50 border border-amber-200 px-2 py-1 rounded text-amber-800 font-bold text-xs">
+                             比是「關係表示」，比值是「一個數值」。
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400">
+                    <i data-lucide="lightbulb" class="mr-2 w-5 h-5"></i> 生活中的比
+                </h3>
+                <p class="text-sm leading-relaxed italic opacity-80">
+                    「地圖比例尺 1 : 50000 代表什麼意思？」<br><br>
+                    「如果工人增加一倍，完工時間會變為一半嗎？這屬於哪種比？」
+                </p>
+            </div>
+        </footer>
+
+        <footer class="text-center text-slate-400 text-sm pb-12">
+            本講義依據 108 課綱 N-7-9 標準編製 &copy; 2024 互動式教學系統
+        </footer>
+    </div>
+
+    <script>
+        const scalingFeedback = document.getElementById('scaling-feedback');
+
+        // Initialize Lucide Icons
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            updateSim();
+        };
+
+        // Greatest Common Divisor
+        function getGCD(a, b) {
+            a = Math.abs(Math.round(a));
+            b = Math.abs(Math.round(b));
+            while (b) {
+                a %= b;
+                [a, b] = [b, a];
+            }
+            return a;
+        }
+
+        // Simulation Tool
+        function updateSim() {
+            const a = parseFloat(document.getElementById('sim-a').value) || 1;
+            const b = parseFloat(document.getElementById('sim-b').value) || 1;
+            const c = parseFloat(document.getElementById('sim-c').value) || 1;
+            
+            const d = (b * c) / a;
+            const roundedD = Math.round(d * 100) / 100;
+            document.getElementById('sim-d-display').innerText = roundedD;
+            
+            const decimalValue = a / b;
+            const roundedDecimal = Math.round(decimalValue * 1000) / 1000;
+            
+            let fractionHTML = "";
+            if (Number.isInteger(a) && Number.isInteger(b)) {
+                const common = getGCD(a, b);
+                const num = a / common;
+                const den = b / common;
+                if (den === 1) {
+                    fractionHTML = num;
+                } else {
+                    fractionHTML = `<div class="fraction-ui"><span class="num">${num}</span><span class="den">${den}</span></div>`;
+                }
+            } else {
+                fractionHTML = roundedDecimal;
+            }
+
+            document.getElementById('sim-explanation').innerHTML = `
+                <div class="flex flex-col items-center gap-2">
+                    <div class="text-sm font-bold">目前狀態：<span class="math-fact text-lg">${a} : ${b} = ${c} : ${roundedD}</span></div>
+                    <div class="flex items-center gap-4 text-xl font-bold">
+                        <span>比值為：${fractionHTML}</span>
+                        <span class="text-slate-400 text-base font-normal">|</span>
+                        <span class="text-blue-700">約為 ${roundedDecimal}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function resetSim() {
+            document.getElementById('sim-a').value = 2;
+            document.getElementById('sim-b').value = 3;
+            document.getElementById('sim-c').value = 4;
+            updateSim();
+        }
+
+        // Scaling Quiz Logic
+        function answerScaling(step, ans) {
+            const q1 = document.getElementById('sq1');
+            const q2 = document.getElementById('sq2');
+            scalingFeedback.classList.remove('hidden');
+            if (step === 1) {
+                if (ans === 4) {
+                    scalingFeedback.innerHTML = "✅ 正確！12 是 3 的 4 倍。";
+                    scalingFeedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm";
+                    q1.classList.add('opacity-50');
+                    q2.classList.remove('hidden');
+                } else {
+                    scalingFeedback.innerHTML = "❌ 再想想看，3 × 多少會等於 12？";
+                    scalingFeedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
+                }
+            } else if (step === 2) {
+                if (ans === 20) {
+                    scalingFeedback.innerHTML = "🎉 太棒了！後項 5 變 4 倍得 x = 20。";
+                    scalingFeedback.className = "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm";
+                    q2.classList.add('opacity-50');
+                } else {
+                    scalingFeedback.innerHTML = "❌ 注意喔，後項也要變大「相同」倍數。";
+                    scalingFeedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
+                }
+            }
+        }
+
+        // Practice 1 Logic
+        function checkP1(step) {
+            const feedbackBox = document.getElementById('p1-f1');
+            if (step === 1) {
+                const val = document.getElementById('p1-ans1').value.trim().replace(/\s/g, '');
+                if (val === '6:9') {
+                    feedbackBox.innerHTML = "✅ 答對了！紅筆 6 支、藍筆 9 支，比就是 6 : 9。";
+                    feedbackBox.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    feedbackBox.classList.remove('hidden');
+                    
+                    const next = document.getElementById('p1-s2');
+                    next.classList.remove('hidden');
+                    setTimeout(() => next.classList.add('opacity-100'), 10);
+                } else if (val === '2:3') {
+                    feedbackBox.innerHTML = "💡 你直接寫出化簡後的結果了！雖然也對，但請先填寫原始數值「6 : 9」喔。";
+                    feedbackBox.className = "text-sm mt-2 text-amber-600 font-bold p-2 bg-amber-50 rounded";
+                    feedbackBox.classList.remove('hidden');
+                } else {
+                    feedbackBox.innerHTML = "❌ 格式不對或數值錯誤喔，請輸入「紅筆數 : 藍筆數」。";
+                    feedbackBox.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                    feedbackBox.classList.remove('hidden');
+                }
+            }
+        }
+
+        window.checkP1_Step2 = function(ans) {
+            const feedbackBox = document.getElementById('p1-f2');
+            feedbackBox.classList.remove('hidden');
+
+            if (ans === '2/3') {
+                feedbackBox.innerHTML = `✅ 正確！比值計算：6 ÷ 9 = <div class="fraction-ui"><span class="num">6</span><span class="den">9</span></div>，化簡後等於 <div class="fraction-ui"><span class="num">2</span><span class="den">3</span></div>。`;
+                feedbackBox.className = "text-sm mt-3 text-green-700 font-bold p-3 bg-green-50 rounded-lg border border-green-200";
+                
+                const next = document.getElementById('p1-s3');
+                next.classList.remove('hidden');
+                setTimeout(() => next.classList.add('opacity-100'), 10);
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } else {
+                feedbackBox.innerHTML = `💡 提示：比值 = 前項 ÷ 後項。前項 6，後項 9。<br>算算看：6 ÷ 9 = <div class="fraction-ui"><span class="num">6</span><span class="den">9</span></div>，化簡後是多少呢？`;
+                feedbackBox.className = "text-sm mt-3 text-amber-700 font-bold p-3 bg-amber-50 rounded-lg border border-amber-200";
+            }
+        }
+
+        // Practice 2 Logic
+        function checkP2(qId, type) {
+            const f = document.getElementById('p2-f' + qId);
+            f.classList.remove('hidden');
+            let content = "";
+            let color = "";
+
+            if (qId === 1) {
+                if (type === '正比') {
+                    color = "bg-blue-100 text-blue-800 border border-blue-200";
+                    content = "正確！時間固定時，速度增加 2 倍，距離也會跟著增加 2 倍。公式：距離 = 速度 × 時間。";
+                } else {
+                    color = "bg-red-50 text-red-700 border border-red-100";
+                    content = "不對哦。速度跟距離是倍數同步增長的，屬於正比關係。";
+                }
+            } else if (qId === 2) {
+                if (type === '反比') {
+                    color = "bg-emerald-100 text-emerald-800 border border-emerald-200";
+                    content = "正確！工作量固定，工人數變為 2 倍，完工天數就會變為 1/2。且工人 × 天數 = 總量 (乘積固定)。";
+                } else {
+                    color = "bg-red-50 text-red-700 border border-red-100";
+                    content = "再想一下。一個變多一個變少，且兩者相乘會是固定的總工作量，這是反比喔。";
+                }
+            } else if (qId === 3) {
+                if (type === '都不是') {
+                    color = "bg-slate-200 text-slate-800 border border-slate-300";
+                    content = "正確！座號 10 號的人分數不一定會是 1 號的 10 倍，這兩者之間沒有固定的比例規律。";
+                } else {
+                    color = "bg-red-50 text-red-700 border border-red-100";
+                    content = "想太多啦！座號跟分數在數學規律上是沒有任何連動關係的。";
+                }
+            }
+            f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 " + color;
+            f.innerHTML = content;
+        }
+    </script>
+</body>
+</html>
