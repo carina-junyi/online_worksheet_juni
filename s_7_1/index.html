@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-7-1 簡單圖形與幾何符號互動講義</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        
+        /* 幾何專用數學符號樣式 */
+        .math-symbol { font-family: "Times New Roman", serif; font-style: italic; font-weight: bold; }
+        .overline { text-decoration: overline; }
+        .ray-symbol { position: relative; display: inline-block; padding-top: 0.2em; }
+        .ray-symbol::before {
+            content: "\2192";
+            position: absolute;
+            top: -0.4em;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8em;
+            font-style: normal;
+        }
+
+        /* 參考風格樣式 */
+        .math-fact { background-color: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 6px; font-weight: bold; }
+        .step-badge { background-color: #3b82f6; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .feedback-box { transition: all 0.3s ease; }
+        .equation-box { font-size: 1.1rem; color: #1e40af; background: #eff6ff; padding: 8px 16px; border-radius: 8px; border: 1px solid #dbeafe; display: inline-block; font-weight: bold; }
+        .challenge-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: transform 0.2s; }
+        .challenge-card:hover { transform: translateY(-2px); }
+        .svg-container { background-color: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 簡單圖形與幾何符號</h1>
+            <p class="text-slate-600">S-7-1 互動式學習講義</p>
+        </header>
+
+        <!-- Learning Objectives -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="mr-2 w-5 h-5"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>說出「點、線、線段、射線、角、三角形」的幾何意義。</li>
+                <li>正確使用幾何符號，如 <span class="math-symbol">A, AB, <span class="overline">AB</span>, <span class="ray-symbol">AB</span></span> 等。</li>
+                <li>看圖能判斷圖形屬於線段、射線或直線。</li>
+                <li>理解角符號的命名邏輯，知道「頂點」必須放中間。</li>
+            </ul>
+        </section>
+
+        <!-- Concept Cards (Geometric Museum) -->
+        <div class="grid md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                <h3 class="font-bold text-blue-700 text-lg mb-2">1️⃣ 點與直線</h3>
+                <p class="text-sm text-blue-800 mb-3">點只有位置；直線向兩端無限延伸。</p>
+                <div class="svg-container h-24 mb-2">
+                    <svg width="120" height="60" viewBox="0 0 120 60">
+                        <line x1="10" y1="30" x2="110" y2="30" stroke="#1e40af" stroke-width="1.5" />
+                        <polygon points="10,30 18,26 18,34" fill="#1e40af" />
+                        <polygon points="110,30 102,26 102,34" fill="#1e40af" />
+                        <circle cx="40" cy="30" r="2" fill="#1e40af" />
+                        <circle cx="80" cy="30" r="2" fill="#1e40af" />
+                        <text x="35" y="50" class="math-symbol" font-size="12">A</text>
+                        <text x="75" y="50" class="math-symbol" font-size="12">B</text>
+                    </svg>
+                </div>
+                <p class="mt-2 text-xs text-blue-600 font-bold">符號：直線 <span class="math-symbol">AB</span></p>
+            </div>
+            <div class="bg-green-50 p-5 rounded-lg border border-green-200">
+                <h3 class="font-bold text-green-700 text-lg mb-2">2️⃣ 線段與射線</h3>
+                <p class="text-sm text-green-800 mb-3">線段有兩個端點；射線只有一個端點。</p>
+                <div class="svg-container h-24 mb-2">
+                    <svg width="120" height="60" viewBox="0 0 120 60">
+                        <line x1="30" y1="30" x2="100" y2="30" stroke="#15803d" stroke-width="1.5" />
+                        <polygon points="100,30 92,26 92,34" fill="#15803d" />
+                        <circle cx="30" cy="30" r="3" fill="#15803d" />
+                        <circle cx="75" cy="30" r="2" fill="#15803d" />
+                        <text x="25" y="50" class="math-symbol" font-size="12">A</text>
+                        <text x="70" y="50" class="math-symbol" font-size="12">B</text>
+                    </svg>
+                </div>
+                <p class="mt-2 text-xs text-green-600 font-bold">符號：<span class="math-symbol overline">AB</span> 與 <span class="math-symbol ray-symbol">AB</span></p>
+            </div>
+            <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200">
+                <h3 class="font-bold text-emerald-700 text-lg mb-2">3️⃣ 角與三角形</h3>
+                <p class="text-sm text-emerald-800 mb-3">由頂點出發的兩射線組成角；三角形則由三線段圍成。</p>
+                <div class="svg-container h-24 mb-2">
+                    <svg width="120" height="60" viewBox="0 0 120 60">
+                        <polyline points="40,15 20,50 100,50 40,15" fill="none" stroke="#047857" stroke-width="1.5" />
+                        <text x="38" y="12" class="math-symbol" font-size="10">A</text>
+                        <text x="12" y="55" class="math-symbol" font-size="10">B</text>
+                        <text x="100" y="55" class="math-symbol" font-size="10">C</text>
+                    </svg>
+                </div>
+                <p class="mt-2 text-xs text-emerald-600 font-bold">符號：<span class="math-symbol">∠ABC</span> 與 <span class="math-symbol">△ABC</span></p>
+            </div>
+        </div>
+
+        <!-- Worked Example: Symbolic Logic -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil" class="mr-2 text-blue-600"></i> 解題示範：符號辨識
+            </h2>
+            <div class="p-4 bg-slate-50 rounded-lg mb-4 flex flex-col md:flex-row gap-6 items-center">
+                <div class="flex-shrink-0">
+                    <svg width="150" height="100" viewBox="0 0 150 100">
+                        <polygon points="75,20 30,80 120,80" fill="#eff6ff" stroke="#2563eb" stroke-width="2" />
+                        <text x="72" y="15" class="math-symbol" font-size="14">A</text>
+                        <text x="20" y="85" class="math-symbol" font-size="14">B</text>
+                        <text x="120" y="85" class="math-symbol" font-size="14">C</text>
+                    </svg>
+                </div>
+                <p class="text-slate-700 font-bold text-lg">觀察上圖三角形，說明符號 <span class="math-symbol">∠BAC</span> 的意義。</p>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">1</span>
+                    <p class="text-slate-600">找出「頂點」：在符號 <span class="math-symbol">∠BAC</span> 中，中間的字母是 <span class="font-bold text-blue-600">A</span>，所以 A 是角的頂點。</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">2</span>
+                    <p class="text-slate-600">確認「兩邊」：兩條射線分別通過 B 點與 C 點，組成角的兩邊。</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">3</span>
+                    <p class="text-slate-600 font-bold">得出結論：這個角就是由射線 <span class="math-symbol ray-symbol">AB</span> 與射線 <span class="math-symbol ray-symbol">AC</span> 所形成的夾角。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Visualization / Interactive Tool -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center">
+                    <i data-lucide="mouse-pointer-2" class="mr-2 text-indigo-600"></i> 幾何構造模擬器
+                </h2>
+                <button onclick="resetSim()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium transition-colors">重置圖案</button>
+            </div>
+            <p class="text-slate-600 mb-6 text-sm">點擊下方按鈕切換不同圖形，觀察符號與圖案的對照關係：</p>
+            
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-8">
+                <div id="sim-canvas" class="w-64 h-48 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center bg-white shadow-inner">
+                    <!-- SVG will be injected here -->
+                </div>
+                <div class="flex flex-wrap md:flex-col gap-3">
+                    <button onclick="updateSim('line')" class="px-4 py-2 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg font-bold hover:bg-blue-100 transition-all text-sm">直線 AB</button>
+                    <button onclick="updateSim('segment')" class="px-4 py-2 bg-green-50 text-green-700 border border-green-200 rounded-lg font-bold hover:bg-green-100 transition-all text-sm">線段 AB</button>
+                    <button onclick="updateSim('ray')" class="px-4 py-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg font-bold hover:bg-amber-100 transition-all text-sm">射線 AB</button>
+                </div>
+            </div>
+
+            <div id="sim-explanation" class="bg-amber-50 p-6 rounded-lg text-center text-amber-800 shadow-inner">
+                <!-- Content updated by JS -->
+            </div>
+        </section>
+
+        <!-- Comprehensive Practice: Challenge Section -->
+        <section class="bg-slate-50 rounded-2xl p-6 mb-8 border-2 border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i data-lucide="rocket" class="mr-2 text-orange-500"></i> 進階挑戰：綜合練習
+            </h2>
+            
+            <div class="space-y-8">
+                <!-- Challenge 1 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-3 flex items-center">
+                        <span class="step-badge mr-2 bg-orange-500">1</span> 幾何物件數量計算
+                    </h3>
+                    <p class="text-sm text-slate-600 mb-4">
+                        在一條直線上有三個相異點 <span class="math-symbol">A、B、C</span>。請問這圖中總共可以找出多少條「線段」？
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="flex gap-2">
+                            <button onclick="checkAdvChal(1, 2)" class="px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 font-bold text-sm">2 條</button>
+                            <button onclick="checkAdvChal(1, 3)" class="px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 font-bold text-sm">3 條</button>
+                            <button onclick="checkAdvChal(1, 6)" class="px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 font-bold text-sm">6 條</button>
+                        </div>
+                    </div>
+                    <div id="adv-chal1-feedback" class="mt-4 hidden text-sm p-4 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- Challenge 2 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-3 flex items-center">
+                        <span class="step-badge mr-2 bg-orange-500">2</span> 角的精確命名
+                    </h3>
+                    <p class="text-sm text-slate-600 mb-4">
+                        觀察下方示意圖，點 <span class="math-symbol">D</span> 在 <span class="math-symbol">∠ABC</span> 的內部分割出兩個角。若要表示下圖中「最大的那個角」，下列哪一個名稱是正確的？
+                    </p>
+                    <div class="svg-container h-32 mb-4 bg-slate-50">
+                        <svg width="200" height="100" viewBox="0 0 200 100">
+                            <line x1="50" y1="80" x2="150" y2="80" stroke="#475569" stroke-width="1.5" />
+                            <line x1="50" y1="80" x2="50" y2="20" stroke="#475569" stroke-width="1.5" />
+                            <line x1="50" y1="80" x2="130" y2="30" stroke="#475569" stroke-width="1.5" stroke-dasharray="4" />
+                            <text x="45" y="95" class="math-symbol" font-size="12">B</text>
+                            <text x="160" y="85" class="math-symbol" font-size="12">C</text>
+                            <text x="45" y="15" class="math-symbol" font-size="12">A</text>
+                            <text x="135" y="25" class="math-symbol" font-size="12">D</text>
+                        </svg>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="checkAdvChal(2, '∠ABD')" class="px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-sm text-slate-700">∠ABD</button>
+                        <button onclick="checkAdvChal(2, '∠DBC')" class="px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-sm text-slate-700">∠DBC</button>
+                        <button onclick="checkAdvChal(2, '∠ABC')" class="px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-sm text-slate-700">∠ABC</button>
+                    </div>
+                    <div id="adv-chal2-feedback" class="mt-4 hidden text-sm p-4 rounded-lg font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cheat Sheet & Reflection -->
+        <footer class="grid md:grid-cols-2 gap-6 mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center">
+                    <i data-lucide="alert-circle" class="mr-2 text-red-500"></i> ⚠️ 易錯幾何陷阱
+                </h3>
+                <ul class="text-sm space-y-3 text-slate-600 font-medium">
+                    <li class="flex items-center gap-2 text-xs">
+                        ❌ <span class="text-red-500 font-bold">射線 AB = 射線 BA</span>
+                        <i data-lucide="arrow-right" class="w-3 h-3 text-slate-400"></i>
+                        <span class="bg-slate-100 px-2 py-1 rounded text-slate-700 italic">起點不同，延伸方向就不同。</span>
+                    </li>
+                    <li class="flex items-center gap-2 text-xs">
+                        ❌ <span class="text-red-500 font-bold">點 A 是小寫字母</span>
+                        <i data-lucide="arrow-right" class="w-3 h-3 text-slate-400"></i>
+                        <span class="bg-slate-100 px-2 py-1 rounded text-slate-700 italic">幾何點必須使用「大寫」字母。</span>
+                    </li>
+                    <li class="flex items-center gap-2 text-xs">
+                        ❌ <span class="text-red-500 font-bold">∠ABC 的頂點是 B 和 C</span>
+                        <i data-lucide="arrow-right" class="w-3 h-3 text-slate-400"></i>
+                        <span class="bg-amber-50 border border-amber-200 px-2 py-1 rounded text-amber-800 font-bold">
+                            中間的字母才是唯一的「頂點」。
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400">
+                    <i data-lucide="lightbulb" class="mr-2 w-5 h-5"></i> 生活與反思
+                </h3>
+                <p class="text-sm leading-relaxed italic opacity-80">
+                    「手電筒的光束，在幾何上最接近哪種圖形？起點在哪？」<br><br>
+                    「如果兩個角共享同一個頂點，只寫 ∠A 可能會產生誤會嗎？」
+                </p>
+            </div>
+        </footer>
+
+        <footer class="text-center text-slate-400 text-sm pb-12">
+            本講義依據 108 課綱 S-7-1 標準編製 &copy; 2025 互動幾何教學系統
+        </footer>
+    </div>
+
+    <script>
+        // Initialize Lucide Icons
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            updateSim('line');
+        };
+
+        // Simulation Tool Logic
+        function updateSim(type) {
+            const canvas = document.getElementById('sim-canvas');
+            const explanation = document.getElementById('sim-explanation');
+            let svg = "";
+            let text = "";
+
+            if (type === 'line') {
+                svg = `
+                <svg width="200" height="100" viewBox="0 0 200 100">
+                    <line x1="20" y1="50" x2="180" y2="50" stroke="#2563eb" stroke-width="2" />
+                    <polygon points="20,50 30,45 30,55" fill="#2563eb" />
+                    <polygon points="180,50 170,45 170,55" fill="#2563eb" />
+                    <circle cx="70" cy="50" r="3" fill="#2563eb" />
+                    <circle cx="130" cy="50" r="3" fill="#2563eb" />
+                    <text x="65" y="75" class="math-symbol" font-size="14">A</text>
+                    <text x="125" y="75" class="math-symbol" font-size="14">B</text>
+                </svg>`;
+                text = `<div class="text-sm font-bold">目前構造：<span class="math-fact text-lg italic">直線 AB</span></div>
+                        <div class="mt-2 text-sm">特性：沒有端點，長度無限長，不可量測。</div>`;
+            } else if (type === 'segment') {
+                svg = `
+                <svg width="200" height="100" viewBox="0 0 200 100">
+                    <line x1="60" y1="50" x2="140" y2="50" stroke="#15803d" stroke-width="3" />
+                    <circle cx="60" cy="50" r="4" fill="#15803d" />
+                    <circle cx="140" cy="50" r="4" fill="#15803d" />
+                    <text x="55" y="75" class="math-symbol" font-size="14">A</text>
+                    <text x="135" y="75" class="math-symbol" font-size="14">B</text>
+                </svg>`;
+                text = `<div class="text-sm font-bold">目前構造：<span class="math-fact text-lg italic underline decoration-green-600">AB</span></div>
+                        <div class="mt-2 text-sm text-green-800">特性：具有兩個端點，可以量測長度。</div>`;
+            } else if (type === 'ray') {
+                svg = `
+                <svg width="200" height="100" viewBox="0 0 200 100">
+                    <line x1="50" y1="50" x2="160" y2="50" stroke="#d97706" stroke-width="2" />
+                    <polygon points="160,50 150,45 150,55" fill="#d97706" />
+                    <circle cx="50" cy="50" r="4" fill="#d97706" />
+                    <circle cx="110" cy="50" r="3" fill="#d97706" />
+                    <text x="45" y="75" class="math-symbol" font-size="14">A</text>
+                    <text x="105" y="75" class="math-symbol" font-size="14">B</text>
+                </svg>`;
+                text = `<div class="text-sm font-bold">目前構造：<span class="math-fact text-lg italic"><span class="ray-symbol">AB</span></span></div>
+                        <div class="mt-2 text-sm text-amber-800">特性：A 為固定起點，過 B 點無限延伸。</div>`;
+            }
+
+            canvas.innerHTML = svg;
+            explanation.innerHTML = text;
+        }
+
+        function resetSim() {
+            updateSim('line');
+        }
+
+        // Advance Challenge Logic
+        function checkAdvChal(qNum, ans) {
+            const feedback = document.getElementById(`adv-chal${qNum}-feedback`);
+            feedback.classList.remove('hidden');
+
+            if (qNum === 1) {
+                if (ans === 3) {
+                    feedback.className = "mt-4 text-sm p-4 rounded-lg font-bold bg-green-100 text-green-800 border border-green-200";
+                    feedback.innerHTML = "✅ 正確！線段有兩端點，我們可以找出線段 AB、線段 BC，以及最長的線段 AC，總共 3 條。";
+                } else {
+                    feedback.className = "mt-4 text-sm p-4 rounded-lg font-bold bg-red-100 text-red-800 border border-red-200";
+                    feedback.innerHTML = "❌ 再數一次！除了相鄰的兩小段，別忘了「最長」的那一段喔。";
+                }
+            } else if (qNum === 2) {
+                if (ans === '∠ABC') {
+                    feedback.className = "mt-4 text-sm p-4 rounded-lg font-bold bg-indigo-100 text-indigo-800 border border-indigo-200";
+                    feedback.innerHTML = "✅ 太棒了！最大角是由射線 BA 與射線 BC 組成的。而 ∠ABD 與 ∠DBC 則是組成它的兩個分角。";
+                } else {
+                    feedback.className = "mt-4 text-sm p-4 rounded-lg font-bold bg-red-100 text-red-800 border border-red-200";
+                    feedback.innerHTML = "❌ 這是其中的一個「分角」。題目問的是「最大」的那一個喔！";
+                }
+            }
+        }
+
+        // Original Quiz Logic
+        function answerScaling(step, ans) {
+            const feedback = document.getElementById('scaling-feedback');
+            feedback.classList.remove('hidden');
+            if (step === 1) {
+                if (ans === 'none') {
+                    feedback.innerHTML = "✅ 正確！無限延伸代表沒有「端點」。";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm";
+                    document.getElementById('sq1').classList.add('opacity-50');
+                    document.getElementById('sq2').classList.remove('hidden');
+                } else {
+                    feedback.innerHTML = "❌ 端點代表圖形的「盡頭」。無限延伸會有端點嗎？";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
+                }
+            } else if (step === 2) {
+                if (ans === 'line') {
+                    feedback.innerHTML = "🎉 沒錯！這就是「直線 AB」。";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm";
+                    document.getElementById('sq2').classList.add('opacity-50');
+                } else {
+                    feedback.innerHTML = "❌ 注意喔，上方的一橫槓代表是有終點的「線段」。";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
+                }
+            }
+        }
+
+        // Practice 1 Logic
+        function checkP1(step) {
+            const f = document.getElementById('p1-f1');
+            if (step === 1) {
+                const val = document.getElementById('p1-ans1').value.trim().toUpperCase();
+                f.classList.remove('hidden');
+                if (val === 'Q') {
+                    f.innerHTML = "✅ 沒錯！中間 the Q 點就是頂點。";
+                    f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    const next = document.getElementById('p1-s2');
+                    next.classList.remove('hidden');
+                    setTimeout(() => next.classList.add('opacity-100'), 10);
+                } else {
+                    f.innerHTML = "❌ 觀察符號 ∠PQR，誰在正中間？";
+                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                }
+            }
+        }
+
+        window.checkP1_Step2 = function(ans) {
+            const f = document.getElementById('p1-f2');
+            f.classList.remove('hidden');
+            if (ans === 'RQP') {
+                f.innerHTML = "✅ 正確！只要 Q 在中間，讀寫順序相反也是同一個角。";
+                f.className = "text-sm mt-3 text-green-700 font-bold p-3 bg-green-50 rounded-lg border border-green-200";
+                const next = document.getElementById('p1-s3');
+                next.classList.remove('hidden');
+                setTimeout(() => next.classList.add('opacity-100'), 10);
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } else {
+                f.innerHTML = "❌ 這個角的頂點變成了 R，這就不對囉。";
+                f.className = "text-sm mt-3 text-amber-700 font-bold p-3 bg-amber-50 rounded-lg border border-amber-200";
+            }
+        }
+    </script>
+</body>
+</html>
