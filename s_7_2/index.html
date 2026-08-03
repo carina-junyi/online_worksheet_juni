@@ -1,1 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.5">
+    <title>S-7-2 三視圖互動講義</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <!-- Three.js 核心與 OrbitControls 鏡頭控制 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .math-fact { background-color: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 6px; font-weight: bold; }
+        .step-badge { background-color: #3b82f6; color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; font-weight: bold; }
+        .feedback-box { transition: all 0.3s ease; }
+        
+        .challenge-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .option-btn { border: 2px solid #e2e8f0; border-radius: 8px; padding: 8px; transition: all 0.2s; }
+        .option-btn:hover { border-color: #3b82f6; background-color: #eff6ff; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto space-y-8">
+        
+        <!-- Header -->
+        <header class="text-center">
+            <h1 class="text-3xl md:text-4xl font-black text-slate-800 mb-2">🧊立體圖形的三視圖</h1>
+            <p class="text-slate-600 font-medium">S-7-2互動式學習講義</p>
+        </header>
 
+        <!-- Learning Objectives -->
+        <section class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="mr-2 w-5 h-5"></i> 🎯 本單元學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1.5 text-sm md:text-base font-medium">
+                <li>認識「三視圖」的三個觀察角度：<b>前視圖、右視圖、上視圖</b>。</li>
+                <li>學會看著 3D 積木，畫出從不同角度看到的 2D 平面圖形。</li>
+                <li>掌握<b>「最前面擋住後面、只看最高層數」</b>的觀察小技巧。</li>
+                <li>能根據題目給的三張平面圖，猜出並找回原本的 3D 積木造型。</li>
+            </ul>
+        </section>
+
+        <!-- Concept Cards -->
+        <div class="grid md:grid-cols-3 gap-4">
+            <div class="bg-blue-50 p-5 rounded-xl border border-blue-200">
+                <h3 class="font-bold text-blue-700 text-lg mb-2">1️⃣ 前視圖 (Front)</h3>
+                <p class="text-sm text-blue-800 font-medium">從<b>正前方</b>平著看過去看到的圖形。</p>
+                <p class="mt-2 text-xs text-blue-600 font-bold bg-blue-100/80 px-2 py-1 rounded inline-block">看出：左右寬度 + 積木高度</p>
+            </div>
+            <div class="bg-amber-50 p-5 rounded-xl border border-amber-200">
+                <h3 class="font-bold text-amber-700 text-lg mb-2">2️⃣ 右視圖 (Right)</h3>
+                <p class="text-sm text-amber-800 font-medium">從<b>右側面</b>平著看過去看到的圖形。</p>
+                <p class="mt-2 text-xs text-amber-600 font-bold bg-amber-100/80 px-2 py-1 rounded inline-block">看出：前後深度 + 積木高度</p>
+            </div>
+            <div class="bg-rose-50 p-5 rounded-xl border border-rose-200">
+                <h3 class="font-bold text-rose-700 text-lg mb-2">3️⃣ 上視圖 (Top)</h3>
+                <p class="text-sm text-rose-800 font-medium">從<b>正上方</b>站著往下俯視看到的圖形。</p>
+                <p class="mt-2 text-xs text-rose-600 font-bold bg-rose-100/80 px-2 py-1 rounded inline-block">看出：積木擺在地面上的位置</p>
+            </div>
+        </div>
+
+        <!-- Concept Text Section (圖片已去除，標題加 Emoji) -->
+        <section class="bg-white rounded-xl shadow-md p-6 border border-slate-200">
+            <h3 class="font-bold text-slate-800 text-lg mb-3 flex items-center gap-2">
+                🧭 三視圖視角對應說明
+            </h3>
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-sm text-slate-700 leading-relaxed font-medium space-y-2">
+                <p>💡 <b>觀察視角小撇步：</b></p>
+                <p>1. <b>正前方看（前視圖）：</b>請看積木<b>藍色</b>的面。面前的積木會擋住後面的積木，每一欄只要看「最高有幾層」就好！</p>
+                <p>2. <b>右側面看（右視圖）：</b>請看積木<b>黃色</b>的面。靠後方的積木，在我們右邊看過來時會出現在「右側」喔！</p>
+                <p>3. <b>正上方看（上視圖）：</b>請看積木<b>紅色</b>的頂面。想像積木通通壓平在地上，只要看哪些格子有擺積木即可！</p>
+            </div>
+        </section>
+
+        <!-- Worked Example: Concept Explanation -->
+        <section class="bg-white rounded-xl shadow-md p-6 border border-slate-200">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil" class="mr-2 text-blue-600"></i> 解題技巧：最高層數觀察法
+            </h2>
+            <div class="p-4 bg-slate-50 rounded-lg mb-4">
+                <p class="text-slate-700 font-bold">思考一下：看著立體積木時，後面的積木被前面擋住了，怎麼知道平面圖要畫多高？</p>
+            </div>
+            <div class="space-y-4 font-medium text-sm md:text-base">
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">1</span>
+                    <p class="text-slate-600"><b>站對位置：</b>先確定自己是站在「前方」、「右方」還是「上方」。</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">2</span>
+                    <p class="text-slate-600"><b>找出最高層：</b>從你的視線看過去，這一直欄裡面<b>最高疊了幾層積木</b>，這一欄就是幾格高！</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">3</span>
+                    <p class="text-slate-600 font-bold"><b>塗滿九宮格：</b>把各欄算好的高度塗在 $3 \times 3$ 方格紙上，就能得到漂亮的 <span class="math-fact text-blue-700">平面三視圖</span> 囉！</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Visualization / Interactive Tool -->
+        <section class="bg-white rounded-xl shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-slate-800">🧮 互動 3D 積木觀察器</h2>
+                <button onclick="setSimView('iso')" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-xs font-bold">轉回 3D 視角</button>
+            </div>
+            <p class="text-slate-600 mb-4 text-sm font-medium">試著用滑鼠轉動左邊的 3D 積木，並點選按鈕切換視角，看看右邊三張圖的變化：</p>
+            
+            <div class="grid md:grid-cols-12 gap-6 items-center">
+                <!-- 3D Canvas -->
+                <div class="md:col-span-7">
+                    <div id="sim-canvas-container" class="w-full h-64 bg-slate-100 rounded-lg border border-slate-200"></div>
+                    <div class="flex justify-center gap-2 mt-3">
+                        <button onclick="setSimView('front')" class="px-3 py-1.5 bg-blue-600 text-white rounded text-xs font-bold">切到前視圖</button>
+                        <button onclick="setSimView('right')" class="px-3 py-1.5 bg-amber-600 text-white rounded text-xs font-bold">切到右視圖</button>
+                        <button onclick="setSimView('top')" class="px-3 py-1.5 bg-rose-600 text-white rounded text-xs font-bold">切到上視圖</button>
+                    </div>
+                </div>
+
+                <!-- 2D Tri-Views Live (順序：前視圖 ➔ 右視圖 ➔ 上視圖) -->
+                <div class="md:col-span-5 bg-slate-50 p-4 rounded-lg border border-slate-200 text-center space-y-3">
+                    <span class="text-xs font-bold text-slate-500 block">對應的 2D 平面圖</span>
+                    <div class="flex justify-around items-center">
+                        <div>
+                            <canvas id="sim-front-cvs" class="mx-auto border bg-white rounded"></canvas>
+                            <span class="text-[11px] font-bold text-blue-600 block mt-1">前視圖</span>
+                        </div>
+                        <div>
+                            <canvas id="sim-right-cvs" class="mx-auto border bg-white rounded"></canvas>
+                            <span class="text-[11px] font-bold text-amber-600 block mt-1">右視圖</span>
+                        </div>
+                        <div>
+                            <canvas id="sim-top-cvs" class="mx-auto border bg-white rounded"></canvas>
+                            <span class="text-[11px] font-bold text-rose-600 block mt-1">上視圖</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step-by-Step Quiz: Scaffolding Exercises (Levels 1 ~ 3) -->
+        <section class="bg-indigo-50 rounded-xl shadow-sm p-6 border border-indigo-200">
+            <h2 class="text-xl font-bold text-indigo-800 mb-4 flex items-center">
+                <i data-lucide="check-square" class="mr-2 w-5 h-5"></i> 🔍 基礎挑戰：看積木找平面圖（關卡 1～3）
+            </h2>
+            
+            <div id="scaffold-quiz-container" class="space-y-6">
+                <!-- LEVEL 1 -->
+                <div id="sq1" class="bg-white p-5 rounded-xl border border-indigo-100">
+                    <p class="text-slate-800 mb-1 font-bold">1️⃣ 第一關：選出對應的「前視圖」</p>
+                    <p class="text-xs text-slate-500 mb-4">觀察左邊的積木，從正前方（藍色面）看過去，會看到哪張平面圖？</p>
+                    
+                    <div class="grid md:grid-cols-12 gap-4 items-center">
+                        <div id="s-canvas-1" class="md:col-span-5 h-48 bg-slate-100 rounded-lg border"></div>
+                        <div class="md:col-span-7 grid grid-cols-2 gap-3">
+                            <button onclick="answerScaffold(1, 'A')" class="option-btn bg-white"><canvas id="opt-1-A" class="mx-auto"></canvas><span class="text-xs font-bold block mt-1">選項 (A)</span></button>
+                            <button onclick="answerScaffold(1, 'B')" class="option-btn bg-white"><canvas id="opt-1-B" class="mx-auto"></canvas><span class="text-xs font-bold block mt-1">選項 (B)</span></button>
+                            <button onclick="answerScaffold(1, 'C')" class="option-btn bg-white"><canvas id="opt-1-C" class="mx-auto"></canvas><span class="text-xs font-bold block mt-1">選項 (C)</span></button>
+                            <button onclick="answerScaffold(1, 'D')" class="option-btn bg-white"><canvas id="opt-1-D" class="mx-auto"></canvas><span class="text-xs font-bold block mt-1">選項 (D)</span></button>
+                        </div>
+                    </div>
+                    <div id="fb-1" class="hidden feedback-box text-sm mt-3 p-3 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- LEVEL 2 -->
+                <div id="sq2" class="bg-white p-5 rounded-xl border border-indigo-100">
+                    <p class="text-slate-800 mb-1 font-bold">2️⃣ 第二關：選出對應的「上視圖」</p>
+                    <p class="text-xs text-slate-500 mb-4">觀察左邊的積木，從正上方（紅色頂面）俯視，會看到哪張平面圖？</p>
+                    
+                    <div class="grid md:grid-cols-12 gap-4 items-center">
+                        <div id="s-canvas-2" class="md:col-span-5 h-48 bg-slate-100 rounded-lg border"></div>
+                        <div class="md:col-span-7 grid grid-cols-2 gap-3">
+                            <button onclick="answerScaffold(2, 'A')" class="option-btn bg-white"><canvas id="opt-2-A" class="mx-auto"></canvas><span class="text-xs font-bold block mt-1">選項 (A)</span></button>
+                            <button onclick="answerScaffold(2, 'B')" class="option-btn bg-white"><canvas id="opt-2-B" class="mx-auto"></canvas><span class="text-xs font-bold block mt-1">選項 (B)</span></button>
+                            <button onclick="answerScaffold(2, 'C')" class="option-btn bg-white"><canvas id="opt-2-C" class="mx-auto"></canvas><span class="text-xs font-bold block mt-1">選項 (C)</span></button>
+                            <button onclick="answerScaffold(2, 'D')" class="option-btn bg-white"><canvas id="opt-2-D" class="mx-auto"></canvas><span class="text-xs font-bold block mt-1">選項 (D)</span></button>
+                        </div>
+                    </div>
+                    <div id="fb-2" class="hidden feedback-box text-sm mt-3 p-3 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- LEVEL 3 -->
+                <div id="sq3" class="bg-white p-5 rounded-xl border border-indigo-100">
+                    <p class="text-slate-800 mb-1 font-bold">3️⃣ 第三關：選出對應的「右視圖」</p>
+                    <p class="text-xs text-slate-500 mb-4">觀察左邊的積木，從右側面（黃色面）看過去，會看到哪張平面圖？</p>
+                    
+                    <div class="grid md:grid-cols-12 gap-4 items-center">
+                        <div id="s-canvas-3" class="md:col-span-5 h-48 bg-slate-100 rounded-lg border"></div>
+                        <div class="md:col-span-7 grid grid-cols-2 gap-3">
+                            <button onclick="answerScaffold(3, 'A')" class="option-btn bg-white"><canvas id="opt-3-A" class="mx-auto"></canvas><span class="text-xs font-bold block mt-1">選項 (A)</span></button>
+                            <button onclick="answerScaffold(3, 'B')" class="option-btn bg-white"><canvas id="opt-3-B" class="mx-auto"></canvas><span class="text-xs font-bold block mt-1">選項 (B)</span></button>
+                            <button onclick="answerScaffold(3, 'C')" class="option-btn bg-white"><canvas id="opt-3-C" class="mx-auto"></canvas><span class="text-xs font-bold block mt-1">選項 (C)</span></button>
+                            <button onclick="answerScaffold(3, 'D')" class="option-btn bg-white"><canvas id="opt-3-D" class="mx-auto"></canvas><span class="text-xs font-bold block mt-1">選項 (D)</span></button>
+                        </div>
+                    </div>
+                    <div id="fb-3" class="hidden feedback-box text-sm mt-3 p-3 rounded-lg font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comprehensive Practice: Reverse Construction (Levels 4 ~ 6) -->
+        <section class="bg-slate-50 rounded-2xl p-6 border-2 border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i data-lucide="rocket" class="mr-2 text-orange-500"></i> 進階大挑戰：看平面圖猜積木（關卡 4～6）
+            </h2>
+            
+            <div class="space-y-8">
+                <!-- Challenge 4 (順序：前視圖 ➔ 右視圖 ➔ 上視圖) -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">1. 第四關挑戰</h3>
+                    <p class="text-sm text-slate-600 mb-3">請看下面這組三視圖，哪一個 3D 積木造型完全符合它？</p>
+                    <div class="flex justify-around bg-slate-100 p-3 rounded-lg mb-4 text-center">
+                        <div><canvas id="ch4-front" class="border bg-white mx-auto"></canvas><span class="text-[11px] font-bold text-blue-600">前視圖</span></div>
+                        <div><canvas id="ch4-right" class="border bg-white mx-auto"></canvas><span class="text-[11px] font-bold text-amber-600">右視圖</span></div>
+                        <div><canvas id="ch4-top" class="border bg-white mx-auto"></canvas><span class="text-[11px] font-bold text-rose-600">上視圖</span></div>
+                    </div>
+                    <div id="ch4-grid" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+                    <div id="ch4-feedback" class="mt-4 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- Challenge 5 (順序：前視圖 ➔ 右視圖 ➔ 上視圖) -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">2. 第五關挑戰</h3>
+                    <p class="text-sm text-slate-600 mb-3">請看下面這組三視圖，哪一個 3D 積木造型完全符合它？</p>
+                    <div class="flex justify-around bg-slate-100 p-3 rounded-lg mb-4 text-center">
+                        <div><canvas id="ch5-front" class="border bg-white mx-auto"></canvas><span class="text-[11px] font-bold text-blue-600">前視圖</span></div>
+                        <div><canvas id="ch5-right" class="border bg-white mx-auto"></canvas><span class="text-[11px] font-bold text-amber-600">右視圖</span></div>
+                        <div><canvas id="ch5-top" class="border bg-white mx-auto"></canvas><span class="text-[11px] font-bold text-rose-600">上視圖</span></div>
+                    </div>
+                    <div id="ch5-grid" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+                    <div id="ch5-feedback" class="mt-4 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- Challenge 6 (順序：前視圖 ➔ 右視圖 ➔ 上視圖) -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">3. 第六關挑戰</h3>
+                    <p class="text-sm text-slate-600 mb-3">請看下面這組三視圖，哪一個 3D 積木造型完全符合它？</p>
+                    <div class="flex justify-around bg-slate-100 p-3 rounded-lg mb-4 text-center">
+                        <div><canvas id="ch6-front" class="border bg-white mx-auto"></canvas><span class="text-[11px] font-bold text-blue-600">前視圖</span></div>
+                        <div><canvas id="ch6-right" class="border bg-white mx-auto"></canvas><span class="text-[11px] font-bold text-amber-600">右視圖</span></div>
+                        <div><canvas id="ch6-top" class="border bg-white mx-auto"></canvas><span class="text-[11px] font-bold text-rose-600">上視圖</span></div>
+                    </div>
+                    <div id="ch6-grid" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+                    <div id="ch6-feedback" class="mt-4 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cheat Sheet & Reflection (去除迷思二、重構雙欄卡片排版、肯定句生活應用) -->
+        <footer class="grid md:grid-cols-2 gap-6">
+            <!-- 易錯觀念澄清卡片 -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-slate-800 text-base mb-4 border-b pb-2 flex items-center">
+                        <i data-lucide="alert-circle" class="mr-2 text-rose-500"></i> ⚠️ 避開思考小陷阱
+                    </h3>
+                    <div class="space-y-4 text-sm font-medium">
+                        <div class="bg-rose-50/70 p-3.5 rounded-xl border border-rose-100">
+                            <span class="text-xs font-bold text-rose-600 bg-rose-100 px-2 py-0.5 rounded mb-1 inline-block">常見誤會 1</span>
+                            <p class="text-slate-800 font-bold text-sm">以為「上視圖」可以看到積木有多高？</p>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed"><b>觀念導正：</b> 從正上方往下看，所有積木都被壓平在地面上。上視圖只能告訴我們哪些位置有擺積木，<b>完全看不出積木的高度或層數</b>喔！</p>
+                        </div>
+
+                        <div class="bg-amber-50/70 p-3.5 rounded-xl border border-amber-100">
+                            <span class="text-xs font-bold text-amber-600 bg-amber-100 px-2 py-0.5 rounded mb-1 inline-block">常見誤會 2</span>
+                            <p class="text-slate-800 font-bold text-sm">以為只要一張平面圖就能代表整組積木？</p>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed"><b>觀念導正：</b> 只看一張圖容易被前面高的積木擋住背後。必須把<b>前視圖、右視圖、上視圖</b>三張圖結合起來，才能 100% 確定積木的樣子！</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 生活中的三視圖 (肯定句) -->
+            <div class="bg-slate-900 text-slate-50 p-6 rounded-2xl shadow-md flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400 text-base">
+                        <i data-lucide="compass" class="mr-2 w-5 h-5"></i> 生活中的三視圖應用
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-3">其實三視圖並不是只有在數學課本才會出現，日常生活中有非常多地方都在使用它：</p>
+                    
+                    <ul class="text-xs space-y-3 opacity-90 leading-relaxed font-medium">
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 font-bold">▶</span>
+                            <span><b>建築施工藍圖：</b> 建築師蓋房子時，必須同時繪製房屋平面圖（上視）、正面圖（前視）與側立面圖（右視），施工師傅才能順利蓋出房子。</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 font-bold">▶</span>
+                            <span><b>3D 列印技術：</b> 3D 列印機列印玩具時，會將電腦裡的模型切成一頁頁的 2D 平面（上視圖），再一層層由下往上堆疊列印成型。</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 font-bold">▶</span>
+                            <span><b>家具與組裝說明書：</b> 買組裝櫃或模型時，說明書會提供不同角度的視圖，讓使用者能精準確認零件鎖固的位置。</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+
+        <div class="text-center text-slate-400 text-xs pb-8">
+            本講義依據 108 國民中小學數學課綱 S-7-2 標準編製 &copy; 2026 互動式教學系統
+        </div>
+    </div>
+
+    <!-- JavaScript 核心程式碼 -->
+    <script>
+        // --- 核心積木模型數據定義 ---
+        const cubeA = [[[1,0,0],[0,0,0],[0,0,0]],[[1,1,0],[0,0,0],[0,0,0]],[[1,1,1],[0,0,0],[0,0,0]]];
+        const cubeB = [[[1,1,1],[0,0,0],[0,0,0]],[[1,0,0],[0,0,0],[0,0,0]],[[1,0,0],[1,0,0],[1,0,0]]];
+        const cubeC = [[[1,1,1],[0,0,0],[0,0,0]],[[1,1,0],[1,1,0],[0,0,0]],[[1,0,0],[1,0,0],[1,0,0]]];
+
+        // 第4關圖片 3D 模型
+        const cubeCh4_A = [[[1,1,1],[1,1,1],[0,0,0]],[[1,0,0],[1,0,0],[0,0,0]],[[1,0,0],[1,0,0],[0,0,0]]];
+        const cubeCh4_B = [[[1,1,1],[0,0,0],[0,0,0]],[[0,1,1],[0,1,1],[0,0,0]],[[0,1,1],[0,1,1],[0,0,0]]]; // 【正確答案 (B)】
+        const cubeCh4_C = [[[0,0,0],[0,0,0],[0,0,0]],[[0,1,1],[0,1,1],[0,0,0]],[[0,1,1],[0,1,1],[0,0,0]]];
+        const cubeCh4_D = [[[1,0,0],[1,0,0],[0,0,0]],[[1,1,0],[1,0,0],[0,0,0]],[[0,1,1],[0,0,0],[0,0,0]]];
+
+        // 第5、6關模型
+        const cubeE = [[[0,1,0],[0,0,0],[0,0,0]],[[1,1,1],[0,1,0],[0,0,0]],[[0,1,0],[0,0,0],[0,0,0]]]; 
+        const cubeF = [[[1,1,1],[1,1,1],[0,0,0]],[[0,0,0],[0,0,0],[0,0,0]],[[0,0,1],[0,0,1],[0,0,1]]]; // 第5關正確答案
+        const cubeG = [[[1,0,0],[0,0,0],[0,0,0]],[[1,1,0],[1,0,0],[0,0,0]],[[1,1,1],[1,1,0],[1,0,0]]]; // 第6關正確答案
+        const cubeH = [[[1,1,0],[1,0,0],[0,0,0]],[[1,0,0],[1,0,0],[0,0,0]],[[1,0,0],[0,0,0],[0,0,0]]]; 
+
+        // 建立 3D 模型群組
+        function buildModelGroup(cubeData) {
+            const group = new THREE.Group();
+            const cubeGeo = new THREE.BoxGeometry(0.95, 0.95, 0.95);
+            const materials = [
+                new THREE.MeshPhongMaterial({ color: 0xd69e2e }), // +X 右:黃
+                new THREE.MeshPhongMaterial({ color: 0x718096 }), // -X 左:灰
+                new THREE.MeshPhongMaterial({ color: 0xe53e3e }), // +Y 頂:紅
+                new THREE.MeshPhongMaterial({ color: 0x718096 }), // -Y 底:灰
+                new THREE.MeshPhongMaterial({ color: 0x3182ce }), // +Z 前:藍
+                new THREE.MeshPhongMaterial({ color: 0x718096 })  // -Z 背:灰
+            ];
+            const edgeMat = new THREE.LineBasicMaterial({ color: 0x1a202c, linewidth: 2 });
+
+            for (let z = 0; z < 3; z++) {
+                for (let y = 0; y < 3; y++) {
+                    for (let x = 0; x < 3; x++) {
+                        if (cubeData[z] && cubeData[z][y] && cubeData[z][y][x] === 1) {
+                            const mesh = new THREE.Mesh(cubeGeo, materials);
+                            mesh.position.set(x - 1, y - 1, 1 - z);
+                            const edges = new THREE.EdgesGeometry(cubeGeo);
+                            const line = new THREE.LineSegments(edges, edgeMat);
+                            mesh.add(line);
+                            group.add(mesh);
+                        }
+                    }
+                }
+            }
+            return group;
+        }
+
+        // 畫 2D 九宮格圖形
+        function draw2DGrid(canvas, gridMatrix, fillColor) {
+            canvas.width = 64;
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            const cellSize = 18;
+            const offset = 5;
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 64, 64);
+
+            for (let r = 0; r < 3; r++) {
+                for (let c = 0; c < 3; c++) {
+                    ctx.strokeStyle = '#cbd5e0';
+                    ctx.strokeRect(offset + c * cellSize, offset + r * cellSize, cellSize, cellSize);
+                    if (gridMatrix[r] && gridMatrix[r][c] === 1) {
+                        ctx.fillStyle = fillColor;
+                        ctx.fillRect(offset + c * cellSize, offset + r * cellSize, cellSize, cellSize);
+                        ctx.strokeStyle = '#1a202c';
+                        ctx.strokeRect(offset + c * cellSize, offset + r * cellSize, cellSize, cellSize);
+                    }
+                }
+            }
+        }
+
+        // --- 初始化模擬器 (Simulation Tool) ---
+        let simCamera, simControls, simRenderer;
+        function initSimTool() {
+            const container = document.getElementById('sim-canvas-container');
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf1f5f9);
+
+            simCamera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+            simRenderer = new THREE.WebGLRenderer({ antialias: true });
+            simRenderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(simRenderer.domElement);
+
+            simControls = new THREE.OrbitControls(simCamera, simRenderer.domElement);
+            scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+            const light = new THREE.DirectionalLight(0xffffff, 0.4);
+            light.position.set(10, 20, 15);
+            scene.add(light);
+
+            scene.add(buildModelGroup(cubeE));
+            setSimView('iso');
+
+            function animate() {
+                requestAnimationFrame(animate);
+                simControls.update();
+                simRenderer.render(scene, simCamera);
+            }
+            animate();
+
+            // 順序：前視圖 ➔ 右視圖 ➔ 上視圖
+            draw2DGrid(document.getElementById('sim-front-cvs'), [[0,1,0],[1,1,1],[0,0,0]], '#3182ce');
+            draw2DGrid(document.getElementById('sim-right-cvs'), [[0,1,0],[1,1,1],[0,0,0]], '#d69e2e');
+            draw2DGrid(document.getElementById('sim-top-cvs'), [[0,1,0],[1,1,1],[0,1,0]], '#e53e3e');
+        }
+
+        function setSimView(type) {
+            if (type === 'iso') { simCamera.position.set(4.5, 3.5, 5.5); }
+            if (type === 'front') { simCamera.position.set(0, 0, 7); }
+            if (type === 'top') { simCamera.position.set(0, 7, 0.01); }
+            if (type === 'right') { simCamera.position.set(7, 0, 0); }
+            simControls.target.set(0, 0, 0);
+            simControls.update();
+        }
+
+        // --- 初始化關卡 1~3 (Scaffolding Exercises) ---
+        const scaffoldData = [
+            {
+                id: 1, model: cubeA, color: '#3182ce', ans: 'B',
+                opts: { A: [[1,0,0],[1,1,0],[0,0,0]], B: [[0,0,0],[0,0,0],[1,1,1]], C: [[0,1,0],[0,1,0],[0,1,0]], D: [[1,0,1],[0,0,0],[1,0,1]] },
+                hint: "從正前方觀察：所有積木在視野最底下排成橫線。"
+            },
+            {
+                id: 2, model: cubeB, color: '#e53e3e', ans: 'C',
+                opts: { A: [[1,0,0],[0,1,0],[0,0,1]], B: [[0,1,0],[1,1,1],[0,1,0]], C: [[1,1,1],[1,0,0],[1,0,0]], D: [[1,1,0],[1,1,0],[0,0,0]] },
+                hint: "從正上方俯視：第一列包含 3 塊，第二與第三列僅最左側有擺積木。"
+            },
+            {
+                id: 3, model: cubeC, color: '#d69e2e', ans: 'C',
+                opts: { A: [[1,1,1],[0,0,0],[0,0,0]], B: [[1,0,1],[0,1,0],[1,0,1]], C: [[0,0,1],[0,1,1],[1,1,1]], D: [[1,1,0],[0,1,1],[0,0,0]] },
+                hint: "從右側面觀察：靠後方的積木位於右邊，形成右高左低的階梯造型。"
+            }
+        ];
+
+        function initScaffoldQuiz() {
+            scaffoldData.forEach(item => {
+                const container = document.getElementById(`s-canvas-${item.id}`);
+                const scene = new THREE.Scene();
+                scene.background = new THREE.Color(0xf8fafc);
+                const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+                camera.position.set(4.5, 3.5, 5.5);
+                const renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                container.appendChild(renderer.domElement);
+
+                const controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.target.set(0, 0, 0);
+                scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+                const light = new THREE.DirectionalLight(0xffffff, 0.4);
+                light.position.set(10, 20, 15);
+                scene.add(light);
+                scene.add(buildModelGroup(item.model));
+
+                function animate() { requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); }
+                animate();
+
+                ['A', 'B', 'C', 'D'].forEach(key => {
+                    draw2DGrid(document.getElementById(`opt-${item.id}-${key}`), item.opts[key], item.color);
+                });
+            });
+        }
+
+        function answerScaffold(qNum, choice) {
+            const item = scaffoldData[qNum - 1];
+            const fb = document.getElementById(`fb-${qNum}`);
+            fb.classList.remove('hidden');
+
+            if (choice === item.ans) {
+                fb.className = "feedback-box text-sm mt-3 p-3 rounded-lg font-bold bg-green-100 text-green-800 border border-green-200";
+                fb.innerHTML = `✅ 太厲害了，完全答對！你成功掌握這個視角的平面圖形了！`;
+            } else {
+                fb.className = "feedback-box text-sm mt-3 p-3 rounded-lg font-bold bg-red-100 text-red-800 border border-red-200";
+                fb.innerHTML = `❌ 答案不太對喔，再試一次！<br>💡 <b>思考解題提示：</b>${item.hint}`;
+            }
+        }
+
+        // --- 初始化關卡 4~6 挑戰 ---
+        const challengeData = [
+            {
+                num: 4, ansKey: 'B',
+                views: { 
+                    front: [[0,0,0],[0,1,1],[1,1,1]], 
+                    right: [[0,0,0],[0,1,1],[1,1,1]], 
+                    top: [[1,1,1],[1,1,0],[1,1,0]] 
+                },
+                opts: [ { label: 'A', model: cubeCh4_A }, { label: 'B', model: cubeCh4_B }, { label: 'C', model: cubeCh4_C }, { label: 'D', model: cubeCh4_D } ],
+                hint: "比對前視與右視圖：底排完全填滿，右邊兩欄疊到了 2 層高！"
+            },
+            {
+                num: 5, ansKey: 'C',
+                views: { 
+                    front: [[1,1,1],[1,1,1],[0,0,1]], 
+                    right: [[0,0,1],[1,0,1],[1,0,1]], 
+                    top: [[1,1,1],[0,0,0],[1,0,0]] 
+                },
+                opts: [ { label: 'A', model: cubeE }, { label: 'B', model: cubeG }, { label: 'C', model: cubeF }, { label: 'D', model: cubeB } ],
+                hint: "比對上視圖 [1,1,1] / [0,0,0] / [1,0,0]：前排橫向填滿，角落有一塊獨立積木。"
+            },
+            {
+                num: 6, ansKey: 'A',
+                views: { 
+                    front: [[1,0,0],[1,1,0],[1,1,1]], 
+                    right: [[1,1,1],[1,1,0],[1,0,0]], 
+                    top: [[1,1,1],[1,1,0],[1,0,0]] 
+                },
+                opts: [ { label: 'A', model: cubeG }, { label: 'B', model: cubeE }, { label: 'C', model: cubeF }, { label: 'D', model: cubeH } ],
+                hint: "比對前視與右視圖：呈現經典的 3 層對角階梯結構。"
+            }
+        ];
+
+        function initChallengeSection() {
+            challengeData.forEach(item => {
+                // 畫 2D 題幹視圖（順序：前視圖 ➔ 右視圖 ➔ 上視圖）
+                draw2DGrid(document.getElementById(`ch${item.num}-front`), item.views.front, '#3182ce');
+                draw2DGrid(document.getElementById(`ch${item.num}-right`), item.views.right, '#d69e2e');
+                draw2DGrid(document.getElementById(`ch${item.num}-top`), item.views.top, '#e53e3e');
+
+                // 鋪設 3D 微型選項
+                const grid = document.getElementById(`ch${item.num}-grid`);
+                grid.innerHTML = '';
+                item.opts.forEach(opt => {
+                    const div = document.createElement('div');
+                    div.className = "bg-slate-50 border border-slate-200 hover:border-blue-500 rounded-lg p-2 text-center cursor-pointer transition hover:bg-blue-50/50 flex flex-col items-center";
+                    div.onclick = () => checkChallenge(item.num, opt.label, item.ansKey, item.hint);
+
+                    const miniCvsBox = document.createElement('div');
+                    miniCvsBox.className = "w-full h-20 rounded bg-white border border-slate-200";
+
+                    const label = document.createElement('span');
+                    label.className = "text-xs font-bold text-slate-600 mt-1";
+                    label.textContent = `模型 (${opt.label})`;
+
+                    div.appendChild(miniCvsBox);
+                    div.appendChild(label);
+                    grid.appendChild(div);
+
+                    setTimeout(() => {
+                        const scene = new THREE.Scene();
+                        scene.background = new THREE.Color(0xffffff);
+                        const camera = new THREE.PerspectiveCamera(45, miniCvsBox.clientWidth / miniCvsBox.clientHeight, 0.1, 100);
+                        camera.position.set(4.5, 3.5, 5.5);
+
+                        const renderer = new THREE.WebGLRenderer({ antialias: true });
+                        renderer.setSize(miniCvsBox.clientWidth, miniCvsBox.clientHeight);
+                        miniCvsBox.appendChild(renderer.domElement);
+
+                        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+                        controls.target.set(0, 0, 0);
+                        controls.enableZoom = false;
+
+                        scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+                        const light = new THREE.DirectionalLight(0xffffff, 0.4);
+                        light.position.set(10, 20, 15);
+                        scene.add(light);
+                        scene.add(buildModelGroup(opt.model));
+
+                        function animate() { requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); }
+                        animate();
+                    }, 0);
+                });
+            });
+        }
+
+        function checkChallenge(num, userChoice, correctKey, hint) {
+            const fb = document.getElementById(`ch${num}-feedback`);
+            fb.classList.remove('hidden');
+
+            if (userChoice === correctKey) {
+                fb.className = "mt-4 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800 border border-green-200";
+                fb.innerHTML = `🎉 太強了！模型 (${userChoice}) 完全符合題目的三視圖！你已經是空間大師了！`;
+            } else {
+                fb.className = "mt-4 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800 border border-red-200";
+                fb.innerHTML = `❌ 模型 (${userChoice}) 不對喔，再仔細觀察一下轉動看看。<br>💡 <b>解題提示：</b>${hint}`;
+            }
+        }
+
+        // 頁面載入後自動初始化
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+            initSimTool();
+            initScaffoldQuiz();
+            initChallengeSection();
+        };
+    </script>
+</body>
+</html>
