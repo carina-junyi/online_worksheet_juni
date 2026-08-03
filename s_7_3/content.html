@@ -1,1 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📘 垂直與中垂線 - 互動式學習講義</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
 
+    <div class="max-w-4xl mx-auto p-4 md:p-8">
+
+        <!-- 1. Header（標題列） -->
+        <header class="text-center py-6 mb-6 bg-slate-50 border-b border-slate-200 rounded-2xl">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-slate-800 mb-2">📘 垂直與中垂線</h1>
+            <p class="text-base md:text-lg text-slate-500 font-medium">S-7-3 互動式學習講義</p>
+        </header>
+
+        <!-- 2. 🎯 學習目標 -->
+        <section class="bg-white rounded-xl border-l-4 border-blue-500 shadow-sm p-6 mb-6">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center gap-2">
+                🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside space-y-2 text-slate-700 leading-relaxed font-medium">
+                <li>認識垂直符號（⊥），並精確理解「垂足」就是垂直相交的那個交點。</li>
+                <li>明白「點到直線的距離」是指點到直線的垂直線段長度，也是最短距離。</li>
+                <li>理解「線段的中垂線（垂直平分線）」需同時滿足平分線段與垂直相交兩個條件。</li>
+                <li>掌握中垂線的重要性質：中垂線上任意一點到線段兩端點的距離皆相等。</li>
+            </ul>
+        </section>
+
+        <!-- 3. 核心概念卡片 (3欄網格) -->
+        <section class="grid md:grid-cols-3 gap-4 mb-8">
+            <!-- Card 1 -->
+            <div class="bg-blue-50 rounded-xl p-5 border border-blue-100 shadow-sm hover:shadow-md transition-shadow">
+                <div class="text-3xl mb-2">1️⃣</div>
+                <h3 class="font-bold text-lg text-blue-900 mb-2">垂直與垂足 (Foot)</h3>
+                <p class="text-sm text-blue-800 leading-relaxed">
+                    當兩直線相交成 <strong>90° 直角</strong> 時，稱為「垂直」（記作 L1 ⊥ L2）。<br>
+                    兩線相交的那個關鍵交點，就像腳踩在地板上的接觸點，稱為<strong>「垂足」</strong>！
+                </p>
+            </div>
+            <!-- Card 2 -->
+            <div class="bg-purple-50 rounded-xl p-5 border border-purple-100 shadow-sm hover:shadow-md transition-shadow">
+                <div class="text-3xl mb-2">2️⃣</div>
+                <h3 class="font-bold text-lg text-purple-900 mb-2">點到直線的距離</h3>
+                <p class="text-sm text-purple-800 leading-relaxed">
+                    從線外一點向直線作垂直線，與直線交於「垂足」。這條<strong>垂直線段的長度</strong>就是點到直線的距離。<br>
+                    <strong>重點：</strong>垂直連線長度是所有連線中<strong>最短的</strong>！
+                </p>
+            </div>
+            <!-- Card 3 -->
+            <div class="bg-emerald-50 rounded-xl p-5 border border-emerald-100 shadow-sm hover:shadow-md transition-shadow">
+                <div class="text-3xl mb-2">3️⃣</div>
+                <h3 class="font-bold text-lg text-emerald-900 mb-2">中垂線（垂直平分線）</h3>
+                <p class="text-sm text-emerald-800 leading-relaxed">
+                    一條線穿過線段的<strong>中點</strong>且與其<strong>垂直</strong>，稱為「中垂線」。<br>
+                    <strong>神奇屬性：</strong>中垂線上任何一點，到線段兩端點的距離永遠<strong>一樣長</strong>！
+                </p>
+            </div>
+        </section>
+
+        <!-- 4. 🧮 互動演示/模擬轉換 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-slate-200 relative">
+            <button id="reset-sim-btn" class="absolute top-4 right-4 bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1.5 rounded-lg text-sm font-bold transition-colors flex items-center gap-1">
+                🔄 重置
+            </button>
+            <h2 class="text-xl font-bold text-slate-800 mb-2">🧮 互動演示：尋找垂足與最短距離</h2>
+            <p class="text-sm text-slate-600 mb-4">
+                請拖曳下方控制桿，改變點 H 在海岸線（直線 L）上的位置，觀察救援船（點 P）到海岸線的距離與角度變化。
+            </p>
+
+            <div class="flex flex-col items-center bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <!-- SVG Canvas -->
+                <svg id="sim-svg" class="w-full max-w-lg h-64 border border-slate-300 rounded-lg bg-sky-50/50" viewBox="0 0 400 240">
+                    <!-- 地面 / 海岸線 L -->
+                    <line x1="40" y1="180" x2="360" y2="180" stroke="#475569" stroke-width="3" />
+                    <text x="365" y="185" class="text-xs font-bold fill-slate-600">直線 L (海岸線)</text>
+
+                    <!-- 點 P (救援船) -->
+                    <circle cx="200" cy="50" r="7" fill="#ea580c" />
+                    <text x="185" y="40" class="text-sm font-bold fill-amber-700">P (救援船)</text>
+
+                    <!-- 連線 PH -->
+                    <line id="sim-line-ph" x1="200" y1="50" x2="200" y2="180" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="4,4" />
+
+                    <!-- 真正的垂直輔助點 (200, 180) -->
+                    <line x1="200" y1="50" x2="200" y2="180" stroke="#cbd5e1" stroke-width="1" />
+
+                    <!-- 直角符號 (當接近90度時顯示) -->
+                    <path id="sim-right-angle" d="M 200 165 L 215 165 L 215 180" fill="none" stroke="#16a34a" stroke-width="2" class="hidden"/>
+
+                    <!-- 點 H -->
+                    <circle id="sim-point-h" cx="200" cy="180" r="7" fill="#2563eb" />
+                    <text id="sim-text-h" x="195" y="205" class="text-sm font-bold fill-blue-700">H</text>
+                </svg>
+
+                <!-- 資訊顯示與滑桿 -->
+                <div class="w-full max-w-md mt-4 space-y-3">
+                    <div class="flex justify-between items-center bg-white p-3 rounded-lg border border-slate-200 shadow-sm text-sm">
+                        <div>當前連線長度：<span id="sim-dist" class="font-bold text-blue-600 text-base">130</span> px</div>
+                        <div>相交夾角：<span id="sim-angle" class="font-bold text-amber-600 text-base">90°</span></div>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold text-slate-500">左移</span>
+                        <input type="range" id="sim-slider" min="60" max="340" value="200" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                        <span class="text-xs font-bold text-slate-500">右移</span>
+                    </div>
+
+                    <div id="sim-status-box" class="p-2.5 text-center text-sm font-bold rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300">
+                        ✨ 當前夾角為 90°！點 H 正好是「垂足」，線段 PH 為最短距離！
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. 🔍 生活引導式練習 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-slate-200">
+            <h2 class="text-xl font-bold text-slate-800 mb-2">🔍 生活引導式練習：跨河大橋與公平冰店</h2>
+            <p class="text-slate-600 text-sm mb-4">請依序完成以下思考步驟，解鎖這項都市規劃挑戰！</p>
+
+            <!-- 情境背景與兩張幾何示意圖 -->
+            <div class="bg-indigo-50/60 p-5 rounded-xl mb-6 border border-indigo-100 space-y-4">
+                <p class="text-slate-700 leading-relaxed font-medium">
+                    🏠 <strong>情境背景：</strong>小華住在 A 村，阿強住在 B 村，中間隔著一條筆直的河流（直線 L）。兩村決定合作在河邊蓋一家「公平冰店 P」，希望冰店到 A 村與 B 村的距離完全相等（PA = PB）。
+                </p>
+
+                <!-- 示意圖區塊 (包含情境幾何圖 與 中垂線/垂足結構圖) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <!-- 圖一：情境幾何示意圖 -->
+                    <div class="bg-white p-3 rounded-lg border border-slate-200 flex flex-col items-center">
+                        <span class="text-xs font-bold text-indigo-800 mb-2">圖一：公平冰店 P 與河邊距離情境圖</span>
+                        <svg class="w-full h-44 bg-sky-50/40 rounded border border-slate-100" viewBox="0 0 300 160">
+                            <!-- 河流 L -->
+                            <line x1="20" y1="120" x2="280" y2="120" stroke="#0284c7" stroke-width="4" />
+                            <text x="240" y="140" class="text-xs font-bold fill-sky-700">河流 (直線 L)</text>
+
+                            <!-- A村、B村 -->
+                            <circle cx="60" cy="40" r="6" fill="#dc2626" />
+                            <text x="45" y="30" class="text-xs font-bold fill-red-600">A村</text>
+
+                            <circle cx="240" cy="40" r="6" fill="#2563eb" />
+                            <text x="245" y="30" class="text-xs font-bold fill-blue-600">B村</text>
+
+                            <!-- 兩村連線 AB -->
+                            <line x1="60" y1="40" x2="240" y2="40" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+                            <!-- 冰店 P (中垂線與河邊 L 的交點) -->
+                            <circle cx="150" cy="120" r="6" fill="#d97706" />
+                            <text x="125" y="145" class="text-xs font-bold fill-amber-700">公平冰店 P</text>
+
+                            <!-- 等距離連線 PA 與 PB -->
+                            <line x1="150" y1="120" x2="60" y2="40" stroke="#ea580c" stroke-width="2" />
+                            <line x1="150" y1="120" x2="240" y2="40" stroke="#ea580c" stroke-width="2" />
+
+                            <text x="85" y="90" class="text-xs font-bold fill-amber-800">PA</text>
+                            <text x="195" y="90" class="text-xs font-bold fill-amber-800">PB</text>
+                        </svg>
+                    </div>
+
+                    <!-- 圖二：AB中垂線與垂足 M 結構圖 -->
+                    <div class="bg-white p-3 rounded-lg border border-slate-200 flex flex-col items-center">
+                        <span class="text-xs font-bold text-indigo-800 mb-2">圖二：線段 AB 的中垂線與垂足 M 幾何圖</span>
+                        <svg class="w-full h-44 bg-emerald-50/30 rounded border border-slate-100" viewBox="0 0 300 160">
+                            <!-- 線段 AB -->
+                            <line x1="50" y1="80" x2="250" y2="80" stroke="#334155" stroke-width="3" />
+                            <circle cx="50" cy="80" r="5" fill="#dc2626" />
+                            <circle cx="250" cy="80" r="5" fill="#2563eb" />
+                            <text x="35" y="85" class="text-xs font-bold fill-red-600">A</text>
+                            <text x="260" y="85" class="text-xs font-bold fill-blue-600">B</text>
+
+                            <!-- 中垂線 L' -->
+                            <line x1="150" y1="15" x2="150" y2="145" stroke="#16a34a" stroke-width="2.5" />
+                            <text x="158" y="25" class="text-xs font-bold fill-emerald-700">中垂線</text>
+
+                            <!-- 垂足 M (中點) -->
+                            <circle cx="150" cy="80" r="5" fill="#9333ea" />
+                            <text x="155" y="98" class="text-xs font-bold fill-purple-700">M (垂足/中點)</text>
+
+                            <!-- 直角符號 90° -->
+                            <path d="M 135 80 L 135 65 L 150 65" fill="none" stroke="#16a34a" stroke-width="2" />
+                            <text x="110" y="60" class="text-xs font-bold fill-emerald-800">90°</text>
+
+                            <!-- 中點相等記號 AM = MB -->
+                            <line x1="95" y1="73" x2="95" y2="87" stroke="#dc2626" stroke-width="2"/>
+                            <line x1="205" y1="73" x2="205" y2="87" stroke="#2563eb" stroke-width="2"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 1 -->
+            <div id="guide-step-1" class="mb-6 p-4 rounded-xl border border-slate-200 bg-slate-50">
+                <h3 class="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                    <span class="bg-indigo-600 text-white text-xs px-2 py-1 rounded">Step 1</span>
+                    要找一個「到 A、B 兩點距離相等」的位置，應該要在哪條線上尋找？
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+                    <button class="step1-option text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-indigo-50 font-medium transition-all" data-correct="true">
+                        A. 線段 AB 的「中垂線（垂直平分線）」
+                    </button>
+                    <button class="step1-option text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-indigo-50 font-medium transition-all" data-correct="false">
+                        B. 與線段 AB 平行的任意直線
+                    </button>
+                </div>
+                <div id="step1-feedback" class="mt-3 text-sm font-bold hidden"></div>
+            </div>
+
+            <!-- Step 2 (Initial hidden) -->
+            <div id="guide-step-2" class="mb-6 p-4 rounded-xl border border-slate-200 bg-slate-50 hidden">
+                <h3 class="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                    <span class="bg-indigo-600 text-white text-xs px-2 py-1 rounded">Step 2</span>
+                    這條中垂線穿過線段 AB 於點 M，且夾角為 90°。請問這個交點 M 在數學上稱為什麼？
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+                    <button class="step2-option text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-indigo-50 font-medium transition-all" data-correct="true">
+                        A. 點 M 是 AB 的中點，也是中垂線對 AB 的「垂足」
+                    </button>
+                    <button class="step2-option text-left p-3 rounded-lg border border-slate-300 bg-white hover:bg-indigo-50 font-medium transition-all" data-correct="false">
+                        B. 點 M 是 AB 的端點，也是兩線的頂點
+                    </button>
+                </div>
+                <div id="step2-feedback" class="mt-3 text-sm font-bold hidden"></div>
+            </div>
+
+            <!-- Step 3 (Initial hidden) -->
+            <div id="guide-step-3" class="mb-4 p-4 rounded-xl border border-slate-200 bg-slate-50 hidden">
+                <h3 class="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                    <span class="bg-indigo-600 text-white text-xs px-2 py-1 rounded">Step 3</span>
+                    若測量得知 A 村到 B 村的距離 AB = 16 公里，則垂足 M 到 A 村的距離 AM 為多少公里？
+                </h3>
+                <div class="flex items-center gap-3 mt-3">
+                    <input type="number" id="step3-input" placeholder="輸入數字" class="w-32 p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold text-slate-700">
+                    <span class="font-bold text-slate-600">公里</span>
+                    <button id="step3-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-lg transition-colors">
+                        確認答案
+                    </button>
+                </div>
+                <div id="step3-feedback" class="mt-3 text-sm font-bold hidden"></div>
+            </div>
+
+            <!-- Finish Banner -->
+            <div id="guide-finish" class="hidden p-4 bg-emerald-100 border border-emerald-300 text-emerald-800 rounded-xl font-bold text-center">
+                🎉 太棒了！你已成功掌握「垂直」、「垂足」與「中垂線等距」的生活應用！
+            </div>
+        </section>
+
+        <!-- 🚀 6. 生活實戰挑戰 / 綜合練習 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-8 border border-slate-200">
+            <h2 class="text-xl font-bold text-slate-800 mb-2">🚀 生活實戰挑戰：圖解與計算</h2>
+            <p class="text-sm text-slate-600 mb-6">結合幾何圖形、摺紙觀念與線段計算，試試看你的實戰能力！</p>
+
+            <!-- 挑戰題 1：摺紙實驗與垂直平分線 -->
+            <div class="mb-8 p-5 rounded-xl border border-slate-200 bg-slate-50/50">
+                <div class="flex flex-col md:flex-row gap-6 items-center mb-4">
+                    <!-- SVG 示意圖 -->
+                    <div class="w-full md:w-1/2 flex justify-center">
+                        <svg class="w-full max-w-xs h-48 border border-slate-300 rounded-lg bg-white shadow-inner" viewBox="0 0 300 180">
+                            <!-- 左邊摺紙卡片 -->
+                            <rect x="20" y="30" width="70" height="120" fill="none" stroke="#475569" stroke-width="2" />
+                            <line x1="20" y1="90" x2="90" y2="90" stroke="#f59e0b" stroke-width="2.5"/>
+                            <line x1="55" y1="30" x2="55" y2="150" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+                            <circle cx="20" cy="90" r="4" fill="#ef4444"/>
+                            <circle cx="90" cy="90" r="4" fill="#ef4444"/>
+                            <text x="8" y="95" class="text-xs font-bold fill-slate-700">P</text>
+                            <text x="95" y="95" class="text-xs font-bold fill-slate-700">Q</text>
+
+                            <!-- 箭頭 -->
+                            <path d="M 105 90 L 125 90" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" fill="none"/>
+
+                            <!-- 右邊對摺後重疊展開圖 -->
+                            <rect x="140" y="30" width="120" height="120" fill="none" stroke="#475569" stroke-width="2" />
+                            <!-- 中垂線 L -->
+                            <line x1="200" y1="15" x2="200" y2="165" stroke="#16a34a" stroke-width="3"/>
+                            <text x="195" y="12" class="text-xs font-bold fill-emerald-700">L</text>
+                            <!-- 線段 PQ -->
+                            <line x1="140" y1="90" x2="260" y2="90" stroke="#ef4444" stroke-width="3"/>
+                            <!-- 交點 M (垂足) -->
+                            <circle cx="200" cy="90" r="4" fill="#2563eb"/>
+                            <text x="203" y="108" class="text-xs font-bold fill-blue-700">M</text>
+                            <text x="128" y="95" class="text-xs font-bold fill-slate-700">P</text>
+                            <text x="265" y="95" class="text-xs font-bold fill-slate-700">Q</text>
+                            <!-- 角1角2 -->
+                            <text x="180" y="82" class="text-xs font-bold fill-purple-700">∠1</text>
+                            <text x="210" y="82" class="text-xs font-bold fill-purple-700">∠2</text>
+                            <!-- 直角符號 -->
+                            <path d="M 190 90 L 190 80 L 200 80" fill="none" stroke="#16a34a" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+
+                    <!-- 題幹與選項 -->
+                    <div class="w-full md:w-1/2 space-y-3">
+                        <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-1 rounded">實戰題 1：摺紙與中垂線</span>
+                        <p class="text-sm text-slate-700 leading-relaxed font-medium">
+                            將正方形紙片上的點 Q 沿虛線對摺與點 P 重疊，展開後摺痕為直線 L，與線段 PQ 交於點 M。<br>
+                            ① ∠1 與 ∠2 相鄰且互補（∠1 + ∠2 = 180°），因為完全對摺重疊，所以 ∠1 = ∠2 = <strong class="text-indigo-600">90°</strong>。<br>
+                            ② 直線 L 將線段 PQ 垂直且平分，稱 L 為 PQ 的什麼線？相交的點 M 稱為什麼？
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <button class="q1-opt p-2.5 text-left border border-slate-300 rounded-lg bg-white hover:bg-slate-100 text-sm font-medium" data-correct="true">
+                            A. L 為「中垂線」，點 M 為「垂足」
+                        </button>
+                        <button class="q1-opt p-2.5 text-left border border-slate-300 rounded-lg bg-white hover:bg-slate-100 text-sm font-medium" data-correct="false">
+                            B. L 為「平行線」，點 M 為「端點」
+                        </button>
+                    </div>
+                    <div id="q1-ans" class="text-sm font-bold hidden mt-2"></div>
+                </div>
+            </div>
+
+            <!-- 挑戰題 2：垂足與線段長度計算 -->
+            <div class="mb-8 p-5 rounded-xl border border-slate-200 bg-slate-50/50">
+                <div class="flex flex-col md:flex-row gap-6 items-center mb-4">
+                    <!-- SVG 示意圖 -->
+                    <div class="w-full md:w-1/2 flex justify-center">
+                        <svg class="w-full max-w-xs h-40 border border-slate-300 rounded-lg bg-white shadow-inner" viewBox="0 0 320 150">
+                            <!-- 線段 AB -->
+                            <line x1="40" y1="90" x2="280" y2="90" stroke="#334155" stroke-width="3" />
+                            <circle cx="40" cy="90" r="5" fill="#ef4444" />
+                            <circle cx="280" cy="90" r="5" fill="#ef4444" />
+                            <text x="30" y="115" class="text-sm font-bold fill-slate-700">A</text>
+                            <text x="280" y="115" class="text-sm font-bold fill-slate-700">B</text>
+
+                            <!-- 中垂線 L 與垂足 M -->
+                            <line x1="160" y1="20" x2="160" y2="130" stroke="#16a34a" stroke-width="2.5" />
+                            <circle cx="160" cy="90" r="4" fill="#2563eb" />
+                            <text x="150" y="115" class="text-sm font-bold fill-blue-700">M</text>
+                            <text x="165" y="30" class="text-xs font-bold fill-emerald-700">L (中垂線)</text>
+
+                            <!-- 點 N -->
+                            <circle cx="210" cy="90" r="4" fill="#a855f7" />
+                            <text x="205" y="115" class="text-sm font-bold fill-purple-700">N</text>
+
+                            <!-- 標示長度 -->
+                            <!-- AB = 10 -->
+                            <path d="M 40 60 Q 160 40 280 60" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,3"/>
+                            <text x="150" y="45" class="text-xs font-bold fill-red-600">AB = 10</text>
+                            <!-- MN = 2 -->
+                            <line x1="160" y1="75" x2="210" y2="75" stroke="#a855f7" stroke-width="2"/>
+                            <text x="175" y="70" class="text-xs font-bold fill-purple-700">2</text>
+                        </svg>
+                    </div>
+
+                    <!-- 題幹與解答區 -->
+                    <div class="w-full md:w-1/2 space-y-3">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded">實戰題 2：線段長度計算</span>
+                        <p class="text-sm text-slate-700 leading-relaxed font-medium">
+                            如圖，直線 L 為線段 AB 的中垂線，且交 AB 於<strong>垂足 M</strong>。<br>
+                            已知 <strong>AB = 10 cm</strong>，點 N 在線段 MB 上，且 <strong>MN = 2 cm</strong>。<br>
+                            求線段 <strong class="text-blue-600">AN</strong> 與 <strong class="text-purple-600">MN</strong> 的長度？
+                        </p>
+                        <div class="bg-white p-3 rounded-lg border border-slate-200 text-xs text-slate-600 space-y-1">
+                            <p>💡 提示：因為 M 是中點，所以 AM = MB = AB ÷ 2 = 5 cm。</p>
+                            <p>線段 AN = AM + MN = 5 + 2 = 7 cm。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <span class="text-sm font-bold text-slate-700">填空回答：AN =</span>
+                    <input type="number" id="q2-input" placeholder="請輸入長度" class="w-28 p-2 border border-slate-300 rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <span class="text-sm font-bold text-slate-700">cm</span>
+                    <button id="q2-btn" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors">
+                        檢查答案
+                    </button>
+                </div>
+                <div id="q2-ans" class="text-sm font-bold hidden mt-2"></div>
+            </div>
+
+            <!-- 挑戰題 3：點到直線的最短距離 -->
+            <div class="p-5 rounded-xl border border-slate-200 bg-slate-50/50">
+                <div class="flex flex-col md:flex-row gap-6 items-center mb-4">
+                    <!-- SVG 示意圖 -->
+                    <div class="w-full md:w-1/2 flex justify-center">
+                        <svg class="w-full max-w-xs h-44 border border-slate-300 rounded-lg bg-white shadow-inner" viewBox="0 0 300 160">
+                            <!-- 三角形 ABC -->
+                            <polygon points="100,20 40,130 240,130" fill="none" stroke="#334155" stroke-width="2.5"/>
+                            <!-- 高 AD (垂直線) -->
+                            <line x1="100" y1="20" x2="100" y2="130" stroke="#ea580c" stroke-width="2.5"/>
+                            <!-- 頂點標籤 -->
+                            <text x="95" y="15" class="text-sm font-bold fill-slate-800">A</text>
+                            <text x="25" y="140" class="text-sm font-bold fill-slate-800">B</text>
+                            <text x="245" y="140" class="text-sm font-bold fill-slate-800">C</text>
+                            <text x="95" y="150" class="text-sm font-bold fill-orange-700">D (垂足)</text>
+                            <!-- 直角記號 -->
+                            <path d="M 100 115 L 115 115 L 115 130" fill="none" stroke="#ea580c" stroke-width="1.5"/>
+                            <!-- 長度標示 -->
+                            <text x="70" y="75" class="text-xs font-bold fill-orange-600">8</text>
+                        </svg>
+                    </div>
+
+                    <!-- 題幹與問答 -->
+                    <div class="w-full md:w-1/2 space-y-3">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded">實戰題 3：點到直線的距離與垂足</span>
+                        <p class="text-sm text-slate-700 leading-relaxed font-medium">
+                            如圖，在三角形 ABC 中，線段 AD 垂直底邊 BC，交點為 D。<br>
+                            ① 點 D 稱為頂點 A 在直線 BC 上的<strong>「垂足」</strong>。<br>
+                            ② 若線段 AD 的長度為 8 cm，則「頂點 A 到直線 BC 的最短距離」是多少 cm？
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <span class="text-sm font-bold text-slate-700">填空回答：最短距離 =</span>
+                    <input type="number" id="q3-input" placeholder="請輸入長度" class="w-28 p-2 border border-slate-300 rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <span class="text-sm font-bold text-slate-700">cm</span>
+                    <button id="q3-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors">
+                        檢查答案
+                    </button>
+                </div>
+                <div id="q3-ans" class="text-sm font-bold hidden mt-2"></div>
+            </div>
+
+        </section>
+
+        <!-- 7. ⚠️ 常見迷思與 💡 生活中的數學 (Footer 2欄佈局) -->
+        <footer class="grid md:grid-cols-2 gap-6 mb-8">
+            <!-- 左側（常見迷思） -->
+            <div class="bg-red-50/80 rounded-xl p-6 border border-red-100 shadow-sm">
+                <h3 class="text-lg font-bold text-red-800 mb-4 flex items-center gap-2">
+                    ⚠️ 常見迷思觀念大破解
+                </h3>
+                <ul class="space-y-4 text-sm">
+                    <li class="border-b border-red-200/60 pb-3">
+                        <div class="font-bold text-red-600">❌ 迷思 1：垂直一定是一縱一橫（擺得正正的）？</div>
+                        <div class="text-slate-700 font-medium mt-1">
+                            ✅ <strong>糾正：</strong>只要兩直線相交成 90° 直角就是垂直！無論圖形旋轉角度如何，垂直關係皆成立。
+                        </div>
+                    </li>
+                    <li class="border-b border-red-200/60 pb-3">
+                        <div class="font-bold text-red-600">❌ 迷思 2：線段的中點就是垂足？</div>
+                        <div class="text-slate-700 font-medium mt-1">
+                            ✅ <strong>糾正：</strong>只有當有一條<strong>垂直線</strong>穿過中點時，該中點才是這兩線相交的「垂足」喔！
+                        </div>
+                    </li>
+                    <li>
+                        <div class="font-bold text-red-600">❌ 迷思 3：過線外一點到直線隨便連一條線，長度都代表距離？</div>
+                        <div class="text-slate-700 font-medium mt-1">
+                            ✅ <strong>糾正：</strong>數學上「點到直線的距離」專指<strong>垂直線段的長度</strong>，這也是最短的距離。
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 右側（💡 生活中的數學） -->
+            <div class="bg-slate-900 rounded-xl p-6 text-white shadow-md">
+                <h3 class="text-lg font-bold text-amber-400 mb-4 flex items-center gap-2">
+                    💡 生活中的數學應用
+                </h3>
+                <ul class="space-y-3 text-sm text-slate-300 leading-relaxed font-normal">
+                    <li>
+                        <strong class="text-white">🧱 建築施工中的「鉛垂線」：</strong>
+                        泥水匠砌牆時會吊一顆鉛錘，利用重力形成的鉛垂線確保牆面與地面垂直相交，垂足精確落在基座上，房子才不會倒塌。
+                    </li>
+                    <li>
+                        <strong class="text-white">🚶 過馬路的幾何學：</strong>
+                        人行過街斑馬線通常設計成與路邊垂直。因為垂直距離最短，行人能以最快速度通過馬路降低危險。
+                    </li>
+                    <li>
+                        <strong class="text-white">📡 基地台與救護站選址：</strong>
+                        電信公司在規劃基地台時，常利用兩城鎮連線的中垂線尋找最佳地點，確保訊號覆蓋對兩地公平一致。
+                    </li>
+                </ul>
+            </div>
+        </footer>
+
+        <!-- 最底部版權與課綱小字 -->
+        <div class="text-center text-xs text-slate-400 font-medium py-4">
+            依據 108 課綱 S-7-3 設計 • 生活化互動數位講義
+        </div>
+
+    </div>
+
+    <!-- JavaScript 邏輯碼 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 4. 🧮 互動演示 (Simulations) ---
+            const simSlider = document.getElementById('sim-slider');
+            const simLinePh = document.getElementById('sim-line-ph');
+            const simPointH = document.getElementById('sim-point-h');
+            const simTextH = document.getElementById('sim-text-h');
+            const simDistText = document.getElementById('sim-dist');
+            const simAngleText = document.getElementById('sim-angle');
+            const simRightAngle = document.getElementById('sim-right-angle');
+            const simStatusBox = document.getElementById('sim-status-box');
+            const resetSimBtn = document.getElementById('reset-sim-btn');
+
+            function updateSimulation(hx) {
+                const px = 200, py = 50, hy = 180;
+                simPointH.setAttribute('cx', hx);
+                simTextH.setAttribute('x', hx - 5);
+                simLinePh.setAttribute('x2', hx);
+
+                // 計算距離 (Distance)
+                const dx = hx - px;
+                const dy = hy - py; // 130
+                const dist = Math.round(Math.sqrt(dx * dx + dy * dy));
+                simDistText.textContent = dist;
+
+                // 計算夾角 (Angle in degrees)
+                const angleRad = Math.atan2(dy, Math.abs(dx));
+                const angleDeg = Math.round(angleRad * (180 / Math.PI));
+                simAngleText.textContent = angleDeg + '°';
+
+                // 垂足狀態判斷 (hx === 200)
+                if (Math.abs(hx - 200) < 3) {
+                    simPointH.setAttribute('fill', '#16a34a'); // 綠色
+                    simRightAngle.classList.remove('hidden');
+                    simStatusBox.className = "p-2.5 text-center text-sm font-bold rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300";
+                    simStatusBox.innerHTML = "✨ 當前夾角為 90°！點 H 正好是「垂足」，線段 PH 為最短距離 (130 px)！";
+                } else {
+                    simPointH.setAttribute('fill', '#2563eb'); // 藍色
+                    simRightAngle.classList.add('hidden');
+                    simStatusBox.className = "p-2.5 text-center text-sm font-bold rounded-lg bg-amber-50 text-amber-800 border border-amber-200";
+                    simStatusBox.innerHTML = `⚠️ 當前連線傾斜（夾角 ${angleDeg}°），距離 (${dist} px) 比最短垂直距離 (130 px) 還要長！`;
+                }
+            }
+
+            simSlider.addEventListener('input', (e) => {
+                updateSimulation(parseInt(e.target.value));
+            });
+
+            resetSimBtn.addEventListener('click', () => {
+                simSlider.value = 200;
+                updateSimulation(200);
+            });
+
+            // 初始化演示器 (從 200 垂足開始)
+            updateSimulation(200);
+
+
+            // --- 5. 🔍 生活引導式練習 (Step-by-Step Scenario) ---
+            const step1Btns = document.querySelectorAll('.step1-option');
+            const step1Fb = document.getElementById('step1-feedback');
+            const step2Div = document.getElementById('guide-step-2');
+
+            const step2Btns = document.querySelectorAll('.step2-option');
+            const step2Fb = document.getElementById('step2-feedback');
+            const step3Div = document.getElementById('guide-step-3');
+
+            const step3Input = document.getElementById('step3-input');
+            const step3Btn = document.getElementById('step3-btn');
+            const step3Fb = document.getElementById('step3-feedback');
+            const guideFinish = document.getElementById('guide-finish');
+
+            // Step 1 Click
+            step1Btns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const isCorrect = btn.getAttribute('data-correct') === 'true';
+                    step1Fb.classList.remove('hidden');
+                    if (isCorrect) {
+                        btn.className = "step1-option text-left p-3 rounded-lg border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-bold";
+                        step1Fb.className = "mt-3 text-sm font-bold text-emerald-600";
+                        step1Fb.textContent = "✅ 正確！中垂線上的點到線段兩端點距離相等。";
+                        // 解鎖 Step 2
+                        step2Div.classList.remove('hidden');
+                        // 停用 Step 1 按鈕
+                        step1Btns.forEach(b => b.disabled = true);
+                    } else {
+                        btn.className = "step1-option text-left p-3 rounded-lg border-2 border-red-300 bg-red-50 text-red-700 font-medium";
+                        step1Fb.className = "mt-3 text-sm font-bold text-red-500";
+                        step1Fb.textContent = "❌ 提示：平行線無法保證到 A、B 兩端點的距離相等喔，再試試！";
+                    }
+                });
+            });
+
+            // Step 2 Click
+            step2Btns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const isCorrect = btn.getAttribute('data-correct') === 'true';
+                    step2Fb.classList.remove('hidden');
+                    if (isCorrect) {
+                        btn.className = "step2-option text-left p-3 rounded-lg border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-bold";
+                        step2Fb.className = "mt-3 text-sm font-bold text-emerald-600";
+                        step2Fb.textContent = "✅ 答對了！點 M 既是中點，也是垂直相交的「垂足」。";
+                        // 解鎖 Step 3
+                        step3Div.classList.remove('hidden');
+                        step2Btns.forEach(b => b.disabled = true);
+                    } else {
+                        btn.className = "step2-option text-left p-3 rounded-lg border-2 border-red-300 bg-red-50 text-red-700 font-medium";
+                        step2Fb.className = "mt-3 text-sm font-bold text-red-500";
+                        step2Fb.textContent = "❌ 提示：點 M 位於線段正中間且垂直相交，想想「平分」與「垂直」的概念。";
+                    }
+                });
+            });
+
+            // Step 3 Submit
+            step3Btn.addEventListener('click', () => {
+                const val = parseInt(step3Input.value.trim());
+                step3Fb.classList.remove('hidden');
+                if (val === 8) {
+                    step3Fb.className = "mt-3 text-sm font-bold text-emerald-600";
+                    step3Fb.textContent = "✅ 完全正確！16 ÷ 2 = 8 公里。垂足 M 將 AB 線段平分為兩等分。";
+                    guideFinish.classList.remove('hidden');
+                    step3Btn.disabled = true;
+                    step3Input.disabled = true;
+                } else {
+                    step3Fb.className = "mt-3 text-sm font-bold text-red-500";
+                    step3Fb.textContent = "❌ 再算算看！全長 AB 是 16 公里，點 M 是中點，所以 AM 是全長的一半喔！";
+                }
+            });
+
+
+            // --- 6. 🚀 生活實戰挑戰 (Life Challenges) ---
+
+            // 題 1
+            const q1Opts = document.querySelectorAll('.q1-opt');
+            const q1Ans = document.getElementById('q1-ans');
+            q1Opts.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const isCorrect = btn.getAttribute('data-correct') === 'true';
+                    q1Ans.classList.remove('hidden');
+                    if (isCorrect) {
+                        btn.className = "q1-opt p-2.5 text-left border-2 border-emerald-500 rounded-lg bg-emerald-50 text-emerald-900 font-bold text-sm";
+                        q1Ans.className = "text-sm font-bold text-emerald-600 mt-2";
+                        q1Ans.textContent = "🎉 答對了！直線 L 垂直且平分 PQ，稱為「中垂線」，交點 M 即為「垂足」。";
+                        q1Opts.forEach(b => b.disabled = true);
+                    } else {
+                        btn.className = "q1-opt p-2.5 text-left border-2 border-red-300 rounded-lg bg-red-50 text-red-700 font-medium text-sm";
+                        q1Ans.className = "text-sm font-bold text-red-500 mt-2";
+                        q1Ans.textContent = "💡 提示：對摺後重疊代表平分且成 90° 直角，請想想垂直與平分的專有名詞。";
+                    }
+                });
+            });
+
+            // 題 2
+            const q2Input = document.getElementById('q2-input');
+            const q2Btn = document.getElementById('q2-btn');
+            const q2Ans = document.getElementById('q2-ans');
+            q2Btn.addEventListener('click', () => {
+                const val = parseInt(q2Input.value.trim());
+                q2Ans.classList.remove('hidden');
+                if (val === 7) {
+                    q2Ans.className = "text-sm font-bold text-emerald-600 mt-2";
+                    q2Ans.textContent = "🎉 太棒了！算式：AM = 10 ÷ 2 = 5 cm，AN = 5 + 2 = 7 cm。理解非常清晰！";
+                    q2Input.disabled = true;
+                    q2Btn.disabled = true;
+                } else {
+                    q2Ans.className = "text-sm font-bold text-red-500 mt-2";
+                    q2Ans.textContent = "💡 算算看：因為 M 是垂足也是中點，AM = 5 cm。求 AN 就是 AM + MN (5 + 2) 喔！";
+                }
+            });
+
+            // 題 3
+            const q3Input = document.getElementById('q3-input');
+            const q3Btn = document.getElementById('q3-btn');
+            const q3Ans = document.getElementById('q3-ans');
+            q3Btn.addEventListener('click', () => {
+                const val = parseInt(q3Input.value.trim());
+                q3Ans.classList.remove('hidden');
+                if (val === 8) {
+                    q3Ans.className = "text-sm font-bold text-emerald-600 mt-2";
+                    q3Ans.textContent = "🎉 完全正確！點到直線的距離就是「垂直線段 AD 的長度」，即為 8 cm！";
+                    q3Input.disabled = true;
+                    q3Btn.disabled = true;
+                } else {
+                    q3Ans.className = "text-sm font-bold text-red-500 mt-2";
+                    q3Ans.textContent = "💡 提示：點到直線的距離就是垂直線段的長度（也就是線段 AD 的長度）。";
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
