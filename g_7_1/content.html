@@ -1,1 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G-7-1 平面直角坐標系互動講義</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .math-fact { background-color: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 6px; font-weight: bold; }
+        .step-badge { background-color: #3b82f6; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .feedback-box { transition: all 0.3s ease; }
+        
+        /* 坐標網格背景 */
+        .grid-bg {
+            background-size: 20px 20px;
+            background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px), linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+        }
+        .challenge-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
+        /* 投球動畫效果 */
+        .pitch-ball {
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- 1. Header (標題列) -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 平面直角坐標系</h1>
+            <p class="text-slate-600">G-7-1 互動式學習講義</p>
+        </header>
+
+        <!-- 2. 🎯 學習目標 (Learning Objectives) -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="mr-2 w-5 h-5"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>熟悉橫軸（x 軸）、縱軸（y 軸）、原點 (0, 0) 與直角坐標系（x, y）的寫法。</li>
+                <li>掌握四大象限的正負號密碼：Ⅰ (+, +)、Ⅱ (-, +)、Ⅲ (-, -)、Ⅳ (+, -)。</li>
+                <li>理解坐標軸上的點（如 (3, 0) 或 (0, -4)）<b>不屬於任何象限</b>。</li>
+                <li>明白「點到 x 軸的距離是 |y|」、「點到 y 軸的距離是 |x|」，並能用方位距離標定位置。</li>
+            </ul>
+        </section>
+
+        <!-- 3. 1️⃣ 2️⃣ 3️⃣ 核心概念卡片 (Concept Cards) -->
+        <div class="grid md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                <h3 class="font-bold text-blue-700 text-lg mb-2">1️⃣ 坐標軸與原點</h3>
+                <p class="text-sm text-blue-800">水平線為<b>橫軸 (x 軸)</b>，垂直線為<b>縱軸 (y 軸)</b>，兩軸交點為<b>原點 O (0, 0)</b>。</p>
+                <p class="mt-2 text-xs text-blue-600 font-bold">先看左右 x，再看上下 y！</p>
+            </div>
+            <div class="bg-green-50 p-5 rounded-lg border border-green-200">
+                <h3 class="font-bold text-green-700 text-lg mb-2">2️⃣ 四大象限正負號</h3>
+                <p class="text-sm text-green-800">右上第一象限 (+, +)、左上第二象限 (-, +)、左下第三象限 (-, -)、右下第四象限 (+, -)。</p>
+                <p class="mt-2 text-xs text-green-600 font-bold">⚠️ 坐標軸上的點不屬於任何象限！</p>
+            </div>
+            <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200">
+                <h3 class="font-bold text-emerald-700 text-lg mb-2">3️⃣ 距離與方位標定</h3>
+                <p class="text-sm text-emerald-800">點 (x, y) 到 <b>x 軸距離是 |y|</b>，到 <b>y 軸距離是 |x|</b>。可用東、西、南、北與距離標示位置。</p>
+                <p class="mt-2 text-xs text-emerald-600 font-bold">距離永遠是正數！</p>
+            </div>
+        </div>
+
+        <!-- 4. ✏️ 解題示範：生活化直觀法 (Worked Example) -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil" class="mr-2 text-blue-600"></i> 解題示範：教室座位與颱風方位標定
+            </h2>
+            <div class="p-4 bg-slate-50 rounded-lg mb-4">
+                <p class="text-slate-700 font-bold">情境：以講桌為原點 (0, 0)，向東走 1 公尺記為 x +1，向北走 1 公尺記為 y +1。小明站在「恆春東方 100 公里、南方 50 公里」處，坐標如何表示？</p>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">1</span>
+                    <p class="text-slate-600"><b>判斷左右 (x 軸)：</b>向東為正、向西為負。東方 100 公里代表 x 坐標為 <b>+100</b>。</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">2</span>
+                    <p class="text-slate-600"><b>判斷上下 (y 軸)：</b>向北為正、向南為負。南方 50 公里代表 y 坐標為 <b>-50</b>。</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">3</span>
+                    <p class="text-slate-600 font-bold">得出答案：小明的坐標為 <span class="math-fact text-blue-700">(100, -50)</span>，位於<b>第四象限 (+, -)</b>！</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. 🧮 互動模擬實驗室 (投球遊戲模擬象限) -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center">
+                    <i data-lucide="trophy" class="mr-2 text-amber-500"></i> ⚾ 坐標投手訓練營：九宮格投球模擬器
+                </h2>
+                <button onclick="resetPitchGame()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium transition-colors">🔄 重置投手丘至 (0, 0)</button>
+            </div>
+            <p class="text-slate-600 mb-4 text-sm">請調整控制桿設定「水平力量 (x 軸)」與「垂直力量 (y 軸)」，按下投球觀察棒球落在哪個象限：</p>
+
+            <div class="grid md:grid-cols-2 gap-6 items-center mb-6">
+                <!-- 控制面板 -->
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-5">
+                    <!-- x 軸控制桿 -->
+                    <div>
+                        <div class="flex justify-between text-sm font-bold mb-1">
+                            <span class="text-blue-700">水平力量 x 軸 (西 ◄ ► 東)：</span>
+                            <span id="val-x" class="text-blue-700 font-extrabold">0</span>
+                        </div>
+                        <input type="range" id="input-x" min="-5" max="5" value="0" oninput="updatePitchControls()" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                        <div class="flex justify-between text-[11px] text-slate-400 font-bold px-1 mt-1">
+                            <span>-5 (西)</span>
+                            <span class="text-blue-600 font-extrabold bg-blue-100 px-1.5 py-0.5 rounded">x = 0 (原點)</span>
+                            <span>+5 (東)</span>
+                        </div>
+                    </div>
+
+                    <!-- y 軸控制桿 -->
+                    <div>
+                        <div class="flex justify-between text-sm font-bold mb-1">
+                            <span class="text-emerald-700">垂直力量 y 軸 (南 ◄ ► 北)：</span>
+                            <span id="val-y" class="text-emerald-700 font-extrabold">0</span>
+                        </div>
+                        <input type="range" id="input-y" min="-5" max="5" value="0" oninput="updatePitchControls()" class="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer">
+                        <div class="flex justify-between text-[11px] text-slate-400 font-bold px-1 mt-1">
+                            <span>-5 (南)</span>
+                            <span class="text-emerald-600 font-extrabold bg-emerald-100 px-1.5 py-0.5 rounded">y = 0 (原點)</span>
+                            <span>+5 (北)</span>
+                        </div>
+                    </div>
+
+                    <button onclick="pitchBall()" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white font-extrabold rounded-lg shadow-md transition-all flex items-center justify-center gap-2 text-base">
+                        <span>⚾ 投球發射！</span>
+                    </button>
+                </div>
+
+                <!-- SVG 坐標投手九宮格捕手區 -->
+                <div class="relative w-full h-64 grid-bg border-2 border-slate-300 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-inner">
+                    <!-- 四大象限背景標籤 -->
+                    <span class="absolute top-2 left-3 text-xs font-bold text-slate-300">第二象限 Ⅱ (-, +)</span>
+                    <span class="absolute top-2 right-3 text-xs font-bold text-slate-300">第一象限 Ⅰ (+, +)</span>
+                    <span class="absolute bottom-2 left-3 text-xs font-bold text-slate-300">第三象限 Ⅲ (-, -)</span>
+                    <span class="absolute bottom-2 right-3 text-xs font-bold text-slate-300">第四象限 Ⅳ (+, -)</span>
+
+                    <svg width="100%" height="100%" viewBox="-120 -120 240 240" class="overflow-visible">
+                        <!-- x 軸與 y 軸 -->
+                        <line x1="-110" y1="0" x2="110" y2="0" stroke="#334155" stroke-width="2.5"/>
+                        <line x1="0" y1="-110" x2="0" y2="110" stroke="#334155" stroke-width="2.5"/>
+                        <!-- 軸箭頭 -->
+                        <polygon points="115,0 105,-5 105,5" fill="#334155"/>
+                        <polygon points="0,-115 -5,-105 5,-105" fill="#334155"/>
+                        <text x="110" y="15" font-size="10" font-weight="bold" fill="#334155">x</text>
+                        <text x="-12" y="-105" font-size="10" font-weight="bold" fill="#334155">y</text>
+                        <text x="-12" y="12" font-size="9" font-weight="bold" fill="#64748b">O</text>
+
+                        <!-- 投球軌跡點線 -->
+                        <line id="pitch-line-x" x1="0" y1="0" x2="0" y2="0" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="3"/>
+                        <line id="pitch-line-y" x1="0" y1="0" x2="0" y2="0" stroke="#a7f3d0" stroke-width="1.5" stroke-dasharray="3"/>
+
+                        <!-- 棒球落點元件 -->
+                        <g id="ball-group" class="pitch-ball" transform="translate(0, 0)">
+                            <circle cx="0" cy="0" r="10" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+                            <path d="M -6 -5 Q 0 0 -6 5 M 6 -5 Q 0 0 6 5" fill="none" stroke="#dc2626" stroke-width="1"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- 落點數據分析回饋 -->
+            <div id="pitch-explanation" class="bg-amber-50 p-5 rounded-lg text-center text-amber-900 shadow-inner">
+                <!-- 由 JS 動態更新 -->
+            </div>
+        </section>
+
+        <!-- 6. 🔍 觀念引導：破解「距離與坐標」的密碼 -->
+        <section class="bg-indigo-50 rounded-xl shadow-sm p-6 mb-8 border border-indigo-200">
+            <h2 class="text-xl font-bold text-indigo-800 mb-4 flex items-center">
+                <i data-lucide="check-square" class="mr-2 w-5 h-5"></i> 🔍 觀念引導：點到坐標軸的距離密碼
+            </h2>
+            <div class="mb-4 text-slate-700 p-3 bg-white rounded-lg border border-indigo-100 italic text-sm">
+                挑戰：已知 P 點的坐標為 (-3, 4)，請問 P 點到 x 軸的距離是多少？到 y 軸的距離又是多少？
+            </div>
+            <div id="step-quiz" class="space-y-4">
+                <div id="sq1">
+                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 先看「到 x 軸的距離」：從 P 點垂直畫線到水平的 x 軸，看的是【上下波動的幅度 (y 坐標)】還是【左右距離】？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(1, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">看上下幅度，距離是 |4| = 4</button>
+                        <button onclick="answerStep(1, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">看左右距離，距離是 |-3| = 3</button>
+                    </div>
+                </div>
+                <div id="sq2" class="hidden">
+                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 賓果！那麼「到 y 軸的距離」看的又是什麼？距離會是負數嗎？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(2, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">看 y 坐標，距離是 -3</button>
+                        <button onclick="answerStep(2, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">看左右幅度 (x 坐標)，距離是 |-3| = 3（距離恆正）</button>
+                    </div>
+                </div>
+                <div id="step-feedback" class="hidden p-4 rounded-lg font-bold text-center"></div>
+            </div>
+        </section>
+
+        <!-- 7. 🧩 引導式實踐練習 -->
+        <!-- 練習 1：坐標與象限判斷 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-blue-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil-line" class="mr-2 text-blue-600"></i> 🧩 練習 1：步驟引導！推算未知點的坐標
+            </h2>
+            
+            <div class="p-4 bg-blue-50 rounded-lg mb-6 border border-blue-100">
+                <p class="text-blue-900 font-bold leading-relaxed">
+                    題目情境：已知 Q 點位在【第三象限】，且 Q 點到 x 軸的距離是 5 單位，到 y 軸的距離是 2 單位。請問 Q 點的坐標是多少？<br>
+                    <span class="text-xs text-blue-700 bg-blue-100/90 px-2.5 py-1 rounded inline-block mt-2 font-normal border border-blue-200">
+                        💡 <b>坐標小提示：</b> 例如坐標 <b>(-2, 5)</b> 代表向左 2 單位（到 y 軸距離為 2）、向上 5 單位（到 x 軸距離為 5），屬於第二象限。那麼本題位於第三象限的 Q 點呢？
+                    </span>
+                </p>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Step 1 -->
+                <div id="p1-s1">
+                    <p class="text-slate-800 mb-2 font-medium">步驟 1️⃣：第三象限的 x 坐標與 y 坐標正負號為何？</p>
+                    <div class="flex gap-2">
+                        <button onclick="checkP1(1, false)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition-all">(+, -)</button>
+                        <button onclick="checkP1(1, true)" class="px-5 py-2 bg-white border border-blue-400 rounded-lg font-bold text-blue-700 hover:bg-blue-50 transition-all">(-, -)</button>
+                    </div>
+                    <div id="p1-f1" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div id="p1-s2" class="hidden opacity-0 transition-all duration-500">
+                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">步驟 2️⃣：「到 y 軸距離是 2」代表 x 坐標數值為多少？「到 x 軸距離是 5」代表 y 坐標數值為多少？</p>
+                    <div class="flex gap-2">
+                        <button onclick="checkP1(2, true)" class="px-5 py-2 bg-white border border-blue-400 rounded-lg font-bold text-blue-700 hover:bg-blue-50 transition-all">x 坐標為 -2，y 坐標為 -5</button>
+                        <button onclick="checkP1(2, false)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-700 hover:bg-slate-100 transition-all">x 坐標為 -5，y 坐標為 -2</button>
+                    </div>
+                    <div id="p1-f2" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Result -->
+                <div id="p1-result" class="hidden opacity-0 transition-all duration-500">
+                    <div class="bg-green-50 p-6 border border-green-200 rounded-lg shadow-inner">
+                        <p class="text-green-800 font-bold flex items-center mb-2 text-lg">
+                            <i data-lucide="party-popper" class="mr-2 w-6 h-6"></i> 完全正確！Q 點坐標為 (-2, -5)！
+                        </p>
+                        <p class="text-green-700 leading-relaxed">
+                            <b>破譯秘訣口訣：</b><br>
+                            • 到 y 軸的距離 = |x 坐標| = 2 ➔ 因為第三象限 x 為負，所以 x = -2。<br>
+                            • 到 x 軸的距離 = |y 坐標| = 5 ➔ 因為第三象限 y 為負，所以 y = -5。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 練習 2：軸上點與象限判斷 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-emerald-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="layers" class="mr-2 text-emerald-600"></i> 🧮 練習 2：坐標快問快答（象限 vs 坐標軸）
+            </h2>
+            <p class="text-slate-600 mb-6 text-sm font-medium">請判斷下列各點的位置屬於哪一個象限或坐標軸：</p>
+            
+            <div class="space-y-6">
+                <!-- Case 1 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">1. 點 K 的坐標為 (0, -4)，K 點在哪裡？</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button onclick="checkP2(1, 'y軸')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">在 y 軸上（不屬於任何象限）</button>
+                        <button onclick="checkP2(1, '第四')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">第四象限</button>
+                    </div>
+                    <div id="p2-f1" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">2. 點 M 的坐標為 (-6, 2)，M 點在哪裡？</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button onclick="checkP2(2, '第二')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">第二象限 (-, +)</button>
+                        <button onclick="checkP2(2, '第三')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">第三象限 (-, -)</button>
+                    </div>
+                    <div id="p2-f2" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. 🚀 實戰挑戰：生活綜合練習 & 測驗 -->
+        <section class="bg-slate-50 rounded-2xl p-6 mb-8 border-2 border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i data-lucide="rocket" class="mr-2 text-orange-500"></i> 實戰挑戰：坐標生活大考驗
+            </h2>
+            
+            <div class="space-y-8">
+                <!-- Challenge 1 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">1. 距離計算</h3>
+                    <p class="text-sm text-slate-600 mb-4">平面上有一個點 A(-4, 7)，請問 A 點到 x 軸的距離是多少單位長？</p>
+                    <div class="flex items-center gap-3">
+                        <input type="number" id="chal1-ans" class="p-2 border rounded-lg w-28 text-center font-bold" placeholder="距離">
+                        <span class="font-bold">單位長</span>
+                        <button onclick="checkChal(1, 7)" class="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 text-sm transition-all">檢查解答</button>
+                    </div>
+                    <div id="chal1-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- Challenge 2 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">2. 颱風警報方位定位</h3>
+                    <p class="text-sm text-slate-600 mb-4">氣象局發布颱風警報：「颱風中心目前位於恆春北方 80 公里、西方 30 公里處」。若以恆春為原點 (0, 0)，向東、向北為正，則颱風中心的坐標為何？</p>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="font-bold text-slate-700">坐標：(</span>
+                        <input type="number" id="chal2-x" class="p-2 border rounded-lg w-20 text-center font-bold" placeholder="x">
+                        <span class="font-bold text-slate-700">,</span>
+                        <input type="number" id="chal2-y" class="p-2 border rounded-lg w-20 text-center font-bold" placeholder="y">
+                        <span class="font-bold text-slate-700">)</span>
+                        <button onclick="checkChal(2, null)" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 text-sm transition-all font-bold">檢查坐標</button>
+                    </div>
+                    <div id="chal2-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. ⚠️ 易錯迷思陷阱 & 💡 生活中的數學 (Footer) -->
+        <footer class="grid md:grid-cols-2 gap-6 mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center">
+                    <i data-lucide="alert-circle" class="mr-2 text-red-500"></i> ⚠️ 常見三大坐標迷思
+                </h3>
+                <ul class="text-sm space-y-3 text-slate-600 font-medium">
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">(x, y) 與 (y, x) 搞混？</span> 
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！(2, 5) 代表向右 2、向上 5；(5, 2) 是向右 5、向上 2，兩點位置完全不同！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">到 x 軸距離看 x 坐標？</span> 
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！到水平 x 軸的距離是垂直長度，看的是 |y|；到 y 軸距離看的才是 |x|！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">坐標軸上的點屬於象限？</span> 
+                        <span class="bg-amber-50 border border-amber-200 p-1.5 rounded text-amber-800 text-xs block mt-1">
+                            錯！例如 (3, 0) 在 x 軸上，既不屬於第一象限也不屬於第四象限！
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400">
+                    <i data-lucide="lightbulb" class="mr-2 w-5 h-5"></i> 💡 生活中的直觀坐標
+                </h3>
+                <p class="text-sm leading-relaxed opacity-90">
+                    <b>生活中有哪些直觀坐標系？</b><br>
+                  
+                    1. <b>電影院劃位：</b> 「第 5 排第 8 號」就是 (5, 8) 坐標！<br>
+                    2. <b>GPS 地圖導航：</b> 利用經度（東經/西經）與緯度（北緯/南緯）精準定位你在地球上的位置。<br>
+                    3. <b>棋盤遊戲：</b> 西洋棋或圍棋用字母與數字（如 E4）標示棋子位置！
+                </p>
+            </div>
+        </footer>
+
+        <!-- 10. 頁腳宣告 -->
+        <footer class="text-center text-slate-400 text-sm pb-12">
+            本講義依據 108 課綱 G-7-1 標準編製 &copy; 2026 互動式教學系統
+        </footer>
+    </div>
+
+    <!-- 11. JavaScript 邏輯 -->
+    <script>
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            updatePitchControls();
+        };
+
+        // ⚾ 坐標投手訓練營九宮格互動邏輯
+        function updatePitchControls() {
+            const x = parseInt(document.getElementById('input-x').value);
+            const y = parseInt(document.getElementById('input-y').value);
+
+            document.getElementById('val-x').innerText = (x > 0 ? "+" + x : x);
+            document.getElementById('val-y').innerText = (y > 0 ? "+" + y : y);
+        }
+
+        function pitchBall() {
+            const x = parseInt(document.getElementById('input-x').value);
+            const y = parseInt(document.getElementById('input-y').value);
+
+            // SVG 坐標換算 (刻度 1 單位 = 20px，SVG y 軸向下為正所以 y 需要加負號)
+            const svgX = x * 20;
+            const svgY = -y * 20;
+
+            const ballGroup = document.getElementById('ball-group');
+            const lineX = document.getElementById('pitch-line-x');
+            const lineY = document.getElementById('pitch-line-y');
+
+            // 棒球移動
+            ballGroup.setAttribute('transform', `translate(${svgX}, ${svgY})`);
+
+            // 虛線連線更新
+            lineX.setAttribute('x2', svgX);
+            lineX.setAttribute('y2', 0);
+            lineY.setAttribute('x1', svgX);
+            lineY.setAttribute('y1', 0);
+            lineY.setAttribute('x2', svgX);
+            lineY.setAttribute('y2', svgY);
+
+            // 象限與距離判斷
+            let quadrantText = "";
+            let quadColor = "";
+
+            if (x > 0 && y > 0) {
+                quadrantText = "第一象限 Ⅰ (+, +)";
+                quadColor = "text-blue-600 font-black";
+            } else if (x < 0 && y > 0) {
+                quadrantText = "第二象限 Ⅱ (-, +)";
+                quadColor = "text-indigo-600 font-black";
+            } else if (x < 0 && y < 0) {
+                quadrantText = "第三象限 Ⅲ (-, -)";
+                quadColor = "text-emerald-600 font-black";
+            } else if (x > 0 && y < 0) {
+                quadrantText = "第四象限 Ⅳ (+, -)";
+                quadColor = "text-amber-600 font-black";
+            } else if (x === 0 && y === 0) {
+                quadrantText = "原點 O (0, 0)";
+                quadColor = "text-purple-600 font-black";
+            } else if (y === 0) {
+                quadrantText = "在 x 軸上（不屬於任何象限）";
+                quadColor = "text-red-600 font-black";
+            } else if (x === 0) {
+                quadrantText = "在 y 軸上（不屬於任何象限）";
+                quadColor = "text-red-600 font-black";
+            }
+
+            const distX = Math.abs(y);
+            const distY = Math.abs(x);
+
+            document.getElementById('pitch-explanation').innerHTML = `
+                <div class="text-base font-bold">
+                    ⚾ 落點坐標：<span class="math-fact text-lg">(${x}, ${y})</span> ｜ 位置：<span class="${quadColor}">${quadrantText}</span>
+                </div>
+                <div class="text-xs text-slate-700 mt-2 font-bold">
+                    📏 距離檢測：到 x 軸的距離是 <span class="text-blue-700">${distX}</span> 單位長（看 |y|）｜ 到 y 軸的距離是 <span class="text-emerald-700">${distY}</span> 單位長（看 |x|）
+                </div>
+            `;
+        }
+
+        function resetPitchGame() {
+            document.getElementById('input-x').value = 0;
+            document.getElementById('input-y').value = 0;
+            updatePitchControls();
+            pitchBall();
+        }
+
+        // 🔍 觀念引導邏輯
+        function answerStep(step, isCorrect) {
+            const feedback = document.getElementById('step-feedback');
+            feedback.classList.remove('hidden');
+
+            if (step === 1) {
+                if (isCorrect) {
+                    feedback.innerHTML = "✅ 完全正確！到 x 軸的距離看的是上下偏離程度，也就是 |y 坐標| = |4| = 4！解鎖下一個問題！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm";
+                    document.getElementById('sq1').classList.add('opacity-50');
+                    document.getElementById('sq2').classList.remove('hidden');
+                } else {
+                    feedback.innerHTML = "❌ 答錯囉！從 P 點垂直量到 x 軸是看縱向長度，看的是 y 坐標哦！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
+                }
+            } else if (step === 2) {
+                if (isCorrect) {
+                    feedback.innerHTML = "🎉 太棒了！到 y 軸距離看 |x 坐標| = |-3| = 3，且長度與距離【恆為正數】！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm";
+                    document.getElementById('sq2').classList.add('opacity-50');
+                } else {
+                    feedback.innerHTML = "❌ 距離不可能有負數！距離必須加絕對值算正數哦！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
+                }
+            }
+        }
+
+        // 🧩 練習 1 檢查邏輯
+        function checkP1(step, isCorrect) {
+            if (step === 1) {
+                const f = document.getElementById('p1-f1');
+                f.classList.remove('hidden');
+                if (isCorrect) {
+                    f.innerHTML = "✅ 正確！第三象限 x 軸與 y 坐標通通都是負數 (-, -)。";
+                    f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    const s2 = document.getElementById('p1-s2');
+                    s2.classList.remove('hidden');
+                    setTimeout(() => s2.classList.add('opacity-100'), 10);
+                } else {
+                    f.innerHTML = "❌ 答錯囉！第三象限在左下角，x 與 y 都必須是負數。";
+                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                }
+            } else if (step === 2) {
+                const f = document.getElementById('p1-f2');
+                f.classList.remove('hidden');
+                if (isCorrect) {
+                    f.innerHTML = "✅ 太強了！到 y 軸距離 2 代表 |x| = 2 ➔ x = -2；到 x 軸距離 5 代表 |y| = 5 ➔ y = -5！";
+                    f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    const res = document.getElementById('p1-result');
+                    res.classList.remove('hidden');
+                    setTimeout(() => res.classList.add('opacity-100'), 10);
+                } else {
+                    f.innerHTML = "❌ 搞反囉！到 y 軸距離看的是 x 坐標，到 x 軸距離看的是 y 坐標！";
+                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                }
+            }
+        }
+
+        // 🧮 練習 2 檢查邏輯
+        function checkP2(qNum, choice) {
+            const f = document.getElementById('p2-f' + qNum);
+            f.classList.remove('hidden');
+
+            if (qNum === 1) {
+                if (choice === 'y軸') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
+                    f.innerHTML = "✅ 觀念超清晰！因為 x 坐標為 0，K(0, -4) 剛好落在 y 軸上，【不屬於任何象限】！";
+                } else {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
+                    f.innerHTML = "❌ 這是最常見的陷阱！x 坐標為 0 代表在坐標軸上，坐標軸是不算在任何象限內的哦！";
+                }
+            } else if (qNum === 2) {
+                if (choice === '第二') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
+                    f.innerHTML = "✅ 答對了！(-6, 2) 為 (-, +)，屬於第二象限（左上方）！";
+                } else {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
+                    f.innerHTML = "❌ 不對哦！y 坐標是 +2（正數），所以是在上方第二象限！";
+                }
+            }
+        }
+
+        // 🚀 實戰挑戰檢查邏輯（含答錯時顯示颱風方位示意圖）
+        function checkChal(qNum, correctVal) {
+            const feedback = document.getElementById(`chal${qNum}-feedback`);
+            feedback.classList.remove('hidden');
+
+            if (qNum === 1) {
+                const val = parseInt(document.getElementById('chal1-ans').value);
+                if (val === 7) {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
+                    feedback.innerHTML = "✅ 完全正確！A(-4, 7) 到 x 軸的距離看的是 |y 坐標| = |7| = 7 單位長！";
+                } else {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                    feedback.innerHTML = "❌ 答錯囉！提示：到 x 軸的距離是垂直距離，要看 y 坐標並加上絕對值哦！";
+                }
+            } else if (qNum === 2) {
+                const x = parseInt(document.getElementById('chal2-x').value);
+                const y = parseInt(document.getElementById('chal2-y').value);
+
+                if (x === -30 && y === 80) {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
+                    feedback.innerHTML = "🎉 太強了！答對了！西方 30 公里代表 x = -30，北方 80 公里代表 y = 80，颱風中心坐標為 (-30, 80)！";
+                } else {
+                    feedback.className = "mt-3 text-sm p-4 rounded-lg font-bold bg-red-50 text-red-900 border border-red-200";
+                    feedback.innerHTML = `
+                        ❌ 正負號或順序搞錯囉！<br>
+                        <b>解析：</b>西方為 x 軸負方向 (x = -30)，北方為 y 軸正方向 (y = 80)，正確坐標為 <b>(-30, 80)</b>。<br>
+                        <div class="mt-2 text-xs text-slate-600">如下圖所示，恆春為原點 (0,0)，颱風部位於第二象限 (-, +)：</div>
+                        <div class="flex justify-center mt-3">
+                            <svg width="220" height="160" viewBox="-110 -80 220 160" class="bg-white border border-red-200 rounded-lg shadow-sm">
+                                <line x1="-90" y1="0" x2="90" y2="0" stroke="#475569" stroke-width="2"/>
+                                <line x1="0" y1="-65" x2="0" y2="65" stroke="#475569" stroke-width="2"/>
+                                
+                                <text x="75" y="-6" font-size="11" font-weight="bold" fill="#2563eb">東 (+x)</text>
+                                <text x="-105" y="-6" font-size="11" font-weight="bold" fill="#dc2626">西 (-x)</text>
+                                <text x="6" y="-52" font-size="11" font-weight="bold" fill="#059669">北 (+y)</text>
+                                <text x="6" y="60" font-size="11" font-weight="bold" fill="#d97706">南 (-y)</text>
+                                <text x="-12" y="14" font-size="10" font-weight="bold" fill="#64748b">恆春(0,0)</text>
+
+                                <line x1="-45" y1="0" x2="-45" y2="-40" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3"/>
+                                <line x1="0" y1="-40" x2="-45" y2="-40" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3"/>
+                                <circle cx="-45" cy="-40" r="6" fill="#dc2626"/>
+                                <text x="-100" y="-45" font-size="10" font-weight="bold" fill="#dc2626">颱風中心(-30, 80)</text>
+                            </svg>
+                        </div>
+                    `;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
