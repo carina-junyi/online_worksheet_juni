@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-7-2 一元一次方程式的意義互動講義</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .math-fact { background-color: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 6px; font-weight: bold; }
+        .step-badge { background-color: #3b82f6; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .feedback-box { transition: all 0.3s ease; }
+        
+        /* 網格與線段圖動畫特效 */
+        .grid-bg {
+            background-size: 20px 20px;
+            background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px), linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+        }
+        .challenge-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+        .segment-bar {
+            transition: width 0.4s ease-out, background-color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- 1. Header (標題列) -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 一元一次方程式的意義</h1>
+            <p class="text-slate-600">A-7-2 互動式學習講義</p>
+        </header>
+
+        <!-- 2. 🎯 學習目標 (Learning Objectives) -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="mr-2 w-5 h-5"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>理解「方程式」代表含有未知數的等式，「一元一次」代表恰有 1 個未知數且最高次方為 1。</li>
+                <li>能區分「代數式」（沒有等號）與「方程式」（含有等號）。</li>
+                <li>理解方程式「解」的定義：代入未知數後能讓「左式等於右式」的數值。</li>
+                <li>能透過線段圖與數線理解生活情境，並列出一元一次方程式。</li>
+            </ul>
+        </section>
+
+        <!-- 3. 1️⃣ 2️⃣ 3️⃣ 核心概念卡片 (Concept Cards) -->
+        <div class="grid md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                <h3 class="font-bold text-blue-700 text-lg mb-2">1️⃣ 什麼是一元一次方程式？</h3>
+                <p class="text-sm text-blue-800 font-bold mb-1">必須滿足三個條件：</p>
+                <ul class="list-disc list-inside text-xs text-blue-800 space-y-1 mb-2">
+                    <li><b>有等號 =</b></li>
+                    <li><b>只有 1 個未知數 (一元)</b></li>
+                    <li><b>未知數次方為 1 (一次)</b></li>
+                </ul>
+                <p class="text-xs text-blue-600 font-bold">例：3x + 1 = 4x - 2 (是) ｜ 3x + 1 (否，無等號)</p>
+            </div>
+            <div class="bg-green-50 p-5 rounded-lg border border-green-200">
+                <h3 class="font-bold text-green-700 text-lg mb-2">2️⃣ 什麼是方程式的「解」？</h3>
+                <p class="text-sm text-green-800">把某個實際數值帶入未知數後，如果能讓<b>「左邊的算式 = 右邊的算式」</b>，這個數就是方程式的解！</p>
+                <p class="mt-2 text-xs text-green-600 font-bold">例：3x + 1 = 4x - 2，當 x = 3 時兩邊都等於 10！</p>
+            </div>
+            <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200">
+                <h3 class="font-bold text-emerald-700 text-lg mb-2">3️⃣ 線段圖與生活列式</h3>
+                <p class="text-sm text-emerald-800">畫出數線或線段圖，將未知數與已知數量對齊。<b>「左邊線段總長 = 右邊線段總長」</b>即可列出方程式！</p>
+                <p class="mt-2 text-xs text-emerald-600 font-bold">用等量關係記錄生活中的數學！</p>
+            </div>
+        </div>
+
+        <!-- 4. 🧮 互動模擬實驗室：年齡問題與動態線段圖 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center">
+                    <i data-lucide="line-chart" class="mr-2 text-indigo-600"></i> 🧮 互動實驗室：年齡問題動態線段對齊器
+                </h2>
+                <button onclick="resetAgeSim()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium transition-colors">🔄 重置經過年數</button>
+            </div>
+            
+            <div class="p-4 bg-indigo-50 rounded-lg mb-4 text-sm text-indigo-900 leading-relaxed border border-indigo-100">
+                <b>情境探索：</b>小桐今年 12 歲，爸爸今年 40 歲。請問<b>經過 x 年後</b>，爸爸的年齡剛好是小桐年齡的 <b>2 倍</b>？<br>
+                • 小桐 x 年後的年齡 = <b>12 + x</b> 歲 ｜ 爸爸 x 年後的年齡 = <b>40 + x</b> 歲<br>
+                • 等量關係：<b>2 × (12 + x) = 40 + x</b>
+            </div>
+
+            <!-- 控制桿與動態線段視覺區 -->
+            <div class="space-y-6 mb-6">
+                <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-xl border">
+                    <label class="font-bold text-slate-700 text-sm whitespace-nowrap">拖移滑桿改變經過年數 x：</label>
+                    <input type="range" id="sim-age-x" min="0" max="25" value="0" oninput="updateAgeSim()" class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer">
+                    <span id="sim-x-val" class="font-black text-indigo-700 text-lg min-w-[4rem]">x = 0 年</span>
+                </div>
+
+                <!-- SVG 動態線段對比視覺 -->
+                <div class="bg-slate-900 text-white p-6 rounded-xl relative overflow-hidden shadow-inner space-y-5">
+                    <!-- 小桐線段 (12 + x) 的兩倍 -->
+                    <div>
+                        <div class="flex justify-between text-xs font-bold text-slate-300 mb-1">
+                            <span>小桐年齡的 2 倍：2 × (12 + x) = <span id="tong-val-text" class="text-amber-300">24</span> 歲</span>
+                            <span class="text-amber-400">藍色線段 (含兩倍延長段)</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-8 rounded-lg relative overflow-hidden flex items-center p-1">
+                            <!-- 12 + x 第一段 -->
+                            <div id="tong-bar-1" class="segment-bar bg-blue-500 h-6 rounded flex items-center justify-center text-xs font-bold text-white shadow" style="width: 20%;">
+                                <span id="tong-seg1-label">12</span>
+                            </div>
+                            <!-- 12 + x 第二段 (虛線倍數段) -->
+                            <div id="tong-bar-2" class="segment-bar bg-blue-400/80 border-2 border-dashed border-amber-300 h-6 rounded ml-1 flex items-center justify-center text-xs font-bold text-white shadow" style="width: 20%;">
+                                <span id="tong-seg2-label">12</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 爸爸線段 (40 + x) -->
+                    <div>
+                        <div class="flex justify-between text-xs font-bold text-slate-300 mb-1">
+                            <span>爸爸的年齡：40 + x = <span id="dad-val-text" class="text-emerald-300">40</span> 歲</span>
+                            <span class="text-emerald-400">綠色線段</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-8 rounded-lg relative overflow-hidden flex items-center p-1">
+                            <div id="dad-bar" class="segment-bar bg-emerald-500 h-6 rounded flex items-center justify-center text-xs font-bold text-white shadow" style="width: 50%;">
+                                <span id="dad-seg-label">40</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="age-sim-explanation" class="bg-amber-50 p-4 rounded-lg text-center text-amber-900 font-bold text-sm shadow-inner">
+                <!-- 由 JS 動態更新 -->
+            </div>
+        </section>
+
+        <!-- 5. ✏️ 解題示範：發口香糖列式 (Worked Example) -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil" class="mr-2 text-blue-600"></i> 解題示範：發口香糖問題與驗證方程式的解
+            </h2>
+            <div class="p-4 bg-slate-50 rounded-lg mb-4">
+                <p class="text-slate-700 font-bold">情境：老師帶了 2 盒一樣的口香糖發給全班 26 個學生，每人發 2 條後，還剩 8 條。假設一盒有 x 條口香糖，請列出方程式並驗證一盒是否有 30 條？</p>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">1</span>
+                    <p class="text-slate-600"><b>列出總條數：</b>2 盒口香糖共有 <b>2x</b> 條。發給 26 人一人 2 條，共發出 26 × 2 = <b>52 條</b>。</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">2</span>
+                    <p class="text-slate-600"><b>列出方程式：</b>總條數扣掉發出的條數等於剩下的條數 ➔ 一元一次方程式為 <span class="math-fact text-blue-700">2x - 52 = 8</span>。</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">3</span>
+                    <p class="text-slate-600 font-bold"><b>驗證是否為解：</b>將 x = 30 代入左式 ➔ 2 × 30 - 52 = 60 - 52 = 8（等於右式！）。因此，<span class="math-fact text-blue-700">30 是此方程式的解</span>，代表一盒有 30 條口香糖！</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 🔍 觀念引導：辨識「一元一次方程式」與「驗證解」 -->
+        <section class="bg-indigo-50 rounded-xl shadow-sm p-6 mb-8 border border-indigo-200">
+            <h2 class="text-xl font-bold text-indigo-800 mb-4 flex items-center">
+                <i data-lucide="check-square" class="mr-2 w-5 h-5"></i> 🔍 觀念引導：透視一元一次方程式的火眼金睛
+            </h2>
+            <div class="mb-4 text-slate-700 p-3 bg-white rounded-lg border border-indigo-100 italic text-sm">
+                挑戰：請檢查算式「3x + 1 = 4x - 2」，這是「一元一次方程式」嗎？數字 3 是它的解嗎？
+            </div>
+            <div id="step-quiz" class="space-y-4">
+                <div id="sq1">
+                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 先看結構：含有等號 =、只有 1 個未知數 x、且 x 次方為 1，它是一元一次方程式嗎？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(1, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">是的，完全符合三個條件</button>
+                        <button onclick="answerStep(1, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">不是，因為兩邊都有 x</button>
+                    </div>
+                </div>
+                <div id="sq2" class="hidden">
+                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 接著驗證解：把 x = 3 代入兩邊。左式 3(3)+1 = 10，右式 4(3)-2 = 10。兩邊相等嗎？3 是不是解？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(2, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">相等 (10 = 10)，所以 3 是此方程式的解！</button>
+                        <button onclick="answerStep(2, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">不相等，3 不是解</button>
+                    </div>
+                </div>
+                <div id="step-feedback" class="hidden p-4 rounded-lg font-bold text-center"></div>
+            </div>
+        </section>
+
+        <!-- 7. 🧩 引導式實踐練習 -->
+        <!-- 練習 1：步驟引導列一元一次方程式 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-blue-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil-line" class="mr-2 text-blue-600"></i> 🧩 練習 1：步驟引導！買飲料情境列方程式
+            </h2>
+            
+            <div class="p-4 bg-blue-50 rounded-lg mb-6 border border-blue-100">
+                <p class="text-blue-900 font-bold leading-relaxed">
+                    題目情境：小華買了 3 杯每杯 x 元的珍珠奶茶，結帳時使用折價券折抵 15 元，最後付了 135 元。請列出滿足此情境的一元一次方程式。
+                </p>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Step 1 -->
+                <div id="p1-s1">
+                    <p class="text-slate-800 mb-2 font-medium">步驟 1️⃣：買 3 杯珍珠奶茶總共要多少錢？折抵 15 元後應付多少錢？</p>
+                    <div class="flex gap-2">
+                        <button onclick="checkP1(1, false)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">3x + 15 元</button>
+                        <button onclick="checkP1(1, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">3x - 15 元</button>
+                    </div>
+                    <div id="p1-f1" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div id="p1-s2" class="hidden opacity-0 transition-all duration-500">
+                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">步驟 2️⃣：將應付金額與實際付出的 135 元用等號連接，正確的一元一次方程式為何？</p>
+                    <div class="flex gap-2">
+                        <button onclick="checkP1(2, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">3x - 15 = 135</button>
+                        <button onclick="checkP1(2, false)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">3x = 135 - 15</button>
+                    </div>
+                    <div id="p1-f2" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Result -->
+                <div id="p1-result" class="hidden opacity-0 transition-all duration-500">
+                    <div class="bg-green-50 p-6 border border-green-200 rounded-lg shadow-inner">
+                        <p class="text-green-800 font-bold flex items-center mb-2 text-lg">
+                            <i data-lucide="party-popper" class="mr-2 w-6 h-6"></i> 完全正確！列式為 3x - 15 = 135！
+                        </p>
+                        <p class="text-green-700 leading-relaxed">
+                            <b>觀念點撥：</b>方程式必須將「包含未知數的代數式」與「實際結果」用<b>等號 = </b>連接！
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 練習 2：方程式識別與驗證解快問快答 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-emerald-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="layers" class="mr-2 text-emerald-600"></i> 🧮 練習 2：一元一次方程式觀念快問快答
+            </h2>
+            <p class="text-slate-600 mb-6 text-sm font-medium">請判斷下列算式的性質與驗證結果：</p>
+            
+            <div class="space-y-6">
+                <!-- Case 1 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">1. 下列何者是「一元一次方程式」？</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button onclick="checkP2(1, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">2x + 5 = 11</button>
+                        <button onclick="checkP2(1, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">3x + 2y = 7</button>
+                        <button onclick="checkP2(1, 'C')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">5x - 4</button>
+                    </div>
+                    <div id="p2-f1" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">2. 驗證數字 4 是否為方程式「2x + 3 = 11」的解？</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button onclick="checkP2(2, 'yes')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">是，代入後左式 2(4)+3 = 11 等於右式！</button>
+                        <button onclick="checkP2(2, 'no')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">不是，代入後不相等</button>
+                    </div>
+                    <div id="p2-f2" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. 🚀 實戰挑戰：生活綜合練習 & 測驗 -->
+        <section class="bg-slate-50 rounded-2xl p-6 mb-8 border-2 border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i data-lucide="rocket" class="mr-2 text-orange-500"></i> 實戰挑戰：一元一次方程式生活列式大考驗
+            </h2>
+            
+            <div class="space-y-8">
+                <!-- Challenge 1 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">1. 驗證方程式的解</h3>
+                    <p class="text-sm text-slate-600 mb-4">請問 x = 5 是下列哪一個方程式的解？</p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="checkChal(1, 'A')" class="px-4 py-2 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all">(A) 3x - 2 = 10</button>
+                        <button onclick="checkChal(1, 'B')" class="px-4 py-2 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all">(B) 2x + 1 = 11</button>
+                        <button onclick="checkChal(1, 'C')" class="px-4 py-2 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all">(C) 4x - 5 = 12</button>
+                    </div>
+                    <div id="chal1-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- Challenge 2 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">2. 年齡問題避坑列式題</h3>
+                    <p class="text-sm text-slate-600 mb-4">媽媽今年 36 歲，小美今年 10 歲。經過 x 年後，媽媽的年齡剛好是小美年齡的 3 倍。請列出正確的一元一次方程式：</p>
+                    <div class="space-y-2">
+                        <button onclick="checkChal(2, 'A')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(A) 36 + x = 3 × (10 + x)</button>
+                        <button onclick="checkChal(2, 'B')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(B) 36 + x = 10 × 3</button>
+                        <button onclick="checkChal(2, 'C')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(C) 36 = 3 × (10 + x)</button>
+                    </div>
+                    <div id="chal2-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. ⚠️ 易錯迷思陷阱 & 💡 生活中的數學 (Footer) -->
+        <footer class="grid md:grid-cols-2 gap-6 mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center">
+                    <i data-lucide="alert-circle" class="mr-2 text-red-500"></i> ⚠️ 一元一次方程式的三大常見迷思
+                </h3>
+                <ul class="text-sm space-y-3 text-slate-600 font-medium">
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">代數式與方程式混淆？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！3x + 1 只是「代數式」；必須有「等號 =」如 3x + 1 = 7 才是「方程式」！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">年齡問題只給一個人加時間？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！經過 x 年後，媽媽長大 x 歲 (36 + x)，小美也同樣會長大 x 歲 (10 + x)，不可寫成 36 + x = 10 × 3！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">以為只要算出數字就是解？</span>
+                        <span class="bg-amber-50 border border-amber-200 p-1.5 rounded text-amber-800 text-xs block mt-1">
+                            錯！只有將數字代入代數式後，能讓「左邊等於右邊」成立的數，才是真正的解！
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400">
+                    <i data-lucide="lightbulb" class="mr-2 w-5 h-5"></i> 💡 生活中的等量平衡
+                </h3>
+                <p class="text-sm leading-relaxed opacity-90">
+                    <b>方程式就像一座精密的「等量天秤」！</b><br>
+                    1. <b>超商購物找零：</b> 付 500 元買了 3 瓶 x 元的飲料找回 350 元 ➔ 方程式：500 - 3x = 350。<br>
+                    2. <b>分攤餐費：</b> 全店總消費 1200 元，x 個人平分每人付 150 元 ➔ 方程式：1200 / x = 150。<br>
+                    3. <b>等量平衡思維：</b> 左天秤等於右天秤，這就是數學等式的魅力！
+                </p>
+            </div>
+        </footer>
+
+        <!-- 10. 頁腳宣告 -->
+        <footer class="text-center text-slate-400 text-sm pb-12">
+            本講義依據 108 課綱 A-7-2 標準編製 &copy; 2026 互動式教學系統
+        </footer>
+    </div>
+
+    <!-- 11. JavaScript 邏輯 -->
+    <script>
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            updateAgeSim();
+        };
+
+        // 🧮 年齡問題動態線段圖模擬器邏輯
+        function updateAgeSim() {
+            const x = parseInt(document.getElementById('sim-age-x').value);
+            document.getElementById('sim-x-val').innerText = `x = ${x} 年`;
+
+            const tongAge = 12 + x;
+            const tongDouble = 2 * tongAge;
+            const dadAge = 40 + x;
+
+            document.getElementById('tong-val-text').innerText = tongDouble;
+            document.getElementById('dad-val-text').innerText = dadAge;
+
+            document.getElementById('tong-seg1-label').innerText = `${tongAge}`;
+            document.getElementById('tong-seg2-label').innerText = `${tongAge}`;
+            document.getElementById('dad-seg-label').innerText = `${dadAge}`;
+
+            const maxVal = 60;
+            const seg1Pct = Math.min(100, (tongAge / maxVal) * 100);
+            const dadPct = Math.min(100, (dadAge / maxVal) * 100);
+
+            const bar1 = document.getElementById('tong-bar-1');
+            const bar2 = document.getElementById('tong-bar-2');
+            const dadBar = document.getElementById('dad-bar');
+
+            bar1.style.width = `${seg1Pct}%`;
+            bar2.style.width = `${seg1Pct}%`;
+            dadBar.style.width = `${dadPct}%`;
+
+            const expl = document.getElementById('age-sim-explanation');
+
+            if (tongDouble === dadAge) {
+                bar1.className = "segment-bar bg-amber-500 h-6 rounded flex items-center justify-center text-xs font-bold text-white shadow ring-2 ring-amber-300";
+                bar2.className = "segment-bar bg-amber-400 border-2 border-dashed border-white h-6 rounded ml-1 flex items-center justify-center text-xs font-bold text-white shadow ring-2 ring-amber-300";
+                dadBar.className = "segment-bar bg-emerald-400 h-6 rounded flex items-center justify-center text-xs font-bold text-white shadow ring-2 ring-amber-300";
+
+                expl.className = "bg-green-100 p-4 rounded-lg text-center text-green-900 font-extrabold text-sm border-2 border-green-400 shadow-md";
+                expl.innerHTML = `
+                    🎉 完美對齊！當經過 x = 16 年時：<br>
+                    小桐 28 歲的 2 倍 (28 × 2 = 56) 剛好等於爸爸的年齡 (40 + 16 = 56 歲)！<br>
+                    因此，<span class="underline text-green-950 text-base">x = 16 就是方程式 2(12 + x) = 40 + x 的解</span>！
+                `;
+            } else {
+                bar1.className = "segment-bar bg-blue-500 h-6 rounded flex items-center justify-center text-xs font-bold text-white shadow";
+                bar2.className = "segment-bar bg-blue-400/80 border-2 border-dashed border-amber-300 h-6 rounded ml-1 flex items-center justify-center text-xs font-bold text-white shadow";
+                dadBar.className = "segment-bar bg-emerald-500 h-6 rounded flex items-center justify-center text-xs font-bold text-white shadow";
+
+                const diff = Math.abs(tongDouble - dadAge);
+                expl.className = "bg-amber-50 p-4 rounded-lg text-center text-amber-900 font-bold text-sm shadow-inner";
+                expl.innerHTML = `
+                    目前經過 x = ${x} 年：<br>
+                    小桐年齡 2 倍為 ${tongDouble} 歲 ｜ 爸爸年齡為 ${dadAge} 歲（兩條線段差距 ${diff} 歲，還沒對齊哦！繼續拖移滑桿試試！）
+                `;
+            }
+        }
+
+        function resetAgeSim() {
+            document.getElementById('sim-age-x').value = 0;
+            updateAgeSim();
+        }
+
+        // 🔍 觀念引導邏輯（答錯時解析該選項為何錯誤，不直接透露正確答案）
+        function answerStep(step, isCorrect) {
+            const feedback = document.getElementById('step-feedback');
+            feedback.classList.remove('hidden');
+
+            if (step === 1) {
+                if (isCorrect) {
+                    feedback.innerHTML = "✅ 完全正確！含有等號 =、恰有 1 個未知數 x、且 x 為一次方，它是一元一次方程式！解鎖下一步！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm";
+                    document.getElementById('sq1').classList.add('opacity-50');
+                    document.getElementById('sq2').classList.remove('hidden');
+                } else {
+                    feedback.innerHTML = "❌ 答錯囉！未知數可以同時出現在等號兩邊，只要兩邊都是同一個未知數 x，且最高次方為 1，它依然是一元一次方程式。請再思考看看！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
+                }
+            } else if (step === 2) {
+                if (isCorrect) {
+                    feedback.innerHTML = "🎉 太棒了！代入 x = 3 後左式等於右式 (10 = 10)，因此 3 就是這個方程式的解！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm";
+                    document.getElementById('sq2').classList.add('opacity-50');
+                } else {
+                    feedback.innerHTML = "❌ 算算看！將 x = 3 代入左式「3(3) + 1」與右式「4(3) - 2」，兩邊算出來的數值真的不相等嗎？請再認真算一次！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
+                }
+            }
+        }
+
+        // 🧩 練習 1 檢查邏輯（答錯時說明錯誤選項原因）
+        function checkP1(step, isCorrect) {
+            if (step === 1) {
+                const f = document.getElementById('p1-f1');
+                f.classList.remove('hidden');
+                if (isCorrect) {
+                    f.innerHTML = "✅ 正確！3 杯珍奶 3x 元，折抵 15 元為 3x - 15 元。";
+                    f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    const s2 = document.getElementById('p1-s2');
+                    s2.classList.remove('hidden');
+                    setTimeout(() => s2.classList.add('opacity-100'), 10);
+                } else {
+                    f.innerHTML = "❌ 答錯囉！折抵 15 元代表優惠結帳，應該是指把金額「扣掉/減去 15」，而不是「加上 15」哦！請再選選看！";
+                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                }
+            } else if (step === 2) {
+                const f = document.getElementById('p1-f2');
+                f.classList.remove('hidden');
+                if (isCorrect) {
+                    f.innerHTML = "✅ 太強了！應付金額等於付出的 135 元，列式為 3x - 15 = 135！";
+                    f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    const res = document.getElementById('p1-result');
+                    res.classList.remove('hidden');
+                    setTimeout(() => res.classList.add('opacity-100'), 10);
+                } else {
+                    f.innerHTML = "❌ 答錯囉！這個選項是已經經過移項計算的式子，但題目要我們依據「買 3 杯珍珠奶茶扣掉 15 元等於總共付了 135 元」的原始過程列式哦！請再思考看看！";
+                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                }
+            }
+        }
+
+        // 🧮 練習 2 檢查邏輯（答錯時針對選項說明原因，不透露答案）
+        function checkP2(qNum, choice) {
+            const f = document.getElementById('p2-f' + qNum);
+            f.classList.remove('hidden');
+
+            if (qNum === 1) {
+                if (choice === 'A') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
+                    f.innerHTML = "✅ 觀念超清晰！2x + 5 = 11 有等號、1 個未知數 x、最高次方為 1，是一元一次方程式！";
+                } else if (choice === 'B') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
+                    f.innerHTML = "❌ 答錯囉！算式「3x + 2y = 7」裡面含有 x 與 y 兩個不同的未知數，這屬於「二元」方程式，不符合「一元」的條件哦！請再試試看！";
+                } else if (choice === 'C') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
+                    f.innerHTML = "❌ 答錯囉！算式「5x - 4」裡面完全沒有「等號 =」，這只是普通的代數式，並非「方程式」哦！請再試試看！";
+                }
+            } else if (qNum === 2) {
+                if (choice === 'yes') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
+                    f.innerHTML = "✅ 答對了！代入 x = 4 ➔ 左式 2(4)+3 = 8+3 = 11（等於右式！），所以 4 確實是解！";
+                } else {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
+                    f.innerHTML = "❌ 算錯囉！請將 x = 4 代入左式「2(4) + 3」算算看，得出的結果真的不等於右邊的 11 嗎？請再算一次！";
+                }
+            }
+        }
+
+        // 🚀 實戰挑戰檢查邏輯（答錯說明選項原因，不直接給答案）
+        function checkChal(qNum, choice) {
+            const feedback = document.getElementById(`chal${qNum}-feedback`);
+            feedback.classList.remove('hidden');
+
+            if (qNum === 1) {
+                if (choice === 'B') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
+                    feedback.innerHTML = "✅ 完全正確！代入 x = 5 至 (B) ➔ 2(5) + 1 = 11（左右相等！），因此 5 是 (B) 的解！";
+                } else if (choice === 'A') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                    feedback.innerHTML = "❌ 答錯囉！將 x = 5 代入 (A) 的左式「3(5) - 2 = 13」，13 並不等於右邊的 10，所以 5 不是 (A) 的解哦！請再代入其他選項算算看！";
+                } else if (choice === 'C') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                    feedback.innerHTML = "❌ 答錯囉！將 x = 5 代入 (C) 的左式「4(5) - 5 = 15」，15 並不等於右邊的 12，所以 5 不是 (C) 的解哦！請再代入其他選項算算看！";
+                }
+            } else if (qNum === 2) {
+                if (choice === 'A') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
+                    feedback.innerHTML = "🎉 太強了！答對了！經過 x 年後，媽媽是 (36 + x) 歲，小美是 (10 + x) 歲，媽媽年齡是小美的 3 倍 ➔ 列式為 36 + x = 3 × (10 + x)！";
+                } else if (choice === 'B') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                    feedback.innerHTML = "❌ 答錯囉！如果選 (B)，代表經過 x 年後小美的年齡依然是 10 歲未長大！但實際上經過 x 年後小美也會長大變為 (10 + x) 歲哦！請再思考看看！";
+                } else if (choice === 'C') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                    feedback.innerHTML = "❌ 答錯囉！如果選 (C)，代表經過 x 年後媽媽的年齡停留在 36 歲未長大！但實際上經過 x 年後媽媽也會長大變為 (36 + x) 歲哦！請再思考看看！";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
