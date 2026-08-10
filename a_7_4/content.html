@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-7-4 二元一次聯立方程式的意義互動講義</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <!-- 引入 KaTeX 讓 LaTeX 語法實際呈現 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .math-fact { background-color: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 6px; font-weight: bold; }
+        .step-badge { background-color: #3b82f6; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .feedback-box { transition: all 0.3s ease; }
+        
+        .grid-bg {
+            background-size: 20px 20px;
+            background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px), linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+        }
+        .challenge-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- 1. Header (標題列) -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 二元一次聯立方程式的意義</h1>
+            <p class="text-slate-600">A-7-4 互動式學習講義</p>
+        </header>
+
+        <!-- 2. 🎯 學習目標 (Learning Objectives) -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="mr-2 w-5 h-5"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>精準理解「二元一次方程式」的定義：含有 2 個未知數、未知數不相乘、不置於分母且最高次數為 1 的等式。</li>
+                <li>明白單一二元一次方程式通常會有「無限多組解」（如 (2, 3)、(4, 2)、(-2, 5)）。</li>
+                <li>理解「二元一次聯立方程式」的意義：用大括號組合，尋找能同時滿足兩個算式的「共同解」。</li>
+                <li>能根據郵票買賣、水果採買等具體情境列出二元一次方程式與聯立方程式。</li>
+            </ul>
+        </section>
+
+        <!-- 3. 1️⃣ 2️⃣ 3️⃣ 核心概念卡片 (Concept Cards) -->
+        <div class="grid md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                <h3 class="font-bold text-blue-700 text-lg mb-2">1️⃣ 什麼是二元一次方程式？</h3>
+                <p class="text-sm text-blue-900 leading-relaxed mb-2">
+                    必須嚴格同時滿足以下條件：
+                </p>
+                <ul class="list-disc list-inside text-xs text-blue-800 space-y-1 font-medium">
+                    <li><b>二元：</b>恰好含有 2 個未知數（如 x, y）。</li>
+                    <li><b>一次：</b>未知數的最高次數為 1。</li>
+                    <li><b>型態限制：</b>未知數不可相乘（如 xy 屬二次）、不可在分母（如 1/y 非一次）。</li>
+                    <li><b>等式：</b>必須包含「等號 =」。</li>
+                </ul>
+            </div>
+            <div class="bg-green-50 p-5 rounded-lg border border-green-200">
+                <h3 class="font-bold text-green-700 text-lg mb-2">2️⃣ 單一方程式有無數組解</h3>
+                <p class="text-sm text-green-800 leading-relaxed">
+                    例如方程式 $x + 2y = 8$：<br>
+                    代入 $(2, 3)$ ➔ $2 + 2(3) = 8$<br>
+                    代入 $(4, 2)$ ➔ $4 + 2(2) = 8$<br>
+                    代入 $(-2, 5)$ ➔ $-2 + 2(5) = 8$<br>
+                    皆可使等式成立，故單一二元一次方程式有<b>無限多組解</b>！
+                </p>
+            </div>
+            <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200">
+                <h3 class="font-bold text-emerald-700 text-lg mb-2">3️⃣ 聯立方程式與共同解</h3>
+                <p class="text-sm text-emerald-800 leading-relaxed mb-2">
+                    用大括號將兩個二元一次方程式聯立起來：
+                </p>
+                <div class="text-center bg-white p-2 rounded border border-emerald-300 my-1">
+                    $$\begin{cases} x + y = 6 \\ x - y = 1 \end{cases}$$
+                </div>
+                <p class="text-xs text-emerald-700 font-bold mt-2">
+                    只有能同時讓兩個方程式都成立的 $(x, y)$，才是聯立方程式的「共同解」！
+                </p>
+            </div>
+        </div>
+
+        <!-- 專屬題組：辨別二元一次方程式快攻區 -->
+        <section class="bg-white rounded-xl shadow-sm p-5 mb-8 border border-blue-200">
+            <h3 class="font-bold text-blue-900 mb-3 flex items-center text-base">
+                <i data-lucide="check-circle-2" class="mr-2 text-blue-600"></i> 🔍 隨堂特訓：一秒辨別「二元一次方程式」
+            </h3>
+            <p class="text-xs text-slate-600 mb-4">點擊下方各式子，測測看你能不能精準辨識：</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <button onclick="checkEquationType('A')" id="eq-btn-A" class="p-3 border-2 rounded-lg font-bold text-sm bg-slate-50 hover:bg-blue-50 text-slate-700 transition-all text-center">
+                    $xy + 1 = 5$
+                </button>
+                <button onclick="checkEquationType('B')" id="eq-btn-B" class="p-3 border-2 rounded-lg font-bold text-sm bg-slate-50 hover:bg-blue-50 text-slate-700 transition-all text-center">
+                    $x + \frac{1}{y} = 3$
+                </button>
+                <button onclick="checkEquationType('C')" id="eq-btn-C" class="p-3 border-2 rounded-lg font-bold text-sm bg-slate-50 hover:bg-blue-50 text-slate-700 transition-all text-center">
+                    $2x + 3y = 7$
+                </button>
+                <button onclick="checkEquationType('D')" id="eq-btn-D" class="p-3 border-2 rounded-lg font-bold text-sm bg-slate-50 hover:bg-blue-50 text-slate-700 transition-all text-center">
+                    $3x - 5y + 2$
+                </button>
+            </div>
+            <div id="eq-type-feedback" class="mt-3 hidden p-3 rounded-lg font-bold text-xs"></div>
+        </section>
+
+        <!-- 4. 🧮 互動模擬實驗室：雙鎖驗證器 (Twin-Lock Simulator) -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center">
+                    <i data-lucide="lock" class="mr-2 text-indigo-600"></i> 🔐 雙鎖驗證實驗室：尋找聯立方程式的共同解
+                </h2>
+                <button onclick="resetLockSim()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium transition-colors">🔄 重置驗證器</button>
+            </div>
+            
+            <div class="p-4 bg-indigo-50 rounded-lg mb-4 text-sm text-indigo-900 leading-relaxed border border-indigo-100">
+                <b>情境探索：</b>小璿有 10 元硬幣 $x$ 枚、5 元硬幣 $y$ 枚，<b>共 10 枚硬幣</b>，<b>總值 80 元</b>。<br>
+                • 鎖頭 1 (數量條件)：$x + y = 10$ ｜ 鎖頭 2 (金額條件)：$10x + 5y = 80$<br>
+                • 拖移滑桿改變 $x$ (10元數量) 與 $y$ (5元數量)，觀察哪一組 $(x, y)$ 能同時解開這兩道鎖！
+            </div>
+
+            <!-- 控制滑桿與雙鎖展示區 -->
+            <div class="grid md:grid-cols-2 gap-6 items-center mb-6">
+                <!-- 滑桿控制 -->
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm font-bold mb-1">
+                            <span class="text-blue-700">10 元硬幣數量 ($x$)：</span>
+                            <span id="lock-val-x" class="text-blue-700 font-extrabold text-base">5 枚</span>
+                        </div>
+                        <input type="range" id="sim-lock-x" min="0" max="10" value="5" oninput="updateLockSim()" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-sm font-bold mb-1">
+                            <span class="text-emerald-700">5 元硬幣數量 ($y$)：</span>
+                            <span id="lock-val-y" class="text-emerald-700 font-extrabold text-base">5 枚</span>
+                        </div>
+                        <input type="range" id="sim-lock-y" min="0" max="10" value="5" oninput="updateLockSim()" class="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                </div>
+
+                <!-- 雙鎖動態狀態面板 -->
+                <div class="space-y-3">
+                    <!-- 鎖頭 1 -->
+                    <div id="lock-card-1" class="p-4 rounded-xl border-2 transition-all flex items-center justify-between bg-slate-100 border-slate-300">
+                        <div class="flex items-center gap-3">
+                            <span id="lock-icon-1" class="text-2xl">🔒</span>
+                            <div>
+                                <p class="text-xs font-bold text-slate-500">鎖頭 1 (數量)：$x + y = 10$</p>
+                                <p id="lock-calc-1" class="text-sm font-bold text-slate-800">$5 + 5 = 10$ (代入成立)</p>
+                            </div>
+                        </div>
+                        <span id="lock-tag-1" class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-200 text-slate-600">鎖住</span>
+                    </div>
+
+                    <!-- 鎖頭 2 -->
+                    <div id="lock-card-2" class="p-4 rounded-xl border-2 transition-all flex items-center justify-between bg-slate-100 border-slate-300">
+                        <div class="flex items-center gap-3">
+                            <span id="lock-icon-2" class="text-2xl">🔒</span>
+                            <div>
+                                <p class="text-xs font-bold text-slate-500">鎖頭 2 (金額)：$10x + 5y = 80$</p>
+                                <p id="lock-calc-2" class="text-sm font-bold text-slate-800">$10(5) + 5(5) = 75 \neq 80$</p>
+                            </div>
+                        </div>
+                        <span id="lock-tag-2" class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-200 text-slate-600">鎖住</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 驗證解析說明 -->
+            <div id="lock-sim-explanation" class="bg-amber-50 p-4 rounded-lg text-center text-amber-900 font-bold text-sm shadow-inner">
+                <!-- JS 動態更新 -->
+            </div>
+        </section>
+
+        <!-- 5. ✏️ 解題示範：郵票買賣與聯立驗證 (Worked Example) -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil" class="mr-2 text-blue-600"></i> 解題示範：情境列式與驗證共同解
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 示範 1：單一二元一次方程式列式 (郵票) -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <h3 class="font-bold text-indigo-900 text-base border-b pb-2 flex items-center">
+                        <span class="bg-indigo-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs mr-2">1</span>
+                        單一方程式列式 (郵票購買)
+                    </h3>
+                    <p class="text-xs text-slate-700 font-bold">情境：小桐拿 60 元全部買 10 元郵票 $x$ 張與 5 元郵票 $y$ 張。</p>
+                    <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
+                        <p><b>分析金額：</b>10 元郵票花 $10x$ 元，5 元郵票花 $5y$ 元。</p>
+                        <p><b>列二元一次方程式：</b><span class="math-fact text-blue-700">$10x + 5y = 60$</span>。</p>
+                        <p><b>觀察解答：</b>$(x, y)$ 可以是 $(6, 0)$、$(4, 4)$、$(2, 8)$ 等多組組合！</p>
+                    </div>
+                </div>
+
+                <!-- 示範 2：二元一次聯立方程式列式與驗證 -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <h3 class="font-bold text-indigo-900 text-base border-b pb-2 flex items-center">
+                        <span class="bg-indigo-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs mr-2">2</span>
+                        聯立方程式驗證 (共同解)
+                    </h3>
+                    <p class="text-xs text-slate-700 font-bold">問題：驗證 $(x=1, y=1)$ 是否為聯立方程式的解？</p>
+                    <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
+                        <p><b>方程式組：</b>$$\begin{cases} 2x + 3y = 5 \\ x + 2y = 3 \end{cases}$$</p>
+                        <p><b>代入①式：</b>$2(1) + 3(1) = 5$（成立！）</p>
+                        <p><b>代入②式：</b>$1 + 2(1) = 3$（成立！）</p>
+                        <p><b>結論：</b>兩個等號皆成立，故 <span class="math-fact text-blue-700">$x=1, y=1$ 為此聯立方程式的解</span>！</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 🔍 觀念引導：透視二元一次方程式結構 -->
+        <section class="bg-indigo-50 rounded-xl shadow-sm p-6 mb-8 border border-indigo-200">
+            <h2 class="text-xl font-bold text-indigo-800 mb-4 flex items-center">
+                <i data-lucide="check-square" class="mr-2 w-5 h-5"></i> 🔍 觀念引導：火眼金睛辨識方程式種類
+            </h2>
+            <div class="mb-4 text-slate-700 p-3 bg-white rounded-lg border border-indigo-100 italic text-sm">
+                挑戰：請問算式「$xy + 1 = 3x$」是二元一次方程式嗎？
+            </div>
+            <div id="step-quiz" class="space-y-4">
+                <div id="sq1">
+                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 觀察其中的 $xy$ 項：$x$ 的次方是 1，$y$ 的次方也是 1，但相乘在一起的 $xy$ 項次數是多少？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(1, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">屬於二次項，所以它不是一次式</button>
+                        <button onclick="answerStep(1, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">屬於一次項，因為 x 與 y 個別都是一次</button>
+                    </div>
+                </div>
+                <div id="sq2" class="hidden">
+                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 賓果！二元一次方程式規定每一項只能是「一個數」或「一個數與一個未知數的乘積」。因此 $xy + 1 = 3x$ 是不是二元一次方程式？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(2, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">是二元一次方程式</button>
+                        <button onclick="answerStep(2, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">不是二元一次方程式</button>
+                    </div>
+                </div>
+                <div id="step-feedback" class="hidden p-4 rounded-lg font-bold text-center"></div>
+            </div>
+        </section>
+
+        <!-- 7. 🧩 引導式實踐練習 -->
+        <!-- 練習 1：郵票購買步驟引導列式 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-blue-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil-line" class="mr-2 text-blue-600"></i> 🧩 練習 1：步驟引導！郵票購買情境列式
+            </h2>
+            
+            <div class="p-4 bg-blue-50 rounded-lg mb-6 border border-blue-100">
+                <p class="text-blue-900 font-bold leading-relaxed">
+                    題目情境：小桐拿 60 元全部拿來買郵票，10 元郵票買 $x$ 張，5 元郵票買 $y$ 張。請列出此情境的二元一次方程式。
+                </p>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Step 1 -->
+                <div id="p1-s1">
+                    <p class="text-slate-800 mb-2 font-medium">步驟 1️⃣：10 元郵票 $x$ 張與 5 元郵票 $y$ 張的花費如何表示？</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="checkP1(1, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$10x$ 元與 $5y$ 元</button>
+                        <button onclick="checkP1(1, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$10 + x$ 元與 $5 + y$ 元</button>
+                        <button onclick="checkP1(1, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$\frac{10}{x}$ 元與 $\frac{5}{y}$ 元</button>
+                    </div>
+                    <div id="p1-f1" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div id="p1-s2" class="hidden opacity-0 transition-all duration-500">
+                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">步驟 2️⃣：將兩者花費相加等於總金額 60 元，正確的二元一次方程式為何？</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="checkP1(2, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$x + y = 60$</button>
+                        <button onclick="checkP1(2, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$10x - 5y = 60$</button>
+                        <button onclick="checkP1(2, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$10x + 5y = 60$</button>
+                    </div>
+                    <div id="p1-f2" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Result -->
+                <div id="p1-result" class="hidden opacity-0 transition-all duration-500">
+                    <div class="bg-green-50 p-6 border border-green-200 rounded-lg shadow-inner">
+                        <p class="text-green-800 font-bold flex items-center mb-2 text-lg">
+                            <i data-lucide="party-popper" class="mr-2 w-6 h-6"></i> 完全正確！方程式為 $10x + 5y = 60$！
+                        </p>
+                        <p class="text-green-700 leading-relaxed">
+                            <b>觀念點撥：</b>此方程式可以有很多組解，如 $(x=6, y=0)$、$(x=4, y=4)$、$(x=2, y=8)$ 等等！
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 練習 2：解的理解與驗證快問快答 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-emerald-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="layers" class="mr-2 text-emerald-600"></i> 🧮 練習 2：解的數量與共同解快問快答
+            </h2>
+            <p class="text-slate-600 mb-6 text-sm font-medium">請根據二元一次方程式與聯立方程式解的觀念進行判斷：</p>
+            
+            <div class="space-y-6">
+                <!-- Case 1 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">1. 對於單一二元一次方程式 $x + y = 5$，它的解（數對 $x, y$）有多少組？</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button onclick="checkP2(1, 'wrongA')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">只有唯一的一組解 (2, 3)</button>
+                        <button onclick="checkP2(1, 'right')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">有無限多組解 (如 (1,4), (2,3), (0,5), (-1,6)...)</button>
+                        <button onclick="checkP2(1, 'wrongB')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">完全沒有任何解</button>
+                    </div>
+                    <div id="p2-f1" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">2. 給定聯立方程式 $$\begin{cases} x + y = 5 \\ 2x - y = 1 \end{cases}$$ 試問數對 $(2, 3)$ 是它的共同解嗎？</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button onclick="checkP2(2, 'wrongA')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">不是，因為它只符合第一個算式 $x+y=5$</button>
+                        <button onclick="checkP2(2, 'right')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">是，代入 $2+3=5$ 與 $2(2)-3=1$ 皆成立！</button>
+                        <button onclick="checkP2(2, 'wrongB')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">不是，因為代入兩個算式都不符合</button>
+                    </div>
+                    <div id="p2-f2" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. 🚀 實戰挑戰：生活二元一次聯立方程式 -->
+        <section class="bg-slate-50 rounded-2xl p-6 mb-8 border-2 border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i data-lucide="rocket" class="mr-2 text-orange-500"></i> 實戰挑戰：二元一次聯立方程式大考驗
+            </h2>
+            
+            <div class="space-y-8">
+                <!-- Challenge 1 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">1. 水果採買情境列式</h3>
+                    <p class="text-sm text-slate-600 mb-4">蘋果一顆 30 元買 $x$ 顆，香蕉一根 15 元買 $y$ 根。總共買了 12 個水果，一共花了 270 元。請問正確的二元一次聯立方程式為何？</p>
+                    <div class="space-y-2">
+                        <button onclick="checkChal(1, 'A')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(A) $$\begin{cases} x + y = 12 \\ 30x + 15y = 270 \end{cases}$$</button>
+                        <button onclick="checkChal(1, 'B')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(B) $$\begin{cases} 30x + 15y = 12 \\ x + y = 270 \end{cases}$$</button>
+                        <button onclick="checkChal(1, 'C')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(C) $$\begin{cases} x + y = 270 \\ 30x + 15y = 12 \end{cases}$$</button>
+                    </div>
+                    <div id="chal1-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- Challenge 2 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">2. 聯立方程式解的驗證</h3>
+                    <p class="text-sm text-slate-600 mb-4">請問哪一組 $(x, y)$ 才是二元一次聯立方程式 $$\begin{cases} 2x + y = 9 \\ x + 3y = 12 \end{cases}$$ 的解？</p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="checkChal(2, 'A')" class="px-5 py-2.5 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all text-slate-700">(A) $(x=4, y=1)$</button>
+                        <button onclick="checkChal(2, 'B')" class="px-5 py-2.5 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all text-slate-700">(B) $(x=0, y=4)$</button>
+                        <button onclick="checkChal(2, 'C')" class="px-5 py-2.5 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all text-slate-700">(C) $(x=3, y=3)$</button>
+                    </div>
+                    <div id="chal2-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. ⚠️ 易錯迷思陷阱 & 💡 生活中的數學 (Footer) -->
+        <footer class="grid md:grid-cols-2 gap-6 mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center">
+                    <i data-lucide="alert-circle" class="mr-2 text-red-500"></i> ⚠️ 二元一次聯立方程式三大常見迷思
+                </h3>
+                <ul class="text-sm space-y-3 text-slate-600 font-medium">
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">把 xy 項誤認為一次項？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！xy 代表 x 與 y 相乘，屬於「二次項」，所以 xy + 1 = 3x 不是二元一次方程式！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">以為單一方程式有唯一解？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！單一二元一次方程式（如 x + 2y = 8）通常有無限多組解，需要兩個方程式聯立才能鎖定共同解！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">只滿足其中一個算式就是解？</span>
+                        <span class="bg-amber-50 border border-amber-200 p-1.5 rounded text-amber-800 text-xs block mt-1">
+                            錯！聯立方程式的解必須代入「兩個算式都能成立」才是正確答案！
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400">
+                    <i data-lucide="lightbulb" class="mr-2 w-5 h-5"></i> 💡 生活中的二元聯立關係
+                </h3>
+                <p class="text-sm leading-relaxed opacity-90">
+                    <b>生活中有哪些雙重條件限制？</b><br>
+                    1. <b>夜市買小吃：</b> 雞排 x 份與珍奶 y 份，知道「總份數」與「總花費」，列出聯立方程式！<br>
+                    2. <b>農場動物計頭腳：</b> 雞與兔共 x、y 隻，「頭的數量」與「腳的數量」形成兩道算式。<br>
+                    3. <b>雙重保險驗證：</b> 同時滿足兩個條件，就像用兩把鑰匙打開同一個保險箱！
+                </p>
+            </div>
+        </footer>
+
+        <!-- 10. 頁腳宣告 -->
+        <footer class="text-center text-slate-400 text-sm pb-12">
+            本講義依據 108 課綱 A-7-4 標準編製 &copy; 2026 互動式教學系統
+        </footer>
+    </div>
+
+    <!-- 11. JavaScript 邏輯 -->
+    <script>
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+            updateLockSim();
+        };
+
+        // 🔍 專屬特訓：辨別二元一次方程式
+        function checkEquationType(type) {
+            const f = document.getElementById('eq-type-feedback');
+            f.classList.remove('hidden');
+
+            if (type === 'C') {
+                f.className = "mt-3 text-xs p-3 rounded-lg font-bold bg-green-100 text-green-900 border border-green-300";
+                f.innerHTML = "✅ 完全正確！$2x + 3y = 7$ 含有等號 =、恰有 2 個未知數 (x, y)，且項次數都是 1，是合格的二元一次方程式！";
+            } else if (type === 'A') {
+                f.className = "mt-3 text-xs p-3 rounded-lg font-bold bg-red-100 text-red-900 border border-red-300";
+                f.innerHTML = "❌ 答錯囉！$xy + 1 = 5$ 中的 $xy$ 是 x 與 y 相乘，屬於「二次項」，所以它不是二元一次方程式哦！";
+            } else if (type === 'B') {
+                f.className = "mt-3 text-xs p-3 rounded-lg font-bold bg-red-100 text-red-900 border border-red-300";
+                f.innerHTML = "❌ 答錯囉！$x + \\frac{1}{y} = 3$ 中的 $\\frac{1}{y}$ 未知數落在分母，次數不為 1，所以它不是二元一次方程式哦！";
+            } else if (type === 'D') {
+                f.className = "mt-3 text-xs p-3 rounded-lg font-bold bg-red-100 text-red-900 border border-red-300";
+                f.innerHTML = "❌ 答錯囉！$3x - 5y + 2$ 沒有「等號 =」，這只是普通的二元一次「代數式」，不是方程式哦！";
+            }
+        }
+
+        // 🔐 雙鎖驗證實驗室邏輯
+        function updateLockSim() {
+            const x = parseInt(document.getElementById('sim-lock-x').value);
+            const y = parseInt(document.getElementById('sim-lock-y').value);
+
+            document.getElementById('lock-val-x').innerText = `${x} 枚`;
+            document.getElementById('lock-val-y').innerText = `${y} 枚`;
+
+            const sumCount = x + y;
+            const sumValue = 10 * x + 5 * y;
+
+            const isLock1Open = (sumCount === 10);
+            const isLock2Open = (sumValue === 80);
+
+            const card1 = document.getElementById('lock-card-1');
+            const icon1 = document.getElementById('lock-icon-1');
+            const calc1 = document.getElementById('lock-calc-1');
+            const tag1 = document.getElementById('lock-tag-1');
+
+            if (isLock1Open) {
+                card1.className = "p-4 rounded-xl border-2 transition-all flex items-center justify-between bg-green-50 border-green-400 shadow-sm";
+                icon1.innerText = "🔓";
+                calc1.innerText = `${x} + ${y} = 10 (等式成立！)`;
+                tag1.className = "text-xs font-bold px-2.5 py-1 rounded-full bg-green-200 text-green-800";
+                tag1.innerText = "解開";
+            } else {
+                card1.className = "p-4 rounded-xl border-2 transition-all flex items-center justify-between bg-slate-100 border-slate-300";
+                icon1.innerText = "🔒";
+                calc1.innerText = `${x} + ${y} = ${sumCount} ≠ 10`;
+                tag1.className = "text-xs font-bold px-2.5 py-1 rounded-full bg-slate-200 text-slate-600";
+                tag1.innerText = "鎖住";
+            }
+
+            const card2 = document.getElementById('lock-card-2');
+            const icon2 = document.getElementById('lock-icon-2');
+            const calc2 = document.getElementById('lock-calc-2');
+            const tag2 = document.getElementById('lock-tag-2');
+
+            if (isLock2Open) {
+                card2.className = "p-4 rounded-xl border-2 transition-all flex items-center justify-between bg-green-50 border-green-400 shadow-sm";
+                icon2.innerText = "🔓";
+                calc2.innerText = `10(${x}) + 5(${y}) = ${sumValue} (等式成立！)`;
+                tag2.className = "text-xs font-bold px-2.5 py-1 rounded-full bg-green-200 text-green-800";
+                tag2.innerText = "解開";
+            } else {
+                card2.className = "p-4 rounded-xl border-2 transition-all flex items-center justify-between bg-slate-100 border-slate-300";
+                icon2.innerText = "🔒";
+                calc2.innerText = `10(${x}) + 5(${y}) = ${sumValue} ≠ 80`;
+                tag2.className = "text-xs font-bold px-2.5 py-1 rounded-full bg-slate-200 text-slate-600";
+                tag2.innerText = "鎖住";
+            }
+
+            const expl = document.getElementById('lock-sim-explanation');
+
+            if (isLock1Open && isLock2Open) {
+                expl.className = "bg-green-100 p-4 rounded-lg text-center text-green-900 font-extrabold text-sm border-2 border-green-400 shadow-md";
+                expl.innerHTML = `
+                    🎉 雙鎖全開！代入 (x, y) = (${x}, ${y}) 後，兩個方程式通通成立！<br>
+                    因此，<span class="underline text-green-950 text-base">(${x}, ${y}) 是這個二元一次聯立方程式的共同解</span>！
+                `;
+            } else if (isLock1Open) {
+                expl.className = "bg-amber-50 p-4 rounded-lg text-center text-amber-900 font-bold text-sm shadow-inner";
+                expl.innerHTML = `
+                    🔓 鎖頭 1 解開 (數量對了！)，但 🔒 鎖頭 2 鎖住 (金額不對！)<br>
+                    (${x}, ${y}) 只是第一個算式 x + y = 10 的解，還不是二元一次聯立方程式的解喔！
+                `;
+            } else if (isLock2Open) {
+                expl.className = "bg-amber-50 p-4 rounded-lg text-center text-amber-900 font-bold text-sm shadow-inner";
+                expl.innerHTML = `
+                    🔒 鎖頭 1 鎖住 (數量不對！)，但 🔓 鎖頭 2 解開 (金額對了！)<br>
+                    (${x}, ${y}) 只是第二個算式 10x + 5y = 80 的解，還不是二元一次聯立方程式的解喔！
+                `;
+            } else {
+                expl.className = "bg-amber-50 p-4 rounded-lg text-center text-amber-900 font-bold text-sm shadow-inner";
+                expl.innerHTML = `
+                    🔒 兩道鎖皆鎖住，數量與金額都不符合！繼續滑動滑桿尋找能同時解開兩道鎖的 (x, y) 吧！
+                `;
+            }
+        }
+
+        function resetLockSim() {
+            document.getElementById('sim-lock-x').value = 5;
+            document.getElementById('sim-lock-y').value = 5;
+            updateLockSim();
+        }
+
+        // 🔍 觀念引導邏輯（答錯說明原因，不直接給答案；Step 1 答案為選項 1，Step 2 答案為選項 2）
+        function answerStep(step, isCorrect) {
+            const feedback = document.getElementById('step-feedback');
+            feedback.classList.remove('hidden');
+
+            if (step === 1) {
+                if (isCorrect) {
+                    feedback.innerHTML = "✅ 完全正確！在 xy 中，x 是 1 次、y 是 1 次，相乘後該項的次數為 1 + 1 = 2 次，屬於「二次項」！解鎖下一步！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm";
+                    document.getElementById('sq1').classList.add('opacity-50');
+                    document.getElementById('sq2').classList.remove('hidden');
+                } else {
+                    feedback.innerHTML = "❌ 答錯囉！兩個未知數相乘時，項的次數要把未知數的次方加起來（1 + 1 = 2），所以 xy 屬於「二次項」，不是一次項哦！請再思考看看！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
+                }
+            } else if (step === 2) {
+                if (isCorrect) {
+                    feedback.innerHTML = "🎉 太棒了！因為含有二次項 xy，所以 xy + 1 = 3x 不是二元一次方程式！觀念非常清晰！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm";
+                    document.getElementById('sq2').classList.add('opacity-50');
+                } else {
+                    feedback.innerHTML = "❌ 答錯囉！二元一次方程式規定「每一項」都必須是一次項或數，含有二次項 xy 的算式不能稱為二元一次方程式哦！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
+                }
+            }
+        }
+
+        // 🧩 練習 1 檢查邏輯 (Step 1 答案為選項 1，Step 2 答案為選項 3)
+        function checkP1(step, isCorrect, wrongType) {
+            if (step === 1) {
+                const f = document.getElementById('p1-f1');
+                f.classList.remove('hidden');
+                if (isCorrect) {
+                    f.innerHTML = "✅ 正確！10 元郵票 x 張為 10x 元，5 元郵票 y 張為 5y 元。";
+                    f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    const s2 = document.getElementById('p1-s2');
+                    s2.classList.remove('hidden');
+                    setTimeout(() => s2.classList.add('opacity-100'), 10);
+                } else if (wrongType === 'A') {
+                    f.innerHTML = "❌ 答錯囉！單價乘以張數才是總花費（例如 10 元買 3 張是 10 × 3 元），不能用加法 (10 + x) 哦！請再試一次！";
+                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                } else {
+                    f.innerHTML = "❌ 答錯囉！單價乘以張數是乘法，不能把張數放進分母 (10/x) 哦！請再試一次！";
+                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                }
+            } else if (step === 2) {
+                const f = document.getElementById('p1-f2');
+                f.classList.remove('hidden');
+                if (isCorrect) {
+                    f.innerHTML = "✅ 太強了！總花費等於 60 元，列式為 10x + 5y = 60！";
+                    f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    const res = document.getElementById('p1-result');
+                    res.classList.remove('hidden');
+                    setTimeout(() => res.classList.add('opacity-100'), 10);
+                } else if (wrongType === 'A') {
+                    f.innerHTML = "❌ 答錯囉！算式「x + y = 60」代表郵票總張數是 60 張，但題目說的是「總花費 60 元」哦！請再選擇看看！";
+                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                } else {
+                    f.innerHTML = "❌ 答錯囉！兩種郵票的花費應該是要「相加」算出總金額 60 元，不能用減法哦！請再選擇看看！";
+                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                }
+            }
+        }
+
+        // 🧮 練習 2 檢查邏輯（Case 1 答案為選項 2，Case 2 答案為選項 2）
+        function checkP2(qNum, choice) {
+            const f = document.getElementById('p2-f' + qNum);
+            f.classList.remove('hidden');
+
+            if (qNum === 1) {
+                if (choice === 'right') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
+                    f.innerHTML = "✅ 觀念超清晰！二元一次方程式 $x + y = 5$ 只要兩數相加等於 5 的組合通通都是解，所以擁有無限多組解！";
+                } else if (choice === 'wrongA') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
+                    f.innerHTML = "❌ 答錯囉！單一二元一次方程式並不會只有唯一的一組解哦！例如代入 (1, 4) 得 1 + 4 = 5 也成立，代表 (1, 4) 也是另一個解。請再想想看！";
+                } else {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
+                    f.innerHTML = "❌ 答錯囉！例如帶入 x = 2, y = 3 可得 2 + 3 = 5，這就是一組解，所以並非完全沒有解哦！請再想想看！";
+                }
+            } else if (qNum === 2) {
+                if (choice === 'right') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
+                    f.innerHTML = "✅ 答對了！代入 (2, 3) ➔ 式① $2 + 3 = 5$ 成立；式② $2(2) - 3 = 1$ 成立！兩個算式同時成立，代表它就是真正的共同解！";
+                } else if (choice === 'wrongA') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
+                    f.innerHTML = "❌ 算算看！將 x = 2、y = 3 代入第二個算式「2(2) - 3」得 4 - 3 = 1，這跟第二個算式右邊的 1 完全相等，所以它同時符合兩個算式哦！請再試試看！";
+                } else {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
+                    f.innerHTML = "❌ 算算看！代入第一個算式 2 + 3 = 5 成立，代入第二個算式 2(2) - 3 = 1 成立，兩個算式都是符合的哦！請再試試看！";
+                }
+            }
+        }
+
+        // 🚀 實戰挑戰檢查邏輯（Challenge 1 答案為選項 A，Challenge 2 答案為選項 C）
+        function checkChal(qNum, choice) {
+            const feedback = document.getElementById(`chal${qNum}-feedback`);
+            feedback.classList.remove('hidden');
+
+            if (qNum === 1) {
+                if (choice === 'A') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
+                    feedback.innerHTML = "🎉 完全正確！數量算式 x + y = 12，金額算式 30x + 15y = 270，組合起來就是正確的聯立方程式！";
+                } else if (choice === 'B') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                    feedback.innerHTML = "❌ 答錯囉！選項 (B) 把「金額算法 30x + 15y」誤等於數量 12，把「數量算法 x + y」誤等於總金額 270 囉！請再重新對照看看！";
+                } else if (choice === 'C') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                    feedback.innerHTML = "❌ 答錯囉！選項 (C) 的金額與數量完全標反囉！蘋果 30 元與香蕉 15 元乘以數量應該要等於總金額 270 元才對哦！";
+                }
+            } else if (qNum === 2) {
+                if (choice === 'C') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
+                    feedback.innerHTML = "🎉 太強了！答對了！代入 (x=3, y=3) ➔ 式① 2(3) + 3 = 9 成立！式② 3 + 3(3) = 12 成立！兩個算式同時成立，就是真正的共同解！";
+                } else if (choice === 'A') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                    feedback.innerHTML = "❌ 答錯囉！代入 (4, 1) 至式① 2(4) + 1 = 9 成立，但代入式② 4 + 3(1) = 7 ≠ 12！不符合第二個算式，所以不是聯立方程的解哦！";
+                } else if (choice === 'B') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                    feedback.innerHTML = "❌ 答錯囉！代入 (0, 4) 至式① 2(0) + 4 = 4 ≠ 9！連第一個算式都不符合，所以不是解哦！";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
