@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-7-5 二元一次聯立方程式的解法與應用互動講義</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <!-- 引入 KaTeX 讓 LaTeX 語法實際呈現 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .math-fact { background-color: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 6px; font-weight: bold; }
+        .step-badge { background-color: #3b82f6; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .feedback-box { transition: all 0.3s ease; }
+        
+        .grid-bg {
+            background-size: 20px 20px;
+            background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px), linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+        }
+        .challenge-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- 1. Header (標題列) -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 二元一次聯立方程式的解法與應用</h1>
+            <p class="text-slate-600">A-7-5 互動式學習講義</p>
+        </header>
+
+        <!-- 2. 🎯 學習目標 (Learning Objectives) -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="mr-2 w-5 h-5"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>掌握「代入消去法」：用一個未知數表示另一個未知數，代入消除一個變數。</li>
+                <li>掌握「加減消去法」：調整方程式係數使其相同或相反，透過兩式相加減消去一個變數。</li>
+                <li>理解消去法的核心精神：將「二元一次聯立方程式」轉化為「一元一次方程式」。</li>
+                <li>能由生活情境列出二元一次聯立方程式，求出解答並進行合理性驗證。</li>
+            </ul>
+        </section>
+
+        <!-- 3. 1️⃣ 2️⃣ 3️⃣ 核心概念卡片 (Concept Cards) -->
+        <div class="grid md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                <h3 class="font-bold text-blue-700 text-lg mb-2">1️⃣ 代入消去法</h3>
+                <p class="text-sm text-blue-900 leading-relaxed mb-2">
+                    適合作者中有未知數係數為 $1$ 或 $-1$ 的算式：
+                </p>
+                <ul class="list-disc list-inside text-xs text-blue-800 space-y-1 font-medium">
+                    <li>由式①改寫出 $x = 1 - y$。</li>
+                    <li>代入式②取代所有的 $x$。</li>
+                    <li>成功消去 $x$，變成只含 $y$ 的一元一次方程式！</li>
+                </ul>
+            </div>
+            <div class="bg-green-50 p-5 rounded-lg border border-green-200">
+                <h3 class="font-bold text-green-700 text-lg mb-2">2️⃣ 加減消去法</h3>
+                <p class="text-sm text-green-800 leading-relaxed mb-2">
+                    適合兩式中未知數係數可調整為相同的算式：
+                </p>
+                <ul class="list-disc list-inside text-xs text-green-800 space-y-1 font-medium">
+                    <li>放大算式使 $x$（或 $y$）的係數相同。</li>
+                    <li>同號相減、異號相加。</li>
+                    <li>直接消去該未知數！</li>
+                </ul>
+            </div>
+            <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200">
+                <h3 class="font-bold text-emerald-700 text-lg mb-2">3️⃣ 應用問題與驗算</h3>
+                <p class="text-sm text-emerald-800 leading-relaxed mb-2">
+                    將生活語言轉化為數學等式：
+                </p>
+                <ul class="list-disc list-inside text-xs text-emerald-700 font-bold space-y-1">
+                    <li>設男 $x$ 人、女 $y$ 人。</li>
+                    <li>依「總人數」與「差額」列出兩式。</li>
+                    <li>求出解答後代回原始情境驗算合理性！</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 4. 🧮 雙解法步驟展示實驗室 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center">
+                    <i data-lucide="play-circle" class="mr-2 text-indigo-600"></i> 🧮 互動實驗室：解聯立方程式步驟演展器
+                </h2>
+                <button onclick="resetLabMethod()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium transition-colors">🔄 重置演示</button>
+            </div>
+
+            <!-- 切換解法 Tabs -->
+            <div class="flex gap-2 mb-6">
+                <button onclick="switchLabTab('sub')" id="tab-sub-btn" class="px-4 py-2 rounded-lg font-bold text-sm bg-indigo-600 text-white shadow">
+                    代入消去法演示
+                </button>
+                <button onclick="switchLabTab('elim')" id="tab-elim-btn" class="px-4 py-2 rounded-lg font-bold text-sm bg-white border border-slate-300 text-slate-700 hover:bg-slate-100">
+                    加減消去法演示
+                </button>
+            </div>
+
+            <!-- 代入消去法展示區 -->
+            <div id="lab-sub-panel" class="bg-slate-50 p-5 rounded-xl border border-slate-200 grid-bg space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 bg-white p-4 rounded-xl border border-indigo-100 shadow-sm">
+                    <div class="text-slate-700 text-sm font-bold flex items-center gap-3">
+                        <span>當前目標狀態：</span>
+                        <div id="sub-eq-display" class="bg-indigo-50 px-4 py-2 rounded-lg border border-indigo-200 min-w-[12rem] text-center"></div>
+                    </div>
+                    <button onclick="nextSubStep()" id="sub-next-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-xs shadow shrink-0">
+                        下一步 ➔
+                    </button>
+                </div>
+
+                <div class="space-y-3">
+                    <div id="sub-step-1" class="p-3 bg-white border rounded-lg shadow-sm opacity-40 transition-all">
+                        <p class="text-xs font-bold text-indigo-700">步驟 1：整理①式</p>
+                        <p class="text-sm font-bold text-slate-800">由①式得到：$x = 1 - y$（記為③式）</p>
+                    </div>
+                    <div id="sub-step-2" class="p-3 bg-white border rounded-lg shadow-sm opacity-40 transition-all">
+                        <p class="text-xs font-bold text-indigo-700">步驟 2：代入②式消去 $x$</p>
+                        <p class="text-sm font-bold text-slate-800">將 $x = 1 - y$ 代入②式：$(1 - y) + 2y = 3$</p>
+                    </div>
+                    <div id="sub-step-3" class="p-3 bg-white border rounded-lg shadow-sm opacity-40 transition-all">
+                        <p class="text-xs font-bold text-indigo-700">步驟 3：求解一元一次方程式</p>
+                        <p class="text-sm font-bold text-slate-800">化簡得 $1 + y = 3 \implies y = 2$</p>
+                    </div>
+                    <div id="sub-step-4" class="p-3 bg-white border rounded-lg shadow-sm opacity-40 transition-all">
+                        <p class="text-xs font-bold text-indigo-700">步驟 4：代回求出 $x$ 並驗算</p>
+                        <p class="text-sm font-bold text-slate-800">將 $y = 2$ 代回 $x = 1 - 2 = -1$。共同解為 <span class="math-fact text-blue-700">x = -1, y = 2</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 加減消去法展示區 -->
+            <div id="lab-elim-panel" class="hidden bg-slate-50 p-5 rounded-xl border border-slate-200 grid-bg space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 bg-white p-4 rounded-xl border border-indigo-100 shadow-sm">
+                    <div class="text-slate-700 text-sm font-bold flex items-center gap-3">
+                        <span>當前目標狀態：</span>
+                        <div id="elim-eq-display" class="bg-indigo-50 px-4 py-2 rounded-lg border border-indigo-200 min-w-[12rem] text-center"></div>
+                    </div>
+                    <button onclick="nextElimStep()" id="elim-next-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-xs shadow shrink-0">
+                        下一步 ➔
+                    </button>
+                </div>
+
+                <div class="space-y-3">
+                    <div id="elim-step-1" class="p-3 bg-white border rounded-lg shadow-sm opacity-40 transition-all">
+                        <p class="text-xs font-bold text-indigo-700">步驟 1：調整兩式係數使 $x$ 係數相同</p>
+                        <p class="text-sm font-bold text-slate-800">①式 $\times 3 \implies 6x + 9y = 3$（③式）｜ ②式 $\times 2 \implies 6x + 8y = 4$（④式）</p>
+                    </div>
+                    <div id="elim-step-2" class="p-3 bg-white border rounded-lg shadow-sm opacity-40 transition-all">
+                        <p class="text-xs font-bold text-indigo-700">步驟 2：兩式相減消去 $x$</p>
+                        <p class="text-sm font-bold text-slate-800">③式 $-$ ④式 $\implies (6x - 6x) + (9y - 8y) = 3 - 4 \implies y = -1$</p>
+                    </div>
+                    <div id="elim-step-3" class="p-3 bg-white border rounded-lg shadow-sm opacity-40 transition-all">
+                        <p class="text-xs font-bold text-indigo-700">步驟 3：代回①式求出 $x$</p>
+                        <p class="text-sm font-bold text-slate-800">$2x + 3(-1) = 1 \implies 2x - 3 = 1 \implies 2x = 4 \implies x = 2$</p>
+                    </div>
+                    <div id="elim-step-4" class="p-3 bg-white border rounded-lg shadow-sm opacity-40 transition-all">
+                        <p class="text-xs font-bold text-indigo-700">步驟 4：確認解答</p>
+                        <p class="text-sm font-bold text-slate-800">聯立方程式的解為 <span class="math-fact text-blue-700">x = 2, y = -1</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. ✏️ 解題示範：班級男女生人數應用題 (Worked Example) -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil" class="mr-2 text-blue-600"></i> 解題示範：班級人數應用問題
+            </h2>
+            <div class="p-4 bg-slate-50 rounded-lg mb-4">
+                <p class="text-slate-700 font-bold">問題情境：七年二班共有學生 28 人，已知男生比女生多 4 人，問男生、女生各多少人？</p>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">1</span>
+                    <p class="text-slate-600"><b>假設未知數與列式：</b>設男生 $x$ 人、女生 $y$ 人。由「總人數 28」與「男生比女生多 4 人」列式：
+                        $$\begin{cases} x + y = 28 \\ x - y = 4 \end{cases}$$
+                    </p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">2</span>
+                    <p class="text-slate-600"><b>求解算式：</b>兩式相加可消去 $y$ ➔ $2x = 32 \implies x = 16$。代回第一式 ➔ $16 + y = 28 \implies y = 12$。</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">3</span>
+                    <p class="text-slate-600 font-bold"><b>答案與合理性驗證：</b>男生有 <span class="math-fact text-blue-700">16 人</span>，女生有 <span class="math-fact text-blue-700">12 人</span>。驗算：$16 + 12 = 28$ 且 $16 - 12 = 4$，完全符合情境！</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 🔍 觀念引導：消去法策略選擇 -->
+        <section class="bg-indigo-50 rounded-xl shadow-sm p-6 mb-8 border border-indigo-200">
+            <h2 class="text-xl font-bold text-indigo-800 mb-4 flex items-center">
+                <i data-lucide="check-square" class="mr-2 w-5 h-5"></i> 🔍 觀念引導：擇優選擇解題策略
+            </h2>
+            <div class="mb-4 text-slate-700 p-3 bg-white rounded-lg border border-indigo-100 italic text-sm">
+                思考：給定聯立方程式 $$\begin{cases} x = 2y - 1 \\ 3x + 2y = 13 \end{cases}$$ 哪一種消去法最快速？
+            </div>
+            <div id="step-quiz" class="space-y-4">
+                <div id="sq1">
+                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 第一個算式已經把 $x$ 表示為 $2y - 1$，直接將它帶入第二式是最方便的嗎？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(1, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">是的，直接用「代入消去法」最快！</button>
+                        <button onclick="answerStep(1, false, 'A')" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">不是，一定要先整理成加減消去法</button>
+                    </div>
+                </div>
+                <div id="sq2" class="hidden">
+                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 賓果！將 $x = 2y - 1$ 代入 $3x + 2y = 13$ 後，得到的式子為何？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(2, false, 'A')" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">$3(2y) - 1 + 2y = 13$</button>
+                        <button onclick="answerStep(2, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">$3(2y - 1) + 2y = 13$</button>
+                    </div>
+                </div>
+                <div id="step-feedback" class="hidden p-4 rounded-lg font-bold text-center"></div>
+            </div>
+        </section>
+
+        <!-- 7. 🧩 引導式實踐練習 -->
+        <!-- 練習 1：加減消去法步驟練習 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-blue-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil-line" class="mr-2 text-blue-600"></i> 🧩 練習 1：步驟引導！加減消去法演練
+            </h2>
+            
+            <div class="p-4 bg-blue-50 rounded-lg mb-6 border border-blue-100">
+                <p class="text-blue-900 font-bold leading-relaxed">
+                    解聯立方程式：$$\begin{cases} 3x + 2y = 12 & \text{--- ①} \\ 3x - 2y = 0 & \text{--- ②} \end{cases}$$
+                </p>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Step 1 -->
+                <div id="p1-s1">
+                    <p class="text-slate-800 mb-2 font-medium">步驟 1️⃣：觀察 $y$ 的係數一個是 $+2$、一個是 $-2$（互為相反數），我們應該將①式與②式相加還是相減來消去 $y$？</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="checkP1(1, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">相加（①式 $+$ ②式）</button>
+                        <button onclick="checkP1(1, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">相減（①式 $-$ ②式）</button>
+                        <button onclick="checkP1(1, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">相乘（①式 $\times$ ②式）</button>
+                    </div>
+                    <div id="p1-f1" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div id="p1-s2" class="hidden opacity-0 transition-all duration-500">
+                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">步驟 2️⃣：兩式相加得 $6x = 12 \implies x = 2$。代回②式 $3(2) - 2y = 0$，求得 $y$ 等於多少？</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="checkP1(2, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$y = 2$</button>
+                        <button onclick="checkP1(2, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$y = -3$</button>
+                        <button onclick="checkP1(2, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$y = 3$</button>
+                    </div>
+                    <div id="p1-f2" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Result -->
+                <div id="p1-result" class="hidden opacity-0 transition-all duration-500">
+                    <div class="bg-green-50 p-6 border border-green-200 rounded-lg shadow-inner">
+                        <p class="text-green-800 font-bold flex items-center mb-2 text-lg">
+                            <i data-lucide="party-popper" class="mr-2 w-6 h-6"></i> 完全正確！聯立解答為 $x = 2, y = 3$！
+                        </p>
+                        <p class="text-green-700 leading-relaxed">
+                            <b>口訣記記憶：</b>係數相同用相減，係數相反用相加！
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 練習 2：觀念快問快答 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-emerald-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="layers" class="mr-2 text-emerald-600"></i> 🧮 練習 2：解法觀念快問快答
+            </h2>
+            <p class="text-slate-600 mb-6 text-sm font-medium">請選出正確的運算概念：</p>
+            
+            <div class="space-y-6">
+                <!-- Case 1 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">1. 將①式乘以 3 時，方程式右邊的常數項需要著乘以 3 嗎？</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button onclick="checkP2(1, 'right')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">需要，根據等量公理每一項都要乘以 3</button>
+                        <button onclick="checkP2(1, 'wrongA')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">不需要，只需要乘以未知數項</button>
+                        <button onclick="checkP2(1, 'wrongB')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">只有當常數項是負數時才需要乘</button>
+                    </div>
+                    <div id="p2-f1" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">2. 用加減消去法解 $$\begin{cases} 2x + y = 5 \\ 2x + 3y = 9 \end{cases}$$ 兩式相減（下式扣上式）可得？</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button onclick="checkP2(2, 'wrongA')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">$4y = 14$</button>
+                        <button onclick="checkP2(2, 'right')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">$2y = 4$</button>
+                        <button onclick="checkP2(2, 'wrongB')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">$4x + 4y = 14$</button>
+                    </div>
+                    <div id="p2-f2" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. 🚀 實戰挑戰：生活應用題 -->
+        <section class="bg-slate-50 rounded-2xl p-6 mb-8 border-2 border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i data-lucide="rocket" class="mr-2 text-orange-500"></i> 實戰挑戰：生活應用問題大考驗
+            </h2>
+            
+            <div class="space-y-8">
+                <!-- Challenge 1 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">1. 門票買賣應用題</h3>
+                    <p class="text-sm text-slate-600 mb-4">遊樂園全票一張 200 元、半票一張 100 元。戶外教學共買了 30 張票，花了 4500 元。設全票買 $x$ 張、半票買 $y$ 張，求全票買了幾張？</p>
+                    <div class="space-y-2">
+                        <button onclick="checkChal(1, 'A')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(A) 10 張</button>
+                        <button onclick="checkChal(1, 'B')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(B) 15 張</button>
+                        <button onclick="checkChal(1, 'C')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(C) 20 張</button>
+                    </div>
+                    <div id="chal1-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- Challenge 2 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">2. 雞兔同籠應用題</h3>
+                    <p class="text-sm text-slate-600 mb-4">農場裡雞（2條腿）與兔（4條腿）共有 10 個頭、28 條腿。設雞有 $x$ 隻、兔有 $y$ 隻，請問兔子有幾隻？</p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="checkChal(2, 'A')" class="px-5 py-2.5 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all text-slate-700">(A) 2 隻</button>
+                        <button onclick="checkChal(2, 'B')" class="px-5 py-2.5 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all text-slate-700">(B) 6 隻</button>
+                        <button onclick="checkChal(2, 'C')" class="px-5 py-2.5 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all text-slate-700">(C) 4 隻</button>
+                    </div>
+                    <div id="chal2-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. ⚠️ 易錯迷思陷阱 & 💡 生活中的數學 (Footer) -->
+        <footer class="grid md:grid-cols-2 gap-6 mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center">
+                    <i data-lucide="alert-circle" class="mr-2 text-red-500"></i> ⚠️ 解聯立方程式三大常見迷思
+                </h3>
+                <ul class="text-sm space-y-3 text-slate-600 font-medium">
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">加減消去法相減時正負號弄錯？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！兩式相減時，減號要分配進去每一項（例如 $3y - (-2y) = 5y$）！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">放大方程式時漏乘常數項？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！整式同乘以常數時，右邊的常數項也必須跟著乘（例如 $x + y = 1$ 同乘 3 得 $3x + 3y = 3$）！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">解出第一個未知數後就停止？</span>
+                        <span class="bg-amber-50 border border-amber-200 p-1.5 rounded text-amber-800 text-xs block mt-1">
+                            錯！二元聯立的解答是一組數對 $(x, y)$，求出第一個後必須代回求出另一個！
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400">
+                    <i data-lucide="lightbulb" class="mr-2 w-5 h-5"></i> 💡 生活中的消去邏輯
+                </h3>
+                <p class="text-sm leading-relaxed opacity-90">
+                    <b>消去法就像簡化問題的藝術！</b><br>
+                    1. <b>打包購物比價：</b> 買 1 漢堡 1 薯條 100 元，買 1 漢堡 2 薯條 130 元 ➔ 兩組合相減立刻知道「1 份薯條 30 元」！<br>
+                    2. <b>消去法思維：</b> 當因素太複雜時，先固定或消除一個變數，專注處理單一變數。
+                </p>
+            </div>
+        </footer>
+
+        <!-- 10. 頁腳宣告 -->
+        <footer class="text-center text-slate-400 text-sm pb-12">
+            本講義依據 108 課綱 A-7-5 標準編製 &copy; 2026 互動式教學系統
+        </footer>
+    </div>
+
+    <!-- 11. JavaScript 邏輯 -->
+    <script>
+        let subStepIndex = 0;
+        let elimStepIndex = 0;
+
+        // KaTeX 算式動態變化陣列 (紅字高亮當步變化)
+        const subEqs = [
+            "\\begin{cases} x + y = 1 \\\\ x + 2y = 3 \\end{cases}",
+            "\\begin{cases} \\color{red}{x = 1 - y} \\\\ x + 2y = 3 \\end{cases}",
+            "\\begin{cases} x = 1 - y \\\\ \\color{red}{(1 - y) + 2y = 3} \\end{cases}",
+            "\\begin{cases} x = 1 - y \\\\ \\color{red}{y = 2} \\end{cases}",
+            "\\color{red}{\\begin{cases} x = -1 \\\\ y = 2 \\end{cases}}"
+        ];
+
+        const elimEqs = [
+            "\\begin{cases} 2x + 3y = 1 \\\\ 3x + 4y = 2 \\end{cases}",
+            "\\begin{cases} \\color{red}{6x + 9y = 3} \\\\ \\color{red}{6x + 8y = 4} \\end{cases}",
+            "\\begin{cases} 6x + 8y = 4 \\\\ \\color{red}{y = -1} \\end{cases}",
+            "\\begin{cases} \\color{red}{2x + 3(-1) = 1} \\\\ y = -1 \\end{cases}",
+            "\\color{red}{\\begin{cases} x = 2 \\\\ y = -1 \\end{cases}}"
+        ];
+
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+            renderLabEquation('sub', 0);
+            renderLabEquation('elim', 0);
+        };
+
+        // 渲染實驗室 KaTeX 算式
+        function renderLabEquation(mode, index) {
+            const containerId = mode === 'sub' ? 'sub-eq-display' : 'elim-eq-display';
+            const eqStr = mode === 'sub' ? subEqs[index] : elimEqs[index];
+            const container = document.getElementById(containerId);
+            
+            if (container && typeof katex !== 'undefined') {
+                katex.render(eqStr, container, { displayMode: true });
+            }
+        }
+
+        // 🧮 實驗室 Tab 切換
+        function switchLabTab(mode) {
+            const subBtn = document.getElementById('tab-sub-btn');
+            const elimBtn = document.getElementById('tab-elim-btn');
+            const subPanel = document.getElementById('lab-sub-panel');
+            const elimPanel = document.getElementById('lab-elim-panel');
+
+            if (mode === 'sub') {
+                subBtn.className = "px-4 py-2 rounded-lg font-bold text-sm bg-indigo-600 text-white shadow";
+                elimBtn.className = "px-4 py-2 rounded-lg font-bold text-sm bg-white border border-slate-300 text-slate-700 hover:bg-slate-100";
+                subPanel.classList.remove('hidden');
+                elimPanel.classList.add('hidden');
+            } else {
+                elimBtn.className = "px-4 py-2 rounded-lg font-bold text-sm bg-indigo-600 text-white shadow";
+                subBtn.className = "px-4 py-2 rounded-lg font-bold text-sm bg-white border border-slate-300 text-slate-700 hover:bg-slate-100";
+                elimPanel.classList.remove('hidden');
+                subPanel.classList.add('hidden');
+            }
+        }
+
+        // 代入消去法步驟動畫
+        function nextSubStep() {
+            if (subStepIndex < 4) {
+                subStepIndex++;
+                const el = document.getElementById(`sub-step-${subStepIndex}`);
+                if (el) {
+                    el.classList.remove('opacity-40');
+                    el.classList.add('opacity-100', 'border-indigo-500', 'bg-indigo-50/50');
+                }
+                renderLabEquation('sub', subStepIndex);
+            }
+            if (subStepIndex === 4) {
+                document.getElementById('sub-next-btn').innerText = "演示完成";
+                document.getElementById('sub-next-btn').disabled = true;
+            }
+        }
+
+        // 加減消去法步驟動畫
+        function nextElimStep() {
+            if (elimStepIndex < 4) {
+                elimStepIndex++;
+                const el = document.getElementById(`elim-step-${elimStepIndex}`);
+                if (el) {
+                    el.classList.remove('opacity-40');
+                    el.classList.add('opacity-100', 'border-indigo-500', 'bg-indigo-50/50');
+                }
+                renderLabEquation('elim', elimStepIndex);
+            }
+            if (elimStepIndex === 4) {
+                document.getElementById('elim-next-btn').innerText = "演示完成";
+                document.getElementById('elim-next-btn').disabled = true;
+            }
+        }
+
+        function resetLabMethod() {
+            subStepIndex = 0;
+            elimStepIndex = 0;
+            for (let i = 1; i <= 4; i++) {
+                let s1 = document.getElementById(`sub-step-${i}`);
+                let s2 = document.getElementById(`elim-step-${i}`);
+                if (s1) s1.className = "p-3 bg-white border rounded-lg shadow-sm opacity-40 transition-all";
+                if (s2) s2.className = "p-3 bg-white border rounded-lg shadow-sm opacity-40 transition-all";
+            }
+            renderLabEquation('sub', 0);
+            renderLabEquation('elim', 0);
+
+            document.getElementById('sub-next-btn').innerText = "下一步 ➔";
+            document.getElementById('sub-next-btn').disabled = false;
+            document.getElementById('elim-next-btn').innerText = "下一步 ➔";
+            document.getElementById('elim-next-btn').disabled = false;
+            switchLabTab('sub');
+        }
+
+        // 🔍 觀念引導邏輯
+        function answerStep(step, isCorrect, wrongType) {
+            const feedback = document.getElementById('step-feedback');
+            feedback.classList.remove('hidden');
+
+            if (step === 1) {
+                if (isCorrect) {
+                    feedback.innerHTML = "✅ 完全正確！第一式已經給出 x = 2y - 1，直接取代第二式的 x 最快速！解鎖下一步！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm";
+                    document.getElementById('sq1').classList.add('opacity-50');
+                    document.getElementById('sq2').classList.remove('hidden');
+                } else {
+                    feedback.innerHTML = "❌ 答錯囉！雖然整理成標準式再用加減消去法也可以解，但題目已經給出 x = 2y - 1，直接使用「代入消去法」可以少做兩步整理哦！再試試看！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
+                }
+            } else if (step === 2) {
+                if (isCorrect) {
+                    feedback.innerHTML = "🎉 太棒了！把 (2y - 1) 完整替換掉 x，得到 3(2y - 1) + 2y = 13，順利化簡為單一變數 y 的方程！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm";
+                    document.getElementById('sq2').classList.add('opacity-50');
+                } else {
+                    feedback.innerHTML = "❌ 答錯囉！替換時記得要加括號把整個式子 (2y - 1) 包起來乘以 3，否則會漏乘常數項 -1 哦！再試試看！";
+                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
+                }
+            }
+        }
+
+        // 🧩 練習 1 檢查邏輯
+        function checkP1(step, isCorrect, wrongType) {
+            if (step === 1) {
+                const f = document.getElementById('p1-f1');
+                f.classList.remove('hidden');
+                if (isCorrect) {
+                    f.innerHTML = "✅ 正確！異號相加（+2y 與 -2y 相加等於 0），可以直接消去 y！";
+                    f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    const s2 = document.getElementById('p1-s2');
+                    s2.classList.remove('hidden');
+                    setTimeout(() => s2.classList.add('opacity-100'), 10);
+                } else if (wrongType === 'A') {
+                    f.innerHTML = "❌ 答錯囉！如果相減，2y - (-2y) 會變成 4y，無法消去 y 哦！相反數應該用『相加』！";
+                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                } else {
+                    f.innerHTML = "❌ 答錯囉！加減消去法是將兩式相加或相減，兩式相乘無法消去未知數哦！";
+                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                }
+            } else if (step === 2) {
+                const f = document.getElementById('p1-f2');
+                f.classList.remove('hidden');
+                if (isCorrect) {
+                    f.innerHTML = "✅ 太強了！3(2) - 2y = 0 ➔ 6 = 2y ➔ y = 3！解答正確！";
+                    f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    const res = document.getElementById('p1-result');
+                    res.classList.remove('hidden');
+                    setTimeout(() => res.classList.add('opacity-100'), 10);
+                } else if (wrongType === 'A') {
+                    f.innerHTML = "❌ 算算看！6 - 2y = 0 ➔ 2y = 6 ➔ y 應該是多少呢？不是 2 哦！";
+                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                } else {
+                    f.innerHTML = "❌ 符號算錯囉！6 - 2y = 0 移項得 2y = 6，y 應該是正數 3 哦！";
+                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
+                }
+            }
+        }
+
+        // 🧮 練習 2 檢查邏輯
+        function checkP2(qNum, choice) {
+            const f = document.getElementById('p2-f' + qNum);
+            f.classList.remove('hidden');
+
+            if (qNum === 1) {
+                if (choice === 'right') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
+                    f.innerHTML = "✅ 觀念超清晰！根據等量乘法公理，方程式兩邊放大時，『每一個項』（包含常數項）都必須乘以相同的倍數！";
+                } else if (choice === 'wrongA') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
+                    f.innerHTML = "❌ 這是最常見的迷思！如果只乘左邊不乘右邊，等式就會失去平衡！常數項也必須乘以 3！";
+                } else {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
+                    f.innerHTML = "❌ 答錯囉！無論常數項是正數還是負數，根據等量公理都必須跟著乘以 3 哦！";
+                }
+            } else if (qNum === 2) {
+                if (choice === 'right') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
+                    f.innerHTML = "✅ 答對了！下式扣上式 ➔ (2x - 2x) + (3y - y) = 9 - 5 ➔ 得 2y = 4！";
+                } else if (choice === 'wrongA') {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
+                    f.innerHTML = "❌ 計算錯囉！3y - y = 2y、9 - 5 = 4，應該得到 2y = 4 哦！";
+                } else {
+                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
+                    f.innerHTML = "❌ 答錯囉！相減時 2x - 2x = 0，未知數 x 已經被成功消去，算式中不會再有 x 哦！";
+                }
+            }
+        }
+
+        // 🚀 實戰挑戰檢查邏輯
+        function checkChal(qNum, choice) {
+            const feedback = document.getElementById(`chal${qNum}-feedback`);
+            feedback.classList.remove('hidden');
+
+            if (qNum === 1) {
+                if (choice === 'B') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
+                    feedback.innerHTML = "🎉 完全正確！列式 $$\begin{cases} x + y = 30 \\ 200x + 100y = 4500 \end{cases}$$ ➔ 由第一式得 y = 30 - x，代入第二式 200x + 100(30 - x) = 4500 ➔ 100x = 1500 ➔ x = 15 張全票！";
+                } else if (choice === 'A') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                    feedback.innerHTML = "❌ 算算看！若買 10 張全票，半票就是 20 張。金額為 10(200) + 20(100) = 4000 元 ≠ 4500 元，數量不對哦！";
+                } else if (choice === 'C') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                    feedback.innerHTML = "❌ 算算看！若買 20 張全票，半票就是 10 張。金額為 20(200) + 10(100) = 5000 元 ≠ 4500 元，金額超出了哦！";
+                }
+            } else if (qNum === 2) {
+                if (choice === 'C') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
+                    feedback.innerHTML = "🎉 太強了！答對了！列式 $$\begin{cases} x + y = 10 \\ 2x + 4y = 28 \end{cases}$$ 第一式同乘 2 ➔ 2x + 2y = 20 ➔ 兩式相減得 2y = 8 ➔ y = 4 隻兔子！代回驗算：6 隻雞 + 4 隻兔 = 10 個頭；6(2) + 4(4) = 28 條腿，驗算成功！";
+                } else if (choice === 'A') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                    feedback.innerHTML = "❌ 算算看！若兔子 2 隻，雞就是 8 隻。腿數為 8(2) + 2(4) = 24 條腿 ≠ 28 條腿，腿數太少了哦！";
+                } else if (choice === 'B') {
+                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
+                    feedback.innerHTML = "❌ 算算看！若兔子 6 隻，雞就是 4 隻。腿數為 4(2) + 6(4) = 32 條腿 ≠ 28 條腿，腿數太多了哦！";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
