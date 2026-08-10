@@ -599,7 +599,7 @@
             if (qNum === 1) {
                 if (choice === 'B') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
-                    feedback.innerHTML = "🎉 完全正確！列式 $$\begin{cases} x + y = 30 \\ 200x + 100y = 4500 \end{cases}$$ ➔ 由第一式得 y = 30 - x，代入第二式 200x + 100(30 - x) = 4500 ➔ 100x = 1500 ➔ x = 15 張全票！";
+                    feedback.innerHTML = "🎉 完全正確！列式 x + y = 30 \\ 200x + 100y = 4500  ➔ 由第一式得 y = 30 - x，代入第二式 200x + 100(30 - x) = 4500 ➔ 100x = 1500 ➔ x = 15 張全票！";
                 } else if (choice === 'A') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
                     feedback.innerHTML = "❌ 算算看！若買 10 張全票，半票就是 20 張。金額為 10(200) + 20(100) = 4000 元 ≠ 4500 元，數量不對哦！";
@@ -610,7 +610,7 @@
             } else if (qNum === 2) {
                 if (choice === 'C') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
-                    feedback.innerHTML = "🎉 太強了！答對了！列式 $$\begin{cases} x + y = 10 \\ 2x + 4y = 28 \end{cases}$$ 第一式同乘 2 ➔ 2x + 2y = 20 ➔ 兩式相減得 2y = 8 ➔ y = 4 隻兔子！代回驗算：6 隻雞 + 4 隻兔 = 10 個頭；6(2) + 4(4) = 28 條腿，驗算成功！";
+                    feedback.innerHTML = "🎉 太強了！答對了！列式 x + y = 10 \\ 2x + 4y = 28 第一式同乘 2 ➔ 2x + 2y = 20 ➔ 兩式相減得 2y = 8 ➔ y = 4 隻兔子！代回驗算：6 隻雞 + 4 隻兔 = 10 個頭；6(2) + 4(4) = 28 條腿，驗算成功！";
                 } else if (choice === 'A') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
                     feedback.innerHTML = "❌ 算算看！若兔子 2 隻，雞就是 8 隻。腿數為 8(2) + 2(4) = 24 條腿 ≠ 28 條腿，腿數太少了哦！";
