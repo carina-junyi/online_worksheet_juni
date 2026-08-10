@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-7-8 一元一次不等式的解與應用互動講義</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <!-- 引入 KaTeX 進行方程式與數學符號渲染 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .math-fact { background-color: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 6px; font-weight: bold; }
+        .step-badge { background-color: #3b82f6; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .feedback-box { transition: all 0.3s ease; }
+        
+        .grid-bg {
+            background-size: 20px 20px;
+            background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px), linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+        }
+        .challenge-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .nl-arrow { transition: all 0.4s ease-out; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- 1. Header (標題列) -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 一元一次不等式的解與應用</h1>
+            <p class="text-slate-600">A-7-8 互動式學習講義</p>
+        </header>
+
+        <!-- 2. 🎯 學習目標 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="mr-2 w-5 h-5"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>理解「一元一次不等式的解」代表能使不等式成立的數（包含整數、小數與分數）。</li>
+                <li>掌握不等式的運算性質：<b>同乘或同除負數時，不等號方向必須翻轉（$<$ 變 $>$, $\le$ 變 $\ge$）</b>。</li>
+                <li>學會在數線上標示解的範圍：<b>實心點代表包含端點，空心點代表不包含端點，並搭配陰影斜線表示解集範圍</b>。</li>
+                <li>能利用一元一次不等式求解生活中的預算與數量上限應用問題。</li>
+            </ul>
+        </section>
+
+        <!-- 3. 1️⃣ 2️⃣ 3️⃣ 核心概念卡片 -->
+        <div class="grid md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                <h3 class="font-bold text-blue-700 text-lg mb-2">1️⃣ 負數翻轉黃金律</h3>
+                <p class="text-sm text-blue-900 leading-relaxed mb-2">
+                    不等式兩邊同時加減數，或同乘除<b>正數</b>，不等號方向<b>不變</b>。
+                </p>
+                <p class="text-xs text-blue-800 font-bold bg-white p-2 rounded border border-blue-200">
+                    ⚠️ 唯獨兩邊「同乘或同除負數」時，不等號方向必須改變！<br>
+                    例如：$-5x > 15 \implies x < -3$
+                </p>
+            </div>
+            <div class="bg-green-50 p-5 rounded-lg border border-green-200">
+                <h3 class="font-bold text-green-700 text-lg mb-2">2️⃣ 數線標示規則</h3>
+                <p class="text-sm text-green-800 leading-relaxed mb-2">
+                    數線上畫解的範圍時，端點點型、箭頭與斜線陰影代表：
+                </p>
+                <ul class="list-disc list-inside text-xs text-green-800 space-y-1 font-medium">
+                    <li><b>實心點（$\bullet$）：</b>包含該端點（$\le$ 或 $\ge$）。</li>
+                    <li><b>空心點（$\circ$）：</b>不包含該端點（$<$ 或 $>$）。</li>
+                    <li><b>向右箭頭＋斜線陰影：</b>比端點大（$>$ 或 $\ge$）。</li>
+                    <li><b>向左箭頭＋斜線陰影：</b>比端點小（$<$ 或 $\le$）。</li>
+                </ul>
+            </div>
+            <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200">
+                <h3 class="font-bold text-emerald-700 text-lg mb-2">3️⃣ 解集連續性迷思</h3>
+                <p class="text-sm text-emerald-800 leading-relaxed mb-2">
+                    不等式的解是一個<b>連續的範圍</b>，不單單只有整數：
+                </p>
+                <p class="text-xs text-emerald-700 font-bold bg-white p-2 rounded border border-emerald-300">
+                    例如：$x > 4$ 的解包含 $4.1, 4.5, 5, 5.14159\dots$ 等無限多個實數，並非只有 $5, 6, 7\dots$！
+                </p>
+            </div>
+        </div>
+
+        <!-- 4. 🧮 互動模擬實驗室：動態數線與解集圖示器 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center">
+                    <i data-lucide="line-chart" class="mr-2 text-indigo-600"></i> 🧮 互動實驗室：不等式解集動態數線繪製器
+                </h2>
+                <button onclick="resetNumberLineSim()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium transition-colors">🔄 重置數線</button>
+            </div>
+
+            <div class="p-4 bg-indigo-50 rounded-lg mb-4 text-sm text-indigo-900 leading-relaxed border border-indigo-100">
+                <b>操作說明：</b>選擇不等號符號並拖動界線數值 $a$，觀察數線上的<b>點型（實心/空心）</b>、<b>陰影斜線區間</b>與<b>箭頭方向</b>如何隨之變化！
+            </div>
+
+            <!-- 控制面板 -->
+            <div class="grid md:grid-cols-2 gap-4 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-2">1. 選擇不等號符號：</label>
+                    <div class="flex gap-2">
+                        <button onclick="setOp('>')" id="op-btn-gt" class="flex-1 py-2 bg-indigo-600 text-white font-bold rounded-lg text-sm transition-all">$>$ (大於)</button>
+                        <button onclick="setOp('>=')" id="op-btn-gte" class="flex-1 py-2 bg-white border border-slate-300 text-slate-700 font-bold rounded-lg text-sm transition-all">$\ge$ (大於等於)</button>
+                        <button onclick="setOp('<')" id="op-btn-lt" class="flex-1 py-2 bg-white border border-slate-300 text-slate-700 font-bold rounded-lg text-sm transition-all">$<$ (小於)</button>
+                        <button onclick="setOp('<=')" id="op-btn-lte" class="flex-1 py-2 bg-white border border-slate-300 text-slate-700 font-bold rounded-lg text-sm transition-all">$\le$ (小於等於)</button>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-bold text-slate-700">2. 調整邊界端點值 $a$：</label>
+                        <span id="nl-val-display" class="font-extrabold text-indigo-700 text-sm">$a = 2$</span>
+                    </div>
+                    <input type="range" id="nl-range-a" min="-4" max="4" value="2" step="1" oninput="updateNumberLineSim()" class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer">
+                </div>
+            </div>
+
+            <!-- SVG 動態數線繪製區 -->
+            <div class="relative w-full h-36 grid-bg border-2 border-slate-300 rounded-xl overflow-hidden flex flex-col items-center justify-center bg-white shadow-inner p-2">
+                <svg width="100%" height="100%" viewBox="0 0 500 100" class="overflow-visible">
+                    <defs>
+                        <!-- 定義斜線圖案 (Hatch Pattern) -->
+                        <pattern id="diag-hatch-sim" width="8" height="8" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                            <line x1="0" y1="0" x2="0" y2="8" stroke="#3b82f6" stroke-width="1.5" opacity="0.6" />
+                        </pattern>
+                    </defs>
+
+                    <!-- 數線主軸 -->
+                    <line x1="30" y1="60" x2="470" y2="60" stroke="#475569" stroke-width="2.5"/>
+                    <!-- 兩端箭頭 -->
+                    <polygon points="470,60 462,56 462,64" fill="#475569"/>
+                    <polygon points="30,60 38,56 38,64" fill="#475569"/>
+
+                    <!-- 刻度 -4 到 4 -->
+                    <g stroke="#64748b" stroke-width="1.5">
+                        <line x1="98" y1="55" x2="98" y2="65"/><text x="98" y="82" font-size="11" text-anchor="middle" fill="#475569">-4</text>
+                        <line x1="136" y1="55" x2="136" y2="65"/><text x="136" y="82" font-size="11" text-anchor="middle" fill="#475569">-3</text>
+                        <line x1="174" y1="55" x2="174" y2="65"/><text x="174" y="82" font-size="11" text-anchor="middle" fill="#475569">-2</text>
+                        <line x1="212" y1="55" x2="212" y2="65"/><text x="212" y="82" font-size="11" text-anchor="middle" fill="#475569">-1</text>
+                        <line x1="250" y1="52" x2="250" y2="68" stroke-width="2"/><text x="250" y="84" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e293b">0</text>
+                        <line x1="288" y1="55" x2="288" y2="65"/><text x="288" y="82" font-size="11" text-anchor="middle" fill="#475569">1</text>
+                        <line x1="326" y1="55" x2="326" y2="65"/><text x="326" y="82" font-size="11" text-anchor="middle" fill="#475569">2</text>
+                        <line x1="364" y1="55" x2="364" y2="65"/><text x="364" y="82" font-size="11" text-anchor="middle" fill="#475569">3</text>
+                        <line x1="402" y1="55" x2="402" y2="65"/><text x="402" y="82" font-size="11" text-anchor="middle" fill="#475569">4</text>
+                    </g>
+
+                    <!-- 動態解集斜線/陰影區與箭頭線段 -->
+                    <g id="nl-solution-group" class="nl-arrow">
+                        <!-- 底層藍色底色陰影 -->
+                        <polygon id="nl-shade-bg" points="326,35 465,35 465,60 326,60" fill="#3b82f6" fill-opacity="0.12" />
+                        <!-- 上層斜線陰影 -->
+                        <polygon id="nl-shade-hatch" points="326,35 465,35 465,60 326,60" fill="url(#diag-hatch-sim)" />
+
+                        <!-- 高亮射線 -->
+                        <line id="nl-ray-line" x1="326" y1="35" x2="465" y2="35" stroke="#2563eb" stroke-width="3.5"/>
+                        <!-- 垂線指到端點 -->
+                        <line id="nl-drop-line" x1="326" y1="35" x2="326" y2="58" stroke="#2563eb" stroke-width="2" stroke-dasharray="2,2"/>
+                        <!-- 射線頭部箭頭 -->
+                        <polygon id="nl-ray-arrow" points="465,35 455,30 455,40" fill="#2563eb"/>
+                        <!-- 端點圓圈 (實心/空心) -->
+                        <circle id="nl-dot-circle" cx="326" cy="35" r="5.5" stroke="#2563eb" stroke-width="2.5" fill="#ffffff"/>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- 動態結論說明 -->
+            <div id="nl-sim-explanation" class="mt-4 p-4 rounded-xl border-2 bg-indigo-50 border-indigo-200 text-indigo-950 font-bold text-sm text-center shadow-sm">
+                <!-- JS 動態寫入 -->
+            </div>
+        </section>
+
+        <!-- 5. ✏️ 解題示範：一般求解 vs 負數翻轉 (Worked Example) -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil" class="mr-2 text-blue-600"></i> 解題示範：不等式求解與數線圖示
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 示範 1：正數係數 (不變號) -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <h3 class="font-bold text-indigo-900 text-base border-b pb-2 flex items-center">
+                        <span class="bg-indigo-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs mr-2">1</span>
+                        求解 $3x - 1 \le 5$ (方向不變)
+                    </h3>
+                    <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
+                        <p><b>步驟 1 (同加 1)：</b>兩側同加 1 ➔ $3x \le 6$。</p>
+                        <p><b>步驟 2 (同除正數 3)：</b>除以正數 3，不等號<b>方向不變</b> ➔ <span class="math-fact text-blue-700">$x \le 2$</span>。</p>
+                        <p><b>數線圖示：</b>在 2 處標<b>實心點</b>，畫箭頭<b>向左並加上斜線陰影</b>！</p>
+                    </div>
+                </div>
+
+                <!-- 示範 2：負數係數 (同除負數要變號) -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <h3 class="font-bold text-indigo-900 text-base border-b pb-2 flex items-center">
+                        <span class="bg-indigo-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs mr-2">2</span>
+                        求解 $-3x < 6$ (同除負數翻轉)
+                    </h3>
+                    <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
+                        <p><b>步驟 1 (同除負數 -3)：</b>兩側同除以 $-3$。</p>
+                        <p><b>步驟 2 (變號關鍵)：</b>因除以負數，不等號<b>由 $<$ 翻轉為 $>$</b> ➔ <span class="math-fact text-blue-700">$x > -2$</span>。</p>
+                        <p><b>數線圖示：</b>在 $-2$ 處標<b>空心點</b>，畫箭頭<b>向右並加上斜線陰影</b>！</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 🔍 觀念引導：破解同乘除負數變號與端點迷思 -->
+        <section class="bg-indigo-50 rounded-xl shadow-sm p-6 mb-8 border border-indigo-200">
+            <h2 class="text-xl font-bold text-indigo-800 mb-4 flex items-center">
+                <i data-lucide="check-square" class="mr-2 w-5 h-5"></i> 🔍 觀念引導：為什麼同乘除負數要翻轉不等號？
+            </h2>
+            <div class="mb-4 text-slate-700 p-3 bg-white rounded-lg border border-indigo-100 italic text-sm">
+                思考：已知數字大小為 $5 > 3$。若兩邊同時乘以 $-1$，變為 $-5$ 與 $-3$，哪一個比較大？
+            </div>
+            <div id="step-quiz" class="space-y-4">
+                <div id="sq1">
+                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 在數線上，$-3$ 位在 $-5$ 的右邊，所以 $-5$ 與 $-3$ 的大小關係為何？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(1, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">$-5 < -3$（小於）</button>
+                        <button onclick="answerStep(1, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">$-5 > -3$（大於）</button>
+                    </div>
+                </div>
+                <div id="sq2" class="hidden">
+                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">2️⃣ 賓果！原本是 $5 > 3$，同乘以 $-1$ 後變成 $-5 < -3$。這證明了「兩邊同乘或同除負數時，不等號方向必須如何」？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(2, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">保持方向不變</button>
+                        <button onclick="answerStep(2, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">翻轉不等號方向</button>
+                    </div>
+                </div>
+                <div id="step-feedback" class="hidden p-4 rounded-lg font-bold"></div>
+            </div>
+        </section>
+
+        <!-- 7. 🧩 引導式實踐練習 -->
+        <!-- 練習 1：步驟引導求解 -2x + 5 <= 11 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-blue-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil-line" class="mr-2 text-blue-600"></i> 🧩 練習 1：步驟引導！求解不等式 $-2x + 5 \le 11$
+            </h2>
+            
+            <div class="p-4 bg-blue-50 rounded-lg mb-6 border border-blue-100">
+                <p class="text-blue-900 font-bold leading-relaxed">
+                    題目：求解一元一次不等式 $-2x + 5 \le 11$，並思考其數線圖示。
+                </p>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Step 1 -->
+                <div id="p1-s1">
+                    <p class="text-slate-800 mb-2 font-medium">步驟 1️⃣：兩邊同時減去 5，式子會變成什麼？</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="checkP1(1, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$-2x \le 6$</button>
+                        <button onclick="checkP1(1, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$-2x \le 16$</button>
+                        <button onclick="checkP1(1, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$-2x \ge 6$</button>
+                    </div>
+                    <div id="p1-f1" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div id="p1-s2" class="hidden opacity-0 transition-all duration-500">
+                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">步驟 2️⃣：從 $-2x \le 6$，兩邊同時除以負數 $-2$。記得要翻轉不等號！正確答案為？</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="checkP1(2, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$x \le -3$</button>
+                        <button onclick="checkP1(2, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$x \ge -3$</button>
+                        <button onclick="checkP1(2, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 transition-all">$x \ge 3$</button>
+                    </div>
+                    <div id="p1-f2" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Result -->
+                <div id="p1-result" class="hidden opacity-0 transition-all duration-500">
+                    <div class="bg-green-50 p-6 border border-green-200 rounded-lg shadow-inner">
+                        <p class="text-green-800 font-bold flex items-center mb-2 text-lg">
+                            <i data-lucide="party-popper" class="mr-2 w-6 h-6"></i> 完全正確！最終解為 $x \ge -3$！
+                        </p>
+                        <p class="text-green-700 leading-relaxed">
+                            <b>數線標示法：</b>在 $-3$ 處畫<b>實心點</b>，箭頭<b>向右延伸並加上斜線陰影</b>！
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 練習 2：運算性質與數線圖形選擇 (第 2 題選項使用實體 SVG 數線加上斜線陰影) -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-emerald-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="layers" class="mr-2 text-emerald-600"></i> 🧮 練習 2：運算性質與數線圖形快問快答
+            </h2>
+            <p class="text-slate-600 mb-6 text-sm font-medium">請根據不等式性質與數線圖示選出正確答案：</p>
+            
+            <div class="space-y-6">
+                <!-- Case 1 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">1. 求解不等式 $-4x > 12$，兩邊同除以 $-4$ 後正確的解為？</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button onclick="checkP2(1, 'wrongA')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">$x > -3$</button>
+                        <button onclick="checkP2(1, 'wrongB')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">$x < 3$</button>
+                        <button onclick="checkP2(1, 'right')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">$x < -3$</button>
+                    </div>
+                    <div id="p2-f1" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+
+                <!-- Case 2 (選項用實際 SVG 數線加上斜線陰影圖案) -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">2. 在數線上標示不等式 $x \ge 2$ 的解，下列哪一種圖形標示方式才正確？</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-2">
+                        <!-- Option A: 端點空心，箭頭向右 + 斜線陰影 -->
+                        <button onclick="checkP2(2, 'wrongA')" class="p-3 border-2 border-slate-300 rounded-xl bg-white hover:bg-blue-50 transition-all flex flex-col items-center gap-2">
+                            <svg width="180" height="45" viewBox="0 0 200 45">
+                                <defs>
+                                    <pattern id="hatch-opt-a" width="6" height="6" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                                        <line x1="0" y1="0" x2="0" y2="6" stroke="#2563eb" stroke-width="1.2" opacity="0.5" />
+                                    </pattern>
+                                </defs>
+                                <line x1="10" y1="28" x2="190" y2="28" stroke="#475569" stroke-width="2"/>
+                                <polygon points="190,28 182,25 182,31" fill="#475569"/>
+                                <polygon points="10,28 18,25 18,31" fill="#475569"/>
+                                <line x1="100" y1="23" x2="100" y2="33" stroke="#64748b" stroke-width="1.5"/>
+                                <text x="100" y="42" font-size="10" font-weight="bold" text-anchor="middle" fill="#1e293b">2</text>
+                                
+                                <!-- 陰影斜線 -->
+                                <polygon points="100,12 185,12 185,28 100,28" fill="#3b82f6" fill-opacity="0.12" />
+                                <polygon points="100,12 185,12 185,28 100,28" fill="url(#hatch-opt-a)" />
+
+                                <line x1="100" y1="12" x2="185" y2="12" stroke="#2563eb" stroke-width="2.5"/>
+                                <polygon points="185,12 177,9 177,15" fill="#2563eb"/>
+                                <circle cx="100" cy="12" r="4" stroke="#2563eb" stroke-width="2" fill="#ffffff"/>
+                            </svg>
+                            <span class="text-xs font-bold text-slate-700">(A) 端點空心，箭頭向右</span>
+                        </button>
+
+                        <!-- Option B: 端點實心，箭頭向右 + 斜線陰影 (正確) -->
+                        <button onclick="checkP2(2, 'right')" class="p-3 border-2 border-slate-300 rounded-xl bg-white hover:bg-emerald-50 transition-all flex flex-col items-center gap-2">
+                            <svg width="180" height="45" viewBox="0 0 200 45">
+                                <defs>
+                                    <pattern id="hatch-opt-b" width="6" height="6" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                                        <line x1="0" y1="0" x2="0" y2="6" stroke="#2563eb" stroke-width="1.2" opacity="0.5" />
+                                    </pattern>
+                                </defs>
+                                <line x1="10" y1="28" x2="190" y2="28" stroke="#475569" stroke-width="2"/>
+                                <polygon points="190,28 182,25 182,31" fill="#475569"/>
+                                <polygon points="10,28 18,25 18,31" fill="#475569"/>
+                                <line x1="100" y1="23" x2="100" y2="33" stroke="#64748b" stroke-width="1.5"/>
+                                <text x="100" y="42" font-size="10" font-weight="bold" text-anchor="middle" fill="#1e293b">2</text>
+                                
+                                <!-- 陰影斜線 -->
+                                <polygon points="100,12 185,12 185,28 100,28" fill="#3b82f6" fill-opacity="0.12" />
+                                <polygon points="100,12 185,12 185,28 100,28" fill="url(#hatch-opt-b)" />
+
+                                <line x1="100" y1="12" x2="185" y2="12" stroke="#2563eb" stroke-width="2.5"/>
+                                <polygon points="185,12 177,9 177,15" fill="#2563eb"/>
+                                <circle cx="100" cy="12" r="4.5" fill="#2563eb"/>
+                            </svg>
+                            <span class="text-xs font-bold text-slate-700">(B) 端點實心，箭頭向右</span>
+                        </button>
+
+                        <!-- Option C: 端點實心，箭頭向左 + 斜線陰影 -->
+                        <button onclick="checkP2(2, 'wrongB')" class="p-3 border-2 border-slate-300 rounded-xl bg-white hover:bg-blue-50 transition-all flex flex-col items-center gap-2">
+                            <svg width="180" height="45" viewBox="0 0 200 45">
+                                <defs>
+                                    <pattern id="hatch-opt-c" width="6" height="6" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                                        <line x1="0" y1="0" x2="0" y2="6" stroke="#2563eb" stroke-width="1.2" opacity="0.5" />
+                                    </pattern>
+                                </defs>
+                                <line x1="10" y1="28" x2="190" y2="28" stroke="#475569" stroke-width="2"/>
+                                <polygon points="190,28 182,25 182,31" fill="#475569"/>
+                                <polygon points="10,28 18,25 18,31" fill="#475569"/>
+                                <line x1="100" y1="23" x2="100" y2="33" stroke="#64748b" stroke-width="1.5"/>
+                                <text x="100" y="42" font-size="10" font-weight="bold" text-anchor="middle" fill="#1e293b">2</text>
+                                
+                                <!-- 陰影斜線 -->
+                                <polygon points="15,12 100,12 100,28 15,28" fill="#3b82f6" fill-opacity="0.12" />
+                                <polygon points="15,12 100,12 100,28 15,28" fill="url(#hatch-opt-c)" />
+
+                                <line x1="100" y1="12" x2="15" y2="12" stroke="#2563eb" stroke-width="2.5"/>
+                                <polygon points="15,12 23,9 23,15" fill="#2563eb"/>
+                                <circle cx="100" cy="12" r="4.5" fill="#2563eb"/>
+                            </svg>
+                            <span class="text-xs font-bold text-slate-700">(C) 端點實心，箭頭向左</span>
+                        </button>
+                    </div>
+                    <div id="p2-f2" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. 🚀 實戰挑戰 -->
+        <section class="bg-slate-50 rounded-2xl p-6 mb-8 border-2 border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i data-lucide="rocket" class="mr-2 text-orange-500"></i> 實戰挑戰：不等式解法與應用大考驗
+            </h2>
+            
+            <div class="space-y-8">
+                <!-- Challenge 1 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">1. 筆記本採買應用題</h3>
+                    <p class="text-sm text-slate-600 mb-4">小剛帶了 200 元去文具店買筆記本。已知筆記本一本 35 元，精美包裝盒一個 10 元。設小剛買了 $x$ 本筆記本，可列出不等式 $35x + 10 \le 200$。請問小剛<b>最多</b>可以買幾本筆記本？</p>
+                    <div class="space-y-2">
+                        <button onclick="checkChal(1, 'A')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(A) 4 本</button>
+                        <button onclick="checkChal(1, 'B')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(B) 5 本</button>
+                        <button onclick="checkChal(1, 'C')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(C) 6 本</button>
+                    </div>
+                    <div id="chal1-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- Challenge 2 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">2. 解集的連續性概念觀念題</h3>
+                    <p class="text-sm text-slate-600 mb-4">關於一元一次不等式 $x > 2$ 的解，下列敘述何者完全正確？</p>
+                    <div class="space-y-2">
+                        <button onclick="checkChal(2, 'A')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(A) 解只有整數，例如 $3, 4, 5, 6\dots$</button>
+                        <button onclick="checkChal(2, 'B')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(B) 解包含所有比 2 大的數，例如小數 $2.1$ 與 $2.5$ 都是解</button>
+                        <button onclick="checkChal(2, 'C')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(C) 數字 2 也是這個不等式的解之一</button>
+                    </div>
+                    <div id="chal2-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. ⚠️ 易錯迷思陷阱 & 💡 生活中的數學 -->
+        <footer class="grid md:grid-cols-2 gap-6 mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center">
+                    <i data-lucide="alert-circle" class="mr-2 text-red-500"></i> ⚠️ 求解不等式三大常見迷思
+                </h3>
+                <ul class="text-sm space-y-3 text-slate-600 font-medium">
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">同乘除負數忘記翻轉不等號？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！兩邊同乘或同除負數時，不等號必須翻轉（如 $<$ 變 $>$）！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">誤以為解只有整數？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！不等式的解在數線上是一個連續區間，包含無數個小數與分數！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">混淆實心點與空心點？</span>
+                        <span class="bg-amber-50 border border-amber-200 p-1.5 rounded text-amber-800 text-xs block mt-1">
+                            錯！包含端點（$\le, \ge$）用<b>實心點</b>；不含端點（$<, >$）用<b>空心點</b>！
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400">
+                    <i data-lucide="lightbulb" class="mr-2 w-5 h-5"></i> 💡 生活中的一元一次不等式
+                </h3>
+                <p class="text-sm leading-relaxed opacity-90">
+                    <b>生活處處都是不等式：</b><br>
+                    1. <b>超商湊單優惠：</b> 單筆消費滿 99 元享免運 ➔ 花費 $x \ge 99$ 元。<br>
+                    2. <b>手機資費方案：</b> 每月行動上網傳輸量不超過 10 GB 不降速 ➔ 用量 $x \le 10$ GB。<br>
+                    3. <b>電影分級制度：</b> 輔導級電影未滿 12 歲兒童不得觀賞 ➔ 年齡 $x < 12$ 歲。
+                </p>
+            </div>
+        </footer>
+
+        <!-- 10. 頁腳宣告 -->
+        <footer class="text-center text-slate-400 text-sm pb-12">
+            本講義依據 108 課綱 A-7-8 標準編製 &copy; 2026 互動式教學系統
+        </footer>
+    </div>
+
+    <!-- 11. JavaScript 邏輯 -->
+    <script>
+        let currentOp = '>';
+        let currentA = 2;
+
+        // 通用 KaTeX 渲染函式，確保動態寫入的數學式完全呈現
+        function updateFeedbackAndRender(elementId, htmlContent, className) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            if (className) el.className = className;
+            el.innerHTML = htmlContent;
+            el.classList.remove('hidden');
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(el, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+        }
+
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+            updateNumberLineSim();
+        };
+
+        // 🧮 互動數線模擬器邏輯
+        function setOp(op) {
+            currentOp = op;
+            ['gt', 'gte', 'lt', 'lte'].forEach(id => {
+                document.getElementById(`op-btn-${id}`).className = "flex-1 py-2 bg-white border border-slate-300 text-slate-700 font-bold rounded-lg text-sm transition-all";
+            });
+            
+            const btnMap = { '>': 'gt', '>=': 'gte', '<': 'lt', '<=': 'lte' };
+            document.getElementById(`op-btn-${btnMap[op]}`).className = "flex-1 py-2 bg-indigo-600 text-white font-bold rounded-lg text-sm transition-all shadow";
+
+            updateNumberLineSim();
+        }
+
+        function updateNumberLineSim() {
+            currentA = parseInt(document.getElementById('nl-range-a').value);
+            document.getElementById('nl-val-display').innerHTML = `$a = ${currentA}$`;
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.getElementById('nl-val-display'), {
+                    delimiters: [{left: '$', right: '$', display: false}]
+                });
+            }
+
+            // SVG 坐標換算：x=0 在 250，1單位 = 38px
+            const circleX = 250 + currentA * 38;
+
+            const rayLine = document.getElementById('nl-ray-line');
+            const dropLine = document.getElementById('nl-drop-line');
+            const rayArrow = document.getElementById('nl-ray-arrow');
+            const dotCircle = document.getElementById('nl-dot-circle');
+            const shadeBg = document.getElementById('nl-shade-bg');
+            const shadeHatch = document.getElementById('nl-shade-hatch');
+
+            // 垂線定位
+            dropLine.setAttribute('x1', circleX);
+            dropLine.setAttribute('x2', circleX);
+
+            // 點位置
+            dotCircle.setAttribute('cx', circleX);
+
+            // 判斷實心/空心
+            if (currentOp === '>=' || currentOp === '<=') {
+                dotCircle.setAttribute('fill', '#2563eb'); // 實心
+            } else {
+                dotCircle.setAttribute('fill', '#ffffff'); // 空心
+            }
+
+            // 判斷方向 (向右或向左)
+            if (currentOp === '>' || currentOp === '>=') {
+                // 向右
+                rayLine.setAttribute('x1', circleX);
+                rayLine.setAttribute('x2', 465);
+                rayArrow.setAttribute('points', '465,35 455,30 455,40');
+
+                // 陰影斜線區塊向右
+                const pointsStr = `${circleX},35 465,35 465,60 ${circleX},60`;
+                shadeBg.setAttribute('points', pointsStr);
+                shadeHatch.setAttribute('points', pointsStr);
+            } else {
+                // 向左
+                rayLine.setAttribute('x1', circleX);
+                rayLine.setAttribute('x2', 35);
+                rayArrow.setAttribute('points', '35,35 45,30 45,40');
+
+                // 陰影斜線區塊向左
+                const pointsStr = `35,35 ${circleX},35 ${circleX},60 35,60`;
+                shadeBg.setAttribute('points', pointsStr);
+                shadeHatch.setAttribute('points', pointsStr);
+            }
+
+            // 特徵說明寫入
+            const opSymbolMap = { '>': '>', '>=': '\\ge', '<': '<', '<=': '\\le' };
+            const isInclude = (currentOp === '>=' || currentOp === '<=');
+            const isRight = (currentOp === '>' || currentOp === '>=');
+
+            const html = `
+                解集式子：<b>$x ${opSymbolMap[currentOp]} ${currentA}$</b><br>
+                數線特徵：在 $x = ${currentA}$ 處標示 <b>${isInclude ? '實心點（包含端點）' : '空心點（不含端點）'}</b>，
+                畫箭頭 <b>${isRight ? '向右延伸並覆蓋斜線陰影（比端點大）' : '向左延伸並覆蓋斜線陰影（比端點小）'}</b>！
+            `;
+
+            updateFeedbackAndRender('nl-sim-explanation', html, "mt-4 p-4 rounded-xl border-2 bg-indigo-50 border-indigo-200 text-indigo-950 font-bold text-sm text-center shadow-sm");
+        }
+
+        function resetNumberLineSim() {
+            document.getElementById('nl-range-a').value = 2;
+            setOp('>');
+        }
+
+        // 🔍 觀念引導邏輯 (特別將 Step 2 答對時的詳解設定為 text-left 靠左呈現)
+        function answerStep(step, isCorrect) {
+            if (step === 1) {
+                if (isCorrect) {
+                    const html = "✅ 完全正確！$-3$ 位在 $-5$ 的右邊，所以在數線上 $-5 < -3$！解鎖下一步！";
+                    updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm");
+                    document.getElementById('sq1').classList.add('opacity-50');
+                    document.getElementById('sq2').classList.remove('hidden');
+                } else {
+                    const html = "❌ 答錯囉！在數線上越往右邊的數字越大，$-3$ 比 $-5$ 還要靠右邊，所以是 $-5 < -3$ 喔！再試試看！";
+                    updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm");
+                }
+            } else if (step === 2) {
+                if (isCorrect) {
+                    // 🎉 指定靠左呈現 (text-left)
+                    const html = "🎉 太棒了！原本是 $5 > 3$，同乘以 $-1$ 後大小關係顛倒變為 $-5 < -3$！這就是「兩邊同乘或同除負數時，不等號方向必須翻轉」的數學原因！";
+                    updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-left bg-indigo-100 text-indigo-800 mb-4 shadow-sm");
+                    document.getElementById('sq2').classList.add('opacity-50');
+                } else {
+                    const html = "❌ 答錯囉！原本是 $5 > 3$（大於），乘以 $-1$ 後變成 $-5 < -3$（小於），不等號方向已經改變囉！";
+                    updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-left bg-red-100 text-red-800 mb-4 shadow-sm");
+                }
+            }
+        }
+
+        // 🧩 練習 1 檢查邏輯
+        function checkP1(step, isCorrect, wrongType) {
+            if (step === 1) {
+                if (isCorrect) {
+                    const html = "✅ 正確！兩邊同減 5 ➔ $-2x \\le 11 - 5 \\implies -2x \\le 6$！";
+                    updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded");
+                    const s2 = document.getElementById('p1-s2');
+                    s2.classList.remove('hidden');
+                    setTimeout(() => s2.classList.add('opacity-100'), 10);
+                } else if (wrongType === 'A') {
+                    const html = "❌ 答錯囉！減去 5 是 $11 - 5 = 6$，不是 $11 + 5 = 16$ 喔！";
+                    updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
+                } else {
+                    const html = "❌ 答錯囉！同減去正數 5 時，不等號方向是不會改變的喔！";
+                    updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
+                }
+            } else if (step === 2) {
+                if (isCorrect) {
+                    const html = "✅ 太強了！同除以負數 $-2$ 時，不等號由 $\\le$ 翻轉為 $\\ge$，得到 $x \\ge -3$！";
+                    updateFeedbackAndRender('p1-f2', html, "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded");
+                    const res = document.getElementById('p1-result');
+                    res.classList.remove('hidden');
+                    setTimeout(() => res.classList.add('opacity-100'), 10);
+                } else if (wrongType === 'A') {
+                    const html = "❌ 答錯囉！忘記翻轉不等號囉！同除以負數 $-2$ 時，$\\le$ 必須變為 $\\ge$ 喔！";
+                    updateFeedbackAndRender('p1-f2', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
+                } else {
+                    const html = "❌ 答錯囉！正負號算錯囉！$6 \\div (-2) = -3$，應該是 $-3$ 哦！";
+                    updateFeedbackAndRender('p1-f2', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
+                }
+            }
+        }
+
+        // 🧮 練習 2 檢查邏輯
+        function checkP2(qNum, choice) {
+            if (qNum === 1) {
+                if (choice === 'right') {
+                    const html = "✅ 觀念超清晰！$-4x > 12$ 兩邊同除以 $-4$，不等號翻轉得 $x < -3$！";
+                    updateFeedbackAndRender('p2-f1', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200");
+                } else if (choice === 'wrongA') {
+                    const html = "❌ 答錯囉！除以負數 $-4$ 時忘記翻轉不等號了，$>$ 應該要變成 $<$ 喔！";
+                    updateFeedbackAndRender('p2-f1', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100");
+                } else {
+                    const html = "❌ 答錯囉！$12 \\div (-4) = -3$，結果應該是負數 $-3$ 喔！";
+                    updateFeedbackAndRender('p2-f1', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100");
+                }
+            } else if (qNum === 2) {
+                if (choice === 'right') {
+                    const html = "✅ 答對了！帶有等號（$\\ge$）要在 2 處標示<b>實心點</b>，且代表比 2 大的範圍要畫<b>向右箭頭並加上斜線陰影</b>（即選項 (B)）！";
+                    updateFeedbackAndRender('p2-f2', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200");
+                } else if (choice === 'wrongA') {
+                    const html = "❌ 答錯囉！含有等號（$\\ge$）時代表包含 2，端點必須使用『實心點』，而不是空心點喔！";
+                    updateFeedbackAndRender('p2-f2', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100");
+                } else {
+                    const html = "❌ 答錯囉！$\\ge 2$ 是指比 2 還要大的範圍，箭頭應該向右延伸，不是向左喔！";
+                    updateFeedbackAndRender('p2-f2', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100");
+                }
+            }
+        }
+
+        // 🚀 實戰挑戰檢查邏輯
+        function checkChal(qNum, choice) {
+            if (qNum === 1) {
+                if (choice === 'B') {
+                    const html = "🎉 完全正確！解不等式 $35x + 10 \\le 200 \\implies 35x \\le 190 \\implies x \\le 5.428\\dots$ 因為筆記本本數 $x$ 必須是整數，故最多可買 <b>5 本</b>（總花費 $35(5) + 10 = 185 \\le 200$ 元）！";
+                    updateFeedbackAndRender('chal1-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800");
+                } else if (choice === 'A') {
+                    const html = "❌ 答錯囉！買 4 本費用為 $35(4) + 10 = 150$ 元，雖然沒超支，但小剛還可以再多買 1 本（共 5 本，185 元），所以 4 本還不是『最多』可買本數喔！";
+                    updateFeedbackAndRender('chal1-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800");
+                } else {
+                    const html = "❌ 算算看！若買 6 本筆記本，費用為 $35(6) + 10 = 220$ 元，已經超過小剛帶的 200 元預算囉！";
+                    updateFeedbackAndRender('chal1-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800");
+                }
+            } else if (qNum === 2) {
+                if (choice === 'B') {
+                    const html = "🎉 太強了！答對了！不等式的解在數線上是一個連續區間，所有大於 2 的實數（包括小數 $2.1, 2.5$ 或分數）通通都是它的解！";
+                    updateFeedbackAndRender('chal2-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800");
+                } else if (choice === 'A') {
+                    const html = "❌ 這是常見的迷思！不等式的解不只有整數，所有大於 2 的小數（如 $2.1, 2.01$）也是不等式的解喔！";
+                    updateFeedbackAndRender('chal2-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800");
+                } else {
+                    const html = "❌ 答錯囉！因為算式是 $x > 2$（不帶等號），所以 2 本身並不包含在解裡面喔！";
+                    updateFeedbackAndRender('chal2-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800");
+                }
+            }
+        }
+    </script>
+</body>
+</html>
