@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-7-7 一元一次不等式的意義互動講義</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <!-- 引入 KaTeX 進行方程式與數學符號渲染 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .math-fact { background-color: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 6px; font-weight: bold; }
+        .step-badge { background-color: #3b82f6; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .feedback-box { transition: all 0.3s ease; }
+        
+        .grid-bg {
+            background-size: 20px 20px;
+            background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px), linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+        }
+        .challenge-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .meter-bar { transition: width 0.3s ease-out, background-color 0.3s ease; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- 1. Header (標題列) -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 一元一次不等式的意義</h1>
+            <p class="text-slate-600">A-7-7 互動式學習講義</p>
+        </header>
+
+        <!-- 2. 🎯 學習目標 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="mr-2 w-5 h-5"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>理解不等號符號（$<$, $>$, $\le$, $\ge$）的意義與口語翻譯（如「未滿」、「超過」、「至多」、「至少」）。</li>
+                <li>理解符號 $a \le b$ 代表「$a < b$ 或 $a = b$」，口語為「小於或等於 $b$」或「$a$ 不大於 $b$」。</li>
+                <li>理解符號 $a \ge b$ 代表「$a > b$ 或 $a = b$」，口語為「大於或等於 $b$」或「$a$ 不小於 $b$」。</li>
+                <li>能辨識一元一次不等式（恰有 1 個未知數且最高次方為 1），並由生活情境列出相應的不等式。</li>
+            </ul>
+        </section>
+
+        <!-- 3. 1️⃣ 2️⃣ 3️⃣ 核心概念卡片 -->
+        <div class="grid md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                <h3 class="font-bold text-blue-700 text-lg mb-2">1️⃣ 四大不等號與口語字典</h3>
+                <ul class="text-xs text-blue-900 space-y-1.5 font-medium">
+                    <li><b>$<$ (小於)：</b>未滿、不足。</li>
+                    <li><b>$>$ (大於)：</b>超過、高於。</li>
+                    <li><b>$\le$ (小於或等於)：</b>不大於、不超過、至多。</li>
+                    <li><b>$\ge$ (大於或等於)：</b>不小於、至少。</li>
+                </ul>
+            </div>
+            <div class="bg-green-50 p-5 rounded-lg border border-green-200">
+                <h3 class="font-bold text-green-700 text-lg mb-2">2️⃣ 包含等號的複合意義</h3>
+                <p class="text-sm text-green-800 leading-relaxed mb-2">
+                    不等式中若帶有小橫線「$\le$」或「$\ge$」，代表<b>包含邊界值</b>：
+                </p>
+                <ul class="list-disc list-inside text-xs text-green-800 space-y-1 font-medium">
+                    <li>$a \le b \implies a < b$ 或 $a = b$。</li>
+                    <li>$a \ge b \implies a > b$ 或 $a = b$。</li>
+                </ul>
+            </div>
+            <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200">
+                <h3 class="font-bold text-emerald-700 text-lg mb-2">3️⃣ 一元一次不等式結構</h3>
+                <p class="text-sm text-emerald-800 leading-relaxed mb-2">
+                    必須同時滿足三個條件：
+                </p>
+                <ul class="list-disc list-inside text-xs text-emerald-700 font-bold space-y-1">
+                    <li><b>一元：</b>恰好只有 1 個未知數。</li>
+                    <li><b>一次：</b>未知數的次方數為 1。</li>
+                    <li><b>符號：</b>連結符號為 $<, >, \le, \ge$。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 專屬對照小特訓：口語 ⇄ 符號對錯判斷 (統一藍色標示) -->
+        <section class="bg-white rounded-xl shadow-sm p-5 mb-8 border border-blue-200">
+            <h3 class="font-bold text-blue-900 mb-3 flex items-center text-base">
+                <i data-lucide="check-circle-2" class="mr-2 text-blue-600"></i> 🔍 隨堂小特訓：生活用語與不等號對應檢查
+            </h3>
+            <p class="text-xs text-slate-600 mb-4">點擊下方各式子，測試你能不能精準判斷該數學翻譯是「正確」還是「錯誤」：</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <button onclick="checkVocabSymbol('atleast')" class="p-3 border-2 rounded-lg font-bold text-sm bg-slate-50 hover:bg-blue-50 text-slate-700 transition-all text-left flex justify-between items-center">
+                    <span>情境一：「至少要 18 歲」</span>
+                    <span class="text-indigo-600 font-extrabold">$x \ge 18$</span>
+                </button>
+                <button onclick="checkVocabSymbol('atmost_err')" class="p-3 border-2 rounded-lg font-bold text-sm bg-slate-50 hover:bg-blue-50 text-slate-700 transition-all text-left flex justify-between items-center">
+                    <span>情境二：「至多買 5 顆」</span>
+                    <span class="text-indigo-600 font-extrabold">$x < 5$</span>
+                </button>
+                <button onclick="checkVocabSymbol('under')" class="p-3 border-2 rounded-lg font-bold text-sm bg-slate-50 hover:bg-blue-50 text-slate-700 transition-all text-left flex justify-between items-center">
+                    <span>情境三：「票價未滿 200 元」</span>
+                    <span class="text-indigo-600 font-extrabold">$x < 200$</span>
+                </button>
+                <button onclick="checkVocabSymbol('over_err')" class="p-3 border-2 rounded-lg font-bold text-sm bg-slate-50 hover:bg-blue-50 text-slate-700 transition-all text-left flex justify-between items-center">
+                    <span>情境四：「時速超過 100」</span>
+                    <span class="text-indigo-600 font-extrabold">$x \ge 100$</span>
+                </button>
+            </div>
+            <div id="vocab-type-feedback" class="mt-3 hidden p-3 rounded-lg font-bold text-xs"></div>
+        </section>
+
+        <!-- 4. ✏️ 解題示範：搭高鐵與水果買賣情境 (與互動實驗室互換位置) -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil" class="mr-2 text-blue-600"></i> 解題示範：具體情境列出一元一次不等式
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 示範 1：搭高鐵時間 (至少) -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <h3 class="font-bold text-indigo-900 text-base border-b pb-2 flex items-center">
+                        <span class="bg-indigo-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs mr-2">1</span>
+                        搭高鐵時間情境
+                    </h3>
+                    <p class="text-xs text-slate-700 font-bold">情境：「從台北坐高鐵到高雄至少要 1.5 小時」。</p>
+                    <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
+                        <p><b>設未知數：</b>令 $a$ 為從台北坐高鐵到高雄所需的小時數。</p>
+                        <p><b>分析口語：</b>「至少」代表大於或等於 $1.5$ 小時。</p>
+                        <p><b>列出不等式：</b><span class="math-fact text-blue-700">$a \ge 1.5$</span>。</p>
+                    </div>
+                </div>
+
+                <!-- 示範 2：水果採買金額 (不超過) -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <h3 class="font-bold text-indigo-900 text-base border-b pb-2 flex items-center">
+                        <span class="bg-indigo-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs mr-2">2</span>
+                        水果購物預算情境
+                    </h3>
+                    <p class="text-xs text-slate-700 font-bold">情境：帶 200 元買每顆 25 元的蘋果 $x$ 顆，袋子 2 元。</p>
+                    <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
+                        <p><b>算總金額：</b>買蘋果與袋子共花費 $25x + 2$ 元。</p>
+                        <p><b>分析口語：</b>「不能超過攜帶的現金」代表小於或等於 200。</p>
+                        <p><b>列出不等式：</b><span class="math-fact text-blue-700">$25x + 2 \le 200$</span>。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. 🧮 互動模擬實驗室：水果買賣預算計 (與解題示範互換位置) -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center">
+                    <i data-lucide="shopping-cart" class="mr-2 text-indigo-600"></i> 🧮 互動實驗室：水果買賣預算量測儀
+                </h2>
+                <button onclick="resetBudgetSim()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium transition-colors">🔄 重置採買數量</button>
+            </div>
+            
+            <div class="p-4 bg-indigo-50 rounded-lg mb-4 text-sm text-indigo-900 leading-relaxed border border-indigo-100">
+                <b>情境探索：</b>小穎帶了 200 元到水果行買蘋果，蘋果一顆 25 元，塑膠袋 2 元。<br>
+                • 設購買蘋果 $x$ 顆，總花費為 $25x + 2$ 元。因為花費「不能超過」攜帶的 200 元現金，所以滿足不等式：<b>$25x + 2 \le 200$</b>！<br>
+                • 拖動滑桿改變購買數量 $x$，觀察花費儀表板是否滿足不等式：
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 items-center mb-6">
+                <!-- 數量控制區 -->
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm font-bold mb-1">
+                            <span class="text-indigo-700">購買蘋果顆數 ($x$)：</span>
+                            <span id="sim-apple-count" class="text-indigo-700 font-extrabold text-base">0 顆</span>
+                        </div>
+                        <input type="range" id="sim-range-x" min="0" max="10" value="0" oninput="updateBudgetSim()" class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <div class="text-xs text-slate-600 space-y-1 bg-white p-3 rounded-lg border">
+                        <p>• 蘋果花費：$25 \times x$ 元</p>
+                        <p>• 塑膠袋花費：$2$ 元</p>
+                        <p class="font-bold text-slate-800 mt-1">• 總預算上限：$200$ 元</p>
+                    </div>
+                </div>
+
+                <!-- 預算計與狀態卡片 -->
+                <div class="space-y-3">
+                    <div class="p-4 rounded-xl border-2 bg-slate-50 border-slate-200 shadow-sm space-y-2">
+                        <div class="flex justify-between items-center text-xs font-bold text-slate-600">
+                            <span>總花費：<span id="sim-cost-num" class="text-slate-900 text-sm">2</span> 元</span>
+                            <span>預算上限：200 元</span>
+                        </div>
+                        <!-- 進度條 -->
+                        <div class="w-full bg-slate-200 h-5 rounded-full overflow-hidden p-0.5">
+                            <div id="sim-meter-bar" class="meter-bar h-full rounded-full bg-emerald-500" style="width: 1%;"></div>
+                        </div>
+                    </div>
+
+                    <div id="sim-status-box" class="p-4 rounded-xl border-2 bg-green-50 border-green-300 text-green-900 text-center font-bold text-sm shadow-sm">
+                        <!-- JS 動態寫入 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 隨堂小思考 (更新選項與詳解) -->
+            <div class="p-4 bg-amber-50 rounded-xl border border-amber-200 space-y-3">
+                <p class="text-amber-900 font-bold text-sm flex items-center">
+                    <i data-lucide="help-circle" class="mr-2 w-4 h-4 text-amber-600"></i> 隨堂小思考：根據預算不等式，小穎最多可以買幾顆蘋果？總共花多少錢？
+                </p>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="checkAppleMaxCost('A')" class="px-4 py-2 bg-white border border-amber-300 rounded-lg hover:bg-amber-100 font-bold text-xs text-amber-900 transition-all">(A) 最多買 7 顆，總共花 175 元</button>
+                    <button onclick="checkAppleMaxCost('B')" class="px-4 py-2 bg-white border border-amber-300 rounded-lg hover:bg-amber-100 font-bold text-xs text-amber-900 transition-all">(B) 最多買 7 顆，總共花 177 元</button>
+                    <button onclick="checkAppleMaxCost('C')" class="px-4 py-2 bg-white border border-amber-300 rounded-lg hover:bg-amber-100 font-bold text-xs text-amber-900 transition-all">(C) 最多買 8 顆，總共花 202 元</button>
+                </div>
+                <div id="apple-max-feedback" class="hidden text-xs font-bold p-3 rounded-lg"></div>
+            </div>
+        </section>
+
+        <!-- 6. 🔍 觀念引導：根據生活情境列出不等式 (修改標題與選項順序) -->
+        <section class="bg-indigo-50 rounded-xl shadow-sm p-6 mb-8 border border-indigo-200">
+            <h2 class="text-xl font-bold text-indigo-800 mb-4 flex items-center">
+                <i data-lucide="check-square" class="mr-2 w-5 h-5"></i> 🔍 觀念引導：根據生活情境列出不等式
+            </h2>
+            <div class="mb-4 text-slate-700 p-3 bg-white rounded-lg border border-indigo-100 italic text-sm">
+                思考：小華體重 $w$ 公斤，體重「超過」60 公斤；小明體重 $k$ 公斤，體重「至多」60 公斤。這兩句口語包含 60 公斤嗎？
+            </div>
+            <div id="step-quiz" class="space-y-4">
+                <div id="sq1">
+                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 小華體重「超過」60 公斤，代表包含 60 公斤嗎？應該用哪一個不等號？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(1, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">包含 60，用 $w \ge 60$</button>
+                        <button onclick="answerStep(1, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">不包含 60，用 $w > 60$</button>
+                    </div>
+                </div>
+                <div id="sq2" class="hidden">
+                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">2️⃣ 小明體重「至多」60 公斤，代表包含 60 公斤嗎？應該用哪一個不等號？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(2, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">包含 60，用 $k \le 60$</button>
+                        <button onclick="answerStep(2, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">不包含 60，用 $k < 60$</button>
+                    </div>
+                </div>
+                <div id="step-feedback" class="hidden p-4 rounded-lg font-bold text-center"></div>
+            </div>
+        </section>
+
+        <!-- 7. 🧩 引導式實踐練習 -->
+        <!-- 練習 1：步驟引導翻譯口語列式 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-blue-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil-line" class="mr-2 text-blue-600"></i> 🧩 練習 1：步驟引導！生活列式練習
+            </h2>
+            
+            <div class="p-4 bg-blue-50 rounded-lg mb-6 border border-blue-100">
+                <p class="text-blue-900 font-bold leading-relaxed">
+                    題目情境：高鐵票價單張 $x$ 元，小明買了 3 張票，總票價「未滿」1500 元。請列出滿足情境的不等式。
+                </p>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Step 1 -->
+                <div id="p1-s1">
+                    <p class="text-slate-800 mb-2 font-medium">步驟 1️⃣：「3 張高鐵票」總共要多少錢？</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="checkP1(1, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$3x$ 元</button>
+                        <button onclick="checkP1(1, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$3 + x$ 元</button>
+                        <button onclick="checkP1(1, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$\frac{x}{3}$ 元</button>
+                    </div>
+                    <div id="p1-f1" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div id="p1-s2" class="hidden opacity-0 transition-all duration-500">
+                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">步驟 2️⃣：「未滿 1500 元」代表不包含 1500 元（即小於 1500 元），正確的不等式為何？</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="checkP1(2, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$3x \le 1500$</button>
+                        <button onclick="checkP1(2, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$3x > 1500$</button>
+                        <button onclick="checkP1(2, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$3x < 1500$</button>
+                    </div>
+                    <div id="p1-f2" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Result -->
+                <div id="p1-result" class="hidden opacity-0 transition-all duration-500">
+                    <div class="bg-green-50 p-6 border border-green-200 rounded-lg shadow-inner">
+                        <p class="text-green-800 font-bold flex items-center mb-2 text-lg">
+                            <i data-lucide="party-popper" class="mr-2 w-6 h-6"></i> 完全正確！列式為 $3x < 1500$！
+                        </p>
+                        <p class="text-green-700 leading-relaxed">
+                            <b>口訣點撥：</b>未滿 = 小於（不帶等號）！
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 練習 2：一元一次不等式識別與遞移律 (選項簡化，無括號說明) -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-emerald-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="layers" class="mr-2 text-emerald-600"></i> 🧮 練習 2：結構識別與遞移律快問快答
+            </h2>
+            <p class="text-slate-600 mb-6 text-sm font-medium">請根據不等式的結構與性質進行判斷：</p>
+            
+            <div class="space-y-6">
+                <!-- Case 1 (簡化選項，無後續括號) -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">1. 下列何者是合格的「一元一次不等式」？</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button onclick="checkP2(1, 'wrongA')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">$2x + 3y \ge 5$</button>
+                        <button onclick="checkP2(1, 'right')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">$3x + 2 \le 11$</button>
+                        <button onclick="checkP2(1, 'wrongB')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">$x^2 - 1 > 0$</button>
+                    </div>
+                    <div id="p2-f1" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3">2. 根據不等式的「遞移律」，若已知 $a < b$ 且 $b < c$，則 $a$ 與 $c$ 的關係為何？</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button onclick="checkP2(2, 'wrongA')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">$a > c$</button>
+                        <button onclick="checkP2(2, 'right')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">$a < c$</button>
+                        <button onclick="checkP2(2, 'wrongB')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">$a = c$</button>
+                    </div>
+                    <div id="p2-f2" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. 🚀 實戰挑戰 -->
+        <section class="bg-slate-50 rounded-2xl p-6 mb-8 border-2 border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i data-lucide="rocket" class="mr-2 text-orange-500"></i> 實戰挑戰：一元一次不等式大考驗
+            </h2>
+            
+            <div class="space-y-8">
+                <!-- Challenge 1 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">1. 門票優惠列式</h3>
+                    <p class="text-sm text-slate-600 mb-4">博物館門票一張 150 元，團體人數 $x$ 人時可享有優惠。已知團體總門票費用「不超過」2500 元，請問正確的不等式為何？</p>
+                    <div class="space-y-2">
+                        <button onclick="checkChal(1, 'A')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(A) $150x \le 2500$</button>
+                        <button onclick="checkChal(1, 'B')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(B) $150x < 2500$</button>
+                        <button onclick="checkChal(1, 'C')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(C) $150x \ge 2500$</button>
+                    </div>
+                    <div id="chal1-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- Challenge 2 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2">2. 遞移律綜合推理</h3>
+                    <p class="text-sm text-slate-600 mb-4">若小明身高 $A$ 公分、小華身高 $B$ 公分、小強身高 $C$ 公分。已知小明不比小華矮（$A \ge B$），且小華比小強高（$B > C$），請問小明與小強的身高關係為何？</p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="checkChal(2, 'A')" class="px-5 py-2.5 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all text-slate-700">(A) $A < C$</button>
+                        <button onclick="checkChal(2, 'B')" class="px-5 py-2.5 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all text-slate-700">(B) $A = C$</button>
+                        <button onclick="checkChal(2, 'C')" class="px-5 py-2.5 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all text-slate-700">(C) $A > C$</button>
+                    </div>
+                    <div id="chal2-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. ⚠️ 易錯迷思陷阱 & 💡 生活中的數學 -->
+        <footer class="grid md:grid-cols-2 gap-6 mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center">
+                    <i data-lucide="alert-circle" class="mr-2 text-red-500"></i> ⚠️ 一元一次不等式三大常見迷思
+                </h3>
+                <ul class="text-sm space-y-3 text-slate-600 font-medium">
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">「至多/不大於」漏加等號？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！「至多/不大於」包含剛好相等的情況，必須使用 $\le$！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">「至少/不小於」漏加等號？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！「至少/不小於」包含剛好相等的情況，必須使用 $\ge$！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">混淆「未滿」與「不超過」？</span>
+                        <span class="bg-amber-50 border border-amber-200 p-1.5 rounded text-amber-800 text-xs block mt-1">
+                            錯！「未滿」是不包含該數（用 $<$）；「不超過」包含該數（用 $\le$）！
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400">
+                    <i data-lucide="lightbulb" class="mr-2 w-5 h-5"></i> 💡 生活中的不等式限制
+                </h3>
+                <p class="text-sm leading-relaxed opacity-90">
+                    <b>生活處處都是不等式：</b><br>
+                    1. <b>電梯限重：</b> 電梯限重 800 公斤 ➔ 總重量 $\le 800$ kg。<br>
+                    2. <b>遊樂設施身高：</b> 身高至少 120 公分才能搭乘 ➔ 身高 $\ge 120$ cm。<br>
+                    3. <b>信用卡刷卡金：</b> 消費滿 1000 元折 100 ➔ 花費 $\ge 1000$ 元。
+                </p>
+            </div>
+        </footer>
+
+        <!-- 10. 頁腳宣告 -->
+        <footer class="text-center text-slate-400 text-sm pb-12">
+            本講義依據 108 課綱 A-7-7 標準編製 &copy; 2026 互動式教學系統
+        </footer>
+    </div>
+
+    <!-- 11. JavaScript 邏輯 -->
+    <script>
+        // 通用 KaTeX 渲染函式，確保動態寫入的數學式完全呈現
+        function updateFeedbackAndRender(elementId, htmlContent, className) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            if (className) el.className = className;
+            el.innerHTML = htmlContent;
+            el.classList.remove('hidden');
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(el, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+        }
+
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+            updateBudgetSim();
+        };
+
+        // 🧮 水果購物預算量測儀邏輯
+        function updateBudgetSim() {
+            const x = parseInt(document.getElementById('sim-range-x').value);
+            document.getElementById('sim-apple-count').innerText = `${x} 顆`;
+
+            const totalCost = 25 * x + 2;
+            document.getElementById('sim-cost-num').innerText = totalCost;
+
+            const maxBudget = 200;
+            const pct = Math.min(100, (totalCost / maxBudget) * 100);
+
+            const meterBar = document.getElementById('sim-meter-bar');
+            meterBar.style.width = `${pct}%`;
+
+            if (totalCost <= maxBudget) {
+                meterBar.className = "meter-bar h-full rounded-full bg-emerald-500";
+                const html = `
+                    ✅ 花費 $25(${x}) + 2 = ${totalCost}$ 元 $\\le 200$ 元！<br>
+                    符合不等式 <b>$25x + 2 \\le 200$</b>，預算足夠，可以順利結帳！
+                `;
+                updateFeedbackAndRender('sim-status-box', html, "p-4 rounded-xl border-2 bg-green-50 border-green-300 text-green-900 text-center font-bold text-sm shadow-sm");
+            } else {
+                meterBar.className = "meter-bar h-full rounded-full bg-red-500 animate-pulse";
+                const html = `
+                    ⚠️ 花費 $25(${x}) + 2 = ${totalCost}$ 元 $> 200$ 元！<br>
+                    超出預算！不滿足不等式 <b>$25x + 2 \\le 200$</b>，無法結帳！
+                `;
+                updateFeedbackAndRender('sim-status-box', html, "p-4 rounded-xl border-2 bg-red-50 border-red-300 text-red-900 text-center font-bold text-sm shadow-sm");
+            }
+        }
+
+        function resetBudgetSim() {
+            document.getElementById('sim-range-x').value = 0;
+            updateBudgetSim();
+        }
+
+        // 隨堂小思考：蘋果最多購買顆數與花費 (選項 A 為僅包含蘋果未加袋子金額)
+        function checkAppleMaxCost(choice) {
+            if (choice === 'A') {
+                const html = "❌ 答錯囉！買 7 顆蘋果本身是 $25(7) = 175$ 元，但別忘了小穎還要花 2 元購買一個塑膠袋，總花費應該是 $175 + 2 = 177$ 元喔！";
+                updateFeedbackAndRender('apple-max-feedback', html, "p-3 rounded-lg font-bold text-xs bg-red-100 text-red-900 border border-red-300 block");
+            } else if (choice === 'B') {
+                const html = "🎉 太棒了！完全正確！<br>買 7 顆蘋果加上塑膠袋花費 $25(7) + 2 = 177$ 元 $\\le 200$ 元；若買 8 顆則花費 $25(8) + 2 = 202$ 元超出預算！故小穎最多可買 <b>7 顆</b>，總共花費 <b>177 元</b>！";
+                updateFeedbackAndRender('apple-max-feedback', html, "p-3 rounded-lg font-bold text-xs bg-green-100 text-green-900 border border-green-300 block");
+            } else if (choice === 'C') {
+                const html = "❌ 算算看！若買 8 顆蘋果，加上塑膠袋 2 元，總金額為 $25(8) + 2 = 202$ 元，已經超過小穎帶的 200 元預算囉！";
+                updateFeedbackAndRender('apple-max-feedback', html, "p-3 rounded-lg font-bold text-xs bg-red-100 text-red-900 border border-red-300 block");
+            }
+        }
+
+        // 🔍 隨堂特訓：生活用語與符號對錯判斷 (2對2錯，文字統一藍色)
+        function checkVocabSymbol(type) {
+            if (type === 'atleast') {
+                const html = "✅ 判斷正確！「至少要 18 歲」代表 18 歲以上（包含 18 歲），對應符號 <b>$\\ge$</b> 完全正確！";
+                updateFeedbackAndRender('vocab-type-feedback', html, "mt-3 text-xs p-3 rounded-lg font-bold bg-green-100 text-green-900 border border-green-300");
+            } else if (type === 'atmost_err') {
+                const html = "❌ 發現錯誤！「至多買 5 顆」代表最多可以買到 5 顆（包含 5 顆本身），應該要帶有等號寫成 <b>$x \\le 5$</b>，不能寫成 $x < 5$ 哦！";
+                updateFeedbackAndRender('vocab-type-feedback', html, "mt-3 text-xs p-3 rounded-lg font-bold bg-red-100 text-red-900 border border-red-300");
+            } else if (type === 'under') {
+                const html = "✅ 判斷正確！「未滿 200 元」代表不到 200 元（不包含 200 元），對應符號 <b>$<$</b> 完全正確！";
+                updateFeedbackAndRender('vocab-type-feedback', html, "mt-3 text-xs p-3 rounded-lg font-bold bg-green-100 text-green-900 border border-green-300");
+            } else if (type === 'over_err') {
+                const html = "❌ 發現錯誤！「時速超過 100」代表高於 100（不包含 100 本身），不應該帶有等號，正確寫法為 <b>$x > 100$</b> 哦！";
+                updateFeedbackAndRender('vocab-type-feedback', html, "mt-3 text-xs p-3 rounded-lg font-bold bg-red-100 text-red-900 border border-red-300");
+            }
+        }
+
+        // 🔍 觀念引導邏輯 (選項 1 為包含 [錯]，選項 2 為不包含 [對]；第二題選項 1 為包含 [對]，選項 2 為不包含 [錯])
+        function answerStep(step, isCorrect) {
+            if (step === 1) {
+                if (isCorrect) {
+                    const html = "✅ 完全正確！「超過」代表比 60 還要多，不包含 60 公斤本身，因此寫作 $w > 60$！解鎖下一步！";
+                    updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm");
+                    document.getElementById('sq1').classList.add('opacity-50');
+                    document.getElementById('sq2').classList.remove('hidden');
+                } else {
+                    const html = "❌ 答錯囉！「超過」是不包含 60 公斤本身的（例如 60.1 公斤才是超過），所以不能加等號喔！請再思考看看！";
+                    updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm");
+                }
+            } else if (step === 2) {
+                if (isCorrect) {
+                    const html = "🎉 太棒了！「至多」代表最多可以到 60 公斤（包含 60 公斤），因此寫作 $k \\le 60$（小於或等於）！觀念非常清晰！";
+                    updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm");
+                    document.getElementById('sq2').classList.add('opacity-50');
+                } else {
+                    const html = "❌ 答錯囉！「至多 60 公斤」代表最多到 60 公斤，60 公斤本身也是可以的（包含 60），所以必須加上等號喔！";
+                    updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm");
+                }
+            }
+        }
+
+        // 🧩 練習 1 檢查邏輯
+        function checkP1(step, isCorrect, wrongType) {
+            if (step === 1) {
+                if (isCorrect) {
+                    const html = "✅ 正確！單價乘以張數，3 張高鐵票為 $3x$ 元！";
+                    updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded");
+                    const s2 = document.getElementById('p1-s2');
+                    s2.classList.remove('hidden');
+                    setTimeout(() => s2.classList.add('opacity-100'), 10);
+                } else if (wrongType === 'A') {
+                    const html = "❌ 答錯囉！張數與單價是相乘關係，不是相加喔！";
+                    updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
+                } else {
+                    const html = "❌ 答錯囉！張數與單價是乘法，不能放進分母喔！";
+                    updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
+                }
+            } else if (step === 2) {
+                if (isCorrect) {
+                    const html = "✅ 太強了！「未滿 1500 元」代表小於 1500（不帶等號），故列式為 $3x < 1500$！";
+                    updateFeedbackAndRender('p1-f2', html, "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded");
+                    const res = document.getElementById('p1-result');
+                    res.classList.remove('hidden');
+                    setTimeout(() => res.classList.add('opacity-100'), 10);
+                } else if (wrongType === 'A') {
+                    const html = "❌ 答錯囉！$\\le$ 代表「不超過/不大於/至多」，包含 1500 元；但口語「未滿」是不包含 1500 元的喔！";
+                    updateFeedbackAndRender('p1-f2', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
+                } else {
+                    const html = "❌ 答錯囉！「未滿 1500」是指花費比 1500 還少，不能使用大於符號 $>$ 喔！";
+                    updateFeedbackAndRender('p1-f2', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
+                }
+            }
+        }
+
+        // 🧮 練習 2 檢查邏輯
+        function checkP2(qNum, choice) {
+            if (qNum === 1) {
+                if (choice === 'right') {
+                    const html = "✅ 觀念超清晰！$3x + 2 \\le 11$ 恰有 1 個未知數 $x$ 且次方為 1，是用不等號連結的合格一元一次不等式！";
+                    updateFeedbackAndRender('p2-f1', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200");
+                } else if (choice === 'wrongA') {
+                    const html = "❌ 答錯囉！$2x + 3y \\ge 5$ 含有 $x$ 與 $y$ 兩個未知數，這是「二元」不等式喔！";
+                    updateFeedbackAndRender('p2-f1', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100");
+                } else {
+                    const html = "❌ 答錯囉！$x^2 - 1 > 0$ 中未知數的最高次方是 2，這是「二次」不等式喔！";
+                    updateFeedbackAndRender('p2-f1', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100");
+                }
+            } else if (qNum === 2) {
+                if (choice === 'right') {
+                    const html = "✅ 答對了！根據不等式遞移律：若 $a < b$ 且 $b < c$，則必然推出 $a < c$！";
+                    updateFeedbackAndRender('p2-f2', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200");
+                } else if (choice === 'wrongA') {
+                    const html = "❌ 答錯囉！例如 $a=2, b=3, c=5$，$2 < 3$ 且 $3 < 5$，小於的關係是不會顛倒變成 $a > c$ 的喔！";
+                    updateFeedbackAndRender('p2-f2', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100");
+                } else {
+                    const html = "❌ 答錯囉！$a$ 比 $b$ 小、$b$ 又比 $c$ 小，$a$ 不會等於 $c$ 喔！";
+                    updateFeedbackAndRender('p2-f2', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100");
+                }
+            }
+        }
+
+        // 🚀 實戰挑戰檢查邏輯
+        function checkChal(qNum, choice) {
+            if (qNum === 1) {
+                if (choice === 'A') {
+                    const html = "🎉 完全正確！「不超過 2500 元」代表小於或等於 2500 元（包含 2500），故列式為 $1500x \\le 2500$！";
+                    updateFeedbackAndRender('chal1-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800");
+                } else if (choice === 'B') {
+                    const html = "❌ 答錯囉！「不超過」是包含 2500 元本數的，所以必須帶有等號 $\\le$ 喔！";
+                    updateFeedbackAndRender('chal1-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800");
+                } else {
+                    const html = "❌ 答錯囉！「不超過」代表費用比較少或相等，不能使用大於等於 $\\ge$ 喔！";
+                    updateFeedbackAndRender('chal1-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800");
+                }
+            } else if (qNum === 2) {
+                if (choice === 'C') {
+                    const html = "🎉 太強了！答對了！小明不比小華矮（$A \\ge B$），小華比小強高（$B > C$），綜合遞移關係可知小明必然比小強高（$A > C$）！";
+                    updateFeedbackAndRender('chal2-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800");
+                } else if (choice === 'A') {
+                    const html = "❌ 答錯囉！小明比小華高或一樣高，小華又比小強高，所以小明不可能比小強矮喔！";
+                    updateFeedbackAndRender('chal2-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800");
+                } else {
+                    const html = "❌ 答錯囉！因為小華已經確定比小強高（$B > C$），小明又至少跟小華一樣高，所以小明一定比小強高，不會相等喔！";
+                    updateFeedbackAndRender('chal2-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800");
+                }
+            }
+        }
+    </script>
+</body>
+</html>
