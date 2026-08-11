@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-7-2 統計數據互動講義</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <!-- 引入 KaTeX 進行方程式與數學符號渲染 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .math-fact { background-color: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 6px; font-weight: bold; }
+        .step-badge { background-color: #3b82f6; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .feedback-box { transition: all 0.3s ease; }
+        
+        .grid-bg {
+            background-size: 20px 20px;
+            background-image: linear-gradient(to right, #cbd5e1 1px, transparent 1px), linear-gradient(to bottom, #cbd5e1 1px, transparent 1px);
+        }
+        .challenge-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .bar-anim { transition: height 0.4s ease-out, width 0.4s ease-out; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- 1. Header (標題列) -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 統計數據</h1>
+            <p class="text-slate-600">D-7-2 互動式學習講義</p>
+        </header>
+
+        <!-- 2. 🎯 學習目標 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="mr-2 w-5 h-5"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>理解代表資料集中位置的三大統計量：算術平均數（量的平衡）、中位數（個數的平衡）與眾數（出現次數最高）。</li>
+                <li>掌握算術平均數對「極端值（特大或特小數）」高度敏感的特性。</li>
+                <li>理解中位數不受極端值影響的抗干擾優勢，並學會資料排序後求中位數的方法。</li>
+                <li>能計算合併組別的加權總和與平均數（總和 $=$ 平均數 $\times$ 個數）。</li>
+            </ul>
+        </section>
+
+        <!-- 3. 1️⃣ 2️⃣ 3️⃣ 核心概念卡片 -->
+        <div class="grid md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                <h3 class="font-bold text-blue-700 text-lg mb-2">1️⃣ 算術平均數 (Mean)</h3>
+                <p class="text-sm text-blue-900 leading-relaxed mb-2">
+                    所有資料值的總和除以資料總筆數（代表<b>量的平衡</b>）：
+                </p>
+                <div class="text-center bg-white p-2 rounded border border-blue-300 my-1 font-bold text-xs">
+                    $\bar{x} = \frac{\text{所有數據總和}}{\text{數據總筆數}}$
+                </div>
+                <p class="text-xs text-blue-800 font-bold mt-2">
+                    ⚠️ 對極端大或極端小的數特別敏感！
+                </p>
+            </div>
+            <div class="bg-green-50 p-5 rounded-lg border border-green-200">
+                <h3 class="font-bold text-green-700 text-lg mb-2">2️⃣ 中位數 (Median)</h3>
+                <p class="text-sm text-green-800 leading-relaxed mb-2">
+                    將資料從小到大排序後，位於中間位置的值（代表<b>個數的平衡</b>）：
+                </p>
+                <ul class="list-disc list-inside text-xs text-green-800 space-y-1 font-medium">
+                    <li><b>奇數筆：</b>取最中間第 $\frac{n+1}{2}$ 位。</li>
+                    <li><b>偶數筆：</b>取中間兩數之算術平均值。</li>
+                </ul>
+                <p class="text-xs text-green-800 font-bold mt-2">
+                    💡 完全不受極端值干擾！
+                </p>
+            </div>
+            <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200">
+                <h3 class="font-bold text-emerald-700 text-lg mb-2">3️⃣ 眾數 (Mode)</h3>
+                <p class="text-sm text-emerald-800 leading-relaxed mb-2">
+                    一組資料中出現頻率/次數最高的數據值：
+                </p>
+                <ul class="list-disc list-inside text-xs text-emerald-700 font-bold space-y-1">
+                    <li>可能只有一個眾數。</li>
+                    <li>可能有複數個眾數。</li>
+                    <li>若所有數出現次數相同，則無眾數。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 4. 🧮 互動模擬實驗室：極端值震撼實驗室 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center">
+                    <i data-lucide="sliders" class="mr-2 text-indigo-600"></i> 🧮 互動實驗室：極端值對平均數與中位數的衝擊實驗
+                </h2>
+                <button onclick="resetOutlierSim()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium transition-colors">🔄 重置數據</button>
+            </div>
+
+            <div class="p-4 bg-indigo-50 rounded-lg mb-4 text-sm text-indigo-900 leading-relaxed border border-indigo-100">
+                <b>實驗任務：</b>給定 5 筆已排序資料 $\{1, 2, 3, 4, \mathbf{X}\}$。<br>
+                拖動下方滑桿改變第 5 筆數據 $\mathbf{X}$ 的數值（從 $5$ 變大至 $500$），親眼觀察<b>算術平均數</b>與<b>中位數</b>的動態變化對比！
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 items-center mb-4">
+                <!-- 數據控制區 -->
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                            <span>調整第 5 筆資料 $\mathbf{X}$ 的數值：</span>
+                            <span id="outlier-x-val" class="text-indigo-700 font-extrabold text-base">5</span>
+                        </div>
+                        <input type="range" id="sim-range-outlier" min="5" max="500" value="5" step="5" oninput="updateOutlierSim()" class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <div class="p-3 bg-white rounded-lg border space-y-1 text-xs text-slate-600">
+                        <p>• 當前數據集：<span id="outlier-dataset-text" class="font-bold text-slate-900 font-mono font-bold">$\{1, 2, 3, 4, 5\}$</span></p>
+                        <p>• 數據總筆數 $n = 5$ 筆</p>
+                    </div>
+                </div>
+
+                <!-- 統計量對比卡片 -->
+                <div class="space-y-3">
+                    <div class="grid grid-cols-2 gap-3">
+                        <!-- 平均數卡片 -->
+                        <div class="p-4 rounded-xl border-2 bg-amber-50 border-amber-300 text-center">
+                            <span class="text-xs font-bold text-amber-800 block">算術平均數 $\bar{x}$</span>
+                            <span id="outlier-mean-res" class="text-2xl font-black text-amber-900 block my-1">3</span>
+                            <div id="outlier-mean-sub" class="text-[10px] text-amber-700 block"></div>
+                        </div>
+
+                        <!-- 中位數卡片 -->
+                        <div class="p-4 rounded-xl border-2 bg-emerald-50 border-emerald-300 text-center">
+                            <span class="text-xs font-bold text-emerald-800 block">中位數 $M_e$</span>
+                            <span id="outlier-median-res" class="text-2xl font-black text-emerald-900 block my-1">3</span>
+                            <div id="outlier-median-sub" class="text-[10px] text-emerald-700 block"></div>
+                        </div>
+                    </div>
+
+                    <div id="outlier-comparison-box" class="p-3.5 rounded-xl border-2 bg-green-50 border-green-300 text-slate-800 text-xs font-bold leading-relaxed shadow-sm">
+                        <!-- JS 動態寫入分析結果 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. ✏️ 解題示範：薪資待遇看哪一個統計量？ (Worked Example) -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil" class="mr-2 text-blue-600"></i> 解題示範：薪資數據與代表性統計量選擇
+            </h2>
+            
+            <div class="p-4 bg-slate-50 rounded-lg mb-4">
+                <p class="text-slate-700 font-bold text-sm">
+                    問題情境：某微型創業公司共有 5 名員工，月薪（萬元）分別為 $\{3, 3, 3, 4, 37\}$。請分別求出這組資料的算術平均數、中位數與眾數，並說明哪一個統計量最能代表大多數員工的薪資水準。
+                </p>
+            </div>
+
+            <div class="space-y-4 text-xs text-slate-600">
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">1</span>
+                    <p><b>計算算術平均數：</b>$\frac{3 + 3 + 3 + 4 + 37}{5} = \frac{50}{5} = \mathbf{10}$（萬元）。</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">2</span>
+                    <p><b>計算中位數：</b>資料從小到大已排序，第 3 個數為 $\mathbf{3}$（萬元）。</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="step-badge">3</span>
+                    <p><b>計算眾數：</b>出現次數最多的是 $3$（出現 3 次），故眾數為 $\mathbf{3}$（萬元）。</p>
+                </div>
+                <div class="p-3 bg-amber-50 rounded-lg border border-amber-200 text-slate-800 font-medium">
+                    💡 <b>觀念解析：</b>因為老闆一人月薪高達 37 萬（極端值），將算術平均數大幅拉高到 10 萬，但實際上 4 位員工月薪僅 3~4 萬。因此<b>中位數（3 萬元）</b>最能合理反映一般員工的真實薪資狀況！
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 🔍 觀念引導：極端值干擾判斷 -->
+        <section class="bg-indigo-50 rounded-xl shadow-sm p-6 mb-8 border border-indigo-200">
+            <h2 class="text-xl font-bold text-indigo-800 mb-4 flex items-center">
+                <i data-lucide="check-square" class="mr-2 w-5 h-5"></i> 🔍 觀念引導：破解平均數與中位數的迷思
+            </h2>
+            <div class="mb-4 text-slate-700 p-3 bg-white rounded-lg border border-indigo-100 italic text-sm">
+                思考：全班小考分數大多落在 70~80 分之間，但有一位同學因為缺考得了 0 分。這個 0 分會對哪一個統計量造成嚴重影響？
+            </div>
+            <div id="step-quiz" class="space-y-4">
+                <div id="sq1">
+                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 0 分屬於特別小的極端值，它會大幅拉低哪一個統計量？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(1, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">(A) 算術平均數</button>
+                        <button onclick="answerStep(1, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">(B) 中位數</button>
+                    </div>
+                </div>
+                <div id="sq2" class="hidden">
+                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">2️⃣ 賓果！那如果想要了解班上大多數同學的真實表現，哪一個統計量能維持在中間而不受 0 分干擾？</p>
+                    <div class="flex gap-2">
+                        <button onclick="answerStep(2, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">(A) 算術平均數</button>
+                        <button onclick="answerStep(2, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">(B) 中位數</button>
+                    </div>
+                </div>
+                <div id="step-feedback" class="hidden p-4 rounded-lg font-bold text-center"></div>
+            </div>
+        </section>
+
+        <!-- 7. 🧩 引導式實踐練習 (調整為 9 個數字) -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-blue-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="pencil-line" class="mr-2 text-blue-600"></i> 🧩 練習 1：步驟引導！求取中位數與眾數
+            </h2>
+            
+            <div class="p-4 bg-blue-50 rounded-lg mb-6 border border-blue-100 text-xs leading-relaxed text-blue-900 font-bold">
+                題目情境：已知一組未排序的 9 個資料為 $\{3, 8, 2, 5, 8, 1, 9, 8, 4\}$。請依步驟求出中位數與眾數。
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Step 1 (9 個數字排序選項) -->
+                <div id="p1-s1">
+                    <p class="text-slate-800 mb-2 font-medium text-xs">步驟 1️⃣：求中位數第一步！將 9 個資料從小到大重新排序，正確結果為何？</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="checkP1(1, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-mono font-bold">1, 2, 3, 4, 5, 8, 8, 8, 9</button>
+                        <button onclick="checkP1(1, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-mono font-bold">1, 2, 3, 4, 5, 8, 9</button>
+                        <button onclick="checkP1(1, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 transition-all font-mono font-bold">9, 8, 8, 8, 5, 4, 3, 2, 1</button>
+                    </div>
+                    <div id="p1-f1" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div id="p1-s2" class="hidden opacity-0 transition-all duration-500">
+                    <p class="text-slate-800 mb-2 font-medium text-xs border-t pt-4">步驟 2️⃣：觀察排序後的 $1, 2, 3, 4, \mathbf{5}, 8, 8, 8, 9$，共 9 筆資料，最中間第 5 個位置的中位數是多少？</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="checkP1(2, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">4</button>
+                        <button onclick="checkP1(2, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">5</button>
+                        <button onclick="checkP1(2, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 transition-all font-bold">8</button>
+                    </div>
+                    <div id="p1-f2" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Step 3 -->
+                <div id="p1-s3" class="hidden opacity-0 transition-all duration-500">
+                    <p class="text-slate-800 mb-2 font-medium text-xs border-t pt-4">步驟 3️⃣：觀察資料中出現次數最多的數據值（數字 8 出現了 3 次），這組資料的眾數是多少？</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="checkP1(3, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">5</button>
+                        <button onclick="checkP1(3, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">8</button>
+                        <button onclick="checkP1(3, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 transition-all font-bold">沒有眾數</button>
+                    </div>
+                    <div id="p1-f3" class="text-sm mt-2 hidden font-bold"></div>
+                </div>
+
+                <!-- Result -->
+                <div id="p1-result" class="hidden opacity-0 transition-all duration-500">
+                    <div class="bg-green-50 p-6 border border-green-200 rounded-lg shadow-inner">
+                        <p class="text-green-800 font-bold flex items-center mb-2 text-lg">
+                            <i data-lucide="party-popper" class="mr-2 w-6 h-6"></i> 完全正確！中位數 $= 5$，眾數 $= 8$！
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 練習 2：統計數據性質快問快答 -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-emerald-500">
+            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
+                <i data-lucide="layers" class="mr-2 text-emerald-600"></i> 🧮 練習 2：統計數據性質判斷快問快答
+            </h2>
+            <p class="text-slate-600 mb-6 text-sm font-medium">請選出正確的統計數據觀念：</p>
+            
+            <div class="space-y-6">
+                <!-- Case 1 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3 text-xs">1. 關於一組資料中的「眾數」，下列敘述何者完全正確？</p>
+                    <div class="flex flex-col gap-2 mb-2">
+                        <button onclick="checkP2(1, 'wrongA')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all text-xs text-left">當數據中沒有任何重複數字時，眾數標記為 0</button>
+                        <button onclick="checkP2(1, 'right')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all text-xs text-left">眾數是出現次數最多的數據，可能有一個、多個或沒有眾數</button>
+                        <button onclick="checkP2(1, 'wrongB')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all text-xs text-left">資料筆數為偶數時，眾數必定需取中間兩數的平均值</button>
+                    </div>
+                    <div id="p2-f1" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
+                    <p class="text-slate-800 font-bold mb-3 text-xs">2. 當一組資料中包含極端大或極端小的數字時（如億萬富豪薪資），哪一個統計量最適合作為代表數？</p>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button onclick="checkP2(2, 'wrongA')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all text-xs">(A) 算術平均數</button>
+                        <button onclick="checkP2(2, 'right')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all text-xs">(B) 中位數</button>
+                        <button onclick="checkP2(2, 'wrongB')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all text-xs">(C) 眾數</button>
+                    </div>
+                    <div id="p2-f2" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. 🚀 實戰挑戰 -->
+        <section class="bg-slate-50 rounded-2xl p-6 mb-8 border-2 border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i data-lucide="rocket" class="mr-2 text-orange-500"></i> 🚀 實戰挑戰：統計數據計算與應用大測驗
+            </h2>
+            
+            <div class="space-y-8">
+                <!-- Challenge 1 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2 text-sm">1. 合併組別算術平均數計算（填空題）</h3>
+                    <p class="text-sm text-slate-600 mb-4">甲組 3 人平均分數為 80 分，乙組 2 人平均分數為 90 分。若將兩組合併，全班 5 人的總平均分數是多少分？</p>
+                    <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                        <div class="relative flex-1">
+                            <input type="number" id="chal1-input" placeholder="請輸入計算出的平均分數..." class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-bold text-slate-800">
+                            <span class="absolute right-3 top-2.5 font-bold text-slate-400 text-sm">分</span>
+                        </div>
+                        <button onclick="checkChal1Fill()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-sm transition-all shadow">
+                            驗證答案
+                        </button>
+                    </div>
+                    <div id="chal1-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+
+                <!-- Challenge 2 -->
+                <div class="challenge-card">
+                    <h3 class="font-bold text-slate-700 mb-2 text-sm">2. 偶數筆資料的中位數計算（填空題）</h3>
+                    <p class="text-sm text-slate-600 mb-4">給定 4 筆未排序資料 $\{4, 10, 2, 8\}$。請先從小到大排序後，求出這組資料的中位數是多少？</p>
+                    <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                        <div class="relative flex-1">
+                            <input type="number" id="chal2-input" placeholder="請輸入計算出的中位數..." class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-bold text-slate-800">
+                        </div>
+                        <button onclick="checkChal2Fill()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-sm transition-all shadow">
+                            驗證答案
+                        </button>
+                    </div>
+                    <div id="chal2-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. ⚠️ 易錯迷思陷阱 & 💡 生活中的數學 (情境全新生活化) -->
+        <footer class="grid md:grid-cols-2 gap-6 mb-12">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center">
+                    <i data-lucide="alert-circle" class="mr-2 text-red-500"></i> ⚠️ 統計數據三大常見迷思
+                </h3>
+                <ul class="text-sm space-y-3 text-slate-600 font-medium">
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">誤以為平均數與中位數必然相等？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！只有當數據完全對稱時才相等。若有極端值，兩者會相差非常大！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">求中位數前忘記先排序？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！中位數定義必須是「從小到大排序後」的中間值！</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        ❌ <span class="text-red-500 font-bold">誤以為眾數只能有一個？</span>
+                        <span class="bg-amber-50 border border-amber-200 p-1.5 rounded text-amber-800 text-xs block mt-1">
+                            錯！最高次數若有並列，眾數可以有多個，也可以沒有眾數！
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400">
+                    <i data-lucide="lightbulb" class="mr-2 w-5 h-5"></i> 💡 生活中的統計數據
+                </h3>
+                <p class="text-sm leading-relaxed opacity-90">
+                    <b>日常情境裡的統計數據選擇：</b><br>
+                    1. <b>手搖飲與餐飲備料看「眾數」：</b> 手搖飲店統計顧客最常點的「半糖微冰」（眾數），作為備料與主力推薦的依據！<br>
+                    2. <b>購屋總價與所得看「中位數」：</b> 房價與薪資報導常採「中位數」，防止極少數豪宅或億萬富豪暴拉平均值，更能反映一般人的真實生活！<br>
+                    3. <b>籃球員每場表現看「平均數」：</b> 評估球員整季的發揮穩定度，會用「場均得分（算術平均數）」來代表總體貢獻！
+                </p>
+            </div>
+        </footer>
+
+        <!-- 11. 頁腳宣告 -->
+        <footer class="text-center text-slate-400 text-sm pb-12">
+            本講義依據 108 課綱 D-7-2 標準編製 &copy; 2026 互動式教學系統
+        </footer>
+    </div>
+
+    <!-- 12. JavaScript 邏輯 -->
+    <script>
+        // 通用 KaTeX 渲染函式，確保動態寫入的數學式完全呈現
+        function updateFeedbackAndRender(elementId, htmlContent, className) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            if (className) el.className = className;
+            el.innerHTML = htmlContent;
+            el.classList.remove('hidden');
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(el, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+        }
+
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ]
+                });
+            }
+            updateOutlierSim();
+        };
+
+        // 🧮 實驗室：極端值衝擊模擬邏輯
+        function updateOutlierSim() {
+            const valX = parseInt(document.getElementById('sim-range-outlier').value);
+            document.getElementById('outlier-x-val').innerText = valX;
+            
+            const datasetHtml = `$\\{1, 2, 3, 4, ${valX}\\}$`;
+            updateFeedbackAndRender('outlier-dataset-text', datasetHtml, "font-bold text-slate-900 font-mono font-bold");
+
+            const sum = 1 + 2 + 3 + 4 + valX;
+            const mean = (sum / 5).toFixed(1);
+
+            document.getElementById('outlier-mean-res').innerText = mean;
+            
+            const meanSubHtml = `$\\frac{1+2+3+4+${valX}}{5} = ${mean}$`;
+            updateFeedbackAndRender('outlier-mean-sub', meanSubHtml, "text-[10px] text-amber-700 block");
+
+            const medianSubHtml = `第 3 個數 $= 3$`;
+            updateFeedbackAndRender('outlier-median-sub', medianSubHtml, "text-[10px] text-emerald-700 block");
+
+            // 動態對比分析提示
+            if (valX === 5) {
+                const html = "✅ 當數據為 $\\{1, 2, 3, 4, 5\\}$ 時，資料完全對稱，<b>算術平均數與中位數剛好都是 3</b>！";
+                updateFeedbackAndRender('outlier-comparison-box', html, "p-3.5 rounded-xl border-2 bg-green-50 border-green-300 text-green-900 text-xs font-bold leading-relaxed shadow-sm");
+            } else {
+                const html = `
+                    ⚠️ <b>極端值震撼效應：</b><br>
+                    • 第 5 筆資料放大到 <b>${valX}</b> 後，<b>算術平均數暴增到 ${mean}</b>（被極端值大幅拉跑）！<br>
+                    • 但<b>中位數依然維持在 3</b>（穩如泰山，完全不受影響）！這正是中位數抗干擾的威力！
+                `;
+                updateFeedbackAndRender('outlier-comparison-box', html, "p-3.5 rounded-xl border-2 bg-amber-50 border-amber-300 text-amber-950 text-xs font-bold leading-relaxed shadow-sm");
+            }
+        }
+
+        function resetOutlierSim() {
+            document.getElementById('sim-range-outlier').value = 5;
+            updateOutlierSim();
+        }
+
+        // 🔍 觀念引導邏輯
+        function answerStep(step, isCorrect) {
+            if (step === 1) {
+                if (isCorrect) {
+                    const html = "✅ 完全正確！算術平均數需要加總所有資料，極端小值（如 0 分）會大幅拉低分子總和，導致平均數銳減！解鎖下一步！";
+                    updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm");
+                    document.getElementById('sq1').classList.add('opacity-50');
+                    document.getElementById('sq2').classList.remove('hidden');
+                } else {
+                    const html = "❌ 答錯囉！中位數只關心『排在最中間位置的值』，個別極端值的大小不會影響中間位置的數字喔！影響最大的是平均數！";
+                    updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm");
+                }
+            } else if (step === 2) {
+                if (isCorrect) {
+                    const html = "🎉 太棒了！中位數只看中間位置的個數平衡，不受單一極端值拉跑，最能代表大多數同學的真實水準！";
+                    updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm");
+                    document.getElementById('sq2').classList.add('opacity-50');
+                } else {
+                    const html = "❌ 答錯囉！算術平均數已經被 0 分拉低了，無法真實代表大多數人的成績，應該選中位數喔！";
+                    updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm");
+                }
+            }
+        }
+
+        // 🧩 練習 1 檢查邏輯 (改為 9 個數字)
+        function checkP1(step, isCorrect, wrongType) {
+            if (step === 1) {
+                if (isCorrect) {
+                    const html = "✅ 正確！從小到大排序為 $1, 2, 3, 4, 5, 8, 8, 8, 9$！解鎖步驟二！";
+                    updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded");
+                    const s2 = document.getElementById('p1-s2');
+                    s2.classList.remove('hidden');
+                    setTimeout(() => s2.classList.add('opacity-100'), 10);
+                } else if (wrongType === 'A') {
+                    const html = "❌ 注意喔！數據中有 3 個 8，排序時每一個 8 通通都要寫出來，不能漏掉喔！";
+                    updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
+                } else {
+                    const html = "❌ 排序錯囉！求中位數一定要由『從小到大』重新排列數據喔！";
+                    updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
+                }
+            } else if (step === 2) {
+                if (isCorrect) {
+                    const html = "✅ 正確！9 筆資料最中間是第 5 個位置：$1, 2, 3, 4, \\mathbf{5}, 8, 8, 8, 9$，故中位數 $= 5$！解鎖步驟三！";
+                    updateFeedbackAndRender('p1-f2', html, "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded");
+                    const s3 = document.getElementById('p1-s3');
+                    s3.classList.remove('hidden');
+                    setTimeout(() => s3.classList.add('opacity-100'), 10);
+                } else {
+                    const html = "❌ 找錯位置囉！9 筆資料的最中間是第 5 個位置（前後各有 4 個數）的數字喔！";
+                    updateFeedbackAndRender('p1-f2', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
+                }
+            } else if (step === 3) {
+                if (isCorrect) {
+                    const html = "✅ 太強了！數字 8 出現了 3 次，是出現次數最多的數據，故眾數 $= 8$！";
+                    updateFeedbackAndRender('p1-f3', html, "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded");
+                    const res = document.getElementById('p1-result');
+                    res.classList.remove('hidden');
+                    setTimeout(() => res.classList.add('opacity-100'), 10);
+                } else {
+                    const html = "❌ 答錯囉！眾數是指『出現次數最多』的數字，數字 8 出現了 3 次喔！";
+                    updateFeedbackAndRender('p1-f3', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
+                }
+            }
+        }
+
+        // 🧮 練習 2 檢查邏輯
+        function checkP2(qNum, choice) {
+            if (qNum === 1) {
+                if (choice === 'right') {
+                    const html = "✅ 觀念超清晰！眾數是出現次數最多的數據，可能有一個、多個（最高次數並列相同），或者完全沒有眾數（各數次數相同）！";
+                    updateFeedbackAndRender('p2-f1', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200");
+                } else if (choice === 'wrongA') {
+                    const html = "❌ 答錯囉！當沒有任何重複數字時（如 1, 2, 3），稱為『沒有眾數』，而不是眾數為 0 喔！";
+                    updateFeedbackAndRender('p2-f1', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100");
+                } else {
+                    const html = "❌ 答錯囉！偶數筆資料取中間兩數平均是用在『中位數』，眾數依然只看哪一個數字出現最多次喔！";
+                    updateFeedbackAndRender('p2-f1', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100");
+                }
+            } else if (qNum === 2) {
+                if (choice === 'right') {
+                    const html = "✅ 答對了！因為中位數只看中間位置，完全不會被極端大或極端小的數字拉跑，最具代表性！";
+                    updateFeedbackAndRender('p2-f2', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200");
+                } else {
+                    const html = "❌ 答錯囉！算術平均數對極端值非常敏感，容易被拉高或拉低而失去代表性喔！";
+                    updateFeedbackAndRender('p2-f2', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100");
+                }
+            }
+        }
+
+        // 🚀 實戰挑戰 1 填空題檢查邏輯
+        function checkChal1Fill() {
+            const inputVal = document.getElementById('chal1-input').value.trim();
+            if (inputVal === '84') {
+                const html = "🎉 完全正確！總分數 $= 3 \\times 80 + 2 \\times 90 = 240 + 180 = 420$ 分；全班總平均 $= \\frac{420}{5} = 84$ 分！";
+                updateFeedbackAndRender('chal1-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800 flex items-center");
+            } else {
+                const html = "❌ 算算看！甲組總分 $= 3 \\times 80 = 240$ 分，乙組總分 $= 2 \\times 90 = 180$ 分，全班總分 $= 420$ 分。再除以全班總人數 5 人！";
+                updateFeedbackAndRender('chal1-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800 flex items-center");
+            }
+        }
+
+        // 🚀 實戰挑戰 2 填空題檢查邏輯
+        function checkChal2Fill() {
+            const inputVal = document.getElementById('chal2-input').value.trim();
+            if (inputVal === '6') {
+                const html = "🎉 完全正確！從小到大排序為 $\\{2, 4, 8, 10\\}$。偶數筆資料取中間兩數（4 與 8）之算術平均值：$\\frac{4 + 8}{2} = 6$！";
+                updateFeedbackAndRender('chal2-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800 flex items-center");
+            } else {
+                const html = "❌ 算算看！先排序得 $\\{2, 4, 8, 10\\}$。偶數 4 筆資料取最中間兩數（4 和 8）相加除以 2 哦！";
+                updateFeedbackAndRender('chal2-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800 flex items-center");
+            }
+        }
+    </script>
+</body>
+</html>
