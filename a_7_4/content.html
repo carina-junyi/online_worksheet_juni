@@ -163,7 +163,7 @@
                             <span id="lock-icon-2" class="text-2xl">🔒</span>
                             <div>
                                 <p class="text-xs font-bold text-slate-500">鎖頭 2 (金額)：$10x + 5y = 80$</p>
-                                <p id="lock-calc-2" class="text-sm font-bold text-slate-800">$10(5) + 5(5) = 75 \neq 80$</p>
+                                <p id="lock-calc-2" class="text-sm font-bold text-slate-800">$10 \times 5 + 5 \times 5 = 75 \neq 80$</p>
                             </div>
                         </div>
                         <span id="lock-tag-2" class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-200 text-slate-600">鎖住</span>
@@ -401,17 +401,26 @@
 
     <!-- 11. JavaScript 邏輯 -->
     <script>
+        const katexConfig = {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ]
+        };
+
+        // 輔助函式：動態渲染指定 DOM 元素內的 LaTeX
+        function renderMath(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                renderMathInElement(element, katexConfig);
+            }
+        }
+
         window.onload = function() {
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }
             if (typeof renderMathInElement !== 'undefined') {
-                renderMathInElement(document.body, {
-                    delimiters: [
-                        {left: '$$', right: '$$', display: true},
-                        {left: '$', right: '$', display: false}
-                    ]
-                });
+                renderMathInElement(document.body, katexConfig);
             }
             updateLockSim();
         };
@@ -434,6 +443,9 @@
                 f.className = "mt-3 text-xs p-3 rounded-lg font-bold bg-red-100 text-red-900 border border-red-300";
                 f.innerHTML = "❌ 答錯囉！$3x - 5y + 2$ 沒有「等號 =」，這只是普通的二元一次「代數式」，不是方程式哦！";
             }
+            
+            // 重新解析寫入的 LaTeX
+            renderMath(f);
         }
 
         // 🔐 雙鎖驗證實驗室邏輯
@@ -458,13 +470,13 @@
             if (isLock1Open) {
                 card1.className = "p-4 rounded-xl border-2 transition-all flex items-center justify-between bg-green-50 border-green-400 shadow-sm";
                 icon1.innerText = "🔓";
-                calc1.innerText = `${x} + ${y} = 10 (等式成立！)`;
+                calc1.innerText = `$${x} + ${y} = 10$ (等式成立！)`;
                 tag1.className = "text-xs font-bold px-2.5 py-1 rounded-full bg-green-200 text-green-800";
                 tag1.innerText = "解開";
             } else {
                 card1.className = "p-4 rounded-xl border-2 transition-all flex items-center justify-between bg-slate-100 border-slate-300";
                 icon1.innerText = "🔒";
-                calc1.innerText = `${x} + ${y} = ${sumCount} ≠ 10`;
+                calc1.innerText = `$${x} + ${y} = ${sumCount} \\neq 10$`;
                 tag1.className = "text-xs font-bold px-2.5 py-1 rounded-full bg-slate-200 text-slate-600";
                 tag1.innerText = "鎖住";
             }
@@ -477,13 +489,13 @@
             if (isLock2Open) {
                 card2.className = "p-4 rounded-xl border-2 transition-all flex items-center justify-between bg-green-50 border-green-400 shadow-sm";
                 icon2.innerText = "🔓";
-                calc2.innerText = `10(${x}) + 5(${y}) = ${sumValue} (等式成立！)`;
+                calc2.innerText = `$10 \\times ${x} + 5 \\times ${y} = ${sumValue}$ (等式成立！)`;
                 tag2.className = "text-xs font-bold px-2.5 py-1 rounded-full bg-green-200 text-green-800";
                 tag2.innerText = "解開";
             } else {
                 card2.className = "p-4 rounded-xl border-2 transition-all flex items-center justify-between bg-slate-100 border-slate-300";
                 icon2.innerText = "🔒";
-                calc2.innerText = `10(${x}) + 5(${y}) = ${sumValue} ≠ 80`;
+                calc2.innerText = `$10 \\times ${x} + 5 \\times ${y} = ${sumValue} \\neq 80$`;
                 tag2.className = "text-xs font-bold px-2.5 py-1 rounded-full bg-slate-200 text-slate-600";
                 tag2.innerText = "鎖住";
             }
@@ -493,27 +505,31 @@
             if (isLock1Open && isLock2Open) {
                 expl.className = "bg-green-100 p-4 rounded-lg text-center text-green-900 font-extrabold text-sm border-2 border-green-400 shadow-md";
                 expl.innerHTML = `
-                    🎉 雙鎖全開！代入 (x, y) = (${x}, ${y}) 後，兩個方程式通通成立！<br>
+                    🎉 雙鎖全開！代入 $(x, y) = (${x}, ${y})$ 後，兩個方程式通通成立！<br>
                     因此，<span class="underline text-green-950 text-base">(${x}, ${y}) 是這個二元一次聯立方程式的共同解</span>！
                 `;
             } else if (isLock1Open) {
                 expl.className = "bg-amber-50 p-4 rounded-lg text-center text-amber-900 font-bold text-sm shadow-inner";
                 expl.innerHTML = `
                     🔓 鎖頭 1 解開 (數量對了！)，但 🔒 鎖頭 2 鎖住 (金額不對！)<br>
-                    (${x}, ${y}) 只是第一個算式 x + y = 10 的解，還不是二元一次聯立方程式的解喔！
+                    (${x}, ${y}) 只是第一個算式 $x + y = 10$ 的解，還不是二元一次聯立方程式的解喔！
                 `;
             } else if (isLock2Open) {
                 expl.className = "bg-amber-50 p-4 rounded-lg text-center text-amber-900 font-bold text-sm shadow-inner";
                 expl.innerHTML = `
                     🔒 鎖頭 1 鎖住 (數量不對！)，但 🔓 鎖頭 2 解開 (金額對了！)<br>
-                    (${x}, ${y}) 只是第二個算式 10x + 5y = 80 的解，還不是二元一次聯立方程式的解喔！
+                    (${x}, ${y}) 只是第二個算式 $10x + 5y = 80$ 的解，還不是二元一次聯立方程式的解喔！
                 `;
             } else {
                 expl.className = "bg-amber-50 p-4 rounded-lg text-center text-amber-900 font-bold text-sm shadow-inner";
                 expl.innerHTML = `
-                    🔒 兩道鎖皆鎖住，數量與金額都不符合！繼續滑動滑桿尋找能同時解開兩道鎖的 (x, y) 吧！
+                    🔒 兩道鎖皆鎖住，數量與金額都不符合！繼續滑動滑桿尋找能同時解開兩道鎖的 $(x, y)$ 吧！
                 `;
             }
+
+            renderMath(card1);
+            renderMath(card2);
+            renderMath(expl);
         }
 
         function resetLockSim() {
@@ -522,71 +538,75 @@
             updateLockSim();
         }
 
-        // 🔍 觀念引導邏輯（答錯說明原因，不直接給答案；Step 1 答案為選項 1，Step 2 答案為選項 2）
+        // 🔍 觀念引導邏輯
         function answerStep(step, isCorrect) {
             const feedback = document.getElementById('step-feedback');
             feedback.classList.remove('hidden');
 
             if (step === 1) {
                 if (isCorrect) {
-                    feedback.innerHTML = "✅ 完全正確！在 xy 中，x 是 1 次、y 是 1 次，相乘後該項的次數為 1 + 1 = 2 次，屬於「二次項」！解鎖下一步！";
+                    feedback.innerHTML = "✅ 完全正確！在 $xy$ 中，$x$ 是 1 次、$y$ 是 1 次，相乘後該項的次數為 $1 + 1 = 2$ 次，屬於「二次項」！解鎖下一步！";
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm";
                     document.getElementById('sq1').classList.add('opacity-50');
                     document.getElementById('sq2').classList.remove('hidden');
                 } else {
-                    feedback.innerHTML = "❌ 答錯囉！兩個未知數相乘時，項的次數要把未知數的次方加起來（1 + 1 = 2），所以 xy 屬於「二次項」，不是一次項哦！請再思考看看！";
+                    feedback.innerHTML = "❌ 答錯囉！兩個未知數相乘時，項的次數要把未知數的次方加起來（$1 + 1 = 2$），所以 $xy$ 屬於「二次項」，不是一次項哦！請再思考看看！";
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
                 }
             } else if (step === 2) {
                 if (isCorrect) {
-                    feedback.innerHTML = "🎉 太棒了！因為含有二次項 xy，所以 xy + 1 = 3x 不是二元一次方程式！觀念非常清晰！";
+                    feedback.innerHTML = "🎉 太棒了！因為含有二次項 $xy$，所以 $xy + 1 = 3x$ 不是二元一次方程式！觀念非常清晰！";
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm";
                     document.getElementById('sq2').classList.add('opacity-50');
                 } else {
-                    feedback.innerHTML = "❌ 答錯囉！二元一次方程式規定「每一項」都必須是一次項或數，含有二次項 xy 的算式不能稱為二元一次方程式哦！";
+                    feedback.innerHTML = "❌ 答錯囉！二元一次方程式規定「每一項」都必須是一次項或數，含有二次項 $xy$ 的算式不能稱為二元一次方程式哦！";
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
                 }
             }
+            renderMath(feedback);
         }
 
-        // 🧩 練習 1 檢查邏輯 (Step 1 答案為選項 1，Step 2 答案為選項 3)
+        // 🧩 練習 1 檢查邏輯
         function checkP1(step, isCorrect, wrongType) {
             if (step === 1) {
                 const f = document.getElementById('p1-f1');
                 f.classList.remove('hidden');
                 if (isCorrect) {
-                    f.innerHTML = "✅ 正確！10 元郵票 x 張為 10x 元，5 元郵票 y 張為 5y 元。";
+                    f.innerHTML = "✅ 正確！10 元郵票 $x$ 張為 $10x$ 元，5 元郵票 $y$ 張為 $5y$ 元。";
                     f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
                     const s2 = document.getElementById('p1-s2');
                     s2.classList.remove('hidden');
                     setTimeout(() => s2.classList.add('opacity-100'), 10);
                 } else if (wrongType === 'A') {
-                    f.innerHTML = "❌ 答錯囉！單價乘以張數才是總花費（例如 10 元買 3 張是 10 × 3 元），不能用加法 (10 + x) 哦！請再試一次！";
+                    f.innerHTML = "❌ 答錯囉！單價乘以張數才是總花費（例如 10 元買 3 張是 $10 \\times 3$ 元），不能用加法 $(10 + x)$ 哦！請再試一次！";
                     f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
                 } else {
-                    f.innerHTML = "❌ 答錯囉！單價乘以張數是乘法，不能把張數放進分母 (10/x) 哦！請再試一次！";
+                    f.innerHTML = "❌ 答錯囉！單價乘以張數是乘法，不能把張數放進分母 $(\\frac{10}{x})$ 哦！請再試一次！";
                     f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
                 }
+                renderMath(f);
             } else if (step === 2) {
                 const f = document.getElementById('p1-f2');
                 f.classList.remove('hidden');
                 if (isCorrect) {
-                    f.innerHTML = "✅ 太強了！總花費等於 60 元，列式為 10x + 5y = 60！";
+                    f.innerHTML = "✅ 太強了！總花費等於 60 元，列式為 $10x + 5y = 60$！";
                     f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
                     const res = document.getElementById('p1-result');
                     res.classList.remove('hidden');
                     setTimeout(() => res.classList.add('opacity-100'), 10);
+                    renderMath(res);
                 } else if (wrongType === 'A') {
-                    f.innerHTML = "❌ 答錯囉！算式「x + y = 60」代表郵票總張數是 60 張，但題目說的是「總花費 60 元」哦！請再選擇看看！";
+                    f.innerHTML = "❌ 答錯囉！算式「$x + y = 60$」代表郵票總張數是 60 張，但題目說的是「總花費 60 元」哦！請再選擇看看！";
                     f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
                 } else {
                     f.innerHTML = "❌ 答錯囉！兩種郵票的花費應該是要「相加」算出總金額 60 元，不能用減法哦！請再選擇看看！";
                     f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
                 }
+                renderMath(f);
             }
         }
 
-        // 🧮 練習 2 檢查邏輯（Case 1 答案為選項 2，Case 2 答案為選項 2）
+        // 🧮 練習 2 檢查邏輯
         function checkP2(qNum, choice) {
             const f = document.getElementById('p2-f' + qNum);
             f.classList.remove('hidden');
@@ -597,26 +617,27 @@
                     f.innerHTML = "✅ 觀念超清晰！二元一次方程式 $x + y = 5$ 只要兩數相加等於 5 的組合通通都是解，所以擁有無限多組解！";
                 } else if (choice === 'wrongA') {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
-                    f.innerHTML = "❌ 答錯囉！單一二元一次方程式並不會只有唯一的一組解哦！例如代入 (1, 4) 得 1 + 4 = 5 也成立，代表 (1, 4) 也是另一個解。請再想想看！";
+                    f.innerHTML = "❌ 答錯囉！單一二元一次方程式並不會只有唯一的一組解哦！例如代入 $(1, 4)$ 得 $1 + 4 = 5$ 也成立，代表 $(1, 4)$ 也是另一個解。請再想想看！";
                 } else {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
-                    f.innerHTML = "❌ 答錯囉！例如帶入 x = 2, y = 3 可得 2 + 3 = 5，這就是一組解，所以並非完全沒有解哦！請再想想看！";
+                    f.innerHTML = "❌ 答錯囉！例如帶入 $x = 2, y = 3$ 可得 $2 + 3 = 5$，這就是一組解，所以並非完全沒有解哦！請再想想看！";
                 }
             } else if (qNum === 2) {
                 if (choice === 'right') {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
-                    f.innerHTML = "✅ 答對了！代入 (2, 3) ➔ 式① $2 + 3 = 5$ 成立；式② $2(2) - 3 = 1$ 成立！兩個算式同時成立，代表它就是真正的共同解！";
+                    f.innerHTML = "✅ 答對了！代入 $(2, 3)$ ➔ 式① $2 + 3 = 5$ 成立；式② $2 \\times 2 - 3 = 1$ 成立！兩個算式同時成立，代表它就是真正的共同解！";
                 } else if (choice === 'wrongA') {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
-                    f.innerHTML = "❌ 算算看！將 x = 2、y = 3 代入第二個算式「2(2) - 3」得 4 - 3 = 1，這跟第二個算式右邊的 1 完全相等，所以它同時符合兩個算式哦！請再試試看！";
+                    f.innerHTML = "❌ 算算看！將 $x = 2, y = 3$ 代入第二個算式「$2 \\times 2 - 3$」得 $4 - 3 = 1$，這跟第二個算式右邊的 1 完全相等，所以它同時符合兩個算式哦！請再試試看！";
                 } else {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
-                    f.innerHTML = "❌ 算算看！代入第一個算式 2 + 3 = 5 成立，代入第二個算式 2(2) - 3 = 1 成立，兩個算式都是符合的哦！請再試試看！";
+                    f.innerHTML = "❌ 算算看！代入第一個算式 $2 + 3 = 5$ 成立，代入第二個算式 $2 \\times 2 - 3 = 1$ 成立，兩個算式都是符合的哦！請再試試看！";
                 }
             }
+            renderMath(f);
         }
 
-        // 🚀 實戰挑戰檢查邏輯（Challenge 1 答案為選項 A，Challenge 2 答案為選項 C）
+        // 🚀 實戰挑戰檢查邏輯
         function checkChal(qNum, choice) {
             const feedback = document.getElementById(`chal${qNum}-feedback`);
             feedback.classList.remove('hidden');
@@ -624,10 +645,10 @@
             if (qNum === 1) {
                 if (choice === 'A') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
-                    feedback.innerHTML = "🎉 完全正確！數量算式 x + y = 12，金額算式 30x + 15y = 270，組合起來就是正確的聯立方程式！";
+                    feedback.innerHTML = "🎉 完全正確！數量算式 $x + y = 12$，金額算式 $30x + 15y = 270$，組合起來就是正確的聯立方程式！";
                 } else if (choice === 'B') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
-                    feedback.innerHTML = "❌ 答錯囉！選項 (B) 把「金額算法 30x + 15y」誤等於數量 12，把「數量算法 x + y」誤等於總金額 270 囉！請再重新對照看看！";
+                    feedback.innerHTML = "❌ 答錯囉！選項 (B) 把「金額算法 $30x + 15y$」誤等於數量 12，把「數量算法 $x + y$」誤等於總金額 270 囉！請再重新對照看看！";
                 } else if (choice === 'C') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
                     feedback.innerHTML = "❌ 答錯囉！選項 (C) 的金額與數量完全標反囉！蘋果 30 元與香蕉 15 元乘以數量應該要等於總金額 270 元才對哦！";
@@ -635,15 +656,16 @@
             } else if (qNum === 2) {
                 if (choice === 'C') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
-                    feedback.innerHTML = "🎉 太強了！答對了！代入 (x=3, y=3) ➔ 式① 2(3) + 3 = 9 成立！式② 3 + 3(3) = 12 成立！兩個算式同時成立，就是真正的共同解！";
+                    feedback.innerHTML = "🎉 太強了！答對了！代入 $(x=3, y=3)$ ➔ 式① $2 \\times 3 + 3 = 9$ 成立！式② $3 + 3 \\times 3 = 12$ 成立！兩個算式同時成立，就是真正的共同解！";
                 } else if (choice === 'A') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
-                    feedback.innerHTML = "❌ 答錯囉！代入 (4, 1) 至式① 2(4) + 1 = 9 成立，但代入式② 4 + 3(1) = 7 ≠ 12！不符合第二個算式，所以不是聯立方程的解哦！";
+                    feedback.innerHTML = "❌ 答錯囉！代入 $(4, 1)$ 至式① $2 \\times 4 + 1 = 9$ 成立，但代入式② $4 + 3 \\times 1 = 7 \\neq 12$！不符合第二個算式，所以不是聯立方程的解哦！";
                 } else if (choice === 'B') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
-                    feedback.innerHTML = "❌ 答錯囉！代入 (0, 4) 至式① 2(0) + 4 = 4 ≠ 9！連第一個算式都不符合，所以不是解哦！";
+                    feedback.innerHTML = "❌ 答錯囉！代入 $(0, 4)$ 至式① $2 \\times 0 + 4 = 4 \\neq 9$！連第一個算式都不符合，所以不是解哦！";
                 }
             }
+            renderMath(feedback);
         }
     </script>
 </body>
