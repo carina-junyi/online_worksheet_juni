@@ -6,6 +6,16 @@
     <title>A-7-1 代數符號互動講義</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <!-- MathJax 設定與載入 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
         body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
@@ -44,7 +54,7 @@
                 <i data-lucide="target" class="mr-2 w-5 h-5"></i> 🎯 學習目標
             </h2>
             <ul class="list-disc list-inside text-slate-700 space-y-1">
-                <li>理解用英文字母（如 x, y, a, b）代表未知數及省略乘號簡寫的約定。</li>
+                <li>理解用英文字母（如 $x, y, a, b$）代表未知數及省略乘號簡寫的約定。</li>
                 <li>能辨識一次式中的「同類項」，並進行加減合併與化簡。</li>
                 <li>透過板塊與動態展開體驗，熟練掌握交換律、結合律與分配律的代數表徵。</li>
                 <li>能用代數式記錄生活情境（如商品總額、年齡差距、長方形面積）。</li>
@@ -55,17 +65,17 @@
         <div class="grid md:grid-cols-3 gap-4 mb-8">
             <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
                 <h3 class="font-bold text-blue-700 text-lg mb-2">1️⃣ 符號簡寫與約定</h3>
-                <p class="text-sm text-blue-800">數字與字母相乘可省略乘號：<b>2 × a = 2a</b>；<b>1 × a = a</b>；<b>(-1) × a = -a</b>；<b>(4/7)x = 4x/7</b>。</p>
-                <p class="mt-2 text-xs text-blue-600 font-bold">2a 代表「2 個 a」或「a 的 2 倍」！</p>
+                <p class="text-sm text-blue-800">數字與字母相乘可省略乘號：<b>$2 \times a = 2a$</b>；<b>$1 \times a = a$</b>；<b>$(-1) \times a = -a$</b>；<b>$\frac{4}{7}x = \frac{4x}{7}$</b>。</p>
+                <p class="mt-2 text-xs text-blue-600 font-bold">$2a$ 代表「2 個 $a$」或「$a$ 的 2 倍」！</p>
             </div>
             <div class="bg-green-50 p-5 rounded-lg border border-green-200">
                 <h3 class="font-bold text-green-700 text-lg mb-2">2️⃣ 同類項加減合併</h3>
-                <p class="text-sm text-green-800">含有<b>相同未知數</b>或<b>純數字</b>的項叫同類項。例如：x 與 -2x、3y 與 y、1 與 3 均可合併！</p>
-                <p class="mt-2 text-xs text-green-600 font-bold">x + 1 + 3y - 2x + y + 3 = -x + 4y + 4</p>
+                <p class="text-sm text-green-800">含有<b>相同未知數</b>或<b>純數字</b>的項叫同類項。例如：$x$ 與 $-2x$、$3y$ 與 $y$、$1$ 與 $3$ 均可合併！</p>
+                <p class="mt-2 text-xs text-green-600 font-bold">$x + 1 + 3y - 2x + y + 3 = -x + 4y + 4$</p>
             </div>
             <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200">
                 <h3 class="font-bold text-emerald-700 text-lg mb-2">3️⃣ 三大運算律密碼</h3>
-                <p class="text-sm text-emerald-800"><b>交換律：</b>a + b = b + a<br><b>結合律：</b>(a + b) + c = a + (b + c)<br><b>分配律：</b>a(b + c) = ab + ac。</p>
+                <p class="text-sm text-emerald-800"><b>交換律：</b>$a + b = b + a$<br><b>結合律：</b>$(a + b) + c = a + (b + c)$<br><b>分配律：</b>$a(b + c) = ab + ac$。</p>
                 <p class="mt-2 text-xs text-emerald-600 font-bold">分配律展開時，括號內每一項都要乘！</p>
             </div>
         </div>
@@ -82,22 +92,22 @@
 
             <!-- 模式切換頁籤 -->
             <div class="flex flex-wrap gap-2 mb-6">
-                <button onclick="switchLawMode('comm')" id="tab-law-comm" class="px-4 py-2 rounded-lg font-bold text-sm bg-indigo-600 text-white shadow">1. 加法交換律 (a + b ⇄ b + a)</button>
-                <button onclick="switchLawMode('assoc')" id="tab-law-assoc" class="px-4 py-2 rounded-lg font-bold text-sm bg-white border border-slate-300 text-slate-700 hover:bg-slate-100">2. 加法結合律 ((a+b)+c ⇄ a+(b+c))</button>
-                <button onclick="switchLawMode('dist')" id="tab-law-dist" class="px-4 py-2 rounded-lg font-bold text-sm bg-white border border-slate-300 text-slate-700 hover:bg-slate-100">3. 分配律 a(b+c)=ab+ac</button>
+                <button onclick="switchLawMode('comm')" id="tab-law-comm" class="px-4 py-2 rounded-lg font-bold text-sm bg-indigo-600 text-white shadow">1. 加法交換律 ($a + b \rightleftarrows b + a$)</button>
+                <button onclick="switchLawMode('assoc')" id="tab-law-assoc" class="px-4 py-2 rounded-lg font-bold text-sm bg-white border border-slate-300 text-slate-700 hover:bg-slate-100">2. 加法結合律 ($(a+b)+c \rightleftarrows a+(b+c)$)</button>
+                <button onclick="switchLawMode('dist')" id="tab-law-dist" class="px-4 py-2 rounded-lg font-bold text-sm bg-white border border-slate-300 text-slate-700 hover:bg-slate-100">3. 分配律 $a(b+c)=ab+ac$</button>
             </div>
 
             <!-- 運算律互動卡片展演區 -->
             <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 mb-4 grid-bg">
                 <!-- 1. 交換律展示 -->
                 <div id="panel-comm" class="flex flex-col items-center">
-                    <p class="text-xs font-bold text-indigo-800 mb-3 bg-indigo-100 px-3 py-1 rounded-full">點擊下方板塊，即可交換 x 與 y 的前後位置：</p>
+                    <p class="text-xs font-bold text-indigo-800 mb-3 bg-indigo-100 px-3 py-1 rounded-full">點擊下方板塊，即可交換 $x$ 與 $y$ 的前後位置：</p>
                     <div class="flex items-center gap-3 my-4">
-                        <div onclick="swapCommTiles()" id="tile-a" class="tile-box bg-blue-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-blue-600">3x</div>
+                        <div onclick="swapCommTiles()" id="tile-a" class="tile-box bg-blue-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-blue-600">$3x$</div>
                         <span class="text-3xl font-black text-slate-600">+</span>
-                        <div onclick="swapCommTiles()" id="tile-b" class="tile-box bg-emerald-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-emerald-600">5y</div>
+                        <div onclick="swapCommTiles()" id="tile-b" class="tile-box bg-emerald-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-emerald-600">$5y$</div>
                     </div>
-                    <p id="comm-desc" class="text-sm font-bold text-slate-700 mt-2">當前算式：<b>3x + 5y</b></p>
+                    <p id="comm-desc" class="text-sm font-bold text-slate-700 mt-2">當前算式：<b>$3x + 5y$</b></p>
                 </div>
 
                 <!-- 2. 結合律展示 -->
@@ -107,29 +117,29 @@
                         <!-- JS 動態生成 -->
                     </div>
                     <button onclick="toggleAssocBracket()" class="mt-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-sm shadow">移動括號板塊 ⇄</button>
-                    <p id="assoc-desc" class="text-sm font-bold text-slate-700 mt-3">先算括號內：(2x + 3x) = 5x，再加上 4x 等於 <b>9x</b>！</p>
+                    <p id="assoc-desc" class="text-sm font-bold text-slate-700 mt-3">先算括號內：$(2x + 3x) = 5x$，再加上 $4x$ 等於 <b>$9x$</b>！</p>
                 </div>
 
                 <!-- 3. 分配律動態展開展示 -->
                 <div id="panel-dist" class="hidden flex flex-col items-center">
-                    <p class="text-xs font-bold text-indigo-800 mb-3 bg-indigo-100 px-3 py-1 rounded-full">點擊按鈕，觀察括號外的乘數 3 如何分配乘給裡面的每一項：</p>
+                    <p class="text-xs font-bold text-indigo-800 mb-3 bg-indigo-100 px-3 py-1 rounded-full">點擊按鈕，觀察括號外的乘數 $3$ 如何分配乘給裡面的每一項：</p>
                     
                     <div class="relative w-full max-w-md h-36 border-2 border-dashed border-amber-300 rounded-xl bg-white/80 flex items-center justify-center p-4 overflow-hidden mb-3 shadow-inner">
                         <div id="dist-container" class="flex items-center gap-2 text-2xl font-black text-slate-800">
-                            <span class="bg-amber-100 text-amber-900 px-5 py-2 rounded-lg border-2 border-amber-400">3(x + 2)</span>
+                            <span class="bg-amber-100 text-amber-900 px-5 py-2 rounded-lg border-2 border-amber-400">$3(x + 2)$</span>
                         </div>
                     </div>
 
                     <button onclick="animateDistributive()" id="btn-dist" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-extrabold rounded-lg shadow transition-all flex items-center gap-2">
                         <span>✨ 動態展開分配律！</span>
                     </button>
-                    <p id="dist-desc" class="text-sm font-bold text-slate-700 mt-3">算式狀態：<b>3(x + 2)</b></p>
+                    <p id="dist-desc" class="text-sm font-bold text-slate-700 mt-3">算式狀態：<b>$3(x + 2)$</b></p>
                 </div>
             </div>
 
             <!-- 動態結論 -->
             <div id="lab-explanation" class="bg-amber-50 p-4 rounded-lg text-center text-amber-900 font-bold text-sm">
-                加法交換律：3x + 5y 與 5y + 3x 意義完全相同，位置交換結果不變！
+                加法交換律：$3x + 5y$ 與 $5y + 3x$ 意義完全相同，位置交換結果不變！
             </div>
         </section>
 
@@ -139,20 +149,20 @@
                 <i data-lucide="pencil" class="mr-2 text-blue-600"></i> 解題示範：園遊會收款與代數式化簡
             </h2>
             <div class="p-4 bg-slate-50 rounded-lg mb-4">
-                <p class="text-slate-700 font-bold">情境：班上有 1000 元鈔票 x 張、500 元鈔票 y 張。請列出總金額，並計算當 x = 3、y = 1 時的金額。另外化簡式子：3(x + 1) - 2x + 1。</p>
+                <p class="text-slate-700 font-bold">情境：班上有 $1000$ 元鈔票 $x$ 張、$500$ 元鈔票 $y$ 張。請列出總金額，並計算當 $x = 3$、$y = 1$ 時的金額。另外化簡式子：$3(x + 1) - 2x + 1$。</p>
             </div>
             <div class="space-y-4">
                 <div class="flex items-start gap-3">
                     <span class="step-badge">1</span>
-                    <p class="text-slate-600"><b>記錄生活情境：</b>總金額表示為 <span class="math-fact text-blue-700">1000x + 500y</span> 元。代入 x = 3、y = 1 得 1000(3) + 500(1) = <b>3500 元</b>。</p>
+                    <p class="text-slate-600"><b>記錄生活情境：</b>總金額表示為 <span class="math-fact text-blue-700">$1000x + 500y$</span> 元。代入 $x = 3$、$y = 1$ 得 $1000 \times 3 + 500 \times 1 = \mathbf{3500}$ 元。</p>
                 </div>
                 <div class="flex items-start gap-3">
                     <span class="step-badge">2</span>
-                    <p class="text-slate-600"><b>分配律拆括號：</b>3(x + 1) 要把 3 乘進去！得 3 × x + 3 × 1 = <b>3x + 3</b>。原式變為：3x + 3 - 2x + 1。</p>
+                    <p class="text-slate-600"><b>分配律拆括號：</b>$3(x + 1)$ 要把 $3$ 乘進去！得 $3 \times x + 3 \times 1 = \mathbf{3x + 3}$。原式變為：$3x + 3 - 2x + 1$。</p>
                 </div>
                 <div class="flex items-start gap-3">
                     <span class="step-badge">3</span>
-                    <p class="text-slate-600 font-bold"><b>同類項合併：</b>將 3x 與 -2x 合併得 x；數字 3 與 1 合併得 4。化簡結果為 <span class="math-fact text-blue-700">x + 4</span>！</p>
+                    <p class="text-slate-600 font-bold"><b>同類項合併：</b>將 $3x$ 與 $-2x$ 合併得 $x$；數字 $3$ 與 $1$ 合併得 $4$。化簡結果為 <span class="math-fact text-blue-700">$x + 4$</span>！</p>
                 </div>
             </div>
         </section>
@@ -163,21 +173,21 @@
                 <i data-lucide="check-square" class="mr-2 w-5 h-5"></i> 🔍 觀念引導：破解代數式化簡的兩大陷阱
             </h2>
             <div class="mb-4 text-slate-700 p-3 bg-white rounded-lg border border-indigo-100 italic text-sm">
-                挑戰：化簡算式「3(x + 1) - 2x + 1」，小明寫出 3x + 1 - 2x + 1 = x + 2，請問他哪裡算錯了？
+                挑戰：化簡算式「$3(x + 1) - 2x + 1$」，小明寫出 $3x + 1 - 2x + 1 = x + 2$，請問他哪裡算錯了？
             </div>
             <div id="step-quiz" class="space-y-4">
                 <div id="sq1">
-                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 檢查第一步【分配律】：3 乘進去括號 3(x + 1) 時，數字 3 有沒有乘給常數項 1？</p>
+                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 檢查第一步【分配律】：$3$ 乘進去括號 $3(x + 1)$ 時，數字 $3$ 有沒有乘給常數項 $1$？</p>
                     <div class="flex gap-2">
-                        <button onclick="answerStep(1, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">沒有！3 忘記乘給 1，應該是 3x + 3</button>
-                        <button onclick="answerStep(1, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">有乘對，3 × 1 本來就是 1</button>
+                        <button onclick="answerStep(1, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">沒有！$3$ 忘記乘給 $1$，應該是 $3x + 3$</button>
+                        <button onclick="answerStep(1, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">有乘對，$3 \times 1$ 本來就是 $1$</button>
                     </div>
                 </div>
                 <div id="sq2" class="hidden">
-                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 賓果！正確展開為 3x + 3 - 2x + 1 後，將同類項合併，最終化簡結果是多少？</p>
+                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 賓果！正確展開為 $3x + 3 - 2x + 1$ 後，將同類項合併，最終化簡結果是多少？</p>
                     <div class="flex gap-2">
-                        <button onclick="answerStep(2, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">x + 2</button>
-                        <button onclick="answerStep(2, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">x + 4</button>
+                        <button onclick="answerStep(2, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">$x + 2$</button>
+                        <button onclick="answerStep(2, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">$x + 4$</button>
                     </div>
                 </div>
                 <div id="step-feedback" class="hidden p-4 rounded-lg font-bold text-center"></div>
@@ -193,27 +203,27 @@
             
             <div class="p-4 bg-blue-50 rounded-lg mb-6 border border-blue-100">
                 <p class="text-blue-900 font-bold leading-relaxed">
-                    題目情境：長方形的長為 5 公分、寬為 x 公分。請列出長方形的周長與面積代數式。
+                    題目情境：長方形的長為 $5$ 公分、寬為 $x$ 公分。請列出長方形的周長與面積代數式。
                 </p>
             </div>
             
             <div class="space-y-6">
                 <!-- Step 1 -->
                 <div id="p1-s1">
-                    <p class="text-slate-800 mb-2 font-medium">步驟 1️⃣：長方形【面積】等於「長 × 寬」，省略乘號後如何表示？</p>
+                    <p class="text-slate-800 mb-2 font-medium">步驟 1️⃣：長方形【面積】等於「長 $\times$ 寬」，省略乘號後如何表示？</p>
                     <div class="flex gap-2">
-                        <button onclick="checkP1(1, false)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">5 + x</button>
-                        <button onclick="checkP1(1, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">5x（平方公分）</button>
+                        <button onclick="checkP1(1, false)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$5 + x$</button>
+                        <button onclick="checkP1(1, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$5x$（平方公分）</button>
                     </div>
                     <div id="p1-f1" class="text-sm mt-2 hidden font-bold"></div>
                 </div>
 
                 <!-- Step 2 -->
                 <div id="p1-s2" class="hidden opacity-0 transition-all duration-500">
-                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">步驟 2️⃣：長方形【周長】等於 2 × (長 + 寬) = 2(5 + x)，利用分配律展開化簡後是多少？</p>
+                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">步驟 2️⃣：長方形【周長】等於 $2 \times (\text{長} + \text{寬}) = 2(5 + x)$，利用分配律展開化簡後是多少？</p>
                     <div class="flex gap-2">
-                        <button onclick="checkP1(2, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">10 + 2x（公分）</button>
-                        <button onclick="checkP1(2, false)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">10 + x</button>
+                        <button onclick="checkP1(2, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$10 + 2x$（公分）</button>
+                        <button onclick="checkP1(2, false)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$10 + x$</button>
                     </div>
                     <div id="p1-f2" class="text-sm mt-2 hidden font-bold"></div>
                 </div>
@@ -225,8 +235,8 @@
                             <i data-lucide="party-popper" class="mr-2 w-6 h-6"></i> 完全正確！成功學會代數列式！
                         </p>
                         <p class="text-green-700 leading-relaxed">
-                            • 面積 = 5 × x = <b>5x</b> 平方公分。<br>
-                            • 周長 = 2(5 + x) = 2 × 5 + 2 × x = <b>10 + 2x</b> 公分！
+                            • 面積 = $5 \times x = \mathbf{5x}$ 平方公分。<br>
+                            • 周長 = $2(5 + x) = 2 \times 5 + 2 \times x = \mathbf{10 + 2x}$ 公分！
                         </p>
                     </div>
                 </div>
@@ -243,20 +253,20 @@
             <div class="space-y-6">
                 <!-- Case 1 -->
                 <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
-                    <p class="text-slate-800 font-bold mb-3">1. 化簡算式：3 - 2x + 7x</p>
+                    <p class="text-slate-800 font-bold mb-3">1. 化簡算式：$3 - 2x + 7x$</p>
                     <div class="flex flex-wrap gap-2 mb-2">
-                        <button onclick="checkP2(1, 'right')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">3 + 5x</button>
-                        <button onclick="checkP2(1, 'wrong')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">3 - 9x</button>
+                        <button onclick="checkP2(1, 'right')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">$3 + 5x$</button>
+                        <button onclick="checkP2(1, 'wrong')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">$3 - 9x$</button>
                     </div>
                     <div id="p2-f1" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
                 </div>
 
                 <!-- Case 2 -->
                 <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
-                    <p class="text-slate-800 font-bold mb-3">2. 化簡分式：(9x - 3) / 3</p>
+                    <p class="text-slate-800 font-bold mb-3">2. 化簡分式：$\frac{9x - 3}{3}$</p>
                     <div class="flex flex-wrap gap-2 mb-2">
-                        <button onclick="checkP2(2, 'right')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">3x - 1</button>
-                        <button onclick="checkP2(2, 'wrong')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">3x - 3</button>
+                        <button onclick="checkP2(2, 'right')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">$3x - 1$</button>
+                        <button onclick="checkP2(2, 'wrong')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">$3x - 3$</button>
                     </div>
                     <div id="p2-f2" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
                 </div>
@@ -273,7 +283,7 @@
                 <!-- Challenge 1 -->
                 <div class="challenge-card">
                     <h3 class="font-bold text-slate-700 mb-2">1. 年齡問題列式</h3>
-                    <p class="text-sm text-slate-600 mb-4">已知哥哥比小臻大 3 歲。當小臻是 x 歲時，哥哥是 x + 3 歲。反之，當哥哥是 y 歲時，小臻是多少歲？</p>
+                    <p class="text-sm text-slate-600 mb-4">已知哥哥比小臻大 $3$ 歲。當小臻是 $x$ 歲時，哥哥是 $x + 3$ 歲。反之，當哥哥是 $y$ 歲時，小臻是多少歲？</p>
                     <div class="flex items-center gap-3">
                         <span class="font-bold text-slate-700">小臻的年齡：</span>
                         <input type="text" id="chal1-ans" class="p-2 border rounded-lg w-28 text-center font-bold" placeholder="填入代數式">
@@ -286,7 +296,7 @@
                 <!-- Challenge 2 -->
                 <div class="challenge-card">
                     <h3 class="font-bold text-slate-700 mb-2">2. 複合同類項合併化簡</h3>
-                    <p class="text-sm text-slate-600 mb-4">請化簡一次算式：2x - y + 5x + 2y + 1</p>
+                    <p class="text-sm text-slate-600 mb-4">請化簡一次算式：$2x - y + 5x + 2y + 1$</p>
                     <div class="flex items-center gap-2 mb-3">
                         <span class="font-bold text-slate-700">化簡結果：</span>
                         <input type="text" id="chal2-ans" class="p-2 border rounded-lg w-44 text-center font-bold" placeholder="如 7x+y+1">
@@ -306,16 +316,16 @@
                 <ul class="text-sm space-y-3 text-slate-600 font-medium">
                     <li class="flex items-start gap-2">
                         ❌ <span class="text-red-500 font-bold">拆括號漏乘常數項？</span>
-                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！3(x + 1) = 3x + 3，數字 3 必須同時乘給 x 與 1！</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！$3(x + 1) = 3x + 3$，數字 $3$ 必須同時乘給 $x$ 與 $1$！</span>
                     </li>
                     <li class="flex items-start gap-2">
                         ❌ <span class="text-red-500 font-bold">同類項正負號算錯？</span>
-                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！3 - 2x + 7x 化簡時，-2x + 7x = +5x，故結果為 3 + 5x（不可寫成 3 - 9x）！</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！$3 - 2x + 7x$ 化簡時，$-2x + 7x = +5x$，故結果為 $3 + 5x$（不可寫成 $3 - 9x$）！</span>
                     </li>
                     <li class="flex items-start gap-2">
                         ❌ <span class="text-red-500 font-bold">分式約分只約一邊？</span>
                         <span class="bg-amber-50 border border-amber-200 p-1.5 rounded text-amber-800 text-xs block mt-1">
-                            錯！(9x - 3) / 3 化簡時，分子兩項都要除以 3，結果為 3x - 1（不可寫成 3x - 3）！
+                            錯！$\frac{9x - 3}{3}$ 化簡時，分子兩項都要除以 $3$，結果為 $3x - 1$（不可寫成 $3x - 3$）！
                         </span>
                     </li>
                 </ul>
@@ -325,10 +335,10 @@
                     <i data-lucide="lightbulb" class="mr-2 w-5 h-5"></i> 💡 生活中的代數符號
                 </h3>
                 <p class="text-sm leading-relaxed opacity-90">
-                    <b>為什麼要用文字符號（x, y）代表數？</b><br>
-                    1. <b>超商發票計價：</b> 購買 x 杯奶茶與 y 個飯糰，總金額 50x + 35y 元，只要帶入數量即可自動結帳！<br>
-                    2. <b>手遊經驗值公式：</b> 升級所需經驗值為 100 × (等級 n)，符號能通用於所有等級！<br>
-                    3. <b>運動卡路里算式：</b> 跑步 m 分鐘消耗熱量 10m 大卡，代數讓生活計算簡潔又精準！
+                    <b>為什麼要用文字符號（$x, y$）代表數？</b><br>
+                    1. <b>超商發票計價：</b> 購買 $x$ 杯奶茶與 $y$ 個飯糰，總金額 $50x + 35y$ 元，只要帶入數量即可自動結帳！<br>
+                    2. <b>手遊經驗值公式：</b> 升級所需經驗值為 $100 \times n$（等級 $n$），符號能通用於所有等級！<br>
+                    3. <b>運動卡路里算式：</b> 跑步 $m$ 分鐘消耗熱量 $10m$ 大卡，代數讓生活計算簡潔又精準！
                 </p>
             </div>
         </footer>
@@ -344,11 +354,18 @@
         let isSwapped = false;
         let isAssocShifted = false;
 
+        function renderMath() {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise();
+            }
+        }
+
         window.onload = function() {
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }
             updateAssocUI();
+            renderMath();
         };
 
         // 🧮 運算律切換頁籤邏輯
@@ -367,12 +384,13 @@
 
             const expl = document.getElementById('lab-explanation');
             if (mode === 'comm') {
-                expl.innerText = "加法交換律：3x + 5y 與 5y + 3x 意義完全相同，位置交換結果不變！";
+                expl.innerHTML = "加法交換律：$3x + 5y$ 與 $5y + 3x$ 意義完全相同，位置交換結果不變！";
             } else if (mode === 'assoc') {
-                expl.innerText = "加法結合律：(2x + 3x) + 4x 與 2x + (3x + 4x) 結果皆為 9x，括號改變優先順序結果不變！";
+                expl.innerHTML = "加法結合律：$(2x + 3x) + 4x$ 與 $2x + (3x + 4x)$ 結果皆為 $9x$，括號改變優先順序結果不變！";
             } else if (mode === 'dist') {
-                expl.innerText = "分配律：3 × (x + 2) = 3x + 6，括號外的乘數必須同時乘給括號內的每一項！";
+                expl.innerHTML = "分配律：$3 \times (x + 2) = 3x + 6$，括號外的乘數必須同時乘給括號內的每一項！";
             }
+            renderMath();
         }
 
         // 1. 交換律板塊點擊交換
@@ -383,18 +401,19 @@
 
             isSwapped = !isSwapped;
             if (isSwapped) {
-                tileA.innerText = "5y";
+                tileA.innerHTML = "$5y$";
                 tileA.className = "tile-box bg-emerald-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-emerald-600";
-                tileB.innerText = "3x";
+                tileB.innerHTML = "$3x$";
                 tileB.className = "tile-box bg-blue-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-blue-600";
-                desc.innerHTML = "當前算式：<b>5y + 3x</b>（已套用加法交換律）";
+                desc.innerHTML = "當前算式：<b>$5y + 3x$</b>（已套用加法交換律）";
             } else {
-                tileA.innerText = "3x";
+                tileA.innerHTML = "$3x$";
                 tileA.className = "tile-box bg-blue-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-blue-600";
-                tileB.innerText = "5y";
+                tileB.innerHTML = "$5y$";
                 tileB.className = "tile-box bg-emerald-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-emerald-600";
-                desc.innerHTML = "當前算式：<b>3x + 5y</b>";
+                desc.innerHTML = "當前算式：<b>$3x + 5y$</b>";
             }
+            renderMath();
         }
 
         // 2. 結合律括號移動
@@ -410,29 +429,30 @@
             if (!isAssocShifted) {
                 container.innerHTML = `
                     <span class="text-indigo-600 font-extrabold">(</span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">2x</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">$2x$</span>
                     <span>+</span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">3x</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">$3x$</span>
                     <span class="text-indigo-600 font-extrabold">)</span>
                     <span>+</span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">4x</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">$4x$</span>
                 `;
-                desc.innerHTML = "先算括號內：(2x + 3x) = 5x，再加上 4x 等於 <b>9x</b>！";
+                desc.innerHTML = "先算括號內：$(2x + 3x) = 5x$，再加上 $4x$ 等於 <b>$9x$</b>！";
             } else {
                 container.innerHTML = `
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">2x</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">$2x$</span>
                     <span>+</span>
                     <span class="text-indigo-600 font-extrabold">(</span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">3x</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">$3x$</span>
                     <span>+</span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">4x</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">$4x$</span>
                     <span class="text-indigo-600 font-extrabold">)</span>
                 `;
-                desc.innerHTML = "先算後方括號：(3x + 4x) = 7x，再加上 2x 一樣等於 <b>9x</b>（套用加法結合律）！";
+                desc.innerHTML = "先算後方括號：$(3x + 4x) = 7x$，再加上 $2x$ 一樣等於 <b>$9x$</b>（套用加法結合律）！";
             }
+            renderMath();
         }
 
-        // 3. 分配律動態展開動畫（順序：3(x+2) -> 3·x+3·2 -> 3x+6）
+        // 3. 分配律動態展開動畫
         function animateDistributive() {
             const container = document.getElementById('dist-container');
             const desc = document.getElementById('dist-desc');
@@ -442,21 +462,23 @@
 
             // Step 1: 動態展開成 3·x + 3·2
             container.innerHTML = `
-                <span class="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-lg border-2 border-amber-500 font-black">3·x</span>
+                <span class="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-lg border-2 border-amber-500 font-black">$3 \\cdot x$</span>
                 <span class="mx-1 font-bold">+</span>
-                <span class="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-lg border-2 border-amber-500 font-black">3·2</span>
+                <span class="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-lg border-2 border-amber-500 font-black">$3 \\cdot 2$</span>
             `;
-            desc.innerHTML = "分配律展開中：<b>3·x + 3·2</b>（3 分配乘給括號內每一項）";
+            desc.innerHTML = "分配律展開中：<b>$3 \\cdot x + 3 \\cdot 2$</b>（$3$ 分配乘給括號內每一項）";
+            renderMath();
 
             // Step 2: 最終化簡結果 3x + 6
             setTimeout(() => {
                 container.innerHTML = `
-                    <span class="bg-amber-200 text-amber-900 px-4 py-2 rounded-lg border-2 border-amber-500 font-black text-2xl">3x</span>
+                    <span class="bg-amber-200 text-amber-900 px-4 py-2 rounded-lg border-2 border-amber-500 font-black text-2xl">$3x$</span>
                     <span class="mx-2 text-2xl font-black">+</span>
-                    <span class="bg-amber-200 text-amber-900 px-4 py-2 rounded-lg border-2 border-amber-500 font-black text-2xl">6</span>
+                    <span class="bg-amber-200 text-amber-900 px-4 py-2 rounded-lg border-2 border-amber-500 font-black text-2xl">$6$</span>
                 `;
-                desc.innerHTML = "分配律化簡結果：<b class='text-amber-600 text-lg'>3x + 6</b>";
+                desc.innerHTML = "分配律化簡結果：<b class='text-amber-600 text-lg'>$3x + 6$</b>";
                 btn.disabled = false;
+                renderMath();
             }, 1200);
         }
 
@@ -467,9 +489,10 @@
             updateAssocUI();
             
             const container = document.getElementById('dist-container');
-            container.innerHTML = `<span class="bg-amber-100 text-amber-900 px-5 py-2 rounded-lg border-2 border-amber-400">3(x + 2)</span>`;
-            document.getElementById('dist-desc').innerHTML = "算式狀態：<b>3(x + 2)</b>";
+            container.innerHTML = `<span class="bg-amber-100 text-amber-900 px-5 py-2 rounded-lg border-2 border-amber-400">$3(x + 2)$</span>`;
+            document.getElementById('dist-desc').innerHTML = "算式狀態：<b>$3(x + 2)$</b>";
             switchLawMode('comm');
+            renderMath();
         }
 
         // 🔍 觀念引導邏輯
@@ -479,24 +502,25 @@
 
             if (step === 1) {
                 if (isCorrect) {
-                    feedback.innerHTML = "✅ 完全正確！小明犯了分配律常見錯誤，忘記把 3 乘給 1，正確應該展開為 3x + 3！";
+                    feedback.innerHTML = "✅ 完全正確！小明犯了分配律常見錯誤，忘記把 $3$ 乘給 $1$，正確應該展開為 $3x + 3$！";
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm";
                     document.getElementById('sq1').classList.add('opacity-50');
                     document.getElementById('sq2').classList.remove('hidden');
                 } else {
-                    feedback.innerHTML = "❌ 答錯囉！3 × 1 = 3，不能直接寫原本的 1 哦！";
+                    feedback.innerHTML = "❌ 答錯囉！$3 \\times 1 = 3$，不能直接寫原本的 $1$ 哦！";
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
                 }
             } else if (step === 2) {
                 if (isCorrect) {
-                    feedback.innerHTML = "🎉 太棒了！3x - 2x = x，數字 3 + 1 = 4，最終結果為 x + 4！";
+                    feedback.innerHTML = "🎉 太棒了！$3x - 2x = x$，數字 $3 + 1 = 4$，最終結果為 $x + 4$！";
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm";
                     document.getElementById('sq2').classList.add('opacity-50');
                 } else {
-                    feedback.innerHTML = "❌ 算錯囉！常數項是 +3 再加 1，等於 +4 哦！";
+                    feedback.innerHTML = "❌ 算錯囉！常數項是 $+3$ 再加 $1$，等於 $+4$ 哦！";
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
                 }
             }
+            renderMath();
         }
 
         // 🧩 練習 1 檢查邏輯
@@ -505,7 +529,7 @@
                 const f = document.getElementById('p1-f1');
                 f.classList.remove('hidden');
                 if (isCorrect) {
-                    f.innerHTML = "✅ 正確！長方形面積 = 長 × 寬 = 5 × x = 5x（平方公分）。";
+                    f.innerHTML = "✅ 正確！長方形面積 = 長 $\\times$ 寬 = $5 \\times x = 5x$（平方公分）。";
                     f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
                     const s2 = document.getElementById('p1-s2');
                     s2.classList.remove('hidden');
@@ -518,16 +542,17 @@
                 const f = document.getElementById('p1-f2');
                 f.classList.remove('hidden');
                 if (isCorrect) {
-                    f.innerHTML = "✅ 太強了！周長 = 2(5 + x) = 2 × 5 + 2 × x = 10 + 2x 公分！";
+                    f.innerHTML = "✅ 太強了！周長 = $2(5 + x) = 2 \\times 5 + 2 \\times x = 10 + 2x$ 公分！";
                     f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
                     const res = document.getElementById('p1-result');
                     res.classList.remove('hidden');
                     setTimeout(() => res.classList.add('opacity-100'), 10);
                 } else {
-                    f.innerHTML = "❌ 記得分配律 2 要乘給 5 也要乘給 x 哦！";
+                    f.innerHTML = "❌ 記得分配律 $2$ 要乘給 $5$ 也要乘給 $x$ 哦！";
                     f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
                 }
             }
+            renderMath();
         }
 
         // 🧮 練習 2 檢查邏輯
@@ -538,20 +563,21 @@
             if (qNum === 1) {
                 if (choice === 'right') {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
-                    f.innerHTML = "✅ 觀念超清晰！-2x + 7x = +5x，故化簡結果為 3 + 5x（不可誤算為 3 - 9x）！";
+                    f.innerHTML = "✅ 觀念超清晰！$-2x + 7x = +5x$，故化簡結果為 $3 + 5x$（不可誤算為 $3 - 9x$）！";
                 } else {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
-                    f.innerHTML = "❌ 這是常見迷思！-2x 前面是負號，加上 7x 後應該是 +5x 哦！";
+                    f.innerHTML = "❌ 這是常見迷思！$-2x$ 前面是負號，加上 $7x$ 後應該是 $+5x$ 哦！";
                 }
             } else if (qNum === 2) {
                 if (choice === 'right') {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
-                    f.innerHTML = "✅ 答對了！(9x - 3) / 3 = 9x/3 - 3/3 = 3x - 1！分子每一項都要除以 3！";
+                    f.innerHTML = "✅ 答對了！$\\frac{9x - 3}{3} = \\frac{9x}{3} - \\frac{3}{3} = 3x - 1$！分子每一項都要除以 $3$！";
                 } else {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
-                    f.innerHTML = "❌ 忘記把後面的 -3 也除以 3 囉！3/3 = 1，所以常數項是 -1！";
+                    f.innerHTML = "❌ 忘記把後面的 $-3$ 也除以 $3$ 囉！$\\frac{3}{3} = 1$，所以常數項是 $-1$！";
                 }
             }
+            renderMath();
         }
 
         // 🚀 實戰挑戰檢查邏輯
@@ -563,21 +589,22 @@
                 const val = document.getElementById('chal1-ans').value.trim().toLowerCase().replace(/\s/g, '');
                 if (val === 'y-3' || val === 'y-3歲') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
-                    feedback.innerHTML = "✅ 完全正確！哥哥比小臻大 3 歲，所以小臻年齡等於哥哥的年齡減 3 歲（y - 3 歲）！";
+                    feedback.innerHTML = "✅ 完全正確！哥哥比小臻大 $3$ 歲，所以小臻年齡等於哥哥的年齡減 $3$ 歲（$y - 3$ 歲）！";
                 } else {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
-                    feedback.innerHTML = "❌ 再想想看，小臻比哥哥小 3 歲，所以是用 y 去減掉多少呢？";
+                    feedback.innerHTML = "❌ 再想想看，小臻比哥哥小 $3$ 歲，所以是用 $y$ 去減掉多少呢？";
                 }
             } else if (qNum === 2) {
                 const val = document.getElementById('chal2-ans').value.trim().toLowerCase().replace(/\s/g, '');
                 if (val === '7x+y+1' || val === '7x+1y+1') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
-                    feedback.innerHTML = "🎉 太強了！答對了！2x + 5x = 7x，-y + 2y = y，加上常數 1，結果為 7x + y + 1！";
+                    feedback.innerHTML = "🎉 太強了！答對了！$2x + 5x = 7x$，$-y + 2y = y$，加上常數 $1$，結果為 $7x + y + 1$！";
                 } else {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
-                    feedback.innerHTML = "❌ 提示：把含有 x 的項（2x, 5x）合併，含有 y 的項（-y, 2y）合併，常數 1 留著。";
+                    feedback.innerHTML = "❌ 提示：把含有 $x$ 的項（$2x, 5x$）合併，含有 $y$ 的項（$-y, 2y$）合併，常數 $1$ 留著。";
                 }
             }
+            renderMath();
         }
     </script>
 </body>
