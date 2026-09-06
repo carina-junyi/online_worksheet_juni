@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N-8-2 二次方根的近似值互動講義</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn.active { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); ring: 2px; }
+        .step-locked { opacity: 0.5; pointer-events: none; filter: grayscale(0.8); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- 1. Header (標題列) -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 二次方根的近似值</h1>
+            <p class="text-slate-600">N-8-2 互動式學習講義</p>
+        </header>
+
+        <!-- 2. 🎯 學習目標 (Learning Objectives) -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="mr-2 w-5 h-5"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>理解二次方根的「整數部分」概念，並能在數線上定位其大概位置。</li>
+                <li>掌握「十分逼近法」的不斷縮小範圍精神，估算二次方根至小數第一位。</li>
+                <li>熟練使用計算機「$\sqrt{\phantom{x}}$」鍵與乘法驗證，建立對二次方根數值的數感。</li>
+            </ul>
+        </section>
+
+        <!-- 3. 分頁切換按鈕區 -->
+        <div class="flex justify-center gap-3 md:gap-6 mb-8">
+            <button id="btn-tab-1" aria-label="切換至觀念起步分頁" onclick="switchTab(1)" class="tab-btn active bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow flex items-center gap-2">
+                🌱 觀念起步
+            </button>
+            <button id="btn-tab-2" aria-label="切換至思考試煉分頁" onclick="switchTab(2)" class="tab-btn bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3 rounded-xl shadow flex items-center gap-2 opacity-70">
+                ⚡ 思考試煉
+            </button>
+            <button id="btn-tab-3" aria-label="切換至挑戰突破分頁" onclick="switchTab(3)" class="tab-btn bg-rose-600 hover:bg-rose-700 text-white font-bold px-6 py-3 rounded-xl shadow flex items-center gap-2 opacity-70">
+                🔥 挑戰突破
+            </button>
+        </div>
+
+        <!-- ==================== 分頁一：觀念起步 (綠色) ==================== -->
+        <div id="tab-1" class="tab-content space-y-6">
+            <!-- 互動探索一：整數部分與數線定位實驗室 -->
+            <section class="bg-white rounded-xl shadow-md p-6 border border-emerald-200">
+                <h3 class="text-xl font-bold text-emerald-800 mb-4 flex items-center">
+                    <i data-lucide="compass" class="mr-2 text-emerald-600"></i> 📏 互動探索一：二次方根整數部分與數線定位
+                </h3>
+                <div class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm mb-4 leading-relaxed border border-emerald-100">
+                    <b>觀念解析：</b>要找 $\sqrt{N}$ 的整數部分，只需找到兩個連續整數 $k$ 與 $k+1$，使得 $k^2 \le N < (k+1)^2$。<br>
+                    請輸入數字 $N$ 或拖動滑桿，觀察數線與下方說明的即時變化：
+                </div>
+
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-5">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <span class="text-sm font-bold text-emerald-800">請選擇或輸入數字 $N =$</span>
+                        <input type="number" id="sim-n" aria-label="輸入開方數N" value="220" min="1" max="400" onchange="updateNumberLineLab()" class="w-24 p-2 border border-slate-300 rounded text-center font-bold">
+                        <input type="range" id="sim-n-slider" aria-label="拖動調整開方數N" min="1" max="400" value="220" oninput="syncSliderToInput()" class="flex-1 h-2 bg-emerald-200 rounded-lg cursor-pointer">
+                    </div>
+
+                    <!-- 數線視覺化元件 -->
+                    <div class="bg-white p-6 rounded-xl border border-emerald-100 space-y-4">
+                        <p id="nl-title" class="text-xs text-slate-500 font-bold text-center">📍 數線定位圖（$\sqrt{220}$ 介於哪兩個整數之間？）</p>
+                        <div class="relative w-full h-16 pt-4">
+                            <div class="w-full h-1.5 bg-slate-300 rounded relative"></div>
+                            <!-- 左端點 -->
+                            <div class="absolute left-0 top-3 transform -translate-x-1/2 flex flex-col items-center">
+                                <div class="w-1 h-4 bg-slate-600"></div>
+                                <span id="nl-mark-left" class="text-xs font-bold text-slate-700 mt-1">$14$</span>
+                            </div>
+                            <!-- 右端點 -->
+                            <div class="absolute right-0 top-3 transform translate-x-1/2 flex flex-col items-center">
+                                <div class="w-1 h-4 bg-slate-600"></div>
+                                <span id="nl-mark-right" class="text-xs font-bold text-slate-700 mt-1">$15$</span>
+                            </div>
+                            <!-- 動態定位點 Pin -->
+                            <div id="nl-pin" class="absolute top-1 transform -translate-x-1/2 transition-all duration-300 flex flex-col items-center" style="left: 48%;">
+                                <div class="w-4 h-4 bg-rose-500 rounded-full border-2 border-white shadow"></div>
+                                <span id="nl-pin-label" class="text-xs font-bold text-rose-600 mt-0.5">$\sqrt{220}$</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 動態文字解說區 -->
+                    <div id="nl-calc-text" class="p-4 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-sm font-bold leading-relaxed">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 互動探索二：十分逼近法與全功能計算機 -->
+            <section class="bg-white rounded-xl shadow-md p-6 border border-emerald-200">
+                <h3 class="text-xl font-bold text-emerald-800 mb-4 flex items-center">
+                    <i data-lucide="calculator" class="mr-2 text-emerald-600"></i> 🧮 互動探索二：十分逼近法與計算機輔助驗證
+                </h3>
+                <div class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm mb-4 leading-relaxed border border-emerald-100">
+                    <b>十分逼近法精神：</b>先確定整數範圍後，再逐步縮小範圍，讓答案越來越接近真正的值！<br>
+                    您可以輸入目標數 $N$，並利用右側<b>全功能計算機</b>進行 $9.4 \times 9.4$ 等乘法與開方驗證：
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 items-start">
+                    <!-- 左側十分逼近法輔助工具 (自由輸入) -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-sm font-bold text-slate-700">目標開方數 $N =$</span>
+                            <input type="number" id="tenths-target-input" aria-label="十分逼近法目標數" value="3" min="1" max="400" onchange="updateTenthsLab()" class="w-20 p-1.5 border border-slate-300 rounded text-center font-bold text-sm">
+                            <button onclick="updateTenthsLab()" aria-label="執行十分逼近估算" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded">估算區間</button>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-xs text-slate-500 font-bold">
+                            <span>快速選擇：</span>
+                            <button onclick="setTenthsPreset(2)" aria-label="快速選擇2" class="px-2 py-0.5 bg-white border rounded hover:bg-emerald-50">√2</button>
+                            <button onclick="setTenthsPreset(3)" aria-label="快速選擇3" class="px-2 py-0.5 bg-white border rounded hover:bg-emerald-50">√3</button>
+                            <button onclick="setTenthsPreset(5)" aria-label="快速選擇5" class="px-2 py-0.5 bg-white border rounded hover:bg-emerald-50">√5</button>
+                            <button onclick="setTenthsPreset(10)" aria-label="快速選擇10" class="px-2 py-0.5 bg-white border rounded hover:bg-emerald-50">√10</button>
+                        </div>
+                        <div id="tenths-result" class="p-4 rounded-lg bg-white border border-emerald-200 text-emerald-900 text-xs font-bold leading-relaxed space-y-2">
+                        </div>
+                    </div>
+
+                    <!-- 右側計算機模擬器 -->
+                    <div class="bg-slate-800 text-white p-5 rounded-2xl shadow-lg space-y-3">
+                        <div class="flex justify-between items-center text-xs text-slate-400">
+                            <span>全功能計算機 (支援加減乘除與開方)</span>
+                            <i data-lucide="cpu" class="w-4 h-4"></i>
+                        </div>
+                        <!-- 計算機螢幕 -->
+                        <div id="calc-display" class="bg-emerald-950 text-emerald-400 font-mono text-right text-2xl p-3 rounded-lg border border-emerald-800 tracking-widest min-h-[50px] flex items-center justify-end overflow-x-auto">
+                            0
+                        </div>
+                        <!-- 按鈕區 -->
+                        <div class="grid grid-cols-4 gap-2 text-sm font-bold">
+                            <button onclick="calcPress('C')" aria-label="歸零清除" class="p-2.5 bg-rose-600 hover:bg-rose-700 rounded-lg text-white">C</button>
+                            <button onclick="calcPress('sq')" aria-label="平方" class="p-2.5 bg-slate-600 hover:bg-slate-500 rounded-lg text-amber-300 font-mono">$x^2$</button>
+                            <button onclick="calcPress('sqrt')" aria-label="開根號" class="p-2.5 bg-slate-600 hover:bg-slate-500 rounded-lg text-emerald-300 font-mono">$\sqrt{x}$</button>
+                            <button onclick="calcPress('/')" aria-label="除以" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">÷</button>
+
+                            <button onclick="calcPress('7')" aria-label="7" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">7</button>
+                            <button onclick="calcPress('8')" aria-label="8" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">8</button>
+                            <button onclick="calcPress('9')" aria-label="9" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">9</button>
+                            <button onclick="calcPress('*')" aria-label="乘以" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">×</button>
+
+                            <button onclick="calcPress('4')" aria-label="4" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">4</button>
+                            <button onclick="calcPress('5')" aria-label="5" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">5</button>
+                            <button onclick="calcPress('6')" aria-label="6" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">6</button>
+                            <button onclick="calcPress('-')" aria-label="減去" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">-</button>
+
+                            <button onclick="calcPress('1')" aria-label="1" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">1</button>
+                            <button onclick="calcPress('2')" aria-label="2" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">2</button>
+                            <button onclick="calcPress('3')" aria-label="3" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">3</button>
+                            <button onclick="calcPress('+')" aria-label="加上" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">+</button>
+
+                            <button onclick="calcPress('0')" aria-label="0" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg col-span-2">0</button>
+                            <button onclick="calcPress('.')" aria-label="小數點" class="p-2.5 bg-slate-700 hover:bg-slate-600 rounded-lg">.</button>
+                            <button onclick="calcPress('=')" aria-label="等於算結果" class="p-2.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-white">=</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 核心觀念小辭典與觀念釐清 -->
+            <div class="bg-emerald-50 border border-emerald-300 rounded-xl p-5 shadow-sm text-emerald-950 space-y-3">
+                <h4 class="font-bold flex items-center text-emerald-900 text-base">
+                    <i data-lucide="book-open" class="mr-2 w-5 h-5 text-emerald-600"></i> 📖 觀念小辭典：近似值與計算機的使用
+                </h4>
+                <p class="text-xs leading-relaxed">
+                    1. <b>整數部分：</b>若正整數 $k^2 \le N < (k+1)^2$，則 $\sqrt{N}$ 的整數部分即為 $k$。<br>
+                    2. <b>精確值 vs 近似值：</b>除了 $a$ 為完全平方數（如 $\sqrt{4}=2$）外，其餘二次方根皆為「無限不循環小數」。計算機螢幕顯示的數值（如 $\sqrt{2} \approx 1.41421356$）只是省略後續位數後的<b>近似值</b>！<br>
+                    3. <b>單調性：</b>當 $a > b > 0$ 時，必有 $\sqrt{a} > \sqrt{b}$。連續按計算機的 $\sqrt{\phantom{x}}$ 鍵，大於 $1$ 的數會漸減逼近 $1$。
+                </p>
+
+                <!-- 四捨五入 vs 十分逼近法 -->
+                <div class="p-4 bg-white border border-emerald-200 rounded-lg text-xs leading-relaxed text-slate-700 space-y-2">
+                    <p class="font-bold text-emerald-900 text-sm">💡 觀念釐清（四捨五入 vs 十分逼近法）：</p>
+                    <div class="space-y-1">
+                        <p>• <b>四捨五入</b>是「把數字取到想要的位數」；</p>
+                        <p>• <b>十分逼近法</b>則是「不斷縮小範圍，讓答案越來越接近真正的值」。</p>
+                    </div>
+                    <p class="font-bold text-slate-800 pt-1">例如要找 $\sqrt{3}$：</p>
+                    <ul class="list-disc list-inside space-y-1 pl-2 text-slate-700">
+                        <li>先知道 $1.7 < \sqrt{3} < 1.8$</li>
+                        <li>再縮小成 $1.73 < \sqrt{3} < 1.74$</li>
+                        <li>繼續縮小成 $1.732 < \sqrt{3} < 1.733$</li>
+                    </ul>
+                    <p class="font-bold text-emerald-800 pt-1">這樣就能一步一步「逼近真正的答案」！✨</p>
+                </div>
+            </div>
+
+            <!-- 迷思與生活應用 -->
+            <section class="bg-white rounded-xl shadow-md p-6 border border-slate-200 space-y-6">
+                <div>
+                    <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center text-lg">
+                        <i data-lucide="alert-circle" class="mr-2 text-rose-500"></i> ⚠️ 二次方根近似值三大常見迷思
+                    </h3>
+                    <div class="space-y-3 text-sm font-medium">
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <p class="text-rose-600 font-bold">❌ 誤以為 $\sqrt{220}$ 的整數部分就是 $220$？</p>
+                            <p class="text-slate-700 mt-1">錯！$220$ 是開根號內部的數，必須尋找哪個整數的「平方」最接近且不超過 $220$（例如 $14^2 = 196$），整數部分是 $14$！</p>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <p class="text-rose-600 font-bold">❌ 誤以為 $1.414$ 是 $\sqrt{2}$ 的真正的精確值？</p>
+                            <p class="text-slate-700 mt-1">錯！$1.414$ 只是一般常用的近似估計值，真正的 $\sqrt{2}$ 小數部分無限延伸且不循環，無法寫成有限小數或分數！</p>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <p class="text-rose-600 font-bold">❌ 估計十分逼近法時，直接取超過被開方數的估計值？</p>
+                            <p class="text-slate-700 mt-1">錯！如果 $1.8^2 = 3.24 > 3$，代表 $1.8$ 太大了，只能說 $\sqrt{3}$ 介於 $1.7$ 與 $1.8$ 之間，小數第一位應取 $1.7$！</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                    <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400 text-lg">
+                        <i data-lucide="lightbulb" class="mr-2 w-5 h-5"></i> 💡 生活中的近似值估算
+                    </h3>
+                    <ol class="list-decimal list-inside text-sm leading-relaxed opacity-90 space-y-2">
+                        <li><b>正方形房間邊長：</b>若正方形房間面積為 $15$ 平方公尺，邊長約為 $\sqrt{15} \approx 3.87$ 公尺，可用來估算壁紙材料長度。</li>
+                        <li><b>安全梯子架設高度：</b>斜靠在牆上的梯子，利用畢氏定理算出高度 $\sqrt{18}$ 公尺，工程師能快速估算出高度約為 $4.24$ 公尺。</li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== 分頁二：思考試煉 (黃色) ==================== -->
+        <div id="tab-2" class="tab-content hidden space-y-6">
+            <section class="bg-white rounded-xl shadow-md p-6 border border-amber-200">
+                <h3 class="text-2xl font-bold text-amber-800 mb-2 flex items-center">
+                    <i data-lucide="help-circle" class="mr-2 text-amber-600"></i> ⚡ 思考試煉：基礎題組練習
+                </h3>
+                <p class="text-xs text-slate-500 mb-6">包含三個基礎觀念題組，答對第 $1$ 題即可解鎖下一題！選項皆已由小到大排列。</p>
+
+                <div class="space-y-8">
+                    <!-- 題組 1 -->
+                    <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
+                        <h4 class="font-bold text-amber-900 text-base border-b pb-2 flex items-center justify-between">
+                            <span>📌 題組一：二次方根的整數部分與反向推導</span>
+                            <span id="set1-progress" class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded">進度：1/2</span>
+                        </h4>
+
+                        <!-- 1-1 (11 < 12 < 13, 正確：B) -->
+                        <div id="set1-q1" class="space-y-2">
+                            <p class="font-bold text-slate-800 text-sm">第 $1$ 題：求 $\sqrt{150}$ 的整數部分為何？</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <button onclick="checkSet1(1, 'A')" aria-label="選項A 11" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(A) $11$</button>
+                                <button onclick="checkSet1(1, 'B')" aria-label="選項B 12" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(B) $12$</button>
+                                <button onclick="checkSet1(1, 'C')" aria-label="選項C 13" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(C) $13$</button>
+                            </div>
+                            <div id="set1-f1" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                        </div>
+
+                        <!-- 1-2 (已知正整數 k 滿足 k <= √N < k+1 且 k=13，求 N 的範圍？ 正確：C) -->
+                        <div id="set1-q2" class="space-y-2 step-locked hidden">
+                            <p class="font-bold text-slate-800 text-sm border-t pt-3">第 $2$ 題：已知正整數 $k$ 滿足 $k \le \sqrt{N} < k+1$，且 $k=13$，則 $N$ 的範圍為何？</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <button onclick="checkSet1(2, 'A')" aria-label="選項A 13 <= N < 14" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(A) $13 \le N < 14$</button>
+                                <button onclick="checkSet1(2, 'B')" aria-label="選項B 144 <= N < 169" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(B) $144 \le N < 169$</button>
+                                <button onclick="checkSet1(2, 'C')" aria-label="選項C 169 <= N < 196" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(C) $169 \le N < 196$</button>
+                            </div>
+                            <div id="set1-f2" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                        </div>
+                    </div>
+
+                    <!-- 題組 2 -->
+                    <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
+                        <h4 class="font-bold text-amber-900 text-base border-b pb-2 flex items-center justify-between">
+                            <span>📌 題組二：十分逼近法的估算</span>
+                            <span id="set2-progress" class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded">進度：1/2</span>
+                        </h4>
+
+                        <!-- 2-1 (2.2 < 2.3 < 2.4, 正確：A) -->
+                        <div id="set2-q1" class="space-y-2">
+                            <p class="font-bold text-slate-800 text-sm">第 $1$ 題：已知 $2.2^2 = 4.84$，$2.3^2 = 5.29$，用十分逼近法估計 $\sqrt{5}$ 至小數第一位，其值為何？</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <button onclick="checkSet2(1, 'A')" aria-label="選項A 2.2" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(A) $2.2$</button>
+                                <button onclick="checkSet2(1, 'B')" aria-label="選項B 2.3" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(B) $2.3$</button>
+                                <button onclick="checkSet2(1, 'C')" aria-label="選項C 2.4" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(C) $2.4$</button>
+                            </div>
+                            <div id="set2-f1" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                        </div>
+
+                        <!-- 2-2 (正確：B) -->
+                        <div id="set2-q2" class="space-y-2 step-locked hidden">
+                            <p class="font-bold text-slate-800 text-sm border-t pt-3">第 $2$ 題：已知 $3.1^2 = 9.61$，$3.2^2 = 10.24$，則 $\sqrt{10}$ 介於哪兩個連續一位小數之間？</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <button onclick="checkSet2(2, 'A')" aria-label="選項A 3.0與3.1" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(A) $3.0$ 與 $3.1$</button>
+                                <button onclick="checkSet2(2, 'B')" aria-label="選項B 3.1與3.2" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(B) $3.1$ 與 $3.2$</button>
+                                <button onclick="checkSet2(2, 'C')" aria-label="選項C 3.2與3.3" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(C) $3.2$ 與 $3.3$</button>
+                            </div>
+                            <div id="set2-f2" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                        </div>
+                    </div>
+
+                    <!-- 題組 3 -->
+                    <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
+                        <h4 class="font-bold text-amber-900 text-base border-b pb-2 flex items-center justify-between">
+                            <span>📌 題組三：計算機概念與大小比較</span>
+                            <span id="set3-progress" class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded">進度：1/2</span>
+                        </h4>
+
+                        <!-- 3-1 (正確：B) -->
+                        <div id="set3-q1" class="space-y-2">
+                            <p class="font-bold text-slate-800 text-sm">第 $1$ 題：用計算機按 $\sqrt{2}$ 得到 $1.41421356\dots$，關於此數值的敘述何者正確？</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <button onclick="checkSet3(1, 'A')" aria-label="選項A 精確值" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(A) $1.414$ 是 $\sqrt{2}$ 的真正精確值</button>
+                                <button onclick="checkSet3(1, 'B')" aria-label="選項B 近似值" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(B) 顯示的數值是估計的近似值，真正的 $\sqrt{2}$ 無法寫成有限小數</button>
+                                <button onclick="checkSet3(1, 'C')" aria-label="選項C 分數" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(C) $\sqrt{2}$ 可以精確寫成分數 $\frac{1414}{1000}$</button>
+                            </div>
+                            <div id="set3-f1" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                        </div>
+
+                        <!-- 3-2 (修改題目：比較 √50 與 7 的大小關係，數值由小至大：小於 < 等於 < 大於，正確答案：C) -->
+                        <div id="set3-q2" class="space-y-2 step-locked hidden">
+                            <p class="font-bold text-slate-800 text-sm border-t pt-3">第 $2$ 題：比較 $\sqrt{50}$ 與 $7$ 的大小關係，下列何者正確？</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <button onclick="checkSet3(2, 'A')" aria-label="選項A 小於" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(A) $\sqrt{50} < 7$</button>
+                                <button onclick="checkSet3(2, 'B')" aria-label="選項B 等於" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(B) $\sqrt{50} = 7$</button>
+                                <button onclick="checkSet3(2, 'C')" aria-label="選項C 大於" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(C) $\sqrt{50} > 7$</button>
+                            </div>
+                            <div id="set3-f2" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== 分頁三：挑戰突破 (紅色) ==================== -->
+        <div id="tab-3" class="tab-content hidden space-y-6">
+            <section class="bg-white rounded-xl shadow-md p-6 border border-rose-200">
+                <h3 class="text-2xl font-bold text-rose-800 mb-4 flex items-center">
+                    <i data-lucide="zap" class="mr-2 text-rose-600"></i> 🔥 挑戰突破：應用題練習
+                </h3>
+
+                <!-- 挑戰題組 1：消防隊雲梯車救援 -->
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 mb-6 space-y-4">
+                    <h4 class="font-bold text-rose-900 text-base border-b pb-2 flex items-center justify-between">
+                        <span>🎯 應用題組一：消防救援 — 雲梯車架設長度估估看</span>
+                        <span id="chal1-progress" class="text-xs bg-rose-200 text-rose-900 px-2 py-1 rounded">進度：1/2</span>
+                    </h4>
+
+                    <!-- SVG 生活圖表 -->
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row items-center gap-4 justify-around">
+                        <svg class="w-64 h-48" viewBox="0 0 260 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="消防車雲梯架設示意圖">
+                            <rect x="180" y="20" width="60" height="160" fill="#94A3B8" stroke="#475569" stroke-width="2"/>
+                            <rect x="195" y="40" width="15" height="20" fill="#E2E8F0"/>
+                            <rect x="220" y="40" width="15" height="20" fill="#E2E8F0"/>
+                            <rect x="195" y="80" width="15" height="20" fill="#E2E8F0"/>
+                            <rect x="220" y="80" width="15" height="20" fill="#E2E8F0"/>
+                            <line x1="20" y1="180" x2="250" y2="180" stroke="#334155" stroke-width="3"/>
+                            <line x1="175" y1="60" x2="175" y2="180" stroke="#DC2626" stroke-width="2" stroke-dasharray="4"/>
+                            <text x="145" y="120" fill="#DC2626" font-size="12" font-weight="bold">牆高 8m</text>
+                            <line x1="60" y1="185" x2="180" y2="185" stroke="#2563EB" stroke-width="2" stroke-dasharray="4"/>
+                            <text x="110" y="197" fill="#2563EB" font-size="12" font-weight="bold">距離 5m</text>
+                            <line x1="60" y1="180" x2="180" y2="60" stroke="#D97706" stroke-width="5" stroke-linecap="round"/>
+                            <text x="80" y="110" fill="#B45309" font-size="12" font-weight="bold" transform="rotate(-40 80 110)">雲梯長度 L</text>
+                            <path d="M 168 180 L 168 168 L 180 168" fill="none" stroke="#475569" stroke-width="1.5"/>
+                        </svg>
+                        <div class="text-xs text-slate-700 leading-relaxed max-w-xs space-y-1">
+                            <p class="font-bold text-slate-900 text-sm">🚒 消防隊現場紀錄：</p>
+                            <p>消防員需將雲梯延伸至大樓高 $8$ 公尺的窗口，車身離牆面距離為 $5$ 公尺。</p>
+                            <p>由畢氏定理，雲梯最小長度 $L = \sqrt{8^2 + 5^2} = \sqrt{89}$ 公尺。</p>
+                        </div>
+                    </div>
+
+                    <!-- 1-1 (8 < 9 < 10, 正確：B) -->
+                    <div id="chal1-q1" class="space-y-2">
+                        <p class="font-bold text-slate-800 text-sm">第 $1$ 題：請問雲梯長度 $\sqrt{89}$ 公尺的「整數部分」約為幾公尺？</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <button onclick="checkChal1(1, 'A')" aria-label="選項A 8公尺" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(A) $8$ 公尺</button>
+                            <button onclick="checkChal1(1, 'B')" aria-label="選項B 9公尺" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(B) $9$ 公尺</button>
+                            <button onclick="checkChal1(1, 'C')" aria-label="選項C 10公尺" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(C) $10$ 公尺</button>
+                        </div>
+                        <div id="chal1-f1" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                    </div>
+
+                    <!-- 1-2 (填空：9.4) -->
+                    <div id="chal1-q2" class="space-y-2 step-locked hidden border-t pt-3">
+                        <p class="font-bold text-slate-800 text-sm">第 $2$ 題：已知 $9.4^2 = 88.36$，$9.5^2 = 90.25$，估計雲梯長度至小數第一位，約為多少公尺？</p>
+                        <div class="flex flex-wrap items-center gap-3 text-xs font-bold">
+                            <span>估算長度：</span>
+                            <input type="number" id="chal1-val" aria-label="輸入雲梯估估長度" step="0.1" class="w-24 p-1.5 border border-slate-300 rounded text-center" placeholder="小數">
+                            <span>公尺</span>
+                            <button onclick="checkChal1(2, 'SUBMIT')" aria-label="驗證雲梯長度答案" class="px-3 py-1.5 bg-rose-600 text-white rounded hover:bg-rose-700">驗證答案</button>
+                        </div>
+                        <div id="chal1-f2" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                    </div>
+                </div>
+
+                <!-- 挑戰題組 2：正方形展覽館裝修工程 -->
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 mb-6 space-y-4">
+                    <h4 class="font-bold text-rose-900 text-base border-b pb-2 flex items-center justify-between">
+                        <span>🎯 應用題組二：室內裝修 — 正方形展覽館地磚鋪設</span>
+                        <span id="chal2-progress" class="text-xs bg-rose-200 text-rose-900 px-2 py-1 rounded">進度：1/2</span>
+                    </h4>
+
+                    <!-- SVG 展示館平面圖 -->
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row items-center gap-4 justify-around">
+                        <svg class="w-52 h-44" viewBox="0 0 200 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="展覽館平面圖">
+                            <rect x="20" y="15" width="150" height="150" fill="#ECFDF5" stroke="#059669" stroke-width="3" stroke-dasharray="6 3"/>
+                            <text x="50" y="85" fill="#047857" font-size="14" font-weight="bold">面積 = 130 m²</text>
+                            <text x="65" y="105" fill="#059669" font-size="11">邊長 x = √130 m</text>
+                            <line x1="20" y1="172" x2="170" y2="172" stroke="#047857" stroke-width="1.5"/>
+                            <polygon points="20,172 26,169 26,175" fill="#047857"/>
+                            <polygon points="170,172 164,169 164,175" fill="#047857"/>
+                            <text x="80" y="168" fill="#047857" font-size="10" font-weight="bold">邊長 x</text>
+                        </svg>
+                        <div class="text-xs text-slate-700 leading-relaxed max-w-xs space-y-1">
+                            <p class="font-bold text-slate-900 text-sm">🏛️ 工地主任監工日誌：</p>
+                            <p>全新正方形展覽館的總面積為 $130$ 平方公尺。</p>
+                            <p>牆角需鋪設一周踢腳板，施工前需先估算單邊長度 $x = \sqrt{130}$ 公尺。</p>
+                        </div>
+                    </div>
+
+                    <!-- 2-1 (11 < 12 < 13, 正確：A) -->
+                    <div id="chal2-q1" class="space-y-2">
+                        <p class="font-bold text-slate-800 text-sm">第 $1$ 題：請問展覽館單邊長度 $\sqrt{130}$ 公尺的整數部分為多少公尺？</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <button onclick="checkChal2(1, 'A')" aria-label="選項A 11公尺" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(A) $11$ 公尺</button>
+                            <button onclick="checkChal2(1, 'B')" aria-label="選項B 12公尺" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(B) $12$ 公尺</button>
+                            <button onclick="checkChal2(1, 'C')" aria-label="選項C 13公尺" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(C) $13$ 公尺</button>
+                        </div>
+                        <div id="chal2-f1" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                    </div>
+
+                    <!-- 2-2 (填空：11.4) -->
+                    <div id="chal2-q2" class="space-y-2 step-locked hidden border-t pt-3">
+                        <p class="font-bold text-slate-800 text-sm">第 $2$ 題：已知 $11.4^2 = 129.96$，$11.5^2 = 132.25$，估計單邊長度至小數第一位，約為多少公尺？</p>
+                        <div class="flex flex-wrap items-center gap-3 text-xs font-bold">
+                            <span>估算長度：</span>
+                            <input type="number" id="chal2-val" aria-label="輸入展館邊長估算" step="0.1" class="w-24 p-1.5 border border-slate-300 rounded text-center" placeholder="小數">
+                            <span>公尺</span>
+                            <button onclick="checkChal2(2, 'SUBMIT')" aria-label="驗證展館邊長答案" class="px-3 py-1.5 bg-rose-600 text-white rounded hover:bg-rose-700">驗證答案</button>
+                        </div>
+                        <div id="chal2-f2" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                    </div>
+                </div>
+
+                <!-- 挑戰題組 3：電視螢幕對角線尺寸估算 -->
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 mb-6 space-y-4">
+                    <h4 class="font-bold text-rose-900 text-base border-b pb-2 flex items-center justify-between">
+                        <span>🎯 應用題組三：家電規格 — 電視螢幕對角線尺寸估估看</span>
+                        <span id="chal3-progress" class="text-xs bg-rose-200 text-rose-900 px-2 py-1 rounded">進度：1/2</span>
+                    </h4>
+
+                    <!-- SVG 電視螢幕幾何示意圖 -->
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row items-center gap-4 justify-around">
+                        <svg class="w-60 h-44" viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="電視螢幕尺寸示意圖">
+                            <!-- 外框底座 -->
+                            <rect x="20" y="10" width="200" height="130" rx="8" fill="#1E293B" stroke="#0F172A" stroke-width="4"/>
+                            <rect x="28" y="18" width="184" height="114" rx="4" fill="#38BDF8" fill-opacity="0.15"/>
+                            <path d="M 100 140 L 140 140 L 145 160 L 95 160 Z" fill="#475569"/>
+                            <rect x="85" y="160" width="70" height="8" rx="2" fill="#334155"/>
+                            <!-- 長與寬標示 -->
+                            <text x="110" y="124" fill="#0284C7" font-size="12" font-weight="bold">寬 30 cm</text>
+                            <text x="32" y="75" fill="#0284C7" font-size="12" font-weight="bold">高 20 cm</text>
+                            <!-- 對角線 (L = √1300) -->
+                            <line x1="28" y1="132" x2="212" y2="18" stroke="#E11D48" stroke-width="3" stroke-dasharray="5 3"/>
+                            <text x="115" y="65" fill="#E11D48" font-size="11" font-weight="bold" transform="rotate(-31 115 65)">對角線 L = √1300 cm</text>
+                            <path d="M 200 132 L 200 120 L 212 120" fill="none" stroke="#0284C7" stroke-width="1.5"/>
+                        </svg>
+                        <div class="text-xs text-slate-700 leading-relaxed max-w-xs space-y-1">
+                            <p class="font-bold text-slate-900 text-sm">📺 電視規格數據：</p>
+                            <p>一台電視螢幕寬 $30$ 公分、高 $20$ 公分。</p>
+                            <p>依畢氏定理，對角線長度 $L = \sqrt{30^2 + 20^2} = \sqrt{1300}$ 公分。</p>
+                        </div>
+                    </div>
+
+                    <!-- 3-1 (35 < 36 < 37, 正確：B) -->
+                    <div id="chal3-q1" class="space-y-2">
+                        <p class="font-bold text-slate-800 text-sm">第 $1$ 題：已知 $36^2 = 1296$，$37^2 = 1369$，請問對角線長度 $\sqrt{1300}$ 公分的整數部分約為幾公分？</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <button onclick="checkChal3(1, 'A')" aria-label="選項A 35公分" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(A) $35$ 公分</button>
+                            <button onclick="checkChal3(1, 'B')" aria-label="選項B 36公分" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(B) $36$ 公分</button>
+                            <button onclick="checkChal3(1, 'C')" aria-label="選項C 37公分" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(C) $37$ 公分</button>
+                        </div>
+                        <div id="chal3-f1" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                    </div>
+
+                    <!-- 3-2 (填空：36.0) -->
+                    <div id="chal3-q2" class="space-y-2 step-locked hidden border-t pt-3">
+                        <p class="font-bold text-slate-800 text-sm">第 $2$ 題：再已知 $36.0^2 = 1296$，$36.1^2 = 1303.21$，估計對角線長度至小數第一位，約為多少公分？</p>
+                        <div class="flex flex-wrap items-center gap-3 text-xs font-bold">
+                            <span>估算對角線長：</span>
+                            <input type="number" id="chal3-val" aria-label="輸入對角線估算長度" step="0.1" class="w-24 p-1.5 border border-slate-300 rounded text-center" placeholder="小數">
+                            <span>公分</span>
+                            <button onclick="checkChal3(2, 'SUBMIT')" aria-label="驗證對角線長度答案" class="px-3 py-1.5 bg-rose-600 text-white rounded hover:bg-rose-700">驗證答案</button>
+                        </div>
+                        <div id="chal3-f2" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                    </div>
+                </div>
+
+                <!-- 🌟 學習反思自我評估專區 -->
+                <div class="bg-rose-50 p-6 rounded-xl border border-rose-200 mt-8 space-y-6">
+                    <h4 class="font-bold text-rose-900 flex items-center text-lg border-b border-rose-200 pb-2">
+                        <i data-lucide="award" class="mr-2"></i> 🌟 學習反思自我評估專區
+                    </h4>
+                    <p class="text-xs text-rose-800">經過今天的探索與練習，評估一下自己掌握二次方根近似值觀念的程度吧！</p>
+
+                    <!-- 後台答題對照即時顯示 -->
+                    <div class="bg-white p-3.5 rounded-xl border border-rose-200 text-xs font-bold flex flex-wrap justify-between items-center text-slate-700 gap-2">
+                        <span>📊 系統答題對照：正確率 <span id="sys-score-display" class="text-rose-600 font-extrabold text-sm">0%</span></span>
+                        <span class="text-slate-500 font-normal">（依據前面題組練習表現動態計算）</span>
+                    </div>
+
+                    <!-- 掌握程度評估滑桿 -->
+                    <div class="bg-white p-4 rounded-xl border border-rose-100 space-y-3">
+                        <div class="flex justify-between font-bold text-sm text-slate-800">
+                            <span>我的自評分數：</span>
+                            <span id="reflection-percent" class="text-rose-700 text-lg font-extrabold">$80\%$</span>
+                        </div>
+                        <input type="range" id="reflect-slider" aria-label="拉動調整自評分數" min="0" max="100" value="80" step="10" oninput="updateReflection()" class="w-full h-3 bg-slate-200 rounded-lg cursor-pointer accent-rose-600">
+                        <div id="reflection-box" class="p-4 rounded-lg text-xs font-bold transition-all"></div>
+                    </div>
+
+                    <!-- 點擊選項自我檢視 -->
+                    <div class="bg-white p-5 rounded-xl border border-rose-100 space-y-5">
+                        <div class="space-y-2">
+                            <p class="font-bold text-slate-800 text-sm flex items-center">
+                                <span>🗣️ 我現在能解釋（可多選）：</span>
+                            </p>
+                            <div class="grid grid-cols-1 gap-2">
+                                <button onclick="toggleOption(this)" aria-label="自評能力選項1" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>為什麼可以用連續整數的平方（如 $14^2 < 220 < 15^2$）求出 $\sqrt{220}$ 的整數部分</span>
+                                    <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                                <button onclick="toggleOption(this)" aria-label="自評能力選項2" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>如何利用「十分逼近法」一步步縮小範圍，找出根號近似值到小數第一位</span>
+                                    <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                                <button onclick="toggleOption(this)" aria-label="自評能力選項3" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>為什麼計算機顯示的根號數值（如 $1.41421356$）只是近似值而非精確值</span>
+                                    <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 border-t border-slate-100 pt-3">
+                            <p class="font-bold text-slate-800 text-sm flex items-center">
+                                <span>💡 我學會（可多選）：</span>
+                            </p>
+                            <div class="grid grid-cols-1 gap-2">
+                                <button onclick="toggleOption(this)" aria-label="自評心得選項1" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>當 $a > b > 0$ 時，$\sqrt{a} > \sqrt{b}$ 的大小比較規則</span>
+                                    <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                                <button onclick="toggleOption(this)" aria-label="自評心得選項2" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>用計算機按 $\sqrt{\phantom{x}}$ 鍵迅速求出二次方根估計值的方法</span>
+                                    <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                                <button onclick="toggleOption(this)" aria-label="自評心得選項3" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>二次方根在數線上的大略位置定位與逐步逼近真實值的方法</span>
+                                    <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 多選錯題診斷 -->
+                    <div class="bg-white p-4 rounded-xl border border-rose-100 space-y-3">
+                        <p class="font-bold text-slate-800 text-sm">🔍 我的錯題診斷（可多選）：</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs font-medium text-slate-700">
+                            <label class="flex items-center gap-1.5 p-2 bg-slate-50 border rounded cursor-pointer hover:bg-rose-50">
+                                <input type="checkbox" id="diag-1" onchange="updateDiagnosticTips()" class="accent-rose-600"> 觀念不熟
+                            </label>
+                            <label class="flex items-center gap-1.5 p-2 bg-slate-50 border rounded cursor-pointer hover:bg-rose-50">
+                                <input type="checkbox" id="diag-2" onchange="updateDiagnosticTips()" class="accent-rose-600"> 計算錯誤
+                            </label>
+                            <label class="flex items-center gap-1.5 p-2 bg-slate-50 border rounded cursor-pointer hover:bg-rose-50">
+                                <input type="checkbox" id="diag-3" onchange="updateDiagnosticTips()" class="accent-rose-600"> 看錯題目
+                            </label>
+                            <label class="flex items-center gap-1.5 p-2 bg-slate-50 border rounded cursor-pointer hover:bg-rose-50">
+                                <input type="checkbox" id="diag-4" onchange="updateDiagnosticTips()" class="accent-rose-600"> 平方數不熟
+                            </label>
+                        </div>
+
+                        <div id="diagnostic-tips" class="hidden space-y-2 mt-3 pt-2 border-t border-slate-100"></div>
+                    </div>
+
+                    <!-- 🎓 均一教育平台 延伸學習資源 -->
+                    <div class="bg-white p-5 rounded-xl border border-rose-100 space-y-3 text-center">
+                        <h5 class="font-bold text-sky-900 text-base flex items-center justify-center gap-1.5">
+                            <i data-lucide="external-link" class="w-5 h-5 text-sky-600"></i> 🎓 均一教育平台 延伸學習資源
+                        </h5>
+                        <p class="text-xs text-slate-600">想要更深入複習二次方根近似值或觀看示範影片嗎？歡迎點擊下方按鈕：</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full pt-1">
+                            <a href="https://www.junyiacademy.org/topics/n-m8a-c02-1" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 px-4 py-3 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all hover:shadow text-center w-full">
+                                <i data-lucide="book-open" class="w-4 h-4"></i> 二次方根的近似值主題
+                            </a>
+                            <a href="https://www.junyiacademy.org/new-video/6V4VUhidUXc?parent-topic-id=v108_n-8-02" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all hover:shadow text-center w-full">
+                                <i data-lucide="video" class="w-4 h-4"></i> 十分逼近法觀念教學影片
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer class="text-center text-slate-400 text-xs py-8">
+            本講義依據 108 課綱 N-8-2 標準編製 &copy; 2026 互動式教學系統
+        </footer>
+    </div>
+
+    <script>
+        const katexConfig = {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ]
+        };
+
+        function renderMath(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                renderMathInElement(element, katexConfig);
+            }
+        }
+
+        // 後台正確率追蹤
+        let quizTracker = {
+            set1_1: false, set1_2: false,
+            set2_1: false, set2_2: false,
+            set3_1: false, set3_2: false,
+            chal1_1: false, chal1_2: false,
+            chal2_1: false, chal2_2: false,
+            chal3_1: false, chal3_2: false
+        };
+
+        function updateSysScore() {
+            let total = Object.keys(quizTracker).length;
+            let correctCount = Object.values(quizTracker).filter(Boolean).length;
+            let scorePct = Math.round((correctCount / total) * 100);
+            let display = document.getElementById('sys-score-display');
+            if (display) display.innerText = `${scorePct}%`;
+        }
+
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+            renderMath(document.body);
+            updateNumberLineLab();
+            updateTenthsLab();
+            updateReflection();
+        };
+
+        // 分頁切換 logic
+        function switchTab(tabNum) {
+            for(let i=1; i<=3; i++) {
+                document.getElementById(`tab-${i}`).classList.add('hidden');
+                const btn = document.getElementById(`btn-tab-${i}`);
+                btn.classList.add('opacity-70');
+                btn.classList.remove('active');
+            }
+            const activeTab = document.getElementById(`tab-${tabNum}`);
+            activeTab.classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-tab-${tabNum}`);
+            activeBtn.classList.remove('opacity-70');
+            activeBtn.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            renderMath(activeTab);
+        }
+
+        // 觀念起步：互動 1 (數線與整數部分全動態化)
+        function syncSliderToInput() {
+            let val = document.getElementById('sim-n-slider').value;
+            document.getElementById('sim-n').value = val;
+            updateNumberLineLab();
+        }
+
+        function updateNumberLineLab() {
+            let n = parseInt(document.getElementById('sim-n').value);
+            if (isNaN(n) || n < 1) n = 1;
+            if (n > 400) n = 400;
+            document.getElementById('sim-n-slider').value = n;
+
+            let sqrtVal = Math.sqrt(n);
+            let isPerfect = Number.isInteger(sqrtVal);
+            let k = Math.floor(sqrtVal);
+            let kSq = k * k;
+
+            const title = document.getElementById('nl-title');
+            const calcText = document.getElementById('nl-calc-text');
+            const markLeft = document.getElementById('nl-mark-left');
+            const markRight = document.getElementById('nl-mark-right');
+            const pinLabel = document.getElementById('nl-pin-label');
+            const pin = document.getElementById('nl-pin');
+
+            if (isPerfect) {
+                title.innerText = `📍 數線定位圖（$\\sqrt{${n}}$ 為完全平方數，無小數部分）`;
+                calcText.innerHTML = `
+                    已知 $${k}^2 = ${n}$<br>
+                    故 $\\sqrt{${n}} = ${k}$，<b>為完全平方數，恰好等於整數 $${k}$，沒有小數部分</b>！
+                `;
+                let leftVal = Math.max(0, k - 1);
+                let rightVal = k + 1;
+                markLeft.innerText = `$${leftVal}$ ($${leftVal * leftVal}$)`;
+                markRight.innerText = `$${rightVal}$ ($${rightVal * rightVal}$)`;
+                pinLabel.innerText = `$\\sqrt{${n}} = ${k}$`;
+                pin.style.left = `50%`;
+            } else {
+                let kNext = k + 1;
+                let kNextSq = kNext * kNext;
+                let actualSqrt = sqrtVal.toFixed(2);
+                let posPercent = ((n - kSq) / (kNextSq - kSq)) * 100;
+
+                title.innerText = `📍 數線定位圖（$\\sqrt{${n}}$ 介於哪兩個整數之間？）`;
+                calcText.innerHTML = `
+                    已知 $${k}^2 = ${kSq}$，且 $${kNext}^2 = ${kNextSq}$<br>
+                    因為 $${kSq} \\le ${n} < ${kNextSq}$，所以 $${k} \\le \\sqrt{${n}} < ${kNext}$<br>
+                    故 $\\sqrt{${n}} \\approx ${actualSqrt}$，<b>介於 $${k}$ 與 $${kNext}$ 之間，整數部分為 $${k}$</b>！
+                `;
+
+                markLeft.innerText = `$${k}$ ($${kSq}$)`;
+                markRight.innerText = `$${kNext}$ ($${kNextSq}$)`;
+                pinLabel.innerText = `$\\sqrt{${n}}$`;
+                pin.style.left = `${posPercent}%`;
+            }
+
+            renderMath(title);
+            renderMath(calcText);
+            renderMath(markLeft);
+            renderMath(markRight);
+            renderMath(pinLabel);
+        }
+
+        // 觀念起步：互動 2 (全功能計算機 + 十分逼近法區間)
+        let calcVal = "0";
+        function calcPress(btn) {
+            let display = document.getElementById('calc-display');
+            
+            if (btn === 'C') {
+                calcVal = "0";
+            } else if (btn === 'sq') {
+                try {
+                    let num = evalCalcVal(calcVal);
+                    calcVal = String(Number((num * num).toFixed(4)));
+                } catch(e) { calcVal = "Error"; }
+            } else if (btn === 'sqrt') {
+                try {
+                    let num = evalCalcVal(calcVal);
+                    if (num < 0) calcVal = "Error";
+                    else calcVal = String(Number(Math.sqrt(num).toFixed(5)));
+                } catch(e) { calcVal = "Error"; }
+            } else if (btn === '=') {
+                try {
+                    let num = evalCalcVal(calcVal);
+                    calcVal = String(Number(num.toFixed(5)));
+                } catch(e) { calcVal = "Error"; }
+            } else {
+                if (calcVal === "0" && btn !== '.' && !['+', '-', '*', '/'].includes(btn)) {
+                    calcVal = btn;
+                } else if (calcVal === "Error") {
+                    calcVal = btn;
+                } else {
+                    calcVal += btn;
+                }
+            }
+            display.innerText = calcVal;
+        }
+
+        function evalCalcVal(str) {
+            let sanitized = str.replace(/×/g, '*').replace(/÷/g, '/');
+            if (!/^[0-9\.\+\-\*\/\s\(\)]+$/.test(sanitized)) return NaN;
+            return Function('"use strict";return (' + sanitized + ')')();
+        }
+
+        function setTenthsPreset(val) {
+            document.getElementById('tenths-target-input').value = val;
+            updateTenthsLab();
+        }
+
+        function updateTenthsLab() {
+            let num = parseFloat(document.getElementById('tenths-target-input').value);
+            if (isNaN(num) || num <= 0) num = 1;
+            
+            let sqrtVal = Math.sqrt(num);
+            let k = Math.floor(sqrtVal);
+            
+            if (Number.isInteger(sqrtVal)) {
+                let res = document.getElementById('tenths-result');
+                res.innerHTML = `
+                    <p class="text-sm font-bold text-slate-800">估估看 $\\sqrt{${num}}$ 的位數：</p>
+                    <div class="p-3 bg-emerald-100 rounded-lg text-emerald-950 font-bold border border-emerald-300 mt-2">
+                        💡 <b>精確結果：</b>$${k}^2 = ${num}$，$\\sqrt{${num}} = ${k}$ 為完全平方數，不需要逼近！
+                    </div>
+                `;
+                renderMath(res);
+                return;
+            }
+
+            let valFloor = Math.floor((sqrtVal - k) * 10) / 10;
+            let k1 = (k + valFloor).toFixed(1);
+            let k2 = (parseFloat(k1) + 0.1).toFixed(1);
+
+            let k1Sq = (parseFloat(k1) * parseFloat(k1)).toFixed(2);
+            let k2Sq = (parseFloat(k2) * parseFloat(k2)).toFixed(2);
+
+            let res = document.getElementById('tenths-result');
+            res.innerHTML = `
+                <p class="text-sm font-bold text-slate-800">估估看 $\\sqrt{${num}}$ 的小數第一位：</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 my-2">
+                    <div class="p-2 bg-emerald-50 rounded border border-emerald-200">
+                        $${k1}^2 = ${k1Sq}$ (小於 $${num}$)
+                    </div>
+                    <div class="p-2 bg-emerald-50 rounded border border-emerald-200">
+                        $${k2}^2 = ${k2Sq}$ (大於 $${num}$)
+                    </div>
+                </div>
+                <div class="p-2.5 bg-emerald-100 rounded-lg text-emerald-950 font-bold border border-emerald-300 mt-2 leading-relaxed">
+                    💡 <b>縮小範圍：</b>因為 $${k1Sq} < ${num} < ${k2Sq}$，所以 <span class="text-rose-700 font-black">$\\sqrt{${num}}$ 介於 $${k1}$ 和 $${k2}$ 之間</span>！<br>
+                    小數第一位取不超過被開方數的最大一位小數，估計約為 <span class="underline text-emerald-800">$${k1}$</span>！
+                </div>
+            `;
+            renderMath(res);
+        }
+
+        // 自我評估選項切換高亮
+        function toggleOption(btn) {
+            const check = btn.querySelector('.check-icon');
+            if (btn.classList.contains('border-rose-500')) {
+                btn.classList.remove('border-rose-500', 'bg-rose-50', 'ring-1', 'ring-rose-300');
+                btn.classList.add('bg-slate-50', 'border-slate-200');
+                if (check) check.classList.add('opacity-0');
+            } else {
+                btn.classList.remove('bg-slate-50', 'border-slate-200');
+                btn.classList.add('border-rose-500', 'bg-rose-50', 'ring-1', 'ring-rose-300');
+                if (check) check.classList.remove('opacity-0');
+            }
+        }
+
+        // 解鎖邏輯輔助函式
+        function unlockQuestion(elemId) {
+            const elem = document.getElementById(elemId);
+            if (elem) {
+                elem.classList.remove('step-locked', 'hidden');
+                renderMath(elem);
+            }
+        }
+
+        // ⚡ 思考試煉 題組一驗證 (正確答案: 1-1為B，1-2為C)
+        function checkSet1(step, choice) {
+            const f = document.getElementById(`set1-f${step}`);
+            f.classList.remove('hidden');
+
+            if (step === 1) {
+                if (choice === 'B') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    f.innerHTML = "✅ 完全正確！$12^2 = 144 < 150 < 169 = 13^2$，故 $12 < \\sqrt{150} < 13$，整數部分為 $12$！解鎖第 2 題！";
+                    quizTracker.set1_1 = true;
+                    unlockQuestion('set1-q2');
+                    document.getElementById('set1-progress').innerText = "進度：2/2";
+                } else if (choice === 'A') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：$11^2 = 121$，雖然比 $150$ 小，但試著算算看下一個整數 $12^2$ 是多少？它是否更靠近 $150$ 且沒有超過呢？";
+                } else {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：$13^2 = 169$，已經超過 $150$ 了！整數部分必須是不超過 $\\sqrt{150}$ 的最大整數喔！";
+                }
+            } else if (step === 2) {
+                if (choice === 'C') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    f.innerHTML = "🎉 恭喜通關題組一！因為 $k=13$，故 $13 \\le \\sqrt{N} < 14$，全式平方得 $13^2 \\le N < 14^2$，即 $169 \\le N < 196$！反向推導能力非常強！";
+                    quizTracker.set1_2 = true;
+                } else if (choice === 'A') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：$13 \\le N < 14$ 是 $\\sqrt{N}$ 本身的範圍，但題目問的是根號內部的 $N$ 喔！試著將邊界數字 $13$ 與 $14$ 分別平方，看看 $N$ 的範圍是多少？";
+                } else {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：$144 = 12^2$，$169 = 13^2$。如果 $144 \\le N < 169$，開根號後的整數部分 $k$ 會是 $12$ 喔！試著計算 $13^2$ 與 $14^2$ 是多少呢？";
+                }
+            }
+            updateSysScore();
+            renderMath(f);
+        }
+
+        // ⚡ 思考試煉 題組二驗證 (正確答案: 2-1為A，2-2為B)
+        function checkSet2(step, choice) {
+            const f = document.getElementById(`set2-f${step}`);
+            f.classList.remove('hidden');
+
+            if (step === 1) {
+                if (choice === 'A') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    f.innerHTML = "✅ 正確！$2.2^2 = 4.84 < 5 < 5.29 = 2.3^2$，十分逼近法取不超過 $5$ 的最大一位小數，答案為 $2.2$！解鎖第 2 題！";
+                    quizTracker.set2_1 = true;
+                    unlockQuestion('set2-q2');
+                    document.getElementById('set2-progress').innerText = "進度：2/2";
+                } else if (choice === 'B') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：$2.3^2 = 5.29$，這已經比 $5$ 還大了！十分逼近法的下限估計值不能超過被開方數喔！";
+                } else {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：$2.4^2 = 5.76$，遠大於 $5$！試著找找平方後剛好小於 $5$ 的最高一位小數！";
+                }
+            } else if (step === 2) {
+                if (choice === 'B') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    f.innerHTML = "🎉 恭喜通關題組二！$3.1^2 = 9.61 < 10 < 10.24 = 3.2^2$，故 $\\sqrt{10}$ 介於 $3.1$ 與 $3.2$ 之間！";
+                    quizTracker.set2_2 = true;
+                } else if (choice === 'A') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：$3.1^2 = 9.61$，還沒有達到 $10$ 喔！算算看 $3.2^2$ 是多少？是不是剛好把 $10$ 夾在中間呢？";
+                } else {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：$3.2^2 = 10.24$，已經超過 $10$ 了！所以 $\\sqrt{10}$ 應該落在 $3.2$ 的左邊才對喔！";
+                }
+            }
+            updateSysScore();
+            renderMath(f);
+        }
+
+        // ⚡ 思考試煉 題組三驗證 (正確答案: 3-1為B，3-2為C)
+        function checkSet3(step, choice) {
+            const f = document.getElementById(`set3-f${step}`);
+            f.classList.remove('hidden');
+
+            if (step === 1) {
+                if (choice === 'B') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    f.innerHTML = "✅ 觀念超棒！除了完全平方數外，二次方根皆為無限不循環小數，計算機顯示的只是估算近似值！解鎖第 2 題！";
+                    quizTracker.set3_1 = true;
+                    unlockQuestion('set3-q2');
+                    document.getElementById('set3-progress').innerText = "進度：2/2";
+                } else if (choice === 'A') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：$\\sqrt{2}$ 是無理數（小數點後有無限多位且不循環），計算機因為螢幕長度限制只能切斷顯示，所以它並非精確值喔！";
+                } else {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：$\\frac{1414}{1000} = 1.414$ 是有限小數，但真正的 $\\sqrt{2}$ 是無限不循環小數，無法精確寫成分數喔！";
+                }
+            } else if (step === 2) {
+                if (choice === 'C') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    f.innerHTML = "🎉 恭喜通關題組三！將 $7$ 化為根式為 $7 = \\sqrt{49}$，因為 $50 > 49$，故 $\\sqrt{50} > \\sqrt{49} = 7$！觀念完全正確！";
+                    quizTracker.set3_2 = true;
+                } else if (choice === 'A') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：試著將整數 $7$ 化為根式，因為 $7 = \\sqrt{49}$，比較 $\\sqrt{50}$ 與 $\\sqrt{49}$，哪一個比較大呢？";
+                } else {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：$7 = \\sqrt{49}$，被開方數 $50$ 與 $49$ 並不相等，開根號後的值怎麼會相等呢？再試試看！";
+                }
+            }
+            updateSysScore();
+            renderMath(f);
+        }
+
+        // 🔥 挑戰突破 題組一驗證 (正確答案: 1-1為B，1-2容許誤差判斷 9.4)
+        function checkChal1(step, choice) {
+            const f = document.getElementById(`chal1-f${step}`);
+            f.classList.remove('hidden');
+
+            if (step === 1) {
+                if (choice === 'B') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    f.innerHTML = "✅ 計算正確！$9^2 = 81 < 89 < 100 = 10^2$，故雲梯長度整數部分為 $9$ 公尺！解鎖第 2 題！";
+                    quizTracker.chal1_1 = true;
+                    unlockQuestion('chal1-q2');
+                    document.getElementById('chal1-progress').innerText = "進度：2/2";
+                } else if (choice === 'A') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 解題引導：$8^2 = 64$，遠小於 $89$。試著算算看更靠近 $89$ 的下一個整數 $9$ 的平方是多少？";
+                } else {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 解題引導：$10^2 = 100$，已經超過 $89$ 了！整數部分不能超過被開方數喔！";
+                }
+            } else if (step === 2) {
+                const val = parseFloat(document.getElementById('chal1-val').value);
+                if (!isNaN(val) && Math.abs(val - 9.4) < 0.05) {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    f.innerHTML = "🎉 估算非常精準！$9.4^2 = 88.36 < 89 < 90.25 = 9.5^2$，故 $\\sqrt{89}$ 估計約為 $9.4$ 公尺！完美通關！";
+                    quizTracker.chal1_2 = true;
+                } else {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 計算引導：因為 $9.4^2 = 88.36 < 89$ 且 $9.5^2 = 90.25 > 89$，取不超過 $89$ 的最大小數第一位，應該填多少？";
+                }
+            }
+            updateSysScore();
+            renderMath(f);
+        }
+
+        // 🔥 挑戰突破 題組二驗證 (正確答案: 2-1為A，2-2容許誤差判斷 11.4)
+        function checkChal2(step, choice) {
+            const f = document.getElementById(`chal2-f${step}`);
+            f.classList.remove('hidden');
+
+            if (step === 1) {
+                if (choice === 'A') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    f.innerHTML = "✅ 觀念超棒！$11^2 = 121 < 130 < 144 = 12^2$，故 $\\sqrt{130}$ 單邊長度整數部分為 $11$ 公尺！解鎖第 2 題！";
+                    quizTracker.chal2_1 = true;
+                    unlockQuestion('chal2-q2');
+                    document.getElementById('chal2-progress').innerText = "進度：2/2";
+                } else if (choice === 'B') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：$12^2 = 144$，已經超過總面積 $130$ 平方公尺了！整數部分不能超過開方數喔！";
+                } else {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 觀念引導：$13^2 = 169$，遠大於 $130$！試著找找看平方後剛好小於 $130$ 的最大整數是幾？";
+                }
+            } else if (step === 2) {
+                const val = parseFloat(document.getElementById('chal2-val').value);
+                if (!isNaN(val) && Math.abs(val - 11.4) < 0.05) {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    f.innerHTML = "🎉 挑戰應用題組二成功！$11.4^2 = 129.96 < 130 < 132.25 = 11.5^2$，單邊長估計約為 $11.4$ 公尺！完美通關！";
+                    quizTracker.chal2_2 = true;
+                } else {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 計算引導：因為 $11.4^2 = 129.96 < 130$ 且 $11.5^2 = 132.25 > 130$，取不超過 $130$ 的小數第一位，答案是多少呢？";
+                }
+            }
+            updateSysScore();
+            renderMath(f);
+        }
+
+        // 🔥 挑戰突破 題組三驗證 (電視螢幕對角線, 正確答案: 3-1為B，3-2容許誤差判斷 36.0)
+        function checkChal3(step, choice) {
+            const f = document.getElementById(`chal3-f${step}`);
+            f.classList.remove('hidden');
+
+            if (step === 1) {
+                if (choice === 'B') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    f.innerHTML = "✅ 計算正確！$36^2 = 1296 < 1300 < 1369 = 37^2$，故對角線長度整數部分為 $36$ 公分！解鎖第 2 題！";
+                    quizTracker.chal3_1 = true;
+                    unlockQuestion('chal3-q2');
+                    document.getElementById('chal3-progress').innerText = "進度：2/2";
+                } else if (choice === 'A') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 解題引導：$35^2 = 1225$，距離 $1300$ 還有一段距離。試著算算看 $36^2 = 1296$，它是否更靠近 $1300$ 且沒有超過呢？";
+                } else {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 解題引導：$37^2 = 1369$，已經超過 $1300$ 了！整數部分不能超過被開方數喔！";
+                }
+            } else if (step === 2) {
+                const val = parseFloat(document.getElementById('chal3-val').value);
+                if (!isNaN(val) && Math.abs(val - 36.0) < 0.05) {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    f.innerHTML = "🎉 估算非常精準！$36.0^2 = 1296 < 1300 < 1303.21 = 36.1^2$，故 $\\sqrt{1300}$ 估計約為 $36.0$ 公分！完美通關！";
+                    quizTracker.chal3_2 = true;
+                } else {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                    f.innerHTML = "❌ 計算引導：因為 $36.0^2 = 1296 < 1300$ 且 $36.1^2 = 1303.21 > 1300$，取不超過 $1300$ 的最大一位小數，答案是多少呢？";
+                }
+            }
+            updateSysScore();
+            renderMath(f);
+        }
+
+        // 反思評估滑桿 (已修正「持續萌芽」為「繼續努力」)
+        function updateReflection() {
+            const val = parseInt(document.getElementById('reflect-slider').value);
+            document.getElementById('reflection-percent').innerText = `$${val}\\%$`;
+            const box = document.getElementById('reflection-box');
+
+            if (val >= 80) {
+                box.className = "p-4 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                box.innerHTML = `🌟 <b>太優秀了 ($${val}\\%$ )：</b> 你已經深刻掌握二次方根整數部分求法、十分逼近估算與計算機的近似值概念！`;
+            } else if (val >= 50) {
+                box.className = "p-4 rounded-lg text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300";
+                box.innerHTML = `👍 <b>保持進步 ($${val}\\%$ )：</b> 你已基本理解整數部分，建議多練習「⚡ 思考試煉」的十分逼近法估算！`;
+            } else {
+                box.className = "p-4 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                box.innerHTML = `🌱 <b>繼續努力 ($${val}\\%$ )：</b> 別擔心！試著回到「🌱 觀念起步」拉動數線實驗，觀察平方數逐漸逼近真實值的過程吧！`;
+            }
+            renderMath(document.getElementById('reflection-percent'));
+            renderMath(box);
+        }
+
+        // 鼓勵性質錯題診斷動態顯示
+        function updateDiagnosticTips() {
+            const tipsContainer = document.getElementById('diagnostic-tips');
+            let tips = [];
+
+            if (document.getElementById('diag-1').checked) {
+                tips.push('💪 觀念不熟沒關係！建議重溫「$k^2 \\le N < (k+1)^2$」縮小範圍法，先找出前後的完全平方數！');
+            }
+            if (document.getElementById('diag-2').checked) {
+                tips.push('💪 計算失誤很常見！進行十分逼近法時，利用左側的模擬計算機算小數平方，精準度會大幅提升！');
+            }
+            if (document.getElementById('diag-3').checked) {
+                tips.push('💪 讀題要細心！注意題目問的是「整數部分」還是「小數第一位」，以及是否要求四捨五入！');
+            }
+            if (document.getElementById('diag-4').checked) {
+                tips.push('💪 平方數熟練度是關鍵！熟記 $11^2=121, 12^2=144 \\dots 20^2=400$，估算速度會飛快喔！');
+            }
+
+            if (tips.length > 0) {
+                tipsContainer.classList.remove('hidden');
+                tipsContainer.innerHTML = tips.map(t => `<div class="p-2.5 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-900 font-medium">${t}</div>`).join('');
+            } else {
+                tipsContainer.classList.add('hidden');
+                tipsContainer.innerHTML = '';
+            }
+            renderMath(tipsContainer);
+        }
+    </script>
+</body>
+</html>
