@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N-8-4 等差數列互動講義</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn.active { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .step-locked { opacity: 0.5; pointer-events: none; filter: grayscale(0.8); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- 1. Header (標題列) -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 等差數列</h1>
+            <p class="text-slate-600">N-8-4 互動式學習講義（108 課綱）</p>
+        </header>
+
+        <!-- 2. 🎯 學習目標 (Learning Objectives) -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="mr-2 w-5 h-5" aria-label="學習目標圖示"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>我能用「後項減前項」判斷一個數列是不是等差數列，並求出公差 $d$。</li>
+                <li>我能用 $a_n = a_1 + (n-1)d$ 求出任一項的值。</li>
+                <li>我能反過來判斷某個數是這個數列的第幾項，並知道項數必須是正整數。</li>
+            </ul>
+        </section>
+
+        <!-- 3. 分頁切換按鈕區 -->
+        <div role="tablist" class="flex justify-center gap-3 md:gap-6 mb-8">
+            <button id="btn-tab-1" role="tab" aria-selected="true" aria-controls="tab-1" aria-label="切換至觀念起步分頁" onclick="switchTab(1)" class="tab-btn active bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow flex items-center gap-2">
+                🌱 觀念起步
+            </button>
+            <button id="btn-tab-2" role="tab" aria-selected="false" aria-controls="tab-2" aria-label="切換至思考試煉分頁" onclick="switchTab(2)" class="tab-btn bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3 rounded-xl shadow flex items-center gap-2 opacity-70">
+                ⚡ 思考試煉
+            </button>
+            <button id="btn-tab-3" role="tab" aria-selected="false" aria-controls="tab-3" aria-label="切換至挑戰突破分頁" onclick="switchTab(3)" class="tab-btn bg-rose-600 hover:bg-rose-700 text-white font-bold px-6 py-3 rounded-xl shadow flex items-center gap-2 opacity-70">
+                🔥 挑戰突破
+            </button>
+        </div>
+
+        <!-- ==================== 分頁一：觀念起步 (綠色) ==================== -->
+        <div id="tab-1" role="tabpanel" aria-labelledby="btn-tab-1" class="tab-content space-y-6">
+            
+            <!-- 📖 觀念小辭典 -->
+            <div class="bg-emerald-50 border border-emerald-300 rounded-xl p-5 shadow-sm text-emerald-950 space-y-4">
+                <h4 class="font-bold flex items-center text-emerald-900 text-base border-b border-emerald-200 pb-2">
+                    <i data-lucide="book-open" class="mr-2 w-5 h-5 text-emerald-600" aria-label="辭典圖示"></i> 📖 觀念小辭典
+                </h4>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs leading-relaxed">
+                    <div class="p-2.5 bg-white border border-emerald-200 rounded-lg">
+                        <b>1. 公差 $d$：</b>$d = a_{n+1} - a_n$（後項減前項，如 $a_2 - a_1$）。全數列的差都必須是同一個定值。
+                    </div>
+                    <div class="p-2.5 bg-white border border-emerald-200 rounded-lg">
+                        <b>2. 一般項：</b>$a_n = a_1 + (n-1)d$，意為「從首項出發，再走 $n-1$ 步」。
+                    </div>
+                    <div class="p-2.5 bg-white border border-emerald-200 rounded-lg">
+                        <b>3. 等差中項：</b>若 $a, b, c$ 成等差數列，則 $b$ 為 $a$ 與 $c$ 的等差中項，滿足 $a+c = 2b$，即 $b = \frac{a+c}{2}$。
+                    </div>
+                </div>
+
+                <!-- 小工具：等差中項天平 -->
+                <div class="p-4 bg-white rounded-xl border border-emerald-200 space-y-3">
+                    <p class="font-bold text-emerald-900 text-xs flex items-center">
+                        <i data-lucide="scale" class="mr-1.5 w-4 h-4 text-emerald-600" aria-label="天平圖示"></i> ⚖️ 嵌入工具：等差中項天平
+                    </p>
+                    <div class="flex items-center justify-center gap-2 text-xs font-bold">
+                        <span>$a =$</span><input type="number" id="bal-a" value="4" aria-label="數值a" oninput="updateBalance()" class="w-12 p-1 border rounded text-center">
+                        <span>$b =$</span><input type="number" id="bal-b" value="7" aria-label="數值b" oninput="updateBalance()" class="w-12 p-1 border rounded text-center">
+                        <span>$c =$</span><input type="number" id="bal-c" value="10" aria-label="數值c" oninput="updateBalance()" class="w-12 p-1 border rounded text-center">
+                    </div>
+                    <div class="flex justify-center items-center min-h-[80px]">
+                        <svg id="balance-svg" role="img" aria-label="等差中項天平示意圖" class="no-katex w-64 h-20" viewBox="0 0 200 80"></svg>
+                    </div>
+                    <div id="balance-msg" class="text-center text-xs font-bold"></div>
+                </div>
+            </div>
+
+            <!-- 互動探索一：等差判定儀 -->
+            <section class="bg-white rounded-xl shadow-md p-6 border border-emerald-200">
+                <h3 class="text-xl font-bold text-emerald-800 mb-4 flex items-center">
+                    <i data-lucide="gauge" class="mr-2 text-emerald-600" aria-label="判定儀圖示"></i> ⚡ 互動探索一：等差判定儀
+                </h3>
+                <div class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm mb-4 leading-relaxed border border-emerald-100">
+                    <b>觀念解析：</b>只要每一對相鄰兩項的「後項減前項」全部等於同一個定值，就是等差數列！
+                </div>
+
+                <div class="space-y-4 bg-slate-50 p-5 rounded-xl border border-slate-200">
+                    <!-- 預設數列按鈕 -->
+                    <div class="flex flex-wrap gap-2 items-center text-xs font-bold text-slate-700">
+                        <span>快選數列：</span>
+                        <button onclick="loadApPreset([1,6,11,16,21])" aria-label="載入數列1,6,11,16,21" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$1, 6, 11, 16, 21$</button>
+                        <button onclick="loadApPreset([20,14,8,2,-4])" aria-label="載入數列20,14,8,2,-4" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$20, 14, 8, 2, -4$</button>
+                        <button onclick="loadApPreset([2,2,2,2,2])" aria-label="載入數列2,2,2,2,2" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$2, 2, 2, 2, 2$</button>
+                        <button onclick="loadApPreset([2,6,2,6,2])" aria-label="載入數列2,6,2,6,2" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$2, 6, 2, 6, 2$</button>
+                    </div>
+
+                    <!-- 相減順序切換開關 -->
+                    <div class="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200 text-xs font-bold">
+                        <span class="text-slate-700">計算方式：</span>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-1 cursor-pointer">
+                                <input type="radio" name="subOrder" value="normal" checked onchange="updateApDetector()" class="accent-emerald-600" aria-label="後項減前項">
+                                <span>後項 − 前項</span>
+                            </label>
+                            <label class="flex items-center gap-1 cursor-pointer">
+                                <input type="radio" name="subOrder" value="reversed" onchange="updateApDetector()" class="accent-emerald-600" aria-label="前項減後項">
+                                <span>前項 − 後項</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 5 個可編輯輸入格與膠囊 -->
+                    <div class="flex items-center justify-center gap-1 sm:gap-2 overflow-x-auto py-2">
+                        <input type="number" id="ap-0" value="1" aria-label="第1項" oninput="updateApDetector()" class="w-12 sm:w-16 p-2 border-2 border-slate-300 rounded-lg text-center font-bold text-sm">
+                        <span id="cap-0" class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700">+5</span>
+                        <input type="number" id="ap-1" value="6" aria-label="第2項" oninput="updateApDetector()" class="w-12 sm:w-16 p-2 border-2 border-slate-300 rounded-lg text-center font-bold text-sm">
+                        <span id="cap-1" class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700">+5</span>
+                        <input type="number" id="ap-2" value="11" aria-label="第3項" oninput="updateApDetector()" class="w-12 sm:w-16 p-2 border-2 border-slate-300 rounded-lg text-center font-bold text-sm">
+                        <span id="cap-2" class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700">+5</span>
+                        <input type="number" id="ap-3" value="16" aria-label="第4項" oninput="updateApDetector()" class="w-12 sm:w-16 p-2 border-2 border-slate-300 rounded-lg text-center font-bold text-sm">
+                        <span id="cap-3" class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700">+5</span>
+                        <input type="number" id="ap-4" value="21" aria-label="第5項" oninput="updateApDetector()" class="w-12 sm:w-16 p-2 border-2 border-slate-300 rounded-lg text-center font-bold text-sm">
+                    </div>
+
+                    <!-- 判定結果通告 -->
+                    <div id="ap-result-panel" class="p-4 rounded-xl text-xs font-bold leading-relaxed border transition-all">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 互動探索二：等差階梯 -->
+            <section class="bg-white rounded-xl shadow-md p-6 border border-emerald-200">
+                <h3 class="text-xl font-bold text-emerald-800 mb-4 flex items-center">
+                    <i data-lucide="footprints" class="mr-2 text-emerald-600" aria-label="階梯圖示"></i> 🪜 互動探索二：等差階梯（為什麼是 $n-1$ 步？）
+                </h3>
+                <div class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm mb-4 leading-relaxed border border-emerald-100">
+                    <b>觀念解析：</b>從第 $1$ 階走到第 $n$ 階，中間到底跨過了幾步？拖動下方滑桿，觀察真實小人爬階梯的過程與計算算式！
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <!-- 控制項 -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1 text-slate-700">
+                                <span>首項 $a_1$：</span><span id="stair-a1-val">20</span>
+                            </div>
+                            <input type="range" id="stair-a1" min="-20" max="50" value="20" aria-label="調整首項a1" oninput="updateStairLab()" class="w-full h-2 bg-emerald-200 rounded-lg cursor-pointer accent-emerald-600">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1 text-slate-700">
+                                <span>公差 $d$（每階高度）：</span><span id="stair-d-val">3</span>
+                            </div>
+                            <input type="range" id="stair-d" min="-10" max="10" value="3" aria-label="調整公差d" oninput="updateStairLab()" class="w-full h-2 bg-emerald-200 rounded-lg cursor-pointer accent-emerald-600">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1 text-slate-700">
+                                <span>目標項數 $n$（第幾階）：</span><span id="stair-n-val">6</span>
+                            </div>
+                            <input type="range" id="stair-n" min="1" max="12" value="6" aria-label="調整目標項數n" oninput="updateStairLab()" class="w-full h-2 bg-emerald-200 rounded-lg cursor-pointer accent-emerald-600">
+                        </div>
+                    </div>
+
+                    <!-- 階梯 SVG 圖表與數值面板 -->
+                    <div class="space-y-3">
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 flex justify-center items-center overflow-visible min-h-[220px]">
+                            <svg id="stair-svg" role="img" aria-label="登階小人示意圖" class="no-katex w-full h-48 overflow-visible"></svg>
+                        </div>
+                        
+                        <!-- 動態計算面板 -->
+                        <div id="stair-panel" class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs font-bold space-y-1.5 text-emerald-950">
+                        </div>
+
+                        <!-- 錯誤對照收合區 -->
+                        <div class="bg-slate-100 rounded-xl border border-slate-300 p-3">
+                            <button onclick="toggleStairErrorMsg()" aria-label="開關錯誤算式對照" class="w-full text-left text-xs font-bold text-slate-700 flex justify-between items-center">
+                                <span>🤔 為什麼不是加 $n$ 個 $d$？（點擊對照）</span>
+                                <i id="stair-err-toggle-icon" data-lucide="chevron-down" class="w-4 h-4 text-slate-500" aria-label="展開圖示"></i>
+                            </button>
+                            <div id="stair-error-panel" class="hidden mt-2 pt-2 border-t border-slate-200 text-xs text-slate-600 font-bold leading-relaxed">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 互動探索三：樣式對照鏡 -->
+            <section class="bg-white rounded-xl shadow-md p-6 border border-emerald-200">
+                <h3 class="text-xl font-bold text-emerald-800 mb-4 flex items-center">
+                    <i data-lucide="sliders" class="mr-2 text-emerald-600" aria-label="對照鏡圖示"></i> 🪞 互動探索三：樣式對照鏡（$a_n = kn + b$ 的結構秘密）
+                </h3>
+                <div class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm mb-4 leading-relaxed border border-emerald-100">
+                    <b>觀念解析：</b>一般項可以寫成 $a_n = kn + b$。調整倍數 $k$ 與平移 $b$，觀察它與 $a_n = a_1 + (n-1)d$ 的完美對應！
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <!-- 控制旋鈕 -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1 text-slate-700">
+                                <span>倍數 $k$（也就是公差 $d$）：</span><span id="mirror-k-val">3</span>
+                            </div>
+                            <input type="range" id="mirror-k" min="1" max="5" value="3" aria-label="調整倍數k" oninput="updateMirrorLab()" class="w-full h-2 bg-emerald-200 rounded-lg cursor-pointer accent-emerald-600">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1 text-slate-700">
+                                <span>平移量 $b$：</span><span id="mirror-b-val">2</span>
+                            </div>
+                            <input type="range" id="mirror-b" min="-5" max="5" value="2" aria-label="調整平移量b" oninput="updateMirrorLab()" class="w-full h-2 bg-emerald-200 rounded-lg cursor-pointer accent-emerald-600">
+                        </div>
+                    </div>
+
+                    <!-- 展示區 -->
+                    <div class="space-y-3 text-xs font-bold">
+                        <div id="mirror-seq-box" class="p-4 bg-white rounded-xl border border-slate-200 space-y-1 text-slate-800">
+                        </div>
+                        <div id="mirror-formula-box" class="p-4 bg-emerald-100 rounded-xl border border-emerald-300 text-emerald-950 space-y-2">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ⚠️ 三大常見迷思與生活應用 -->
+            <section class="bg-white rounded-xl shadow-md p-6 border border-slate-200 space-y-6">
+                <div>
+                    <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center text-lg">
+                        <i data-lucide="alert-circle" class="mr-2 text-rose-500" aria-label="迷思圖示"></i> ⚠️ 等差數列三大常見迷思
+                    </h3>
+                    <div class="space-y-3 text-sm font-medium">
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <p class="text-rose-600 font-bold">❌ 迷思一：公差減反了？</p>
+                            <p class="text-slate-700 mt-1">把 $1, 6, 11, 16, 21$ 的公差算成 $1 - 6 = -5$。記住：公差永遠是「後項減前項」$a_2 - a_1$！</p>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <p class="text-rose-600 font-bold">❌ 迷思二：公式記成 $a_n = a_1 + nd$？</p>
+                            <p class="text-slate-700 mt-1">多算了一步！從第 $1$ 項走到第 $n$ 項只需要走 $n-1$ 個步長（公差）。</p>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <p class="text-rose-600 font-bold">❌ 迷思三：判定標準模糊？</p>
+                            <p class="text-slate-700 mt-1">誤以為 $2, 6, 2, 6$ 是等差數列（差有規律但非定值）；或誤以為 $2, 2, 2, 2$ 不是等差數列（$d=0$ 也是定值！）。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                    <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400 text-lg">
+                        <i data-lucide="lightbulb" class="mr-2 w-5 h-5" aria-label="生活應用圖示"></i> 💡 生活中的等差數列
+                    </h3>
+                    <ol class="list-decimal list-inside text-sm leading-relaxed opacity-90 space-y-2">
+                        <li><b>斜坡扶手立柱：</b>$48, 55, 62 \dots\text{ cm}$（公差 $d = 7\text{ cm}$）。</li>
+                        <li><b>手機電池充電：</b>$12\%, 18\%, 24\% \dots$（每 $10$ 分鐘增加 $6\%$）。</li>
+                        <li><b>水塔定速漏水：</b>水塔原有 $800\text{ L}$，每小時漏 $45\text{ L}$（公差 $d = -45\text{ L/hr}$）。</li>
+                        <li><b>定期定額存款：</b>每個月固定存入 $3000$ 元。</li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== 分頁二：思考試煉 (黃色) ==================== -->
+        <div id="tab-2" role="tabpanel" aria-labelledby="btn-tab-2" class="tab-content hidden space-y-6">
+            <section class="bg-white rounded-xl shadow-md p-6 border border-amber-200">
+                <h3 class="text-2xl font-bold text-amber-800 mb-2 flex items-center">
+                    <i data-lucide="help-circle" class="mr-2 text-amber-600" aria-label="測驗圖示"></i> ⚡ 思考試煉：基礎題組練習
+                </h3>
+                <p class="text-xs text-slate-500 mb-6">包含三個基礎題組，答對第 1 題即可解鎖下一題！選項由小到大排列，答錯採蘇格拉底式引導。</p>
+
+                <div id="quiz-container" class="space-y-8">
+                    <!-- 由 JS 動態生成題組 -->
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== 分頁三：挑戰突破 (紅色) ==================== -->
+        <div id="tab-3" role="tabpanel" aria-labelledby="btn-tab-3" class="tab-content hidden space-y-6">
+            <section class="bg-white rounded-xl shadow-md p-6 border border-rose-200">
+                <h3 class="text-2xl font-bold text-rose-800 mb-4 flex items-center">
+                    <i data-lucide="zap" class="mr-2 text-rose-600" aria-label="挑戰圖示"></i> 🔥 挑戰突破：應用題練習
+                </h3>
+
+                <!-- 題組一：階梯扶手的立柱高度 -->
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 mb-6 space-y-4">
+                    <h4 class="font-bold text-rose-900 text-base border-b pb-2 flex items-center justify-between">
+                        <span>🎯 應用題組一：階梯扶手的立柱高度</span>
+                        <span id="chal1-progress" class="text-xs bg-rose-200 text-rose-900 px-2 py-1 rounded font-bold">進度：0/2</span>
+                    </h4>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row items-center gap-4 justify-around">
+                        <svg class="no-katex w-64 h-48" viewBox="0 -10 260 180" fill="none" aria-label="無障礙斜坡立柱示意圖">
+                            <line x1="20" y1="150" x2="240" y2="150" stroke="#94A3B8" stroke-width="3"/>
+                            
+                            <rect x="30" y="120" width="10" height="30" fill="#0284C7"/>
+                            <text x="35" y="113" fill="#0284C7" font-size="9" font-weight="bold" text-anchor="middle">48</text>
+                            
+                            <rect x="60" y="115" width="10" height="35" fill="#0284C7"/>
+                            <text x="65" y="108" fill="#0284C7" font-size="9" font-weight="bold" text-anchor="middle">55</text>
+                            
+                            <path d="M 42 132 L 58 132" stroke="#E11D48" stroke-width="1.5"/>
+                            <polygon points="58,132 54,130 54,134" fill="#E11D48"/>
+                            <text x="50" y="128" fill="#E11D48" font-size="8" font-weight="bold" text-anchor="middle">+7</text>
+
+                            <text x="130" y="100" fill="#64748B" font-size="11" font-weight="bold" text-anchor="middle">⋯ 中間各根省略 ⋯</text>
+
+                            <rect x="210" y="37" width="10" height="113" fill="#0369A1"/>
+                            <text x="215" y="27" fill="#0369A1" font-size="10" font-weight="bold" text-anchor="middle">第 20 根: ?</text>
+                        </svg>
+                        <div class="text-xs text-slate-700 leading-relaxed max-w-xs space-y-1">
+                            <p class="font-bold text-slate-900 text-sm">斜坡扶手工程紀錄：</p>
+                            <p>公園的無障礙斜坡旁要架一排扶手立柱。最靠地面的第 $1$ 根立柱高 $48$ 公分，之後每往上一根就加高 $7$ 公分。全部共 $20$ 根。</p>
+                        </div>
+                    </div>
+
+                    <!-- Q1 -->
+                    <div id="chal1-q1" class="space-y-2">
+                        <p class="font-bold text-slate-800 text-sm">第 $1$ 題：請問第 $13$ 根立柱高多少公分？</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <button onclick="checkChal1_1('A')" aria-label="選項A 125" class="chal1-btn p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(A) $125$ 公分</button>
+                            <button onclick="checkChal1_1('B')" aria-label="選項B 132" class="chal1-btn p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(B) $132$ 公分</button>
+                            <button onclick="checkChal1_1('C')" aria-label="選項C 139" class="chal1-btn p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(C) $139$ 公分</button>
+                        </div>
+                        <div id="chal1-f1" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div id="chal1-q2" class="space-y-2 step-locked hidden border-t pt-3">
+                        <p class="font-bold text-slate-800 text-sm">第 $2$ 題：請問最高那根（第 $20$ 根）高多少公分？</p>
+                        <div class="flex flex-wrap items-center gap-3 text-xs font-bold">
+                            <span>立柱高度 =</span>
+                            <input type="number" id="chal1-v2" aria-label="輸入第20根立柱高度" class="w-24 p-1.5 border border-slate-300 rounded text-center" placeholder="整數">
+                            <span>公分</span>
+                            <button id="chal1-v2-btn" onclick="checkChal1_2()" aria-label="驗證第20根立柱答案" class="px-3 py-1.5 bg-rose-600 text-white rounded hover:bg-rose-700">驗證答案</button>
+                        </div>
+                        <div id="chal1-f2" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                    </div>
+                </div>
+
+                <!-- 題組二：手機電池充電紀錄 -->
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 mb-6 space-y-4">
+                    <h4 class="font-bold text-rose-900 text-base border-b pb-2 flex items-center justify-between">
+                        <span>🎯 應用題組二：手機電池充電紀錄</span>
+                        <span id="chal2-progress" class="text-xs bg-rose-200 text-rose-900 px-2 py-1 rounded font-bold">進度：0/2</span>
+                    </h4>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row items-center gap-4 justify-around">
+                        <svg class="no-katex w-56 h-40" viewBox="0 0 220 150" fill="none" aria-label="手機充電示意圖">
+                            <rect x="45" y="22" width="130" height="115" rx="12" fill="#0F172A" stroke="#334155" stroke-width="3"/>
+                            <text x="65" y="38" fill="#10B981" font-size="9" font-weight="bold">初始 12%</text>
+                            <text x="153" y="38" fill="#EF4444" font-size="9" font-weight="bold" text-anchor="middle">90% 目標</text>
+                            
+                            <rect x="60" y="45" width="100" height="50" rx="4" stroke="#64748B" stroke-width="2" fill="#1E293B"/>
+                            <path d="M 161 60 C 163 60 165 62 165 65 L 165 75 C 165 78 163 80 161 80 Z" fill="#64748B"/>
+                            <rect x="63" y="48" width="12" height="44" rx="2" fill="#10B981"/>
+                            
+                            <line x1="153" y1="45" x2="153" y2="95" stroke="#EF4444" stroke-width="2" stroke-dasharray="3 3"/>
+                            <text x="110" y="115" fill="#94A3B8" font-size="10" text-anchor="middle">每 10 分鐘 +6%</text>
+                        </svg>
+                        <div class="text-xs text-slate-700 leading-relaxed max-w-xs space-y-1">
+                            <p class="font-bold text-slate-900 text-sm">📱 充電數據紀錄：</p>
+                            <p>手機接上充電器時電量為 $12\%$。之後每 $10$ 分鐘固定增加 $6\%$。</p>
+                            <p>設 $a_1 = 12$ 為剛接上時（第 $0$ 個十分鐘）的電量。</p>
+                        </div>
+                    </div>
+
+                    <!-- Q1 -->
+                    <div id="chal2-q1" class="space-y-2">
+                        <p class="font-bold text-slate-800 text-sm">第 $1$ 題：請問充電 $50$ 分鐘後電量是多少 %？</p>
+                        <div class="flex flex-wrap items-center gap-3 text-xs font-bold">
+                            <span>充電電量 =</span>
+                            <input type="number" id="chal2-v1" aria-label="輸入50分鐘後電量" class="w-24 p-1.5 border border-slate-300 rounded text-center" placeholder="整數">
+                            <span>%</span>
+                            <button id="chal2-v1-btn" onclick="checkChal2_1()" aria-label="驗證電量答案" class="px-3 py-1.5 bg-rose-600 text-white rounded hover:bg-rose-700">驗證答案</button>
+                        </div>
+                        <div id="chal2-f1" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div id="chal2-q2" class="space-y-2 step-locked hidden border-t pt-3">
+                        <p class="font-bold text-slate-800 text-sm">第 $2$ 題：請問至少充幾分鐘，電量會【首次達到】$90\%$？</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <button onclick="checkChal2_2('A')" aria-label="選項A 120分鐘" class="chal2-btn p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(A) $120$ 分鐘</button>
+                            <button onclick="checkChal2_2('B')" aria-label="選項B 130分鐘" class="chal2-btn p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(B) $130$ 分鐘</button>
+                            <button onclick="checkChal2_2('C')" aria-label="選項C 140分鐘" class="chal2-btn p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(C) $140$ 分鐘</button>
+                        </div>
+                        <div id="chal2-f2" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                    </div>
+                </div>
+
+                <!-- 題組三：屋頂水塔漏水 -->
+                <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 mb-6 space-y-4">
+                    <h4 class="font-bold text-rose-900 text-base border-b pb-2 flex items-center justify-between">
+                        <span>🎯 應用題組三：屋頂水塔漏水（負公差應用）</span>
+                        <span id="chal3-progress" class="text-xs bg-rose-200 text-rose-900 px-2 py-1 rounded font-bold">進度：0/2</span>
+                    </h4>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row items-center gap-4 justify-around">
+                        <svg class="no-katex w-56 h-40" viewBox="0 0 220 160" fill="none" aria-label="水塔水位示意圖">
+                            <rect x="50" y="20" width="120" height="110" rx="6" fill="#F1F5F9" stroke="#475569" stroke-width="3"/>
+                            <rect x="53" y="50" width="114" height="77" rx="3" fill="#38BDF8" fill-opacity="0.4"/>
+                            <line x1="50" y1="110" x2="170" y2="110" stroke="#EF4444" stroke-width="2" stroke-dasharray="4"/>
+                            <text x="175" y="114" fill="#EF4444" font-size="10" font-weight="bold">100L 警戒</text>
+                            <path d="M 110 130 L 110 150" stroke="#0284C7" stroke-width="3" stroke-linecap="round"/>
+                            <polygon points="110,155 106,147 114,147" fill="#0284C7"/>
+                            <text x="120" y="145" fill="#0284C7" font-size="10">漏水 -45 L/hr</text>
+                        </svg>
+                        <div class="text-xs text-slate-700 leading-relaxed max-w-xs space-y-1">
+                            <p class="font-bold text-slate-900 text-sm">💧 水塔數據紀錄：</p>
+                            <p>水塔原有 $800\text{ L}$ 的水，每小時定速流失 $45\text{ L}$（公差 $d = -45\text{ L}$）。</p>
+                            <!-- 對照錨點表 -->
+                            <div class="p-2 bg-emerald-50 border border-emerald-200 rounded text-[11px] font-bold text-emerald-950 mt-1">
+                                📌 項數對照：$a_1$ 為 $0$ 小時（$800\text{ L}$）／ $a_2$ 為 $1$ 小時 ／ $a_n$ 為 $(n-1)$ 小時
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q1 -->
+                    <div id="chal3-q1" class="space-y-2">
+                        <p class="font-bold text-slate-800 text-sm">第 $1$ 題：請問經過 $5$ 小時之後，水塔還剩下多少公升的水？</p>
+                        <div class="flex flex-wrap items-center gap-3 text-xs font-bold">
+                            <span>剩餘水量 =</span>
+                            <input type="number" id="chal3-v1" aria-label="輸入5小時後剩餘水量" class="w-24 p-1.5 border border-slate-300 rounded text-center" placeholder="整數">
+                            <span>公升</span>
+                            <button id="chal3-v1-btn" onclick="checkChal3_1()" aria-label="驗證水量答案" class="px-3 py-1.5 bg-rose-600 text-white rounded hover:bg-rose-700">驗證答案</button>
+                        </div>
+                        <div id="chal3-f1" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div id="chal3-q2" class="space-y-2 step-locked hidden border-t pt-3">
+                        <p class="font-bold text-slate-800 text-sm">第 $2$ 題：請問至少經過幾小時之後，水塔的水量會【首次少於】$100$ 公升？</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            <button onclick="checkChal3_2('A')" aria-label="選項A 15小時" class="chal3-btn p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(A) $15$ 小時</button>
+                            <button onclick="checkChal3_2('B')" aria-label="選項B 16小時" class="chal3-btn p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(B) $16$ 小時</button>
+                            <button onclick="checkChal3_2('C')" aria-label="選項C 18小時" class="chal3-btn p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">(C) $18$ 小時</button>
+                        </div>
+                        <div id="chal3-f2" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                    </div>
+                </div>
+
+                <!-- 🌟 學習反思自我評估專區 -->
+                <div class="bg-rose-50 p-6 rounded-xl border border-rose-200 mt-8 space-y-6">
+                    <h4 class="font-bold text-rose-900 flex items-center text-lg border-b border-rose-200 pb-2">
+                        <i data-lucide="award" class="mr-2" aria-label="評估圖示"></i> 🌟 學習反思自我評估專區
+                    </h4>
+                    <p class="text-xs text-rose-800">經過今天的探索與練習，評估一下自己掌握等差數列的程度吧！</p>
+
+                    <!-- 後台答題對照即時顯示 (修正：隨答對題數動態計算 3/12=25%) -->
+                    <div class="bg-white p-3.5 rounded-xl border border-rose-200 text-xs font-bold flex flex-wrap justify-between items-center text-slate-700 gap-2">
+                        <span>📊 系統答題對照：<span id="sys-score-display" class="text-rose-600 font-extrabold text-sm">尚未作答</span></span>
+                        <span class="text-slate-500 font-normal">（依據全份 12 題答對題數動態計算）</span>
+                    </div>
+
+                    <!-- 掌握程度評估滑桿 -->
+                    <div class="bg-white p-4 rounded-xl border border-rose-100 space-y-3">
+                        <div class="flex justify-between font-bold text-sm text-slate-800">
+                            <span>我的自評分數：</span>
+                            <span id="reflection-percent" class="text-rose-700 text-lg font-extrabold">$80\%$</span>
+                        </div>
+                        <input type="range" id="reflect-slider" aria-label="拉動調整自評分數" min="0" max="100" value="80" step="10" oninput="updateReflection()" class="w-full h-3 bg-slate-200 rounded-lg cursor-pointer accent-rose-600">
+                        <div id="reflection-box" class="p-4 rounded-lg text-xs font-bold transition-all"></div>
+                    </div>
+
+                    <!-- 點擊選項自我檢視 -->
+                    <div class="bg-white p-5 rounded-xl border border-rose-100 space-y-5">
+                        <div class="space-y-2">
+                            <p class="font-bold text-slate-800 text-sm flex items-center">
+                                <span>🗣️ 我現在能解釋（可多選）：</span>
+                            </p>
+                            <div class="grid grid-cols-1 gap-2">
+                                <button onclick="toggleOption(this)" aria-label="自評能力選項1" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>公差是 $a_{n+1}-a_n$（後一項減前項，如 $a_2 - a_1$），不能反過來減</span>
+                                    <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                                <button onclick="toggleOption(this)" aria-label="自評能力選項2" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>$2, 2, 2, 2$ 也是等差數列，它的公差是 $0$</span>
+                                    <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                                <button onclick="toggleOption(this)" aria-label="自評能力選項3" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>為什麼第 $n$ 項是加 $(n-1)$ 個 $d$，而不是加 $n$ 個</span>
+                                    <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 border-t border-slate-100 pt-3">
+                            <p class="font-bold text-slate-800 text-sm flex items-center">
+                                <span>💡 我學會（可多選）：</span>
+                            </p>
+                            <div class="grid grid-cols-1 gap-2">
+                                <button onclick="toggleOption(this)" aria-label="自評心得選項1" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>用 $a_n = a_1 + (n-1)d$ 求任一項</span>
+                                    <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                                <button onclick="toggleOption(this)" aria-label="自評心得選項2" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>反過來求某個數是第幾項</span>
+                                    <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                                <button onclick="toggleOption(this)" aria-label="自評心得選項3" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>處理公差是負數的數列</span>
+                                    <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 多選錯題診斷 -->
+                    <div class="bg-white p-4 rounded-xl border border-rose-100 space-y-3">
+                        <p class="font-bold text-slate-800 text-sm">🔍 我的錯題診斷（可多選）：</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs font-medium text-slate-700">
+                            <label class="flex items-center gap-1.5 p-2 bg-slate-50 border rounded cursor-pointer hover:bg-rose-50">
+                                <input type="checkbox" id="diag-1" onchange="updateDiagnosticTips()" class="accent-rose-600"> 公差相減順序搞反
+                            </label>
+                            <label class="flex items-center gap-1.5 p-2 bg-slate-50 border rounded cursor-pointer hover:bg-rose-50">
+                                <input type="checkbox" id="diag-2" onchange="updateDiagnosticTips()" class="accent-rose-600"> $(n-1)$ 和 $n$ 搞混
+                            </label>
+                            <label class="flex items-center gap-1.5 p-2 bg-slate-50 border rounded cursor-pointer hover:bg-rose-50">
+                                <input type="checkbox" id="diag-3" onchange="updateDiagnosticTips()" class="accent-rose-600"> 負數運算出錯
+                            </label>
+                            <label class="flex items-center gap-1.5 p-2 bg-slate-50 border rounded cursor-pointer hover:bg-rose-50">
+                                <input type="checkbox" id="diag-4" onchange="updateDiagnosticTips()" class="accent-rose-600"> 忘記項數必須是正整數
+                            </label>
+                        </div>
+
+                        <div id="diagnostic-tips" class="hidden space-y-2 mt-3 pt-2 border-t border-slate-100"></div>
+                    </div>
+
+                    <!-- 🎓 均一教育平台 延伸學習資源 -->
+                    <div class="bg-white p-5 rounded-xl border border-rose-100 space-y-4 text-center">
+                        <h5 class="font-bold text-sky-900 text-base flex items-center justify-center gap-1.5">
+                            <i data-lucide="external-link" class="w-5 h-5 text-sky-600" aria-label="外部連結圖示"></i> 🎓 均一教育平台 延伸學習資源
+                        </h5>
+                        
+                        <!-- 第一層：本課核心 -->
+                        <div class="space-y-2 text-left">
+                            <p class="text-xs font-bold text-sky-800 bg-sky-50 p-1.5 rounded border border-sky-200">
+                                📌 本課核心（N-8-4 等差數列範圍）：
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                <a href="https://www.junyiacademy.org/mjnsl8a" target="_blank" rel="noopener noreferrer" aria-label="前往等差數列主題頁" class="p-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-lg shadow-sm transition-all text-center flex items-center justify-center gap-1">
+                                    <i data-lucide="book-open" class="w-3.5 h-3.5" aria-label="主題頁圖示"></i> 等差數列主題頁
+                                </a>
+                                <a href="https://www.junyiacademy.org/videos/MEaWpVadbZI" target="_blank" rel="noopener noreferrer" aria-label="前往等差數列第n項影片" class="p-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-lg shadow-sm transition-all text-center flex items-center justify-center gap-1">
+                                    <i data-lucide="video" class="w-3.5 h-3.5" aria-label="影片圖示"></i> 【觀念】等差數列的第 $n$ 項
+                                </a>
+                                <a href="https://www.junyiacademy.org/videos/NAx4-Wem-c8" target="_blank" rel="noopener noreferrer" aria-label="前往求項數與公差影片" class="p-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-lg shadow-sm transition-all text-center flex items-center justify-center gap-1">
+                                    <i data-lucide="video" class="w-3.5 h-3.5" aria-label="影片圖示"></i> 【素養】等差數列求項數與公差
+                                </a>
+                                <a href="https://www.junyiacademy.org/topics/v108_n-8-04" target="_blank" rel="noopener noreferrer" aria-label="前往課綱主題專區" class="p-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-lg shadow-sm transition-all text-center flex items-center justify-center gap-1">
+                                    <i data-lucide="compass" class="w-3.5 h-3.5" aria-label="專區圖示"></i> N-8-4 課綱主題專區
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- 第二層：進階延伸 -->
+                        <div class="space-y-2 text-left pt-2 border-t border-slate-100">
+                            <p class="text-xs font-bold text-slate-600 bg-slate-100 p-1.5 rounded border border-slate-200">
+                                🚀 想再往前走（超出本課 N-8-4 範圍）：
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                <a href="https://www.junyiacademy.org/topics/v108_n-8-05" target="_blank" rel="noopener noreferrer" aria-label="前往 N-8-5 課綱主題專區" class="p-2.5 bg-slate-700 hover:bg-slate-800 text-white font-bold rounded-lg shadow-sm transition-all text-center flex items-center justify-center gap-1">
+                                    <i data-lucide="layers" class="w-3.5 h-3.5" aria-label="延伸圖示"></i> N-8-5 課綱主題專區
+                                </a>
+                                <a href="https://www.junyiacademy.org/topics/n-m8b-c01" target="_blank" rel="noopener noreferrer" aria-label="前往數列與等差級數章節" class="p-2.5 bg-slate-700 hover:bg-slate-800 text-white font-bold rounded-lg shadow-sm transition-all text-center flex items-center justify-center gap-1">
+                                    <i data-lucide="folder" class="w-3.5 h-3.5" aria-label="目錄圖示"></i> 第一章 數列與等差級數
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer class="text-center text-slate-400 text-xs py-8">
+            本講義依據 108 課綱 N-8-4 標準編製 &copy; 2026 互動式教學系統
+        </footer>
+    </div>
+
+    <!-- JS 邏輯 -->
+    <script>
+        // 1. 核心配置 (含 ignoredClasses)
+        const katexConfig = {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ],
+            ignoredClasses: ['no-katex']
+        };
+
+        function renderMath(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                renderMathInElement(element, katexConfig);
+            }
+        }
+
+        // A1 修復：分頁切換函式
+        function switchTab(idx) {
+            for (let i = 1; i <= 3; i++) {
+                const tab = document.getElementById(`tab-${i}`);
+                const btn = document.getElementById(`btn-tab-${i}`);
+                if (tab) tab.classList.toggle('hidden', i !== idx);
+                if (btn) {
+                    btn.classList.toggle('active', i === idx);
+                    btn.classList.toggle('opacity-70', i !== idx);
+                    btn.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+                }
+            }
+            const activeTab = document.getElementById(`tab-${idx}`);
+            if (activeTab) renderMath(activeTab);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // A2 修復：解鎖問題函式
+        function unlockQuestion(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.remove('step-locked', 'hidden');
+            renderMath(el);
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // C 修復：以固定總題數 12 為基準計算正確率 (3/12 = 25%)
+        let quizTracker = {};
+
+        function updateSysScore() {
+            let total = 12;
+            const keys = Object.keys(quizTracker);
+            const attempted = keys.length;
+            const correctCount = keys.filter(k => quizTracker[k] === true).length;
+            const scorePct = Math.round((correctCount / total) * 100);
+            const display = document.getElementById('sys-score-display');
+            if (display) {
+                display.innerText = attempted === 0 ? '尚未作答' : `正確率 ${scorePct}%（已完成 ${attempted}/12 題）`;
+            }
+        }
+
+        // 題目資料庫
+        const quizData = [
+            {
+                setId: 1,
+                title: "📌 題組一：公差的計算方式",
+                q1: {
+                    text: "第 $1$ 題：數列 $20, 14, 8, 2...$ 的公差 $d$ 是多少？",
+                    options: [
+                        { label: "(A) $-6$", val: "A" },
+                        { label: "(B) $6$", val: "B" },
+                        { label: "(C) $14$", val: "C" }
+                    ],
+                    correct: "A",
+                    feedback: {
+                        A: "✅ 完全正確！公差定義是 $d = a_2 - a_1 = 14 - 20 = -6$！🔓 已解鎖第 2 題！",
+                        B: "❌ 公差的定義是 $d = a_{n+1} - a_n$（後項減前項，如 $a_2 - a_1$）。你算的是 $20 - 14$，把前後順序換過來再算一次，符號會變成什麼？",
+                        C: "❌ 你選的數字是數列的第二項，不是兩項之間的差。請把 $a_2 - a_1$ 實際算出來看看。"
+                    }
+                },
+                q2: {
+                    text: "第 $2$ 題：下列哪一個是等差數列？",
+                    options: [
+                        { label: "(A) $1, 2, 4, 8$", val: "A" },
+                        { label: "(B) $2, 6, 2, 6, 2, 6$", val: "B" },
+                        { label: "(C) $3, 3, 3, 3$", val: "C" }
+                    ],
+                    correct: "C",
+                    feedback: {
+                        C: "🎉 題組完成！$3, 3, 3, 3$ 的公差 $d = 0$，也是同一個定值，確實是等差數列！",
+                        A: "❌ 請把每一個數列的相鄰兩項差全部算出來、排成一列。條件是『從頭到尾都是同一個定值』。再檢查一次！",
+                        B: "❌ 算算看相鄰項的差：$6-2=4, 2-6=-4, 6-2=4...$ 差值在 $4$ 與 $-4$ 交替，並非定值喔！"
+                    }
+                }
+            },
+            {
+                setId: 2,
+                title: "📌 題組二：一般項的順向與反向",
+                q1: {
+                    text: "第 $1$ 題：等差數列 $80, 77, 74...$ 的第 14 項是多少？",
+                    options: [
+                        { label: "(A) $38$", val: "A" },
+                        { label: "(B) $41$", val: "B" },
+                        { label: "(C) $44$", val: "C" }
+                    ],
+                    correct: "B",
+                    feedback: {
+                        B: "✅ 完全正確！$a_1 = 80$, $d = -3$。 $a_{14} = 80 + (14-1) \\times (-3) = 80 - 39 = 41$！🔓 已解鎖第 2 題！",
+                        A: "❌ 你是不是算成了 $80 + 14 \\times (-3) = 38$？想一想：從第 1 項走到第 14 項，中間總共跨了幾步？是 14 步還是 13 步？",
+                        C: "❌ 你算成了 $80 + 12 \\times (-3) = 44$（少跨了一步）。請檢查 $n-1$ 是否為 $13$ 個步長！"
+                    }
+                },
+                q2: {
+                    text: "第 $2$ 題：一等差數列首項為 $5$、公差為 $-3$，則 $-13$ 是第幾項？",
+                    options: [
+                        { label: "(A) 第 $6$ 項", val: "A" },
+                        { label: "(B) 第 $7$ 項", val: "B" },
+                        { label: "(C) 第 $18$ 項", val: "C" }
+                    ],
+                    correct: "B",
+                    feedback: {
+                        B: "🎉 題組完成！令 $5 + (n-1)(-3) = -13 \\implies -3(n-1) = -18 \\implies n-1 = 6 \\implies n = 7$！",
+                        A: "❌ 你算出來的數字是『從首項走了幾步』。走 1 步到達第 2 項；走 6 步到達第幾項呢？答案還要再 $+1$ 處理一下喔！",
+                        C: "❌ $18$ 是首項 $5$ 和 $-13$ 之間的距離，不是項數。每走一步距離變化 $-3$，走完 $18$ 的距離需要幾步？"
+                    }
+                }
+            },
+            {
+                setId: 3,
+                title: "📌 題組三：符號表示與等差中項",
+                q1: {
+                    text: "第 $1$ 題：數列 $5, 8, 11, 14, 17...$ 的第 $n$ 項可以表示成？",
+                    options: [
+                        { label: "(A) $3n+2$", val: "A" },
+                        { label: "(B) $3n+5$", val: "B" },
+                        { label: "(C) $5n+3$", val: "C" }
+                    ],
+                    correct: "A",
+                    feedback: {
+                        A: "✅ 完全正確！公差 $d=3$，故一般項為 $3n + b$，當 $n=1$ 時 $3(1)+b = 5 \\implies b = 2$，即 $3n+2$！🔓 已解鎖第 2 題！",
+                        B: "❌ 把 $n=1$ 代進你選的式子 $3(1)+5 = 8$，但數列的首項是 $5$ 喔！再檢查常數項！",
+                        C: "❌ $n$ 前面的係數代表『每項增加多少』。這個數列每次增加 $3$，所以係數應該是 $3$ 喔！"
+                    }
+                },
+                q2: {
+                    text: "第 $2$ 題：一等差數列的第 1 項是 $3$、第 5 項是 $19$，公差是多少？",
+                    options: [
+                        { label: "(A) $3.2$", val: "A" },
+                        { label: "(B) $4$", val: "B" },
+                        { label: "(C) $16$", val: "C" }
+                    ],
+                    correct: "B",
+                    feedback: {
+                        B: "🎉 題組完成！$a_5 = 3 + 4d = 19 \\implies 4d = 16 \\implies d = 4$！",
+                        A: "❌ $19-3=16$ 沒錯。但從第 1 項走到第 5 項，是跨過了 5 步還是 4 步？除錯了數字喔！",
+                        C: "❌ $16$ 是兩項之間的總變化量（$a_5 - a_1 = 16$），不是每一步的變化量。你需要把它平均分配給跨過的 4 步喔！"
+                    }
+                }
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            let html = "";
+            quizData.forEach(set => {
+                html += `
+                    <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
+                        <h4 class="font-bold text-amber-900 text-base border-b pb-2 flex items-center justify-between">
+                            <span>${set.title}</span>
+                            <span id="set${set.setId}-progress" class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded font-bold">進度：0/2</span>
+                        </h4>
+
+                        <!-- Q1 -->
+                        <div id="set${set.setId}-q1" class="space-y-2">
+                            <p class="font-bold text-slate-800 text-sm">${set.q1.text}</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                ${set.q1.options.map(opt => `
+                                    <button onclick="checkMCQ(${set.setId}, 1, '${opt.val}')" aria-label="選項${opt.val}" class="q-btn-${set.setId}-1 p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">
+                                        ${opt.label}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div id="set${set.setId}-f1" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                        </div>
+
+                        <!-- Q2 -->
+                        <div id="set${set.setId}-q2" class="space-y-2 step-locked hidden">
+                            <p class="font-bold text-slate-800 text-sm border-t pt-3">${set.q2.text}</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                ${set.q2.options.map(opt => `
+                                    <button onclick="checkMCQ(${set.setId}, 2, '${opt.val}')" aria-label="選項${opt.val}" class="q-btn-${set.setId}-2 p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">
+                                        ${opt.label}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div id="set${set.setId}-f2" class="hidden p-3 rounded-lg text-xs font-bold"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            renderMath(container);
+        }
+
+        function checkMCQ(setId, qNum, choice) {
+            const set = quizData.find(s => s.setId === setId);
+            const q = qNum === 1 ? set.q1 : set.q2;
+            const f = document.getElementById(`set${setId}-f${qNum}`);
+            f.classList.remove('hidden');
+
+            const isCorrect = (choice === q.correct);
+            
+            if (quizTracker[`set${setId}_${qNum}`] !== true) {
+                quizTracker[`set${setId}_${qNum}`] = isCorrect;
+            }
+
+            if (isCorrect) {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                f.innerHTML = q.feedback[choice];
+                
+                document.querySelectorAll(`.q-btn-${setId}-${qNum}`).forEach(b => b.disabled = true);
+
+                if (qNum === 1) {
+                    unlockQuestion(`set${setId}-q2`);
+                    document.getElementById(`set${setId}-progress`).innerText = "進度：1/2";
+                } else {
+                    document.getElementById(`set${setId}-progress`).innerText = "進度：2/2 (已完成)";
+                }
+            } else {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                f.innerHTML = q.feedback[choice];
+            }
+            updateSysScore();
+            renderMath(f);
+        }
+
+        // 🔥 挑戰突破驗證邏輯 (應用題組一：階梯扶手立柱)
+        function checkChal1_1(choice) {
+            const f = document.getElementById('chal1-f1');
+            f.classList.remove('hidden');
+            
+            const isCorrect = (choice === 'B');
+            if (quizTracker.chal1_1 !== true) quizTracker.chal1_1 = isCorrect;
+
+            if (choice === 'B') {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                f.innerHTML = "✅ 完全正確！代入公式 $a_{13} = 48 + (13-1) \\times 7 = 48 + 84 = 132$ 公分！🔓 已解鎖下一題！";
+                document.querySelectorAll('.chal1-btn').forEach(b => b.disabled = true);
+                unlockQuestion('chal1-q2');
+                document.getElementById('chal1-progress').innerText = "進度：1/2";
+            } else if (choice === 'A') {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                f.innerHTML = "❌ 你只跨了 11 步。從第 1 根數到第 13 根，中間隔了幾個「+7」？請重新數一次間隔數。";
+            } else {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                f.innerHTML = "❌ 你把 $13$ 直接乘上 $7$ 了。第 $1$ 根有沒有加過任何 $7$？先想清楚第 $1$ 根對應幾步。";
+            }
+            updateSysScore();
+            renderMath(f);
+        }
+
+        function checkChal1_2() {
+            const valInput = document.getElementById('chal1-v2');
+            const valBtn = document.getElementById('chal1-v2-btn');
+            const val = parseInt(valInput.value);
+            const f = document.getElementById('chal1-f2');
+            f.classList.remove('hidden');
+            
+            const isCorrect = (!isNaN(val) && Math.abs(val - 181) < 0.01);
+            if (quizTracker.chal1_2 !== true) quizTracker.chal1_2 = isCorrect;
+
+            if (isCorrect) {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                f.innerHTML = "🎉 答案完全正確！最高那根 $a_{20} = 48 + (20-1) \\times 7 = 48 + 133 = 181$ 公分！";
+                valInput.disabled = true;
+                valBtn.disabled = true;
+                document.getElementById('chal1-progress').innerText = "進度：2/2 (已完成)";
+            } else {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                f.innerHTML = "❌ 計算引導：利用公式 $a_{20} = 48 + (20-1) \\times 7 = 48 + 19 \\times 7$，仔細算算看等於多少？";
+            }
+            updateSysScore();
+            renderMath(f);
+        }
+
+        // 🔥 挑戰突破驗證邏輯 (應用題組二：手機充電紀錄)
+        function checkChal2_1() {
+            const valInput = document.getElementById('chal2-v1');
+            const valBtn = document.getElementById('chal2-v1-btn');
+            const val = parseInt(valInput.value);
+            const f = document.getElementById('chal2-f1');
+            f.classList.remove('hidden');
+            
+            const isCorrect = (!isNaN(val) && Math.abs(val - 42) < 0.01);
+            if (quizTracker.chal2_1 !== true) quizTracker.chal2_1 = isCorrect;
+
+            if (isCorrect) {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                f.innerHTML = "🎉 答案完全正確！充 50 分鐘即過了 5 個十分鐘（第 6 項）：$a_6 = 12 + 5 \\times 6 = 42\\%$！🔓 已解鎖下一題！";
+                valInput.disabled = true;
+                valBtn.disabled = true;
+                unlockQuestion('chal2-q2');
+                document.getElementById('chal2-progress').innerText = "進度：1/2";
+            } else {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                f.innerHTML = "❌ 計算引導：充 50 分鐘代表過了 5 個十分鐘。原本有 12%，加上 5 個 6%，算算看總共是多少 %？";
+            }
+            updateSysScore();
+            renderMath(f);
+        }
+
+        function checkChal2_2(choice) {
+            const f = document.getElementById('chal2-f2');
+            f.classList.remove('hidden');
+            
+            const isCorrect = (choice === 'B');
+            if (quizTracker.chal2_2 !== true) quizTracker.chal2_2 = isCorrect;
+
+            if (choice === 'B') {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                f.innerHTML = "🎉 完美通關！充 130 分鐘（過了 13 個十分鐘），電量為 $12 + 13 \\times 6 = 90\\%$，恰好達到 90%！";
+                document.querySelectorAll('.chal2-btn').forEach(b => b.disabled = true);
+                document.getElementById('chal2-progress').innerText = "進度：2/2 (已完成)";
+            } else if (choice === 'A') {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                f.innerHTML = "❌ $120$ 分鐘是過了 12 個十分鐘，電量 $12+12\\times 6 = 84\\%$，還沒到 90%。再往上一格看看。";
+            } else {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                f.innerHTML = "❌ $140$ 分鐘確實超過 $90\\%$，但題目要的是首次達到的最短時間。往前退一格檢查。";
+            }
+            updateSysScore();
+            renderMath(f);
+        }
+
+        // 🔥 挑戰突破驗證邏輯 (應用題組三：水塔漏水)
+        function checkChal3_1() {
+            const valInput = document.getElementById('chal3-v1');
+            const valBtn = document.getElementById('chal3-v1-btn');
+            const val = parseInt(valInput.value);
+            const f = document.getElementById('chal3-f1');
+            f.classList.remove('hidden');
+            
+            const isCorrect = (!isNaN(val) && Math.abs(val - 575) < 0.01);
+            if (quizTracker.chal3_1 !== true) quizTracker.chal3_1 = isCorrect;
+
+            if (isCorrect) {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                f.innerHTML = "✅ 計算正確！代入公式得第 $6$ 項：$a_6 = 800 + (6-1) \\times (-45) = 800 - 225 = 575\\text{ L}$！🔓 已解鎖下一題！";
+                valInput.disabled = true;
+                valBtn.disabled = true;
+                unlockQuestion('chal3-q2');
+                document.getElementById('chal3-progress').innerText = "進度：1/2";
+            } else {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                f.innerHTML = "❌ 對照上方的項數對照表：$a_1$ 是 0 小時，那 5 小時對應第幾項？先確定項數，再代入公式 $a_n = a_1 + (n-1)d$ 算算看！";
+            }
+            updateSysScore();
+            renderMath(f);
+        }
+
+        function checkChal3_2(choice) {
+            const f = document.getElementById('chal3-f2');
+            f.classList.remove('hidden');
+            
+            const isCorrect = (choice === 'B');
+            if (quizTracker.chal3_2 !== true) quizTracker.chal3_2 = isCorrect;
+
+            if (choice === 'B') {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                f.innerHTML = "🎉 完美通關！代入公式：$a_{16} = 800 + (16-1) \\times (-45) = 800 - 675 = 125\\text{ L}$（第15小時未少於100）；$a_{17} = 800 + (17-1) \\times (-45) = 800 - 720 = 80\\text{ L}$，第 16 小時（$a_{17}$）首次少於 100 公升！";
+                document.querySelectorAll('.chal3-btn').forEach(b => b.disabled = true);
+                document.getElementById('chal3-progress').innerText = "進度：2/2 (已完成)";
+            } else if (choice === 'A') {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                f.innerHTML = "❌ 代入 $15$ 小時（$a_{16}$）算算看：$800 + (16-1) \\times (-45) = 125\\text{ L}$，尚未少於 100 公升喔！時間需取整數小時，應該往上加 1 小時！";
+            } else {
+                f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                f.innerHTML = "❌ $18$ 小時後的水量確實少於 100 公升，但題目問的是【首次少於】100 公升的最少整數小時喔！再試試看！";
+            }
+            updateSysScore();
+            renderMath(f);
+        }
+
+        // E1對照行開關
+        function toggleStairErrorMsg() {
+            const panel = document.getElementById('stair-error-panel');
+            const icon = document.getElementById('stair-err-toggle-icon');
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                if (icon) icon.setAttribute('data-lucide', 'chevron-up');
+            } else {
+                panel.classList.add('hidden');
+                if (icon) icon.setAttribute('data-lucide', 'chevron-down');
+            }
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+        }
+
+        // 觀念起步：互動二（等差階梯） Logic
+        function updateStairLab() {
+            let a1 = parseInt(document.getElementById('stair-a1').value) || 0;
+            let d = parseInt(document.getElementById('stair-d').value) || 0;
+            let n = parseInt(document.getElementById('stair-n').value) || 1;
+
+            document.getElementById('stair-a1-val').innerText = a1;
+            document.getElementById('stair-d-val').innerText = d;
+            document.getElementById('stair-n-val').innerText = n;
+
+            let stepsWalked = n - 1;
+            let totalChange = stepsWalked * d;
+            let anCorrect = a1 + totalChange;
+            let anWrong = a1 + n * d;
+
+            let stepH = 0;
+            if (d > 0) stepH = Math.min(12, Math.max(3, d * 1.2));
+            else if (d < 0) stepH = Math.max(-12, Math.min(-3, d * 1.2));
+
+            const svg = document.getElementById('stair-svg');
+            let svgHTML = "";
+            let startX = 15;
+            let stepW = 21;
+            let startY = (d < 0) ? 40 : 125;
+
+            let yVals = [];
+            for (let i = 1; i <= 12; i++) {
+                let y = startY - (i - 1) * stepH;
+                yVals.push(y);
+                yVals.push(y - 30);
+            }
+            let minY = Math.min(...yVals) - 15;
+            let maxY = Math.max(...yVals) + 15;
+            let vHeight = Math.max(120, maxY - minY);
+
+            svg.setAttribute('viewBox', `0 ${minY} 280 ${vHeight}`);
+
+            for (let i = 1; i <= 12; i++) {
+                let x = startX + (i - 1) * stepW;
+                let y = startY - (i - 1) * stepH;
+                let isCurrent = (i === n);
+                let fillColor = isCurrent ? "#F43F5E" : (i <= n ? "#10B981" : "#CBD5E1");
+
+                svgHTML += `<rect x="${x}" y="${y - 12}" width="${stepW}" height="12" fill="${fillColor}" rx="2"/>`;
+                
+                let valY = y - 3;
+                let textColor = "#FFFFFF";
+
+                svgHTML += `<text x="${x + stepW/2}" y="${valY}" fill="${textColor}" font-size="7.5" font-weight="bold" text-anchor="middle">${a1 + (i-1)*d}</text>`;
+
+                if (isCurrent) {
+                    let px = x + stepW/2;
+                    let py = y - 14;
+                    svgHTML += `
+                        <g>
+                            <circle cx="${px}" cy="${py - 16}" r="3.5" fill="#E11D48"/>
+                            <line x1="${px}" y1="${py - 12.5}" x2="${px}" y2="${py - 5}" stroke="#E11D48" stroke-width="2"/>
+                            <line x1="${px}" y1="${py - 10}" x2="${px - 4}" y2="${py - 13}" stroke="#E11D48" stroke-width="1.5"/>
+                            <line x1="${px}" y1="${py - 10}" x2="${px + 4}" y2="${py - 7}" stroke="#E11D48" stroke-width="1.5"/>
+                            <line x1="${px}" y1="${py - 5}" x2="${px - 3}" y2="${py}" stroke="#E11D48" stroke-width="1.5"/>
+                            <line x1="${px}" y1="${py - 5}" x2="${px + 4}" y2="${py - 2}" stroke="#E11D48" stroke-width="1.5"/>
+                            <text x="${px}" y="${py - 22}" fill="#E11D48" font-size="8" font-weight="bold" text-anchor="middle">第${n}階</text>
+                        </g>
+                    `;
+                }
+            }
+            svg.innerHTML = svgHTML;
+
+            const panel = document.getElementById('stair-panel');
+            const errPanel = document.getElementById('stair-error-panel');
+
+            let formattedD = d < 0 ? `(${d})` : `${d}`;
+
+            if (n === 1) {
+                panel.innerHTML = `
+                    小人留在原點，顯示：走了 <b>$0$ 步</b> ($1-1=0$)<br>
+                    總變化量：$0 \\times ${formattedD} = 0$<br>
+                    第 $1$ 項 $a_1 = ${a1}$（就是首項本身）！
+                `;
+            } else if (d === 0) {
+                panel.innerHTML = `
+                    走了 <b>$${stepsWalked}$ 步</b> ($${n}-1 = ${stepsWalked}$)<br>
+                    階梯攤平成走廊，每步變化 $d = 0$<br>
+                    第 $${n}$ 項 $a_{${n}} = ${a1} + 0 = ${anCorrect}$（這仍然是等差數列，公差為 0）！
+                `;
+            } else if (d < 0) {
+                panel.innerHTML = `
+                    走了 <b>$${stepsWalked}$ 步</b> ($${n}-1 = ${stepsWalked}$)<br>
+                    階梯向下延伸，每步變化 $d = ${d}$<br>
+                    總變化量：$${stepsWalked} \\times (${d}) = ${totalChange}$<br>
+                    第 $${n}$ 項 $a_{${n}} = ${a1} + (${totalChange}) = ${anCorrect}$！
+                `;
+            } else {
+                panel.innerHTML = `
+                    你走了幾步？ $n - 1 = ${stepsWalked}$ 步<br>
+                    每步變化（公差）： $d = ${d}$<br>
+                    總變化量： $${stepsWalked} \\times ${d} = ${totalChange}$<br>
+                    第 $${n}$ 項 $a_{${n}} = ${a1} + ${totalChange} = ${anCorrect}$！
+                `;
+            }
+
+            errPanel.innerHTML = `
+                以公式 $a_n = a_1 + nd$ 算出：<br>
+                $${a1} + ${n} \\times ${formattedD}$ = <s>$${anWrong}$</s>（<span class="text-rose-600 font-extrabold">多走了一步！</span>）
+            `;
+
+            renderMath(panel);
+            renderMath(errPanel);
+        }
+
+        // 觀念起步：互動一（等差判定儀，A3純HTML陣列顯示修復）Logic
+        function loadApPreset(arr) {
+            for (let i = 0; i < 5; i++) {
+                document.getElementById(`ap-${i}`).value = arr[i];
+            }
+            updateApDetector();
+        }
+
+        function updateApDetector() {
+            let arr = [];
+            let hasEmpty = false;
+            for (let i = 0; i < 5; i++) {
+                let rawVal = document.getElementById(`ap-${i}`).value;
+                if (rawVal.trim() === '') {
+                    hasEmpty = true;
+                }
+                arr.push(parseFloat(rawVal));
+            }
+
+            const panel = document.getElementById('ap-result-panel');
+
+            if (hasEmpty || arr.some(isNaN)) {
+                panel.className = "p-4 rounded-xl text-xs font-bold leading-relaxed border bg-amber-50 border-amber-300 text-amber-900";
+                panel.innerHTML = `⚠️ <b>請完整填滿 5 個數字格</b>，判定儀將為您分析是否為等差數列！`;
+                return;
+            }
+
+            const subOrder = document.querySelector('input[name="subOrder"]:checked').value;
+            let diffs = [];
+
+            for (let i = 0; i < 4; i++) {
+                let cap = document.getElementById(`cap-${i}`);
+                let diff = (subOrder === 'normal') ? (arr[i+1] - arr[i]) : (arr[i] - arr[i+1]);
+                diffs.push(diff);
+                cap.innerText = (diff >= 0 ? `+${diff}` : `${diff}`);
+            }
+
+            let isAp = diffs.every(v => Math.abs(v - diffs[0]) < 0.0001);
+
+            if (isAp) {
+                let realD = (Math.abs(diffs[0]) === 0) ? 0 : diffs[0];
+                let invD = (Math.abs(-realD) === 0) ? 0 : -realD;
+
+                if (subOrder === 'reversed') {
+                    panel.className = "p-4 rounded-xl text-xs font-bold leading-relaxed border bg-green-50 border-green-300 text-green-950";
+                    panel.innerHTML = `
+                        ✅ <b>是等差數列！</b>相鄰兩項之差全部等於定值 $${realD}$！<br>
+                        ⚠️ <b>切換提示：</b>你當前使用的是「前項 − 後項」，算出的是 $a_n - a_{n+1} = ${realD}$（剛好是公差的相反數）。公差的正統定義為 $d = a_{n+1} - a_n = ${invD}$！
+                    `;
+                } else {
+                    panel.className = "p-4 rounded-xl text-xs font-bold leading-relaxed border bg-green-50 border-green-300 text-green-950";
+                    panel.innerHTML = `
+                        ✅ <b>是等差數列！</b>後項減前項全等於同一個定值，<b>公差 $d = ${realD}$</b>！
+                    `;
+                }
+            } else {
+                panel.className = "p-4 rounded-xl text-xs font-bold leading-relaxed border bg-rose-50 border-rose-300 text-rose-950";
+                panel.innerHTML = `
+                    ❌ <b>不是等差數列！</b>相鄰兩項之差分別為 <b>[${diffs.join(', ')}]</b>，並非全部相同的定值！
+                `;
+            }
+            renderMath(panel);
+        }
+
+        // 觀念起步：互動三（樣式對照鏡）
+        function updateMirrorLab() {
+            let k = parseInt(document.getElementById('mirror-k').value) || 1;
+            let b = parseInt(document.getElementById('mirror-b').value) || 0;
+
+            document.getElementById('mirror-k-val').innerText = k;
+            document.getElementById('mirror-b-val').innerText = b;
+
+            let seqBase = [1, 2, 3, 4, 5];
+            let seqK = seqBase.map(x => x * k);
+            let seqB = seqK.map(x => x + b);
+
+            const seqBox = document.getElementById('mirror-seq-box');
+            const formBox = document.getElementById('mirror-formula-box');
+
+            let shiftText = b >= 0 ? `多 $${b}$` : `少 $${Math.abs(b)}$`;
+
+            seqBox.innerHTML = `
+                <p>基 準 數 列： <b>1, 2, 3, 4, 5...</b></p>
+                <p>乘以倍數 $k=${k}$： <b>${seqK.join(', ')}...</b>（每一項都是基準的 $${k}$ 倍）</p>
+                <p class="text-emerald-700 font-extrabold">平移加上 $b=${b}$： <b>${seqB.join(', ')}...</b>（比第二列每項${shiftText}）</p>
+            `;
+
+            let a1 = k + b;
+            let signB = b >= 0 ? `+ ${b}` : `- ${Math.abs(b)}`;
+            formBox.innerHTML = `
+                <p class="text-sm font-bold">📌 其實可以用同一個公式呈現：</p>
+                <p>• 展開表示法： $a_n = kn + b = ${k}n ${signB}$</p>
+                <p class="text-[11px] text-emerald-800 font-normal pl-3">
+                    推導：把 $n=1$ 代入 $a_n = kn+b$，得首項 $a_1 = ${k} \\times 1 ${signB} = ${a1}$。
+                </p>
+                <p>• 結構表示法： $a_n = a_1 + (n-1)d = ${a1} + (n-1)\\times ${k}$</p>
+                <p class="text-[11px] text-emerald-900 font-normal border-t border-emerald-200 pt-1">
+                    完美對應：公差 $d = k = ${k}$；首項 $a_1 = k + b = ${k} + (${b}) = ${a1}$。
+                </p>
+            `;
+
+            renderMath(seqBox);
+            renderMath(formBox);
+        }
+
+        // 觀念辭典：等差中項天平 Logic
+        function updateBalance() {
+            let a = parseInt(document.getElementById('bal-a').value) || 0;
+            let b = parseInt(document.getElementById('bal-b').value) || 0;
+            let c = parseInt(document.getElementById('bal-c').value) || 0;
+
+            let leftSum = a + c;
+            let rightSum = 2 * b;
+
+            const svg = document.getElementById('balance-svg');
+            const msg = document.getElementById('balance-msg');
+
+            let angle = 0;
+            if (leftSum > rightSum) angle = -8;
+            else if (leftSum < rightSum) angle = 8;
+
+            let rad = angle * Math.PI / 180;
+            let leftDx = (100 - 70 * Math.cos(rad)) - 30;
+            let leftDy = -70 * Math.sin(rad);
+            let rightDx = (100 + 70 * Math.cos(rad)) - 170;
+            let rightDy = 70 * Math.sin(rad);
+
+            svg.innerHTML = `
+                <polygon points="100,30 90,70 110,70" fill="#64748B"/>
+                <g transform="rotate(${angle} 100 30)">
+                    <rect x="20" y="27" width="160" height="6" fill="#334155" rx="3"/>
+                </g>
+                <g transform="translate(${leftDx}, ${leftDy})">
+                    <line x1="30" y1="30" x2="30" y2="50" stroke="#94A3B8" stroke-width="2"/>
+                    <path d="M 15 50 L 45 50 C 45 60 15 60 15 50 Z" fill="#E2E8F0" stroke="#64748B"/>
+                    <text x="30" y="47" font-size="8" font-weight="bold" fill="#0F172A" text-anchor="middle">a+c=${leftSum}</text>
+                </g>
+                <g transform="translate(${rightDx}, ${rightDy})">
+                    <line x1="170" y1="30" x2="170" y2="50" stroke="#94A3B8" stroke-width="2"/>
+                    <path d="M 155 50 L 185 50 C 185 60 155 60 155 50 Z" fill="#E2E8F0" stroke="#64748B"/>
+                    <text x="170" y="47" font-size="8" font-weight="bold" fill="#0F172A" text-anchor="middle">2b=${rightSum}</text>
+                </g>
+            `;
+
+            if (leftSum === rightSum) {
+                msg.className = "text-center text-xs font-bold text-green-700";
+                msg.innerHTML = `$a+c = ${leftSum}$，且 $2b = ${rightSum}$，天平配平！ $b=${b}$ 是 $a=${a}$ 與 $c=${c}$ 的等差中項！`;
+            } else {
+                msg.className = "text-center text-xs font-bold text-rose-600";
+                msg.innerHTML = `$a+c = ${leftSum}$，但 $2b = ${rightSum}$，天平傾斜！三數不成等差！`;
+            }
+            renderMath(msg);
+        }
+
+        function toggleOption(btn) {
+            const check = btn.querySelector('.check-icon');
+            if (btn.classList.contains('border-rose-500')) {
+                btn.classList.remove('border-rose-500', 'bg-rose-50', 'ring-1', 'ring-rose-300');
+                btn.classList.add('bg-slate-50', 'border-slate-200');
+                if (check) check.classList.add('opacity-0');
+            } else {
+                btn.classList.remove('bg-slate-50', 'border-slate-200');
+                btn.classList.add('border-rose-500', 'bg-rose-50', 'ring-1', 'ring-rose-300');
+                if (check) check.classList.remove('opacity-0');
+            }
+        }
+
+        function updateReflection() {
+            const val = parseInt(document.getElementById('reflect-slider').value);
+            document.getElementById('reflection-percent').innerHTML = `$${val}\\%$`;
+            const box = document.getElementById('reflection-box');
+
+            if (val >= 80) {
+                box.className = "p-4 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                box.innerHTML = `🌟 <b>太優秀了 ($${val}\\%$)：</b> 你已經深刻掌握等差數列的判定、一般項代入與反查項數，並能靈活解答生活應用題！`;
+            } else if (val >= 50) {
+                box.className = "p-4 rounded-lg text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300";
+                box.innerHTML = `👍 <b>保持進步 ($${val}\\%$)：</b> 你已基本理解等差公式，建議多練習「⚡ 思考試煉」的反向推算題！`;
+            } else {
+                box.className = "p-4 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
+                box.innerHTML = `🌱 <b>繼續努力 ($${val}\\%$)：</b> 別擔心！試著回到「🌱 觀念起步」，掌握等差數列的概念吧！`;
+            }
+            renderMath(document.getElementById('reflection-percent'));
+            renderMath(box);
+        }
+
+        function updateDiagnosticTips() {
+            const tipsContainer = document.getElementById('diagnostic-tips');
+            let tips = [];
+
+            if (document.getElementById('diag-1').checked) {
+                tips.push('💪 公差減反了沒關係！記住口訣：「後項減前項」$a_2 - a_1$，如果後項比前項小，公差就會是負數！');
+            }
+            if (document.getElementById('diag-2').checked) {
+                tips.push('💪 記得從第 1 階走到第 $n$ 階只需要跨過 $n-1$ 步，所以公式是 $a_1 + (n-1)d$ 喔！');
+            }
+            if (document.getElementById('diag-3').checked) {
+                tips.push('💪 負數運算要小心！遇到負公差時，乘以正號還是負號要記得括號（如 $13 \\times (-3) = -39$）！');
+            }
+            if (document.getElementById('diag-4').checked) {
+                tips.push('💪 項數 $n$ 代表「位置（第幾項）」，所以當解方程式算出 $n$ 不是正整數（如 $n=0$ 或 $n=2.5$）時，代表該數值不存在！');
+            }
+
+            if (tips.length > 0) {
+                tipsContainer.classList.remove('hidden');
+                tipsContainer.innerHTML = tips.map(t => `<div class="p-2.5 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-900 font-medium">${t}</div>`).join('');
+            } else {
+                tipsContainer.classList.add('hidden');
+                tipsContainer.innerHTML = '';
+            }
+            renderMath(tipsContainer);
+        }
+
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+            renderMath(document.body);
+            renderQuiz();
+            updateApDetector();
+            updateStairLab();
+            updateMirrorLab();
+            updateBalance();
+            updateReflection();
+        };
+    </script>
+</body>
+</html>
