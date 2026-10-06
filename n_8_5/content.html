@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N-8-5 等差級數互動講義</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        svg { max-width: 100%; height: auto; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn.active { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .step-locked { opacity: 0.5; pointer-events: none; filter: grayscale(0.8); }
+        .step-unlocked { animation: popIn .45s ease both; }
+        @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+        .shake { animation: shake .38s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 50%{transform:translateX(5px)} 75%{transform:translateX(-3px)} }
+        .opt-correct { background:#dcfce7 !important; border-color:#22c55e !important; color:#14532d !important; }
+        .opt-wrong { background:#fee2e2 !important; border-color:#f87171 !important; color:#7f1d1d !important; }
+        .opt-dim { opacity:.5; }
+        button:disabled, input:disabled { cursor: not-allowed; }
+        button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
+        s.strike { text-decoration: none; position: relative; display: inline-block; color: #be123c; }
+        s.strike::after { content: ''; position: absolute; left: -3px; right: -3px; top: 52%; border-top: 2px solid #e11d48; }
+        .stage .stage-lock-msg { display: none; }
+        .stage.stage-locked .stage-lock-msg { display: block; }
+        .stage.stage-locked .stage-body { display: none; }
+        .kw { transition: all .25s ease; border-radius: 4px; }
+        .kw-on .kw { background: #fef08a; box-shadow: 0 0 0 2px #facc15; padding: 0 2px; font-weight: 700; }
+        .seg[aria-pressed="true"], .tg[aria-pressed="true"] { background:#059669; color:#fff; border-color:#059669; }
+        /* 全頁字級：比 Tailwind 預設各大 3px */
+        body { font-size: 19px; }
+        .text-xs { font-size: 15px !important; line-height: 1.6 !important; }
+        .text-sm { font-size: 17px !important; line-height: 1.65 !important; }
+        .text-base { font-size: 19px !important; line-height: 1.6 !important; }
+        .text-lg { font-size: 21px !important; line-height: 1.5 !important; }
+        .text-xl { font-size: 23px !important; line-height: 1.45 !important; }
+        .text-2xl { font-size: 27px !important; line-height: 1.35 !important; }
+        .text-3xl { font-size: 33px !important; line-height: 1.25 !important; }
+        .text-\[11px\] { font-size: 14px !important; }
+        .text-\[10px\] { font-size: 13px !important; }
+        @media (min-width: 768px) { .md\:text-4xl { font-size: 39px !important; line-height: 1.2 !important; } }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- 1. Header（標題列） -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 等差級數</h1>
+            <p class="text-slate-600">N-8-5 互動式學習講義</p>
+        </header>
+
+        <!-- 2. 🎯 學習目標 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="no-katex mr-2 w-5 h-5" aria-label="學習目標圖示"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>我能分辨數列和級數，並判斷一個級數是不是等差級數。</li>
+                <li>我能用「倒過來相加」說明求和的方法，並正確算出項數。</li>
+                <li>我能用兩個求和公式解決生活問題；知道首項、項數和總和時，也能倒推出公差。</li>
+            </ul>
+        </section>
+
+        <!-- 3. 分頁切換按鈕區 -->
+        <div role="tablist" class="flex flex-wrap justify-center gap-3 md:gap-6 mb-8" aria-label="講義分頁">
+            <button id="btn-tab-1" type="button" role="tab" aria-selected="true" aria-controls="tab-1" aria-label="切換至觀念起步分頁" onclick="switchTab(1)" class="tab-btn active bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 md:px-6 py-3 rounded-xl shadow flex items-center gap-2">
+                🌱 觀念起步
+            </button>
+            <button id="btn-tab-2" type="button" role="tab" aria-selected="false" aria-controls="tab-2" aria-label="切換至思考試煉分頁" onclick="switchTab(2)" class="tab-btn bg-amber-500 hover:bg-amber-600 text-white font-bold px-5 md:px-6 py-3 rounded-xl shadow flex items-center gap-2 opacity-70">
+                ⚡ 思考試煉
+            </button>
+            <button id="btn-tab-3" type="button" role="tab" aria-selected="false" aria-controls="tab-3" aria-label="切換至挑戰突破分頁" onclick="switchTab(3)" class="tab-btn bg-rose-600 hover:bg-rose-700 text-white font-bold px-5 md:px-6 py-3 rounded-xl shadow flex items-center gap-2 opacity-70">
+                🔥 挑戰突破
+            </button>
+        </div>
+
+        <!-- ==================== 分頁一：觀念起步（綠色） ==================== -->
+        <div id="tab-1" role="tabpanel" aria-labelledby="btn-tab-1" class="tab-content space-y-6">
+
+            <!-- 📖 觀念小辭典 -->
+            <div class="bg-emerald-50 border border-emerald-300 rounded-xl p-5 shadow-sm text-emerald-950 space-y-4">
+                <h4 class="font-bold flex items-center text-emerald-900 text-base border-b border-emerald-200 pb-2">
+                    <i data-lucide="book-open" class="no-katex mr-2 w-5 h-5 text-emerald-600" aria-label="辭典圖示"></i> 📖 觀念小辭典
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs leading-relaxed">
+                    <div class="p-2.5 bg-white border border-emerald-200 rounded-lg">
+                        <b>1. 級數：</b>把數列的每一項用「＋」連起來。<b>等差數列</b>連起來就是<b>等差級數</b>。前 $n$ 項的和記作 $S_n$。
+                    </div>
+                    <div class="p-2.5 bg-white border border-emerald-200 rounded-lg">
+                        <b>2. 項數：</b>（末項 − 首項）÷ 公差 <b>＋ 1</b>。<br>例：$2 + 5 + 8 + 11$ → $(11 - 2) \div 3 + 1 = 4$ 項。
+                    </div>
+                    <div class="p-2.5 bg-white border border-emerald-200 rounded-lg">
+                        <b>3. 求和公式：</b>$S_n = \dfrac{n(a_1 + a_n)}{2}$<br>$= \dfrac{n[2a_1 + (n - 1)d]}{2}$
+                    </div>
+                </div>
+                <!-- 學習地圖 -->
+                <div class="p-4 bg-white rounded-xl border border-emerald-200 space-y-3">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <p class="font-bold text-emerald-900 text-xs flex items-center">
+                            <i data-lucide="map" class="no-katex mr-1.5 w-4 h-4 text-emerald-600" aria-label="地圖圖示"></i> 🗺️ 學習地圖：一關一關往下走
+                        </p>
+                        <button type="button" onclick="unlockAllStages()" aria-label="老師模式：一次解鎖全部關卡" class="text-xs font-bold px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100 text-slate-600">👩‍🏫 老師模式：全部解鎖</button>
+                    </div>
+                    <div id="roadmap" class="flex flex-wrap gap-2"></div>
+                </div>
+            </div>
+
+            <!-- 第 0 關：暖身 等差數列 -->
+            <section id="stage-0" class="stage bg-white rounded-xl shadow-md p-6 border border-emerald-200" aria-labelledby="stage-0-title">
+                <h3 id="stage-0-title" class="text-xl font-bold text-emerald-800 mb-4 flex flex-wrap items-center gap-2">
+                    <span class="text-xs bg-emerald-600 text-white px-2 py-1 rounded font-bold">第 0 關</span>
+                    <i data-lucide="trending-up" class="no-katex text-emerald-600" aria-label="數列圖示"></i> 🪜 暖身：等差數列
+                </h3>
+                <div class="stage-lock-msg"></div>
+                <div class="stage-body space-y-4">
+                    <div class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm leading-relaxed border border-emerald-100">
+                        <b>觀念解析：</b>先複習上一節的<b>等差數列</b>，後面求和全部都會用到！<br>
+                        一串數，<b>後一項 − 前一項</b>都一樣，叫做<b>等差數列</b>；這個固定的差叫做<b>公差</b> $d$，第一個數叫做<b>首項</b> $a_1$。<br>
+                        🔑 第 $n$ 項：$a_n = a_1 + (n - 1)d$。從第 $1$ 項走到第 $n$ 項，只加了 $(n - 1)$ 次公差。<br>
+                        例：$2, 5, 8, 11, \dots$ 的第 $10$ 項 $= 2 + 9 \times 3 = 29$。
+                        <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/video/hO-i-3GkQW0?parent-topic-id=j-m8a-c06-1" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：【觀念】認識等差數列">
+                                <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>看影片：【觀念】認識等差數列</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/video/MSDQApxeR1k?parent-topic-id=j-m8a-c06-1" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：【素養動畫】【觀念】等差數列的一般項與公差">
+                                <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>看影片：【素養動畫】等差數列的一般項與公差</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/e
