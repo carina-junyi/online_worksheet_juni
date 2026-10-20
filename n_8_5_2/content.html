@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N-8-5 【進階】等差級數求和互動講義</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        svg { max-width: 100%; height: auto; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn.active { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .step-locked { opacity: 0.5; pointer-events: none; filter: grayscale(0.8); }
+        .step-unlocked { animation: popIn .45s ease both; }
+        @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+        .shake { animation: shake .38s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 50%{transform:translateX(5px)} 75%{transform:translateX(-3px)} }
+        .opt-correct { background:#dcfce7 !important; border-color:#22c55e !important; color:#14532d !important; }
+        .opt-wrong { background:#fee2e2 !important; border-color:#f87171 !important; color:#7f1d1d !important; }
+        .opt-dim { opacity:.5; }
+        button:disabled, input:disabled { cursor: not-allowed; }
+        button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
+        s.strike { text-decoration: none; position: relative; display: inline-block; color: #be123c; }
+        s.strike::after { content: ''; position: absolute; left: -3px; right: -3px; top: 52%; border-top: 2px solid #e11d48; }
+        .stage .stage-lock-msg { display: none; }
+        .stage.stage-locked .stage-lock-msg { display: block; }
+        .stage.stage-locked .stage-body { display: none; }
+        .kw { transition: all .25s ease; border-radius: 4px; }
+        .kw-on .kw { background: #fef08a; box-shadow: 0 0 0 2px #facc15; padding: 0 2px; font-weight: 700; }
+        .seg[aria-pressed="true"], .tg[aria-pressed="true"] { background:#059669; color:#fff; border-color:#059669; }
+        /* 全頁字級：比 Tailwind 預設各大 3px */
+        body { font-size: 19px; }
+        .text-xs { font-size: 15px !important; line-height: 1.6 !important; }
+        .text-sm { font-size: 17px !important; line-height: 1.65 !important; }
+        .text-base { font-size: 19px !important; line-height: 1.6 !important; }
+        .text-lg { font-size: 21px !important; line-height: 1.5 !important; }
+        .text-xl { font-size: 23px !important; line-height: 1.45 !important; }
+        .text-2xl { font-size: 27px !important; line-height: 1.35 !important; }
+        .text-3xl { font-size: 33px !important; line-height: 1.25 !important; }
+        .text-\[11px\] { font-size: 14px !important; }
+        .text-\[10px\] { font-size: 13px !important; }
+        @media (min-width: 768px) { .md\:text-4xl { font-size: 39px !important; line-height: 1.2 !important; } }
+        /* 窄螢幕（手機）：縮小層層留白，讓圖可以畫大一點 */
+        @media (max-width: 640px) {
+            body.p-4 { padding: 8px !important; }
+            .p-6 { padding: 14px !important; }
+            .p-5 { padding: 10px !important; }
+            .p-4 { padding: 10px !important; }
+            .p-3 { padding: 6px !important; }
+        }
+        .gate-ring { box-shadow: 0 0 0 3px #f59e0b; animation: gatePulse 1.4s ease-in-out infinite; }
+        @keyframes gatePulse { 0%,100% { box-shadow: 0 0 0 3px #f59e0b; } 50% { box-shadow: 0 0 0 7px rgba(245,158,11,.25); } }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- 1. Header（標題列） -->
+        <!-- 1. Header（標題列） -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 【進階】等差級數求和</h1>
+            <p class="text-slate-600">N-8-5 互動式學習講義</p>
+        </header>
+
+        <!-- 2. 🎯 學習目標 -->
+        <!-- 2. 🎯 學習目標 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="no-katex mr-2 w-5 h-5" aria-label="學習目標圖示"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>我能從題目中找出首項、末項、項數，算出等差級數的和。</li>
+                <li>我能判斷題目還缺哪一個數，先數項數或先求末項，再求和。</li>
+                <li>我能把生活情境轉成等差級數，並檢查自己的答案合不合理。</li>
+            </ul>
+        </section>
+
+        <p class="text-xs font-bold text-slate-600 text-center mb-6">還沒學過，或想複習觀念？先到 📘 【觀念】等差級數求和 闖關，再回來練習。</p>
+
+        <!-- 👤 學生識別（只有接上後台時才會顯示） -->
+        <section id="who-card" class="hidden bg-white rounded-xl shadow-sm p-5 mb-6 border-l-4 border-sky-500 space-y-3" aria-labelledby="who-title">
+            <h2 id="who-title" class="text-lg font-bold text-sky-800 flex items-center">
+                <i data-lucide="user-round" class="no-katex mr-2 w-5 h-5" aria-label="學生圖示"></i> 👤 開始前：告訴老師你是誰
+            </h2>
+            <p class="text-xs text-slate-600">只要填<b>班級代碼</b>和<b>座號</b>，<b>不要填姓名</b>。老師會在後台看到你的作答進度。</p>
+            <div class="flex flex-wrap items-center gap-3 text-xs font-bold">
+                <label class="flex items-center gap-1.5">班級代碼
+                    <input type="text" id="who-class" maxlength="20" aria-label="輸入班級代碼" class="w-28 p-1.5 border border-slate-300 rounded text-center" placeholder="例：801"></label>
+                <label class="flex items-center gap-1.5">座號
+                    <input type="number" id="who-seat" min="1" max="99" aria-label="輸入座號" class="w-20 p-1.5 border border-slate-300 rounded text-center" placeholder="例：12"></label>
+                <button type="button" onclick="saveWho()" aria-label="確認班級代碼和座號" class="px-3 py-1.5 bg-sky-600 text-white rounded hover:bg-sky-700">確認</button>
+            </div>
+            <p id="who-msg" class="text-xs font-bold text-sky-800" aria-live="polite"></p>
+        </section>
+
+        <!-- 3. 分頁切換按鈕區 -->
+        <div role="tablist" class="flex flex-wrap justify-center gap-3 md:gap-6 mb-8" aria-label="講義分頁">
+            <button id="btn-tab-2" type="button" role="tab" aria-selected="true" aria-controls="tab-2" aria-label="切換至思考試煉分頁" onclick="switchTab(2)" class="tab-btn active bg-amber-500 hover:bg-amber-600 text-white font-bold px-5 md:px-6 py-3 rounded-xl shadow flex items-center gap-2">
+                ⚡ 思考試煉
+            </button>
+            <button id="btn-tab-3" type="button" role="tab" aria-selected="false" aria-controls="tab-3" aria-label="切換至挑戰突破分頁" onclick="switchTab(3)" class="tab-btn bg-rose-600 hover:bg-rose-700 text-white font-bold px-5 md:px-6 py-3 rounded-xl shadow flex items-center gap-2 opacity-70">
+                🔥 挑戰突破
+            </button>
+        </div>
+
+        <!-- ==================== 分頁二：思考試煉（黃色） ==================== -->
+        <div id="tab-2" role="tabpanel" aria-labelledby="btn-tab-2" class="tab-content space-y-6">
+            <section class="bg-white rounded-xl shadow-md p-6 border border-amber-200">
+                <h3 class="text-2xl font-bold text-amber-800 mb-2 flex items-center">
+                    <i data-lucide="help-circle" class="no-katex mr-2 text-amber-600" aria-label="測驗圖示"></i> ⚡ 思考試煉：基礎題組練習
+                </h3>
+                <p class="text-xs text-slate-500 mb-6">包含三個基礎題組，答對第 1 題即可解鎖下一題！選項由小到大排列，答錯採蘇格拉底式引導；卡住時可以按「💡 提示」，答對後可以看「📝 一步步解題」。</p>
+                <div id="quiz-t2" class="space-y-8"></div>
+                <div class="mt-8 text-center">
+                    <button type="button" onclick="switchTab(3)" aria-label="前往挑戰突破分頁" class="inline-flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white font-bold px-5 py-3 rounded-xl shadow">🔥 下一步：挑戰突破</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== 分頁三：挑戰突破（紅色） ==================== -->
+        <div id="tab-3" role="tabpanel" aria-labelledby="btn-tab-3" class="tab-content hidden space-y-6">
+            <section class="bg-white rounded-xl shadow-md p-6 border border-rose-200">
+                <h3 class="text-2xl font-bold text-rose-800 mb-2 flex items-center">
+                    <i data-lucide="zap" class="no-katex mr-2 text-rose-600" aria-label="挑戰圖示"></i> 🔥 挑戰突破：應用題練習
+                </h3>
+                <p class="text-xs text-slate-500 mb-6">每個題組先「🔍 先想一想」：看看題目還缺哪一個數，再動手算！</p>
+                <div id="quiz-t3" class="space-y-6"></div>
+
+                <!-- 🌟 學習反思自我評估專區 -->
+                <div class="bg-rose-50 p-6 rounded-xl border border-rose-200 mt-8 space-y-6">
+                    <h4 class="font-bold text-rose-900 flex items-center text-lg border-b border-rose-200 pb-2">
+                        <i data-lucide="award" class="no-katex mr-2" aria-label="評估圖示"></i> 🌟 學習反思自我評估專區
+                    </h4>
+                    <p class="text-xs text-rose-800">經過今天的探索與練習，評估一下自己掌握等差級數求和的程度吧！</p>
+
+                    <div class="bg-white p-3.5 rounded-xl border border-rose-200 text-xs font-bold flex flex-wrap justify-between items-center text-slate-700 gap-2">
+                        <span>📊 系統答題對照：<span id="sys-score" class="text-rose-600 font-extrabold text-sm" aria-live="polite">尚未作答</span></span>
+                        <span class="text-slate-500 font-normal">（全份 12 題，以第一次作答計算）</span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 text-xs">
+                        <span class="text-slate-500">💾 作答會自動存在這台裝置，下次打開會接著做。</span>
+                        <button type="button" id="reset-btn" onclick="resetProgress()" aria-label="清除這台裝置上的作答紀錄，重新開始" class="px-2.5 py-1 bg-white border border-slate-300 rounded font-bold text-slate-600 hover:bg-slate-100">🔄 清除我的紀錄，重新開始</button>
+                        <span id="reset-msg" class="font-bold text-emerald-700" aria-live="polite"></span>
+                    </div>
+
+
+                    <div class="bg-white p-5 rounded-xl border border-rose-100 space-y-5">
+                        <div class="space-y-2">
+                            <p class="font-bold text-slate-800 text-sm">🗣️ 我現在能解釋（可多選）：</p>
+                            <div class="grid grid-cols-1 gap-2">
+                                <button type="button" onclick="toggleOption(this)" aria-pressed="false" aria-label="自評能力選項 1：為什麼倒過來相加後要除以 2" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>為什麼「倒過來相加」之後，要再除以 $2$</span><span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                                <button type="button" onclick="toggleOption(this)" aria-pressed="false" aria-label="自評能力選項 2：為什麼項數要多加 1" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>為什麼項數是（末項 − 首項）÷ 公差之後，還要再 ＋ 1</span><span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                                <button type="button" onclick="toggleOption(this)" aria-pressed="false" aria-label="自評能力選項 3：為什麼第 n 項只加 n 減 1 個公差" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>為什麼第 $n$ 項是加 $(n - 1)$ 個公差，不是 $n$ 個</span><span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-2 border-t border-slate-100 pt-3">
+                            <p class="font-bold text-slate-800 text-sm">💡 我學會（可多選）：</p>
+                            <div class="grid grid-cols-1 gap-2">
+                                <button type="button" onclick="toggleOption(this)" aria-pressed="false" aria-label="自評心得選項 1：分辨數列和級數並找出首項末項項數" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>分辨數列和級數，並找出首項、末項、項數</span><span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                                <button type="button" onclick="toggleOption(this)" aria-pressed="false" aria-label="自評心得選項 2：用首項加末項乘項數除以 2 求和" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>用（首項 ＋ 末項）× 項數 ÷ $2$ 求和，項數不明顯時會先數項數</span><span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                                <button type="button" onclick="toggleOption(this)" aria-pressed="false" aria-label="自評心得選項 3：不知道末項時先求末項再求和" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
+                                    <span>不知道末項時，先用 $a_n = a_1 + (n - 1)d$ 求出末項，再求和</span><span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-rose-100 space-y-3">
+                        <p class="font-bold text-slate-800 text-sm">🔍 我的錯題診斷（可多選，答錯時系統會自動幫你勾 🤖）：</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs font-medium text-slate-700">
+                            <label class="flex items-center gap-1.5 p-2 bg-slate-50 border rounded cursor-pointer hover:bg-rose-50">
+                                <input type="checkbox" id="diag-1" onchange="updateDiagnosticTips()" class="accent-rose-600" aria-label="項數算錯 忘了加 1 或漏數負數"> 項數算錯（忘了 ＋ 1、漏數負數）
+                            </label>
+                            <label class="flex items-center gap-1.5 p-2 bg-slate-50 border rounded cursor-pointer hover:bg-rose-50">
+                                <input type="checkbox" id="diag-2" onchange="updateDiagnosticTips()" class="accent-rose-600" aria-label="忘了除以 2 或首末項沒相加"> 忘了 $\div 2$ 或首末項沒相加
+                            </label>
+                            <label class="flex items-center gap-1.5 p-2 bg-slate-50 border rounded cursor-pointer hover:bg-rose-50">
+                                <input type="checkbox" id="diag-3" onchange="updateDiagnosticTips()" class="accent-rose-600" aria-label="第 n 項或公差算錯"> 第 $n$ 項或公差算錯
+                            </label>
+                            <label class="flex items-center gap-1.5 p-2 bg-slate-50 border rounded cursor-pointer hover:bg-rose-50">
+                                <input type="checkbox" id="diag-4" onchange="updateDiagnosticTips()" class="accent-rose-600" aria-label="名詞搞混或不知道從哪下手"> 名詞搞混或不知道從哪下手
+                            </label>
+                        </div>
+                        <div id="diag-tips" class="hidden space-y-2 mt-3 pt-2 border-t border-slate-100"></div>
+                    </div>
+
+                    <!-- 🎓 均一教育平台 延伸學習資源 -->
+                    <div class="bg-white p-5 rounded-xl border border-rose-100 space-y-4 text-center">
+                        <h5 class="font-bold text-sky-900 text-base flex items-center justify-center gap-1.5">
+                            <i data-lucide="external-link" class="no-katex w-5 h-5 text-sky-600" aria-label="外部連結圖示"></i> 🎓 均一教育平台 延伸學習資源
+                        </h5>
+                        <div class="space-y-2 text-left">
+                            <p class="text-xs font-bold text-sky-800 bg-sky-50 p-1.5 rounded border border-sky-200">📌 本課核心（數學 ＞ 八年級 ＞ 均一版 ＞ 第六章 數列與級數 ＞ 6-2 等差級數）：</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                <a href="https://www.junyiacademy.org/topics/j-m8a-c06" target="_blank" rel="noopener noreferrer" aria-label="前往均一版八年級第六章主題頁" class="p-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-lg shadow-sm transition-all text-center flex items-center justify-center gap-1">
+                                    <i data-lucide="book-open" class="no-katex w-3.5 h-3.5" aria-label="圖示"></i> 第六章 數列與級數</a>
+                                <a href="https://www.junyiacademy.org/video/SFSLFKAhfWo?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="前往影片：級數和等差級數 1" class="p-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-lg shadow-sm transition-all text-center flex items-center justify-center gap-1">
+                                    <i data-lucide="video" class="no-katex w-3.5 h-3.5" aria-label="圖示"></i> 【觀念】級數和等差級數 1</a>
+                                <a href="https://www.junyiacademy.org/video/431S7NPbmG4?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="前往影片：等差級數求和 利用首項末項項數" class="p-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-lg shadow-sm transition-all text-center flex items-center justify-center gap-1">
+                                    <i data-lucide="video" class="no-katex w-3.5 h-3.5" aria-label="圖示"></i> 【素養動畫】等差級數求和（首項、末項、項數）</a>
+                                <a href="https://www.junyiacademy.org/video/h4wYKIZJpbY?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="前往影片：等差級數的應用問題 1" class="p-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-lg shadow-sm transition-all text-center flex items-center justify-center gap-1">
+                                    <i data-lucide="video" class="no-katex w-3.5 h-3.5" aria-label="圖示"></i> 【素養動畫】等差級數的應用問題 1</a>
+                            </div>
+                            <p class="text-xs font-bold text-sky-800 pt-1">✏️ 配搭練習題：</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+                                <a href="https://www.junyiacademy.org/exercise/mjnsl8ba?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="前往練習題：認識級數與等差級數" class="p-2 bg-white border border-sky-300 text-sky-800 font-bold rounded-lg text-center hover:bg-sky-50 flex items-center justify-center gap-1">
+                                    <i data-lucide="pencil-line" class="no-katex w-3.5 h-3.5" aria-label="圖示"></i> 【基礎】認識級數與等差級數</a>
+                                <a href="https://www.junyiacademy.org/exercise/jnc-8-05-1-2a?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="前往練習題：等差級數的和" class="p-2 bg-white border border-sky-300 text-sky-800 font-bold rounded-lg text-center hover:bg-sky-50 flex items-center justify-center gap-1">
+                                    <i data-lucide="pencil-line" class="no-katex w-3.5 h-3.5" aria-label="圖示"></i> 【基礎】等差級數的和</a>
+                                <a href="https://www.junyiacademy.org/exercise/n-m8bch1-2-1a?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="前往練習題：等差級數的公式 1" class="p-2 bg-white border border-sky-300 text-sky-800 font-bold rounded-lg text-center hover:bg-sky-50 flex items-center justify-center gap-1">
+                                    <i data-lucide="pencil-line" class="no-katex w-3.5 h-3.5" aria-label="圖示"></i> 【基礎】等差級數的公式 1</a>
+                                <a href="https://www.junyiacademy.org/exercise/n-m8bch1-2-1b?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="前往練習題：等差級數的公式 2" class="p-2 bg-white border border-sky-300 text-sky-800 font-bold rounded-lg text-center hover:bg-sky-50 flex items-center justify-center gap-1">
+                                    <i data-lucide="pencil-line" class="no-katex w-3.5 h-3.5" aria-label="圖示"></i> 【基礎】等差級數的公式 2</a>
+                                <a href="https://www.junyiacademy.org/exercise/n-m8bch1-2-2a?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="前往練習題：等差級數的應用" class="p-2 bg-white border border-sky-300 text-sky-800 font-bold rounded-lg text-center hover:bg-sky-50 flex items-center justify-center gap-1">
+                                    <i data-lucide="pencil-line" class="no-katex w-3.5 h-3.5" aria-label="圖示"></i> 【一般】等差級數的應用</a>
+                                <a href="https://www.junyiacademy.org/exercise/jnc-8-05-1-5a?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="前往練習題：等差級數的應用 2" class="p-2 bg-white border border-sky-300 text-sky-800 font-bold rounded-lg text-center hover:bg-sky-50 flex items-center justify-center gap-1">
+                                    <i data-lucide="pencil-line" class="no-katex w-3.5 h-3.5" aria-label="圖示"></i> 【一般】等差級數的應用 2</a>
+                            </div>
+                        </div>
+                        <div class="space-y-2 text-left pt-2 border-t border-slate-100">
+                            <p class="text-xs font-bold text-slate-600 bg-slate-100 p-1.5 rounded border border-slate-200">🚀 想再往前走（均一版 八年級 後續章節）：</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                <a href="https://www.junyiacademy.org/topics/j-m8a-c06-3" target="_blank" rel="noopener noreferrer" aria-label="前往均一版八年級 6-3 等比數列" class="p-2.5 bg-slate-700 hover:bg-slate-800 text-white font-bold rounded-lg shadow-sm transition-all text-center flex items-center justify-center gap-1">
+                                    <i data-lucide="layers" class="no-katex w-3.5 h-3.5" aria-label="圖示"></i> 6-3 等比數列</a>
+                                <a href="https://www.junyiacademy.org/topics/j-m8a-c07" target="_blank" rel="noopener noreferrer" aria-label="前往均一版八年級第七章線型函數與其圖形" class="p-2.5 bg-slate-700 hover:bg-slate-800 text-white font-bold rounded-lg shadow-sm transition-all text-center flex items-center justify-center gap-1">
+                                    <i data-lucide="folder" class="no-katex w-3.5 h-3.5" aria-label="圖示"></i> 第七章 線型函數與其圖形</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </div>
+
+    <!-- 重點小卡 -->
+    <!-- 重點小卡 -->
+    <button type="button" id="mt-btn" onclick="toggleHelper()" aria-expanded="false" aria-controls="mt-panel" aria-label="打開或關閉重點小卡"
+        class="fixed bottom-4 right-4 z-40 rounded-full bg-sky-600 text-white text-sm font-bold px-4 py-3 shadow-xl hover:bg-sky-700">📐 重點小卡</button>
+    <div id="mt-panel" class="hidden fixed bottom-20 right-4 z-40 bg-white rounded-xl border border-sky-300 shadow-2xl p-4 w-72 max-w-[calc(100vw-2rem)]" role="dialog" aria-label="重點小卡">
+        <div class="flex items-center justify-between mb-2">
+            <p class="font-bold text-sky-800 text-sm">📐 重點小卡</p>
+            <button type="button" onclick="toggleHelper()" aria-label="關閉重點小卡" class="text-slate-400 hover:text-slate-700 font-bold px-2">✕</button>
+        </div>
+        <ul class="text-xs font-medium text-slate-700 space-y-1.5">
+            <li>首項：第一個數；末項：最後一個數；項數：一共有幾個數</li>
+            <li><b>和 ＝（首項 ＋ 末項）× 項數 ÷ 2</b></li>
+            <li>項數 ＝（末項 − 首項）÷ 公差 ＋ 1</li>
+            <li>末項：$a_n = a_1 + (n - 1)d$</li>
+            <li>符號：$S_n = \dfrac{n(a_1 + a_n)}{2}$</li>
+            <li>記得：最後一定要 $\div 2$</li>
+        </ul>
+    </div>
+
+    <!-- JS 邏輯 -->
+    <script>
+        // ========== 1. 核心配置（含 ignoredClasses） ==========
+        const katexConfig = {
+            delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false }
+            ],
+            ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option'],
+            ignoredClasses: ['no-katex'],
+            throwOnError: false,
+            strict: 'ignore'
+        };
+        function renderMath(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                try { renderMathInElement(element, katexConfig); } catch (e) { console.warn(e); }
+            }
+        }
+        function refreshIcons() { if (typeof lucide !== 'undefined') { try { lucide.createIcons(); } catch (e) { console.warn(e); } } }
+        const $id = (id) => document.getElementById(id);
+        function plain(s) {
+            return String(s).replace(/<[^>]+>/g, '').replace(/\\text\{([^}]*)\}/g, '$1').replace(/\^\\circ/g, '度').replace(/\\times/g, '×')
+                .replace(/\\div/g, '÷').replace(/\\dots/g, '…').replace(/\\d?frac/g, '').replace(/_\{([^}]*)\}/g, '$1').replace(/_(\w)/g, '$1')
+                .replace(/[{}]/g, '').replace(/\$/g, '').replace(/\(/g, '（').replace(/\)/g, '）').replace(/,\s*/g, '、').replace(/\s+/g, ' ').trim();
+        }
+        // 共用樣式（參考範本）
+        const FB = {
+            ok: 'mt-2 p-2.5 rounded-lg text-xs font-bold leading-relaxed bg-green-100 text-green-900 border border-green-300',
+            bad: 'mt-2 p-2.5 rounded-lg text-xs font-bold leading-relaxed bg-red-100 text-red-900 border border-red-300',
+            hint: 'mt-2 p-2.5 rounded-lg text-xs font-bold leading-relaxed bg-slate-100 text-slate-700 border border-slate-300'
+        };
+        const PANEL = {
+            ok: 'p-4 rounded-xl text-xs font-bold leading-relaxed border bg-green-50 border-green-300 text-green-950 space-y-1.5',
+            bad: 'p-4 rounded-xl text-xs font-bold leading-relaxed border bg-rose-50 border-rose-300 text-rose-950 space-y-1.5',
+            info: 'p-4 rounded-xl text-xs font-bold leading-relaxed border bg-emerald-50 border-emerald-200 text-emerald-950 space-y-1.5',
+            warn: 'p-4 rounded-xl text-xs font-bold leading-relaxed border bg-amber-50 border-amber-300 text-amber-900 space-y-1.5'
+        };
+        const NOTE = {
+            sky: 'p-2.5 rounded-lg text-xs font-bold border bg-sky-50 border-sky-200 text-sky-900',
+            violet: 'p-2.5 rounded-lg text-xs font-bold border bg-violet-50 border-violet-200 text-violet-900',
+            amber: 'p-2.5 rounded-lg text-xs font-bold border bg-amber-50 border-amber-200 text-amber-900',
+            rose: 'p-2.5 rounded-lg text-xs font-bold border bg-rose-50 border-rose-200 text-rose-900',
+            green: 'p-2.5 rounded-lg text-xs font-bold border bg-green-50 border-green-200 text-green-900'
+        };
+        // 數學小工具
+        const SUB = (n) => String(n).split('').map(c => '₀₁₂₃₄₅₆₇₈₉'[+c]).join('');
+        const fmtN = (x) => x < 0 ? `(${x})` : `${x}`;            // 只用在 $...$ 裡
+        const signed = (x) => x >= 0 ? `+${x}` : `−${Math.abs(x)}`; // SVG 顯示用
+        const arith = (a, d, n) => Array.from({ length: n }, (_, i) => a + i * d);
+        const sum = (arr) => arr.reduce((s, v) => s + v, 0);
+        function seqStr(arr, sep) {
+            sep = sep || ' + ';
+            const show = arr.map(v => v < 0 && sep === ' + ' ? `(${v})` : `${v}`);
+            return arr.length <= 6 ? show.join(sep) : `${show[0]}${sep}${show[1]}${sep}\\dots${sep}${show[show.length - 1]}`;
+        }
+        // 長條圖（正數向上、負數向下）
+        function barChart(vals, o) {
+            const W = o.W, top = o.top, bot = o.bot, n = vals.length;
+            const mx = Math.max(0, ...vals), mn = Math.min(0, ...vals), span = (mx - mn) || 1;
+            const k = (bot - top) / span, base = top + mx * k;
+            const slot = (W - 80) / n, bw = Math.min(54, slot * 0.68), fs = o.fs || 16;
+            let s = `<line x1="30" y1="${base.toFixed(1)}" x2="${W - 20}" y2="${base.toFixed(1)}" stroke="#94a3b8" stroke-width="2"/>`;
+            vals.forEach((v, i) => {
+                const cx = 50 + slot * (i + 0.5), h = Math.abs(v) * k, y = v >= 0 ? base - h : base;
+                const col = o.hl === i ? '#d97706' : (v >= 0 ? '#10b981' : '#f43f5e');
+                s += `<rect x="${(cx - bw / 2).toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(h, 2).toFixed(1)}" rx="4" fill="${col}" fill-opacity=".85"/>`;
+                const ty = v >= 0 ? y - 6 : y + h + 17;
+                s += `<text x="${cx.toFixed(1)}" y="${ty.toFixed(1)}" text-anchor="middle" font-size="${fs}" font-weight="900" fill="${v >= 0 ? '#065f46' : '#9f1239'}">${v}</text>`;
+                if (o.labels) {
+                    const ly = v >= 0 ? base + 19 : base - 8;
+                    s += `<text x="${cx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" font-size="${fs - 2}" font-weight="700" fill="${o.hl === i ? '#b45309' : '#475569'}">a${SUB(i + 1)}</text>`;
+                }
+            });
+            return s;
+        }
+
+
+        // ========== 2. 分頁切換 ==========
+        let currentTab = 2;
+        function switchTab(idx) {
+            currentTab = idx;
+            for (const i of [2, 3]) {
+                const tab = $id(`tab-${i}`), btn = $id(`btn-tab-${i}`);
+                if (tab) tab.classList.toggle('hidden', i !== idx);
+                if (btn) {
+                    btn.classList.toggle('active', i === idx);
+                    btn.classList.toggle('opacity-70', i !== idx);
+                    btn.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+                }
+            }
+            const activeTab = $id(`tab-${idx}`);
+            if (activeTab) renderMath(activeTab);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (typeof saveProgress === 'function') saveProgress();
+        }
+
+        // ========== 3. 解鎖問題 ==========
+        let quietUntil = 0;
+        function unlockQuestion(id) {
+            const el = $id(id);
+            if (!el) return;
+            el.classList.remove('step-locked', 'hidden');
+            el.classList.add('step-unlocked');
+            el.removeAttribute('aria-hidden');
+            renderMath(el);
+            refreshIcons();
+            if (Date.now() > quietUntil) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 150);
+        }
+
+        // ========== 4. 答題追蹤（固定分母 12 題） ==========
+        const TOTAL_Q = 12;
+        const quizTracker = {
+            records: {},
+            record(qid, isCorrect) {
+                if (!this.records[qid]) this.records[qid] = { firstTry: isCorrect, solved: false }; // 防重複覆寫
+                if (isCorrect) this.records[qid].solved = true;
+                updateSysScore();
+            },
+            attemptedCount() { return Object.keys(this.records).length; },
+            correctCount() { return Object.values(this.records).filter(r => r.firstTry).length; },
+            solvedCount() { return Object.values(this.records).filter(r => r.solved).length; },
+            isSolved(qid) { return !!(this.records[qid] && this.records[qid].solved); }
+        };
+        function updateSysScore() {
+            const el = $id('sys-score');
+            if (quizTracker.attemptedCount() === 0) { el.innerText = '尚未作答'; return; }
+            const pct = Math.round((quizTracker.correctCount() / TOTAL_Q) * 100);
+            el.innerText = `正確率 ${pct}%（已完成 ${quizTracker.solvedCount()}/12 題）`;
+        }
+
+        // ========== 5. 分頁三示意圖（不寫出答案；手機用 360 寬畫布） ==========
+        const NARROW_MQ = window.matchMedia ? window.matchMedia('(max-width: 640px)') : null;
+        const isNarrow = () => !!(NARROW_MQ && NARROW_MQ.matches);
+        const PW = () => isNarrow() ? 360 : 560;
+        function svgCups() {
+            // 每杯 4 單位高：12、16、…、40 杯 → 48～160，比例正確；第 2～7 天未知用虛線
+            const W = PW(), nar = W < 500, bx = nar ? W / 2 - 125 : 300, gap = nar ? 40 : 58, bwid = nar ? 28 : 36, x0 = nar ? 26 : 52;
+            let s = `<svg class="no-katex w-full" viewBox="0 0 ${W} 300" role="img" aria-label="義賣 第 1 天 12 杯 第 8 天 40 杯 每天多賣同樣多杯 共 8 天">`;
+            s += `<rect x="${bx}" y="10" width="250" height="34" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>`;
+            s += `<text x="${bx + 125}" y="33" text-anchor="middle" font-size="16" font-weight="900" fill="#92400e">8 天合計：？ 杯</text>`;
+            const base = 246;
+            for (let i = 0; i < 8; i++) {
+                const v = 12 + 4 * i, h = v * 4, x = x0 + i * gap, known = i === 0 || i === 7;
+                s += known ? `<rect x="${x}" y="${base - h}" width="${bwid}" height="${h}" rx="4" fill="#facc15" stroke="#ca8a04" stroke-width="2"/>`
+                           : `<rect x="${x}" y="${base - h}" width="${bwid}" height="${h}" rx="4" fill="#fefce8" stroke="#eab308" stroke-width="2" stroke-dasharray="5 4"/>`;
+                if (known) s += `<text x="${x + bwid / 2}" y="${base - h - 8}" text-anchor="middle" font-size="15" font-weight="900" fill="#854d0e">${v} 杯</text>`;
+                s += `<text x="${x + bwid / 2}" y="${base + 20}" text-anchor="middle" font-size="14" font-weight="700" fill="#475569">${i + 1}</text>`;
+            }
+            s += `<line x1="${x0 - 12}" y1="${base}" x2="${x0 + 7 * gap + bwid + 12}" y2="${base}" stroke="#475569" stroke-width="2"/>`;
+            s += `<text x="${W / 2}" y="290" text-anchor="middle" font-size="15" font-weight="700" fill="#be123c">第幾天（虛線：每天多賣同樣多杯）</text>`;
+            return s + `</svg>`;
+        }
+        function svgRun() {
+            // 寬螢幕 1 m = 0.3 單位、手機 1 m = 0.18 單位：500、600、700、1400 m，比例正確
+            const W = PW(), k = W < 500 ? 0.18 : 0.3;
+            const bar = (y, m, lab, txt, dash) => `<text x="12" y="${y + 18}" font-size="15" font-weight="700" fill="#334155">${lab}</text>` +
+                `<rect x="96" y="${y}" width="${m * k}" height="26" rx="6" fill="${dash ? '#e0f2fe' : '#38bdf8'}" stroke="#0284c7" stroke-width="2" ${dash ? 'stroke-dasharray="6 4"' : ''}/>` +
+                `<text x="${dash ? 96 + m * k / 2 : 104 + m * k}" y="${y + 19}" ${dash ? 'text-anchor="middle"' : ''} font-size="15" font-weight="900" fill="#0369a1">${txt}</text>`;
+            let s = `<svg class="no-katex w-full" viewBox="0 0 ${W} 300" role="img" aria-label="路跑練習 第 1 天 500 公尺 每天多 100 公尺 共 10 天">`;
+            s += `<text x="12" y="22" font-size="15" font-weight="700" fill="#475569">🏃 每天跑的距離</text>`;
+            s += bar(36, 500, '第 1 天', '500 m') + bar(74, 600, '第 2 天', '600 m') + bar(112, 700, '第 3 天', '700 m');
+            s += `<text x="${96 + 350 * k}" y="176" text-anchor="middle" font-size="26" font-weight="900" fill="#64748b">⋮</text>`;
+            s += bar(196, 1400, '第 10 天', '？ m', true);
+            s += `<text x="${W / 2}" y="258" text-anchor="middle" font-size="16" font-weight="700" fill="#be123c">↓ 每天多跑 100 m　共 10 天</text>`;
+            s += `<text x="${W / 2}" y="286" text-anchor="middle" font-size="17" font-weight="900" fill="#7c3aed">10 天合計：？ m</text>`;
+            return s + `</svg>`;
+        }
+        function svgPlanter() {
+            // 盆栽間距：寬螢幕 20、手機 12；4、7、10、22 盆的寬度成比例
+            const W = PW(), nar = W < 500, sp = nar ? 12 : 20, kk = sp / 20, cx = W / 2 - (nar ? 0 : 30);
+            const pot = (x, y) => `<g transform="translate(${x.toFixed(1)} ${y}) scale(${kk})"><path d="M3 10 L17 10 L14 26 L6 26 Z" fill="#c2410c"/><circle cx="10" cy="5" r="7" fill="#22c55e"/></g>`;
+            const row = (y, cnt, lab) => {
+                let s = ''; const x0 = cx - cnt * sp / 2, ly = y + 26 * kk + 2;
+                for (let i = 0; i < cnt; i++) s += pot(x0 + i * sp, y);
+                s += `<line x1="${(x0 - 4).toFixed(1)}" y1="${ly.toFixed(1)}" x2="${(x0 + cnt * sp + 4).toFixed(1)}" y2="${ly.toFixed(1)}" stroke="#78716c" stroke-width="4" stroke-linecap="round"/>`;
+                return s + (nar ? `<text x="${(x0 - 10).toFixed(1)}" y="${y + 14}" text-anchor="end" font-size="15" font-weight="700" fill="#166534">${lab}</text>`
+                                : `<text x="${cx + cnt * sp / 2 + 12}" y="${y + 22}" font-size="15" font-weight="700" fill="#166534">${lab}</text>`);
+            };
+            let s = `<svg class="no-katex w-full" viewBox="0 0 ${W} 300" role="img" aria-label="階梯花台 最上層 4 盆 往下每層多 3 盆 最下層 22 盆 中間層數未知">`;
+            s += row(14, 4, '4 盆') + row(54, 7, '7 盆') + row(94, 10, '10 盆');
+            s += `<text x="${cx}" y="160" text-anchor="middle" font-size="28" font-weight="900" fill="#64748b">⋮</text>`;
+            s += `<text x="${cx}" y="190" text-anchor="middle" font-size="17" font-weight="900" fill="#7c3aed">中間還有幾層？</text>`;
+            s += row(204, 22, '22 盆');
+            s += `<text x="${cx}" y="266" text-anchor="middle" font-size="16" font-weight="700" fill="#be123c">↓ 每往下一層多 3 盆</text>`;
+            s += `<text x="${cx}" y="292" text-anchor="middle" font-size="17" font-weight="900" fill="#7c3aed">共 ？ 層、？ 盆</text>`;
+            return s + `</svg>`;
+        }
+
+        // ========== 5-1. 提示用說明圖（數字都和本題不同，或未知處用「？」） ==========
+        const hfSvg = (W, h, label, inner) => `<svg class="no-katex w-full" viewBox="0 0 ${W} ${Math.ceil(h)}" role="img" aria-label="${label}">${inner}</svg>`;
+        const hfText = (x, y, t, o) => { o = o || {}; return `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="${o.a || 'middle'}" font-size="${o.fs || 15}" font-weight="${o.fw || 700}" fill="${o.c || '#334155'}">${t}</text>`; };
+        // 說明文字：寬螢幕一行，手機分成兩行
+        function hfCaption(W, y, parts, o) {
+            const lines = W < 500 ? parts : [parts.join('')];
+            let s = '';
+            lines.forEach((t, i) => { s += hfText(W / 2, y + i * 22, t, o); });
+            return { s, y: y + (lines.length - 1) * 22 };
+        }
+        // 數字磚：ends 標首項／末項、arc 標公差、count 標項數、sum 框出前 k 項、mark 指出某一項
+        function figTerms(arr, o) {
+            o = o || {};
+            const W = PW(), n = arr.length, gap = W < 500 ? 10 : 14, bw = Math.min(80, (W - 60 - gap * (n - 1)) / n), tw = n * bw + (n - 1) * gap, x0 = (W - tw) / 2;
+            const top = o.arc ? 52 : 16, th = 50, cx = (i) => x0 + i * (bw + gap) + bw / 2, clampX = (x) => Math.min(Math.max(x, W * 0.3), W * 0.7);
+            let s = '';
+            arr.forEach((v, i) => {
+                const hl = o.sum && i < o.sum.k, tg = o.mark && o.mark.i === i;
+                s += `<rect x="${(cx(i) - bw / 2).toFixed(1)}" y="${top}" width="${bw.toFixed(1)}" height="${th}" rx="8" fill="${hl ? '#fef3c7' : '#ecfdf5'}" stroke="${tg ? '#7c3aed' : (hl ? '#d97706' : '#10b981')}" stroke-width="${tg ? 3.5 : 2}"/>`;
+                s += hfText(cx(i), top + 33, v, { fs: 21, fw: 900, c: '#0f172a' });
+                if (o.arc && i < n - 1) {
+                    const a = cx(i) + 8, b = cx(i + 1) - 8;
+                    s += `<path d="M${a.toFixed(1)} ${top - 4} Q${((a + b) / 2).toFixed(1)} ${top - 34} ${b.toFixed(1)} ${top - 4}" fill="none" stroke="#f59e0b" stroke-width="2"/>`;
+                    s += hfText((a + b) / 2, top - 24, o.arc, { fs: 14, c: '#b45309' });
+                }
+            });
+            let y = top + th;
+            if (o.ends) { y += 24; s += hfText(cx(0), y, '首項', { c: '#047857' }) + hfText(cx(n - 1), y, '末項', { c: '#047857' }); }
+            if (o.mark) { y += 24; s += hfText(clampX(cx(o.mark.i)), y, '↑ ' + o.mark.text, { c: '#6d28d9' }); }
+            if (o.count) {
+                y += 12;
+                s += `<path d="M${x0.toFixed(1)} ${y} L${x0.toFixed(1)} ${y + 8} L${(x0 + tw).toFixed(1)} ${y + 8} L${(x0 + tw).toFixed(1)} ${y}" fill="none" stroke="#0284c7" stroke-width="2"/>`;
+                y += 30; s += hfText(W / 2, y, o.count, { c: '#0369a1' });
+            }
+            if (o.sum) {
+                const xe = x0 + o.sum.k * (bw + gap) - gap;
+                y += 12;
+                s += `<path d="M${x0.toFixed(1)} ${y} L${x0.toFixed(1)} ${y + 8} L${xe.toFixed(1)} ${y + 8} L${xe.toFixed(1)} ${y}" fill="none" stroke="#d97706" stroke-width="2.5"/>`;
+                y += 30;
+                if (o.sum.sub) {   // 左對齊寫 S 加下標，避免各瀏覽器下標位置不同
+                    s += hfText(x0, y, 'S', { a: 'start', fs: 17, fw: 900, c: '#b45309' }) + hfText(x0 + 12, y + 5, o.sum.sub, { a: 'start', fs: 12, fw: 900, c: '#b45309' });
+                    s += hfText(x0 + 24, y, '＝ ' + o.sum.text, { a: 'start', c: '#b45309' });
+                } else s += hfText(clampX((x0 + xe) / 2), y, o.sum.text, { c: '#b45309' });
+            }
+            return hfSvg(W, y + 14, o.label || '數字磚示意圖', s);
+        }
+        // 兩座樓梯拼成長方形：綠色正著排、橘色倒過來疊上去
+        function figStairs(a, d, n, o) {
+            o = o || {};
+            const W = PW(), nar = W < 500, vals = arith(a, d, n), last = vals[n - 1], col = a + last, H = 170, k = H / col, top = 34, base = top + H;
+            const x0 = nar ? 76 : 96, span = W - x0 - (nar ? 14 : 34), slot = span / n, bw = Math.min(46, slot * 0.72), fs = nar && last >= 100 ? 11 : 13;
+            let s = hfText(x0 + span / 2, 22, '綠色：正著排　橘色：倒過來疊上去', { fs: 14 });
+            vals.forEach((v, i) => {
+                const x = x0 + slot * i + (slot - bw) / 2, hg = v * k, ho = vals[n - 1 - i] * k, hl = o.hl === i;
+                s += `<rect x="${x.toFixed(1)}" y="${(base - hg).toFixed(1)}" width="${bw.toFixed(1)}" height="${hg.toFixed(1)}" fill="#10b981" fill-opacity=".85"/>`;
+                s += `<rect x="${x.toFixed(1)}" y="${top}" width="${bw.toFixed(1)}" height="${ho.toFixed(1)}" fill="#f59e0b" fill-opacity=".8"/>`;
+                if (hl) s += `<rect x="${(x - 3).toFixed(1)}" y="${top - 3}" width="${(bw + 6).toFixed(1)}" height="${H + 6}" fill="none" stroke="#7c3aed" stroke-width="3" rx="3"/>`;
+                if (n <= 8) {
+                    if (hg >= 22) s += hfText(x + bw / 2, base - 7, v, { fs, fw: 900, c: '#ffffff' });
+                    if (ho >= 22) s += hfText(x + bw / 2, top + 17, vals[n - 1 - i], { fs, fw: 900, c: '#ffffff' });
+                }
+            });
+            const bx = x0 - 12;
+            s += `<path d="M${bx + 6} ${top} L${bx} ${top} L${bx} ${base} L${bx + 6} ${base}" fill="none" stroke="#7c3aed" stroke-width="2"/>`;
+            s += hfText(bx / 2, top + H / 2 - 6, '每欄', { fs: 13, c: '#6d28d9' }) + hfText(bx / 2, top + H / 2 + 14, `${a}＋${last}`, { fs: 13, c: '#6d28d9' });
+            s += `<path d="M${x0} ${base + 6} L${x0} ${base + 12} L${x0 + span} ${base + 12} L${x0 + span} ${base + 6}" fill="none" stroke="#0284c7" stroke-width="2"/>`;
+            s += hfText(x0 + span / 2, base + 32, `共 ${n} 欄`, { c: '#0369a1' });
+            let c = hfCaption(W, base + 60, [`每一欄都是 ${a} ＋ ${last} ＝ ${col}，`, '長方形是兩份'], { c: '#334155' });
+            s += c.s; let y = c.y;
+            if (o.result) { y += 26; s += hfText(W / 2, y, `一份 ＝ ${col} × ${n} ÷ 2 ＝ ${col * n / 2}${o.unit || ''}`, { fw: 900, c: '#b45309' }); }
+            return hfSvg(W, y + 14, `兩座樓梯拼成長方形 首項 ${a} 末項 ${last} 共 ${n} 欄`, s);
+        }
+        // 青蛙跳：count 模式數「點」和「跳」；nth 模式看第 n 項加了幾次公差
+        function figJumps(a, d, n, o) {
+            o = o || {};
+            const W = PW(), vals = arith(a, d, n), x0 = W < 500 ? 36 : 70, x1 = W - x0, step = (x1 - x0) / (n - 1), ly = 112, u = o.unit || '';
+            let s = `<line x1="${x0 - 26}" y1="${ly}" x2="${x1 + 26}" y2="${ly}" stroke="#94a3b8" stroke-width="2"/>`;
+            vals.forEach((v, i) => {
+                const x = x0 + i * step, end = o.mode === 'nth' && i === n - 1;
+                if (i < n - 1) {
+                    const a2 = x + 9, b2 = x + step - 9;
+                    s += `<path d="M${a2.toFixed(1)} ${ly - 9} Q${((a2 + b2) / 2).toFixed(1)} ${ly - 62} ${b2.toFixed(1)} ${ly - 9}" fill="none" stroke="#f59e0b" stroke-width="2"/>`;
+                    s += hfText((a2 + b2) / 2, ly - 42, `＋${d}`, { fs: 14, c: '#b45309' });
+                    s += hfText((a2 + b2) / 2, ly - 60, `第${i + 1}跳`, { fs: 13, c: '#c2410c' });
+                }
+                s += `<circle cx="${x.toFixed(1)}" cy="${ly}" r="8" fill="${end ? '#7c3aed' : '#10b981'}"/>`;
+                s += hfText(x, ly + 30, `${v}`, { fs: 16, fw: 900, c: '#0f172a' });
+                s += hfText(x, ly + 52, `第${i + 1}項`, { fs: 13, c: end ? '#6d28d9' : '#047857' });
+            });
+            let c;
+            if (o.mode === 'count') c = hfCaption(W, ly + 86, [`跳了 ${n - 1} 次，落腳的點有 ${n} 個：`, '項數 ＝ 跳的次數 ＋ 1'], { c: '#334155' });
+            else {
+                c = hfCaption(W, ly + 86, [`從第 1 項到第 ${n} 項，只跳了 ${n - 1} 次`], { c: '#334155' });
+                const c2 = hfCaption(W, c.y + 26, [`第 ${n} 項 ＝ ${a} ＋ ${n - 1} × ${d} ＝ ${vals[n - 1]}${u}`], { fw: 900, c: '#6d28d9' });
+                c = { s: c.s + c2.s, y: c2.y };
+            }
+            let s2 = s + c.s, y = c.y;
+            if (o.extra) { y += 26; s2 += hfText(W / 2, y, o.extra, { fw: 900, c: '#b45309' }); }
+            return hfSvg(W, y + 14, `數線上的等差數列 首項 ${a} 公差 ${d} 共 ${n} 項`, s2);
+        }
+        // 花台層數：每一層的盆數排成一列
+        function figRows(a, d, n, o) {
+            o = o || {};
+            const W = PW(), vals = arith(a, d, n), sp = Math.min(18, (W - 140) / vals[n - 1]), rh = 30, top = 12, cx = W / 2 + 6;
+            let s = '';
+            vals.forEach((v, i) => {
+                const y = top + i * rh, xs = cx - v * sp / 2;
+                for (let j = 0; j < v; j++) s += `<circle cx="${(xs + j * sp + sp / 2).toFixed(1)}" cy="${y + 11}" r="${(sp * 0.38).toFixed(1)}" fill="#22c55e"/>`;
+                s += `<line x1="${(xs - 2).toFixed(1)}" y1="${y + 22}" x2="${(xs + v * sp + 2).toFixed(1)}" y2="${y + 22}" stroke="#78716c" stroke-width="3" stroke-linecap="round"/>`;
+                s += hfText(8, y + 17, `第${i + 1}層`, { a: 'start', fs: 14, c: '#475569' });
+                s += hfText(xs + v * sp + 8, y + 17, `${v} 盆`, { a: 'start', fs: 14, c: '#166534' });
+            });
+            const c = hfCaption(W, top + n * rh + 18, [`每往下一層多 ${d} 盆：`, `多了 ${n - 1} 次，所以有 ${n} 層`], { c: '#334155' });
+            return hfSvg(W, c.y + 14, `花台 最上層 ${a} 盆 每層多 ${d} 盆 共 ${n} 層`, s + c.s);
+        }
+        // 換螢幕寬度時，把已經畫出來的情境圖和提示圖重畫一次
+        function onLayoutChange() {
+            QUIZ.t3.forEach(g => { const b = $id(g.gid + '-svgbox'); if (b && g.svg) b.innerHTML = g.svg(); });
+            document.querySelectorAll('[data-fig]').forEach(el => { const [q, f] = el.dataset.fig.split('|'); if (HINTS[q] && HINTS[q][f]) el.innerHTML = HINTS[q][f](); });
+        }
+        if (NARROW_MQ) { if (NARROW_MQ.addEventListener) NARROW_MQ.addEventListener('change', onLayoutChange); else if (NARROW_MQ.addListener) NARROW_MQ.addListener(onLayoutChange); }
+
+        // ========== 6. 題目資料庫 ==========
+        const QUIZ = {
+            t2: [
+                { gid: 't2g1', title: '📌 題組一：認識等差級數的名詞', qs: [
+                    { id: 't2g1q1', type: 'choice', stem: '等差級數 $4 + 7 + 10 + 13 + 16$ 的首項、末項、項數分別是多少？', opts: ['首項 $4$、末項 $16$、項數 $5$', '首項 $4$、末項 $16$、項數 $3$', '首項 $16$、末項 $4$、項數 $5$'], ans: 0,
+                      fb: ['', '❌ $3$ 是公差（每次加 $3$）。項數是「一共有幾個數」，一個一個數數看？',
+                           '❌ 首項是<b>第一個</b>數（最左邊），末項是<b>最後一個</b>數（最右邊）。'],
+                      ok: '首項是第一個數 $4$、末項是最後一個數 $16$、一共有 $5$ 個數，所以項數是 $5$。' },
+                    { id: 't2g1q2', type: 'choice', stem: '等差級數 $1 + 4 + 7 + 10 + 13$ 中，$S_3$（前 $3$ 項的和）是多少？', opts: ['$5$', '$7$', '$12$'], ans: 2,
+                      fb: ['❌ $5 = 1 + 4$，只加了前 $2$ 項。$S_3$ 右下角的 $3$ 是什麼意思？',
+                           '❌ $7$ 是<b>第 3 項</b>這一個數。$S_3$ 是前 $3$ 項<b>全部加起來</b>。', ''],
+                      ok: '$S_3 = 1 + 4 + 7 = 12$。' }
+                ]},
+                { gid: 't2g2', title: '📌 題組二：倒過來相加與求和公式', qs: [
+                    { id: 't2g2q1', type: 'choice', stem: '$1 + 2 + 3 + \\dots + 30$ 的和是多少？', opts: ['$465$', '$496$', '$930$'], ans: 0,
+                      fb: ['', '❌ $496 = (1 + 31) \\times 31 \\div 2$，項數好像多算了。從 $1$ 數到 $30$，一共有幾個數？',
+                           '❌ $930 = 31 \\times 30$ 是「正著寫＋倒著寫」<b>兩份</b>的和。題目只要一份呢？'],
+                      ok: '每一欄 $1 + 30 = 31$，共 $30$ 欄：$31 \\times 30 \\div 2 = 465$。' },
+                    { id: 't2g2q2', type: 'choice', stem: '$2 + 4 + 6 + \\dots + 20$ 一共有 $10$ 項，它的和是多少？', opts: ['$55$', '$100$', '$110$'], ans: 2,
+                      fb: ['❌ $55$ 好像多除了一次 $2$？$(2 + 20) \\times 10$ 是兩份，除以 $2$ 一次就好。',
+                           '❌ $100 = 20 \\times 10 \\div 2$，每一欄應該是<b>首項＋末項</b>，首項加了嗎？', ''],
+                      ok: '$(2 + 20) \\times 10 \\div 2 = 110$。' }
+                ]},
+                { gid: 't2g3', title: '📌 題組三：先數項數、先求末項', qs: [
+                    { id: 't2g3q1', type: 'fill', stem: '等差級數 $3 + 7 + 11 + \\dots + 39$ 一共有幾項？', pre: '項數 =', unit: '項', target: 10,
+                      wrong: {
+                          9: '❌ $(39 - 3) \\div 4 = 9$ 是青蛙「跳了幾次」。起點那一項有沒有數進去？',
+                          36: '❌ $36 = 39 - 3$ 是差了多少，可是每次跳 $4$，不是每次跳 $1$。',
+                          37: '❌ $37 = 39 - 3 + 1$，這是每次跳 $1$ 的數法。這裡每次跳幾？' },
+                      generic: '❌ 計算引導：項數 ＝（末項 − 首項）÷ 公差 ＋ 1。先找出公差是多少？' },
+                    { id: 't2g3q2', type: 'fill', stem: '首項是 $5$、公差是 $2$ 的等差級數，前 $6$ 項的和是多少？（提示：先求第 $6$ 項）', pre: '前 6 項的和 =', unit: '', target: 60,
+                      wrong: {
+                          54: '❌ $54 = (5 + 13) \\times 6 \\div 2$，第 $6$ 項你是不是算成 $5 + 4 \\times 2$？從第 $1$ 項到第 $6$ 項，加了幾次公差？',
+                          66: '❌ $66 = (5 + 17) \\times 6 \\div 2$，第 $6$ 項你是不是算成 $5 + 6 \\times 2$？第 $1$ 項還沒加公差喔。',
+                          120: '❌ $120 = (5 + 15) \\times 6$，這是正著加＋倒著加<b>兩份</b>的和，還差一步。',
+                          15: '❌ $15$ 是第 $6$ 項（末項）這一個數，題目問的是前 $6$ 項<b>全部加起來</b>。',
+                          20: '❌ $20 = 5 + 15$ 只是首項加末項，還要乘項數、再除以 $2$。' },
+                      generic: '❌ 計算引導：先用 $a_6 = 5 + (6 - 1) \\times 2$ 求出末項，再用（首項 ＋ 末項）× 項數 ÷ 2。' }
+                ]}
+            ],
+            t3: [
+                { gid: 't3g1', title: '🎯 應用題組一：園遊會義賣',
+                  infoTitle: '🍋 義賣資料：',
+                  scene: '<p>園遊會義賣檸檬愛玉，一共賣 <span class="kw">$8$ 天</span>。</p><p><span class="kw">第 1 天賣出 $12$ 杯</span>，之後每天都比前一天多賣同樣多杯。</p><p><span class="kw">第 8 天（最後一天）賣出 $40$ 杯</span>。</p>',
+                  kind: 'f1', kindWhy: '首項 $12$、末項 $40$、項數 $8$ 全都知道 → 直接用<b>（首項 ＋ 末項）× 項數 ÷ 2</b>！',
+                  kindBad: { cnt: '❌ 一共賣幾天，題目已經說了，不用再數。', end: '❌ 最後一天賣幾杯，題目已經告訴你了喔！' },
+                  svg: svgCups, qs: [
+                    { id: 't3g1q1', type: 'fill', stem: '第 1 天和第 8 天<b>合起來</b>，一共賣了幾杯？', pre: '第 1 天 ＋ 第 8 天 =', unit: '杯', target: 52,
+                      wrong: {
+                          28: '❌ $28 = 40 - 12$ 是兩天<b>差</b>多少，題目問的是<b>合起來</b>。',
+                          480: '❌ $480 = 12 \\times 40$，「合起來」要用加的喔！' },
+                      generic: '❌ 計算引導：把第 1 天的 $12$ 杯和第 8 天的 $40$ 杯加起來。' },
+                    { id: 't3g1q2', type: 'choice', stem: '這 $8$ 天一共賣了幾杯？', opts: ['$208$ 杯', '$320$ 杯', '$416$ 杯'], ans: 0,
+                      fb: ['', '❌ $320 = 8 \\times 40$，你是不是以為每天都賣 $40$ 杯？前面幾天賣得比較少喔！',
+                           '❌ $416 = 52 \\times 8$ 是「正著排＋倒過來疊」<b>兩份</b>的總和。一份是多少？'],
+                      ok: '$(12 + 40) \\times 8 \\div 2 = 208$ 杯。' }
+                ]},
+                { gid: 't3g2', title: '🎯 應用題組二：校門口的階梯花台',
+                  infoTitle: '🪴 花台資料：',
+                  scene: '<p>校門口的階梯花台擺滿盆栽：<span class="kw">最上層 $4$ 盆</span>、<span class="kw">最下層 $22$ 盆</span>。</p><p>每往下一層，就<span class="kw">多擺 $3$ 盆</span>。</p><p><span class="kw">一共有幾層，還不知道</span>。</p>',
+                  kind: 'cnt', kindWhy: '首項 $4$、末項 $22$、公差 $3$ 都知道，可是<b>層數（項數）不知道</b> → 先數項數，再求和！',
+                  kindBad: { f1: '❌ 首項、末項都知道，可是<b>一共幾層</b>題目有說嗎？', end: '❌ 最下層（末項）題目已經說了，缺的是哪一個？' },
+                  svg: svgPlanter, qs: [
+                    { id: 't3g2q1', type: 'choice', stem: '這座花台一共有幾層？', opts: ['$6$ 層', '$7$ 層', '$18$ 層'], ans: 1,
+                      fb: ['❌ $(22 - 4) \\div 3 = 6$ 只是「往下多 $3$ 盆」的次數。最上面那一層算進去了嗎？', '',
+                           '❌ $18 = 22 - 4$ 是盆數差了多少，可是每一層差 $3$ 盆，不是 $1$ 盆。'],
+                      ok: '$(22 - 4) \\div 3 + 1 = 7$ 層：$4, 7, 10, 13, 16, 19, 22$。' },
+                    { id: 't3g2q2', type: 'fill', stem: '整座花台一共擺了幾盆？', pre: '盆栽總數 =', unit: '盆', target: 91,
+                      wrong: {
+                          78: '❌ $78 = (4 + 22) \\times 6 \\div 2$，層數用了 $6$？上一題算出幾層？',
+                          182: '❌ $182 = (4 + 22) \\times 7$，這是兩座花台的盆數，還差一步。',
+                          26: '❌ $26 = 4 + 22$ 只是最上層加最下層，還要乘層數再除以 $2$。',
+                          154: '❌ $154 = 7 \\times 22$，你是不是以為每層都是 $22$ 盆？上面的層比較少喔！' },
+                      generic: '❌ 計算引導：（首項 ＋ 末項）× 層數 ÷ 2，層數就是上一題的答案。' }
+                ]},
+                { gid: 't3g3', title: '🎯 應用題組三：校慶路跑練習（⭐ 挑戰題）',
+                  infoTitle: '🏃 練跑資料：',
+                  scene: '<p>小芸準備校慶路跑：<span class="kw">第 1 天跑 $500$ m</span>。</p><p>之後<span class="kw">每天都比前一天多跑 $100$ m</span>。</p><p>一共練 <span class="kw">$10$ 天</span>。</p>',
+                  kind: 'end', kindWhy: '首項 $500$、公差 $100$、項數 $10$ 都知道，可是<b>最後一天跑多遠</b>題目沒說 → 先求末項，再求和！',
+                  kindBad: { f1: '❌ 第 10 天跑多遠，題目有說嗎？末項還不知道喔！', cnt: '❌ 練幾天題目已經說了，不用數。缺的是哪一個？' },
+                  svg: svgRun, qs: [
+                    { id: 't3g3q1', type: 'fill', stem: '第 $10$ 天小芸跑了多少 m？', pre: '第 10 天 =', unit: 'm', target: 1400,
+                      wrong: {
+                          1500: '❌ $500 + 10 \\times 100$？第 1 天還沒有多跑，到第 10 天只「多 $100$ m」了幾次？',
+                          1000: '❌ $1000 = 10 \\times 100$，第 1 天的 $500$ m 去哪了？',
+                          600: '❌ $600$ m 是第 2 天，題目問第 $10$ 天。',
+                          9500: '❌ 這是 10 天的總和，題目問的是第 10 天<b>這一天</b>。' },
+                      generic: '❌ 計算引導：第 $n$ 項 ＝ 首項 ＋（$n - 1$）× 公差。' },
+                    { id: 't3g3q2', type: 'choice', stem: '這 $10$ 天小芸一共跑了多少 m？', opts: ['$9500$ m', '$10000$ m', '$19000$ m'], ans: 0,
+                      fb: ['', '❌ $10000 = (500 + 1500) \\times 10 \\div 2$，第 $10$ 天應該是上一題算出的多少？',
+                           '❌ $19000$ 是正著加、倒著加<b>兩份</b>的總和。一份是多少？'],
+                      ok: '$(500 + 1400) \\times 10 \\div 2 = 9500$ m。' }
+                ]}
+            ]
+        };
+        const Q_INDEX = {};
+
+        // 一步步解題
+        const STEPS = {
+            t2g1q1: [
+                { t: '首項＝第一個數', d: '最左邊的數，就是首項。' },
+                { t: '末項＝最後一個數', d: '最右邊的數 $16$，就是末項。' },
+                { t: '項數＝一共有幾個數', d: '$4, 7, 10, 13, 16$ 一共 $5$ 個數，項數是 $5$，答案是 <b>（A）</b>。' },
+                { t: '小心別搞混', d: '每次加的 $3$ 是<b>公差</b>，不是項數。' }
+            ],
+            t2g1q2: [
+                { t: '看懂符號', d: '$S_3$ 的 $S$ 是「和」，右下角的 $3$ 是「前 $3$ 項」。' },
+                { t: '找出前 $3$ 項', d: '$1, 4, 7$' },
+                { t: '加起來', d: '$1 + 4 + 7 = 12$，答案是 <b>（C）</b>。' },
+                { t: '比一比', d: '第 $3$ 項是 $7$（一個數），$S_3$ 是 $12$（三個數的和），兩個不一樣。' }
+            ],
+            t2g2q1: [
+                { t: '正著寫、倒著寫', d: '$S = 1 + 2 + \\dots + 30$，$S = 30 + 29 + \\dots + 1$' },
+                { t: '每一欄一樣大', d: '每一欄都是 $1 + 30 = 31$，有 $30$ 欄。' },
+                { t: '兩份除以 2', d: '$31 \\times 30 = 930$ 是兩份，一份 $= 930 \\div 2 = 465$，答案是 <b>（A）</b>。' },
+                { t: '驗算', d: '首尾配對：$1 + 30$、$2 + 29$……共 $15$ 對：$31 \\times 15 = 465$ ✔' }
+            ],
+            t2g2q2: [
+                { t: '找出三個數', d: '首項 $2$、末項 $20$、項數 $10$。' },
+                { t: '代入求和公式', d: '（首項 ＋ 末項）× 項數 ÷ 2 $= (2 + 20) \\times 10 \\div 2$' },
+                { t: '算出答案', d: '$22 \\times 10 \\div 2 = 110$，答案是 <b>（C）</b>。' },
+                { t: '驗算', d: '$2 + 4 + \\dots + 20$ 剛好是 $1 + 2 + \\dots + 10$ 的 $2$ 倍：$55 \\times 2 = 110$ ✔' }
+            ],
+            t2g3q1: [
+                { t: '找首項、末項、公差', d: '首項 $3$，末項 $39$，公差 $7 - 3 = 4$。' },
+                { t: '算跳了幾次', d: '$(39 - 3) \\div 4 = 9$ 次' },
+                { t: '項數 = 跳的次數 + 1', d: '$9 + 1 = 10$ 項。' },
+                { t: '驗算', d: '第 $10$ 項 $= 3 + 9 \\times 4 = 39$ ✔' }
+            ],
+            t2g3q2: [
+                { t: '找出已知', d: '首項 $5$、公差 $2$、項數 $6$，末項不知道。' },
+                { t: '先求末項', d: '$a_6 = 5 + (6 - 1) \\times 2 = 15$' },
+                { t: '再求和', d: '$(5 + 15) \\times 6 \\div 2 = 60$。' },
+                { t: '驗算', d: '$5 + 7 + 9 + 11 + 13 + 15 = 60$ ✔' }
+            ],
+            t3g1q1: [
+                { t: '找出兩天的杯數', d: '第 1 天 $12$ 杯，第 8 天 $40$ 杯。' },
+                { t: '加起來', d: '$12 + 40 = 52$（杯）' },
+                { t: '為什麼要算這個', d: '倒過來相加時，<b>每一欄都是首項 ＋ 末項</b>，也就是 $52$。' },
+                { t: '驗算', d: '每天多賣 $4$ 杯：第 2 天 ＋ 第 7 天 $= 16 + 36 = 52$，也一樣 ✔' }
+            ],
+            t3g1q2: [
+                { t: '找出三個數', d: '首項 $12$、末項 $40$、項數 $8$。' },
+                { t: '代入求和公式', d: '$(12 + 40) \\times 8 \\div 2$' },
+                { t: '算出答案', d: '$52 \\times 8 \\div 2 = 208$（杯），答案是 <b>（A）</b>。' },
+                { t: '驗算', d: '$12 + 16 + 20 + 24 + 28 + 32 + 36 + 40 = 208$ ✔' }
+            ],
+            t3g2q1: [
+                { t: '找首項、末項、公差', d: '由上往下：首項 $4$，末項 $22$，公差 $3$。' },
+                { t: '算「多 $3$ 盆」幾次', d: '$(22 - 4) \\div 3 = 6$ 次' },
+                { t: '層數 = 次數 + 1', d: '$6 + 1 = 7$ 層，答案是 <b>（B）</b>。' },
+                { t: '驗算', d: '列出來：$4, 7, 10, 13, 16, 19, 22$，剛好 $7$ 個數 ✔' }
+            ],
+            t3g2q2: [
+                { t: '找出三個數', d: '首項 $4$、末項 $22$、項數 $7$。' },
+                { t: '代入求和公式', d: '$(4 + 22) \\times 7 \\div 2$' },
+                { t: '算出答案', d: '$26 \\times 7 \\div 2 = 91$（盆）' },
+                { t: '驗算', d: '$4 + 7 + 10 + 13 + 16 + 19 + 22 = 91$ ✔' }
+            ],
+            t3g3q1: [
+                { t: '找出已知', d: '首項 $500$、公差 $100$，要找第 $10$ 天。' },
+                { t: '數一數多跑了幾次', d: '從第 1 天到第 10 天，只「多 $100$ m」了 $10 - 1 = 9$ 次。' },
+                { t: '算出第 10 天', d: '$500 + 9 \\times 100 = 1400$（m）' },
+                { t: '驗算', d: '$500, 600, 700, \\dots$ 一直加 $100$，第 $10$ 個數是 $1400$ ✔' }
+            ],
+            t3g3q2: [
+                { t: '三個數都有了', d: '首項 $500$、末項 $1400$（上一題）、項數 $10$。' },
+                { t: '代入求和公式', d: '$(500 + 1400) \\times 10 \\div 2$' },
+                { t: '算出答案', d: '$1900 \\times 10 \\div 2 = 9500$（m），答案是 <b>（A）</b>。' },
+                { t: '用公式二驗算', d: '$\\dfrac{10 \\times [2 \\times 500 + 9 \\times 100]}{2} = \\dfrac{10 \\times 1900}{2} = 9500$ ✔' }
+            ]
+        };
+
+        // 分層提示：1 觀念 → 2 第一步 → 3 類似題（不給本題答案）
+        const HINTS = {
+            t2g1q1: { c: '首項：第一個數；末項：最後一個數；項數：一共有幾個數。', ex: '$2 + 9 + 16 + 23$：首項 $2$、末項 $23$、項數 $4$。',
+                f1: () => figTerms([10, 20, 30], { arc: '＋10', ends: true, count: '項數 ＝ 一共 3 個數' }), f3: () => figTerms([2, 9, 16, 23], { arc: '＋7', ends: true, count: '項數 ＝ 一共 4 個數' }) },
+            t2g1q2: { c: '$S$ 是「和」，右下角的數字是「加到第幾項」。', ex: '$2 + 5 + 8 + 11$ 中，$S_2 = 2 + 5 = 7$。',
+                f1: () => figTerms([1, 4, 7, 10, 13], { mark: { i: 2, text: '第 3 項只是這 1 個數' }, sum: { k: 3, text: '前 3 項全部加起來 ＝ ？', sub: '3' } }), f3: () => figTerms([2, 5, 8, 11], { sum: { k: 2, text: '2 ＋ 5 ＝ 7', sub: '2' } }) },
+            t2g2q1: { c: '想想「兩座樓梯拼成長方形」：每一欄是首項 ＋ 末項，有幾項就有幾欄。', ex: '$1 + 2 + \\dots + 12 = (1 + 12) \\times 12 \\div 2 = 78$。',
+                f1: () => figStairs(1, 1, 5, { result: true }), f3: () => figStairs(1, 1, 12, { result: true }) },
+            t2g2q2: { c: '和 ＝（首項 ＋ 末項）× 項數 ÷ 2。', ex: '$3 + 6 + 9 + \\dots + 30$（共 $10$ 項）：$(3 + 30) \\times 10 \\div 2 = 165$。',
+                f1: () => figStairs(2, 2, 4, { result: true }), f3: () => figStairs(3, 3, 10, { result: true }) },
+            t2g3q1: { c: '項數 ＝（末項 − 首項）÷ 公差 ＋ 1。落腳的點比跳的次數多 $1$ 個！', ex: '$5 + 8 + 11 + \\dots + 20$：$(20 - 5) \\div 3 + 1 = 6$ 項。',
+                f1: () => figJumps(1, 2, 4, { mode: 'count' }), f3: () => figJumps(5, 3, 6, { mode: 'count' }) },
+            t2g3q2: { c: '不知道末項時，先用 $a_n = a_1 + (n - 1)d$ 求出末項。', ex: '首項 $4$、公差 $3$，前 $5$ 項：末項 $4 + 4 \\times 3 = 16$，和 $= (4 + 16) \\times 5 \\div 2 = 50$。',
+                f1: () => figJumps(1, 3, 4, { mode: 'nth' }), f3: () => figJumps(4, 3, 5, { mode: 'nth', extra: '和 ＝（4 ＋ 16）× 5 ÷ 2 ＝ 50' }) },
+            t3g1q1: { c: '「合起來」就是相加。這個數就是倒過來相加時，每一欄的高度。', ex: '第 1 天賣 $5$ 杯、第 6 天賣 $20$ 杯，合起來是 $5 + 20 = 25$ 杯。',
+                f1: () => figStairs(1, 1, 4, { hl: 0 }), f3: () => figStairs(5, 3, 6, { hl: 0 }) },
+            t3g1q2: { c: '和 ＝（首項 ＋ 末項）× 項數 ÷ 2。', ex: '第 1 天 $5$ 杯、第 6 天 $20$ 杯、共 $6$ 天：$(5 + 20) \\times 6 \\div 2 = 75$ 杯。',
+                f1: () => figStairs(2, 2, 3, { result: true }), f3: () => figStairs(5, 3, 6, { result: true, unit: ' 杯' }) },
+            t3g2q1: { c: '層數 ＝（最下層 − 最上層）÷ 每層多幾盆 ＋ 1。', ex: '最上層 $5$ 盆、最下層 $25$ 盆、每層多 $4$ 盆：$(25 - 5) \\div 4 + 1 = 6$ 層。',
+                f1: () => figRows(1, 2, 3), f3: () => figRows(5, 4, 6) },
+            t3g2q2: { c: '和 ＝（首項 ＋ 末項）× 項數 ÷ 2。', ex: '最上層 $5$ 盆、最下層 $25$ 盆、共 $6$ 層：$(5 + 25) \\times 6 \\div 2 = 90$ 盆。',
+                f1: () => figStairs(1, 2, 3, { result: true }), f3: () => figStairs(5, 4, 6, { result: true, unit: ' 盆' }) },
+            t3g3q1: { c: '第 $n$ 項 $a_n = a_1 + (n - 1)d$：第 1 天還沒有多跑。', ex: '第 1 天跑 $300$ m、每天多 $50$ m，第 $6$ 天：$300 + 5 \\times 50 = 550$ m。',
+                f1: () => figJumps(100, 50, 4, { mode: 'nth', unit: ' m' }), f3: () => figJumps(300, 50, 6, { mode: 'nth', unit: ' m' }) },
+            t3g3q2: { c: '上一題已經求出末項了，現在首項、末項、項數都有了！', ex: '第 1 天 $300$ m、第 6 天 $550$ m：$6$ 天共 $(300 + 550) \\times 6 \\div 2 = 2550$ m。',
+                f1: () => figStairs(100, 50, 4, { result: true, unit: ' m' }), f3: () => figStairs(300, 50, 6, { result: true, unit: ' m' }) }
+        };
+
+        // 錯誤選項 → 迷思類型（自動診斷）
+        const DIAG_MAP = {
+            t2g1q1: { 1: 'diag-4', 2: 'diag-4' }, t2g1q2: { 0: 'diag-4', 1: 'diag-4' },
+            t2g2q1: { 1: 'diag-1', 2: 'diag-2' }, t2g2q2: { 0: 'diag-2', 1: 'diag-2' },
+            t2g3q1: { 9: 'diag-1', 36: 'diag-1', 37: 'diag-1', default: 'diag-1' }, t2g3q2: { 54: 'diag-3', 66: 'diag-3', 120: 'diag-2', 20: 'diag-2', 15: 'diag-4', default: 'diag-2' },
+            t3g1q1: { default: 'diag-4' }, t3g1q2: { 1: 'diag-4', 2: 'diag-2' },
+            t3g2q1: { 0: 'diag-1', 2: 'diag-1' }, t3g2q2: { 78: 'diag-1', 182: 'diag-2', 26: 'diag-2', default: 'diag-4' },
+            t3g3q1: { 1500: 'diag-3', 1000: 'diag-3', default: 'diag-4' }, t3g3q2: { 1: 'diag-3', 2: 'diag-2' }
+        };
+
+        // ========== 7. 題目渲染與判斷 ==========
+        const LETTER = ['A', 'B', 'C'];
+        function renderQuizzes() {
+            $id('quiz-t2').innerHTML = QUIZ.t2.map(g => renderGroup(g, 'amber')).join('');
+            $id('quiz-t3').innerHTML = QUIZ.t3.map(g => renderGroup(g, 'rose')).join('');
+            document.querySelectorAll('.fill-input').forEach(inp => {
+                inp.addEventListener('keydown', e => { if (e.key === 'Enter') checkFill(inp.dataset.qid); });
+            });
+            renderMath($id('quiz-t2')); renderMath($id('quiz-t3'));
+            refreshIcons();
+        }
+        function renderGroup(g, color) {
+            g.color = color;
+            g.qs.forEach((q, i) => { Q_INDEX[q.id] = { q, g, i }; });
+            const head = color === 'amber' ? 'text-amber-900' : 'text-rose-900';
+            const badge = color === 'amber' ? 'bg-amber-200 text-amber-900' : 'bg-rose-200 text-rose-900';
+            const sceneBox = g.scene ? `
+                <div class="bg-white p-4 rounded-xl border border-slate-200 grid md:grid-cols-5 gap-4 items-center">
+                    <div id="${g.gid}-svgbox" class="md:col-span-3">${g.svg()}</div>
+                    <div id="${g.gid}-scene" class="md:col-span-2 text-xs text-slate-700 leading-relaxed space-y-1">
+                        <p class="font-bold text-slate-900 text-sm">${g.infoTitle}</p>${g.scene}
+                    </div>
+                </div>` : '';
+            return `
+            <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
+                <h4 class="font-bold ${head} text-base border-b pb-2 flex items-center justify-between gap-2">
+                    <span>${g.title}</span>
+                    <span id="prog-${g.gid}" class="text-xs ${badge} px-2 py-1 rounded font-bold shrink-0" aria-live="polite">進度：0/2</span>
+                </h4>
+                ${sceneBox}
+                ${g.kind ? renderKind(g) : ''}
+                ${g.qs.map((q, i) => renderQ(q, i, g)).join('')}
+            </div>`;
+        }
+        // 🔍 先想一想：先判斷要用哪一個方法（不計分）
+        const KIND_OPTS = [
+            { k: 'f1', label: '📐 首項、末項、項數都有 → 直接求和' },
+            { k: 'cnt', label: '🪜 不知道有幾項 → 先數項數' },
+            { k: 'end', label: '🔚 不知道末項 → 先求末項' }
+        ];
+        function renderKind(g) {
+            return `
+            <div id="${g.gid}-kind" class="p-4 bg-white rounded-lg border-2 border-dashed border-rose-300 space-y-2">
+                <p class="font-bold text-slate-800 text-sm">🔍 先想一想：還缺哪一個數？要先做什麼？（不計分）</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                    ${KIND_OPTS.map(o => `<button type="button" id="${g.gid}-kind-${o.k}" onclick="checkKind('${g.gid}','${o.k}')" aria-label="選擇：${plain(o.label)}"
+                        class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-rose-50 text-xs font-medium">${o.label}</button>`).join('')}
+                </div>
+                <button type="button" id="${g.gid}-kw-btn" onclick="toggleKw('${g.gid}')" aria-label="幫我圈出資料中的關鍵字" aria-pressed="false"
+                    class="px-2.5 py-1 bg-white border border-slate-300 rounded text-xs font-bold text-slate-600 hover:bg-slate-100">🔍 幫我圈關鍵字</button>
+                <div id="${g.gid}-kind-fb" class="hidden" aria-live="polite"></div>
+            </div>`;
+        }
+        const kindDone = {};
+        function toggleKw(gid, force) {
+            const sc = $id(gid + '-scene'); if (!sc) return;
+            const on = force === undefined ? !sc.classList.contains('kw-on') : force;
+            sc.classList.toggle('kw-on', on);
+            const b = $id(gid + '-kw-btn'); if (b) b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        }
+        function checkKind(gid, pick) {
+            if (kindDone[gid]) return;
+            const g = QUIZ.t3.find(x => x.gid === gid), fb = $id(gid + '-kind-fb'), btn = $id(`${gid}-kind-${pick}`);
+            if (!btn || btn.disabled) return;
+            logAct(['k', gid, pick]);
+            if (pick === g.kind) {
+                kindDone[gid] = true;
+                KIND_OPTS.forEach(o => { const b = $id(`${gid}-kind-${o.k}`); b.disabled = true; b.classList.add(o.k === pick ? 'opt-correct' : 'opt-dim'); });
+                toggleKw(gid, true);
+                showFb(fb, 'ok', '✅ 判斷正確！' + g.kindWhy + '<br>黃色標起來的就是關鍵字。🔓 已解鎖第 1 題！');
+                setTimeout(() => unlockQuestion(g.qs[0].id), 500);
+            } else {
+                btn.disabled = true;
+                btn.classList.add('opt-wrong');
+                btn.classList.remove('shake'); void btn.offsetWidth; btn.classList.add('shake');
+                showFb(fb, 'bad', (g.kindBad[pick] || '❌ 再讀一次資料。') + '<br>按「🔍 幫我圈關鍵字」看看。');
+                autoDiag('diag-4');
+            }
+        }
+        function renderQ(q, i, g) {
+            const hasKind = !!g.kind, lockedQ = i > 0 || hasKind;
+            const hover = g.color === 'amber' ? 'hover:bg-amber-50' : 'hover:bg-rose-50';
+            let body;
+            if (q.type === 'choice') {
+                body = `<div class="grid grid-cols-1 md:grid-cols-3 gap-2" role="group" aria-label="第 ${i + 1} 題選項">` +
+                    q.opts.map((o, k) => `<button type="button" id="${q.id}-opt${k}" onclick="checkChoice('${q.id}', ${k})" aria-label="選項 ${LETTER[k]}：${plain(o)}"
+                        class="p-2.5 text-left bg-white border border-slate-300 rounded-lg ${hover} text-xs font-medium">（${LETTER[k]}）${o}</button>`).join('') + `</div>`;
+            } else {
+                body = `<div class="flex flex-wrap items-center gap-3 text-xs font-bold">
+                    <span>${q.pre}</span>
+                    <input type="number" step="any" id="${q.id}-input" data-qid="${q.id}" aria-label="${plain(q.stem)}請輸入答案" class="fill-input w-24 p-1.5 border border-slate-300 rounded text-center" placeholder="整數">
+                    <span>${q.unit}</span>
+                    <button type="button" id="${q.id}-btn" onclick="checkFill('${q.id}')" aria-label="驗證第 ${i + 1} 題答案" class="px-3 py-1.5 ${g.color === 'amber' ? 'bg-amber-500 hover:bg-amber-600' : 'bg-rose-600 hover:bg-rose-700'} text-white rounded">驗證答案</button>
+                </div>`;
+            }
+            return `
+            <div id="${q.id}" class="space-y-2 ${i > 0 || hasKind ? 'border-t pt-3' : ''} ${lockedQ ? 'step-locked hidden' : ''}" ${lockedQ ? 'aria-hidden="true"' : ''}>
+                <p class="font-bold text-slate-800 text-sm">第 $${i + 1}$ 題：${q.stem}</p>
+                ${body}
+                <div id="${q.id}-fb" class="hidden" aria-live="polite"></div>
+                ${renderSteps(q, g)}
+            </div>`;
+        }
+        function renderSteps(q, g) {
+            const steps = STEPS[q.id] || [];
+            if (!steps.length) return '';
+            const c = g.color === 'amber' ? { num: 'bg-amber-500', btn: 'bg-amber-500 hover:bg-amber-600', box: 'border-amber-200' } : { num: 'bg-rose-600', btn: 'bg-rose-600 hover:bg-rose-700', box: 'border-rose-200' };
+            const items = steps.map((s, k) => `
+                <li id="${q.id}-step${k}" class="hidden flex gap-2 step-unlocked">
+                    <span class="shrink-0 w-6 h-6 rounded-full ${c.num} text-white text-xs font-bold flex items-center justify-center">${k + 1}</span>
+                    <div class="flex-1"><p class="font-bold text-slate-800">${s.t}</p><p class="text-slate-700 font-medium leading-relaxed">${s.d}</p></div>
+                </li>`).join('');
+            return `
+                <button type="button" id="${q.id}-hintbtn" onclick="showHint('${q.id}')" aria-label="卡住了，顯示提示"
+                    class="px-2.5 py-1 bg-white border border-slate-300 rounded text-xs font-bold text-slate-600 hover:bg-slate-100">💡 卡住了？給我提示（1/3）</button>
+                <div id="${q.id}-hint" class="hidden space-y-2" aria-live="polite"></div>
+                <div id="${q.id}-sol" class="hidden p-4 bg-white rounded-xl border ${c.box} text-xs space-y-3" aria-label="一步步解題">
+                    <div class="flex items-center justify-between font-bold">
+                        <span class="text-slate-800 text-sm">📝 一步步解題</span>
+                        <span id="${q.id}-solprog" class="text-slate-500">步驟 0/${steps.length}</span>
+                    </div>
+                    <ol class="space-y-2">${items}</ol>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" id="${q.id}-stepbtn" onclick="nextStep('${q.id}')" aria-label="顯示下一個解題步驟" class="px-3 py-1.5 ${c.btn} text-white rounded font-bold">▶ 下一步</button>
+                        <button type="button" id="${q.id}-allbtn" onclick="showAllSteps('${q.id}')" aria-label="一次顯示全部解題步驟" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 rounded font-bold hover:bg-slate-50">全部展開</button>
+                    </div>
+                </div>`;
+        }
+        const stepState = {}, hintLevel = {};
+        // 連錯兩次：先鎖住作答，請學生看一個提示再回來
+        const wrongN = {}, gated = {};
+        function maybeGate(qid) {
+            wrongN[qid] = (wrongN[qid] || 0) + 1;
+            if (wrongN[qid] % 2 !== 0 || (hintLevel[qid] || 0) >= 3 || !HINTS[qid]) return '';
+            gated[qid] = true; setGate(qid, true);
+            return '<br><span class="font-medium">🛑 連錯兩次了，先按下面的「💡 提示」看一個線索，再回來作答。</span>';
+        }
+        function setGate(qid, on) {
+            const meta = Q_INDEX[qid]; if (!meta) return;
+            if (meta.q.type === 'choice') meta.q.opts.forEach((_, i) => {
+                const b = $id(`${qid}-opt${i}`);
+                if (b && !b.classList.contains('opt-wrong')) { b.disabled = on; b.classList.toggle('opt-dim', on); }
+            });
+            else { const inp = $id(qid + '-input'), b = $id(qid + '-btn'); inp.disabled = on; b.disabled = on; b.classList.toggle('opacity-50', on); }
+            const hb = $id(qid + '-hintbtn'); if (hb) hb.classList.toggle('gate-ring', on);
+        }
+        function showHint(qid) {
+            const steps = STEPS[qid], h = HINTS[qid]; if (!steps || !h) return;
+            const box = $id(qid + '-hint'), btn = $id(qid + '-hintbtn');
+            const lv = (hintLevel[qid] || 0) + 1; if (lv > 3) return;
+            hintLevel[qid] = lv;
+            logAct(['h', qid]);
+            if (gated[qid]) { gated[qid] = false; setGate(qid, false); }
+            const blocks = {
+                1: `<div class="${NOTE.sky} step-unlocked">💡 提示 1：想想觀念<br><span class="font-medium">${h.c}</span>${h.f1 ? `<div class="mt-2 bg-white rounded-lg border border-slate-200 p-2" data-fig="${qid}|f1">${h.f1()}</div>` : ''}</div>`,
+                2: `<div class="${NOTE.violet} step-unlocked">🪜 提示 2：第一步可以這樣做（${steps[0].t}）<br><span class="font-medium">${steps[0].d}</span></div>`,
+                3: `<div class="${NOTE.amber} step-unlocked">📖 提示 3：看一題類似的（數字不一樣）<br><span class="font-medium">${h.ex}</span><br><span class="text-slate-500">用一樣的方法，回到本題自己算算看！</span>${h.f3 ? `<div class="mt-2 bg-white rounded-lg border border-slate-200 p-2" data-fig="${qid}|f3">${h.f3()}</div>` : ''}</div>`
+            };
+            const wrap = document.createElement('div'); wrap.innerHTML = blocks[lv];
+            box.appendChild(wrap.firstElementChild);
+            box.classList.remove('hidden');
+            renderMath(box);
+            btn.textContent = { 1: '🪜 再給我一點提示（2/3）', 2: '📖 看一題類似題（3/3）', 3: '✔ 提示都看完了' }[lv];
+            if (lv >= 3) { btn.disabled = true; btn.classList.add('opacity-50'); }
+        }
+        function hintNudge(qid) {
+            return (hintLevel[qid] || 0) < 3 && HINTS[qid] ? '<br><span class="font-medium">👉 卡住的話，按下方「💡 提示」，一次給你一點點線索。</span>' : '';
+        }
+        function openSolution(qid) {
+            const sol = $id(qid + '-sol'); if (!sol) return;
+            const hb = $id(qid + '-hintbtn'); if (hb) hb.classList.add('hidden');
+            const hint = $id(qid + '-hint'); if (hint) hint.classList.add('hidden');
+            sol.classList.remove('hidden');
+            stepState[qid] = 0;
+            renderMath(sol);
+            nextStep(qid);
+        }
+        function nextStep(qid) {
+            const steps = STEPS[qid]; if (!steps) return;
+            const k = stepState[qid] || 0; if (k >= steps.length) return;
+            const li = $id(`${qid}-step${k}`); li.classList.remove('hidden'); renderMath(li);
+            stepState[qid] = k + 1;
+            const n = steps.length;
+            $id(qid + '-solprog').textContent = k + 1 >= n ? `步驟 ${n}/${n} ✔ 完成` : `步驟 ${k + 1}/${n}`;
+            if (k + 1 >= n) [qid + '-stepbtn', qid + '-allbtn'].forEach(id => { const b = $id(id); b.disabled = true; b.classList.add('opacity-40'); });
+        }
+        function showAllSteps(qid) { const steps = STEPS[qid]; if (!steps) return; while ((stepState[qid] || 0) < steps.length) nextStep(qid); }
+        function showFb(el, kind, html) { el.className = FB[kind]; el.innerHTML = html; renderMath(el); }
+        function onSolved(meta) {
+            const { g, i } = meta;
+            const done = g.qs.filter(q => quizTracker.isSolved(q.id)).length;
+            $id('prog-' + g.gid).innerText = done >= g.qs.length ? `進度：${done}/${g.qs.length}（已完成）` : `進度：${done}/${g.qs.length}`;
+            const next = g.qs[i + 1];
+            if (next) setTimeout(() => unlockQuestion(next.id), 600);
+        }
+        const OK_TAIL = (meta) => (meta.g.qs[meta.i + 1] ? '🔓 已解鎖下一題！' : '🎉 題組完成！') + '<br><span class="font-medium">👇 下面可以一步一步看完整解法。</span>';
+        function checkChoice(qid, k) {
+            const meta = Q_INDEX[qid]; if (!meta || quizTracker.isSolved(qid) || gated[qid]) return;
+            const q = meta.q, fb = $id(qid + '-fb'), btns = q.opts.map((_, i) => $id(`${qid}-opt${i}`));
+            if (!btns[k] || btns[k].disabled) return;
+            logAct(['c', qid, k]);
+            if (k === q.ans) {
+                quizTracker.record(qid, true);
+                btns.forEach((b, i) => { b.disabled = true; b.classList.remove('opt-wrong'); b.classList.add(i === k ? 'opt-correct' : 'opt-dim'); });
+                showFb(fb, 'ok', '✅ 完全正確！' + q.ok + OK_TAIL(meta));
+                openSolution(qid); onSolved(meta);
+            } else {
+                quizTracker.record(qid, false);
+                btns[k].disabled = true;
+                btns[k].classList.add('opt-wrong');
+                btns[k].classList.remove('shake'); void btns[k].offsetWidth; btns[k].classList.add('shake');
+                showFb(fb, 'bad', q.fb[k] + (maybeGate(qid) || hintNudge(qid)));
+                const tag = DIAG_MAP[qid] && DIAG_MAP[qid][k]; if (tag) autoDiag(tag);
+            }
+        }
+        function checkFill(qid) {
+            const meta = Q_INDEX[qid]; if (!meta || quizTracker.isSolved(qid) || gated[qid]) return;
+            const q = meta.q, input = $id(qid + '-input'), btn = $id(qid + '-btn'), fb = $id(qid + '-fb');
+            const raw = input.value.trim();
+            if (raw === '') { showFb(fb, 'hint', '✏️ 請先輸入一個數字，再按「驗證答案」。'); return; }
+            const val = parseFloat(raw);
+            if (isNaN(val)) { showFb(fb, 'hint', '✏️ 請輸入數字喔。'); return; }
+            logAct(['f', qid, raw]);
+            if (Math.abs(val - q.target) < 0.01) {
+                quizTracker.record(qid, true);
+                input.disabled = true; btn.disabled = true; btn.classList.add('opacity-50');
+                showFb(fb, 'ok', `🎉 答案完全正確！答案是 $${q.target}$${q.unit ? ' ' + q.unit : ''}。` + OK_TAIL(meta));
+                openSolution(qid); onSolved(meta);
+            } else {
+                quizTracker.record(qid, false);
+                input.classList.remove('shake'); void input.offsetWidth; input.classList.add('shake');
+                const key = Math.round(val) === val ? String(val) : null;
+                showFb(fb, 'bad', ((key && q.wrong[key]) ? q.wrong[key] : q.generic) + (maybeGate(qid) || hintNudge(qid)));
+                const map = DIAG_MAP[qid] || {}, tag = (key && map[key]) || map.default; if (tag) autoDiag(tag);
+            }
+        }
+
+        // ========== 13. 反思區與自動診斷 ==========
+        function toggleOption(btn) {
+            const check = btn.querySelector('.check-icon');
+            const on = !btn.classList.contains('border-rose-500');
+            btn.classList.toggle('border-rose-500', on); btn.classList.toggle('bg-rose-50', on); btn.classList.toggle('ring-1', on); btn.classList.toggle('ring-rose-300', on);
+            btn.classList.toggle('bg-slate-50', !on); btn.classList.toggle('border-slate-200', !on);
+            if (check) check.classList.toggle('opacity-0', !on);
+            btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+            saveProgress();
+        }
+        const DIAG_TIPS = {
+            'diag-1': { d: '💪 項數 ＝（末項 − 首項）÷ 公差 <b>＋ 1</b>。數的是「點」，不是「跳」；負數和 $0$ 也要數。回到【觀念】等差級數求和的第 $3$ 關玩「數項數」，看看點比跳多幾個！',
+                links: [['v', 'https://www.junyiacademy.org/video/431S7NPbmG4?parent-topic-id=j-m8a-c06-2', '【素養動畫】等差級數求和（利用首項、末項、項數）'], ['e', 'https://www.junyiacademy.org/exercise/jnc-8-05-1-3a?parent-topic-id=j-m8a-c06-2', '【基礎】等差級數的公式（一）']] },
+            'diag-2': { d: '💪 每一欄是<b>首項 ＋ 末項</b>，正著寫＋倒著寫是<b>兩份</b>，最後一定要 $\\div 2$。回到【觀念】等差級數求和的第 $2$ 關，把「倒過來疊上去」開開關關看看。',
+                links: [['v', 'https://www.junyiacademy.org/video/i59EW5JuYHA?parent-topic-id=j-m8a-c06-2', '【暖身】梯形面積'], ['e', 'https://www.junyiacademy.org/exercise/n-m8bch1-2-1a?parent-topic-id=j-m8a-c06-2', '【基礎】等差級數的公式 1']] },
+            'diag-3': { d: '💪 第 $n$ 項 $a_n = a_1 + (n - 1)d$，只加 $(n - 1)$ 次公差；公差是負數就加上負數。也要先確認相鄰兩項的差都一樣，才是等差。',
+                links: [['v', 'https://www.junyiacademy.org/video/MEaWpVadbZI?parent-topic-id=j-m8a-c06-1', '【觀念】等差數列的第 n 項'], ['e', 'https://www.junyiacademy.org/exercise/n-m8bch1-1-2b?parent-topic-id=j-m8a-c06-1', '【基礎】等差數列的第 n 項公式']] },
+            'diag-4': { d: '💪 先對照四個名詞：首項（第一個數）、末項（最後一個數）、項數（有幾個數）、和（全部加起來）。再看題目缺哪一個：缺項數 → 先數項數；缺末項 → 先求末項。',
+                links: [['v', 'https://www.junyiacademy.org/video/SFSLFKAhfWo?parent-topic-id=j-m8a-c06-2', '【觀念】級數和等差級數 1'], ['e', 'https://www.junyiacademy.org/exercise/mjnsl8ba?parent-topic-id=j-m8a-c06-2', '【基礎】認識級數與等差級數']] }
+        };
+        function updateDiagnosticTips() {
+            const box = $id('diag-tips');
+            const tips = Object.keys(DIAG_TIPS).filter(id => $id(id).checked).map(id => {
+                const t = DIAG_TIPS[id];
+                const ls = t.links.map(([k, u, lt]) => `<a href="${u}" target="_blank" rel="noopener noreferrer" aria-label="${k === 'v' ? '開啟均一影片：' : '開啟均一練習題：'}${plain(lt)}" class="font-bold text-rose-700 underline">${k === 'v' ? '▶ 看影片：' : '✏️ 做練習：'}${lt}</a>`).join('　');
+                return `<div class="p-2.5 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-900 font-medium step-unlocked">${t.d}<div class="mt-1 flex flex-wrap gap-x-3">${ls}</div></div>`;
+            });
+            box.classList.toggle('hidden', tips.length === 0);
+            box.innerHTML = tips.join('');
+            renderMath(box);
+            saveProgress();
+        }
+        function autoDiag(id) {
+            const cb = $id(id); if (!cb) return;
+            cb.checked = true;
+            const label = cb.closest('label');
+            if (label && !label.querySelector('.auto-tag')) {
+                const s = document.createElement('span');
+                s.className = 'auto-tag ml-auto shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-violet-100 text-violet-700';
+                s.textContent = '🤖 系統偵測';
+                label.appendChild(s);
+            }
+            updateDiagnosticTips();
+        }
+
+        // ========== 14. 重點小卡 ==========
+        function toggleHelper() {
+            const p = $id('mt-panel'), open = p.classList.toggle('hidden') === false;
+            $id('mt-btn').setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (open) renderMath(p);
+        }
+
+
+        // ========== 14-1. 記住進度（存在這台裝置的瀏覽器裡） ==========
+        const PROG_KEY = 'junyi-n-8-5-practice-v1';
+        let PROG = { acts: [] }, RESTORING = false;
+        function logAct(a) { if (RESTORING) return; PROG.acts.push(a); saveProgress(); }
+        function saveProgress() {
+            if (RESTORING) return;
+            try {
+                PROG.cards = [...document.querySelectorAll('.option-card')].map((b, i) => b.getAttribute('aria-pressed') === 'true' ? i : -1).filter(i => i >= 0);
+                PROG.diag = Object.keys(DIAG_TIPS).filter(id => $id(id) && $id(id).checked);
+                PROG.tab = currentTab;
+                localStorage.setItem(PROG_KEY, JSON.stringify(PROG));
+            } catch (e) { /* 無法儲存就算了 */ }
+        }
+        function loadProgress() {
+            let saved = null;
+            try { saved = JSON.parse(localStorage.getItem(PROG_KEY) || 'null'); } catch (e) { saved = null; }
+            if (!saved || !Array.isArray(saved.acts)) return;
+            RESTORING = true; quietUntil = Date.now() + 3000;
+            try {
+                saved.acts.forEach(a => {
+                    if (a[0] === 'c') checkChoice(a[1], a[2]);
+                    else if (a[0] === 'f') { const inp = $id(a[1] + '-input'); if (inp) { inp.value = a[2]; checkFill(a[1]); } }
+                    else if (a[0] === 'k') checkKind(a[1], a[2]);
+                    else if (a[0] === 'h') showHint(a[1]);
+                });
+                const cards = document.querySelectorAll('.option-card');
+                (saved.cards || []).forEach(i => { if (cards[i]) toggleOption(cards[i]); });
+                Object.keys(DIAG_TIPS).forEach(id => { if ($id(id)) $id(id).checked = (saved.diag || []).includes(id); });
+                updateDiagnosticTips();
+                PROG = { acts: saved.acts };
+            } catch (e) { console.warn(e); }
+            RESTORING = false;
+            if (saved.tab === 3) switchTab(3);
+            if (saved.acts.length) $id('reset-msg').textContent = '💾 已經幫你接回上次的進度。';
+        }
+        let resetArmed = false;
+        function resetProgress() {
+            const btn = $id('reset-btn');
+            if (!resetArmed) { resetArmed = true; btn.textContent = '⚠️ 再按一次，確定清除'; setTimeout(() => { resetArmed = false; btn.textContent = '🔄 清除我的紀錄，重新開始'; }, 4000); return; }
+            try { localStorage.removeItem(PROG_KEY); } catch (e) { }
+            location.reload();
+        }
+
+        // ========== 15. 作答紀錄回傳（接後台用） ==========
+        // endpoint 空白＝不回傳，學生端一切照常；填入後台網址後才會顯示「👤 告訴老師你是誰」。
+        // parentOrigin：講義若用 iframe 嵌在均一頁面裡，填均一網域（例：'https://www.junyiacademy.org'），
+        //               作答事件會用 postMessage 交給上層頁面，由均一主站帶入學生身分。
+        const REPORT = {
+            endpoint: '',
+            parentOrigin: '',
+            worksheet: 'n-8-5',
+            part: 'practice',
+            version: '2026-10-19'
+        };
+        const reportOn = () => !!(REPORT.endpoint || (REPORT.parentOrigin && window.parent !== window));
+        const SESSION = (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
+        const T0 = Date.now();
+        const who = { cls: '', seat: '' };
+        const attempts = {};
+        const eventLog = [];
+        function sendEvent(type, data) {
+            const evt = Object.assign({ v: 1, worksheet: REPORT.worksheet, part: REPORT.part, version: REPORT.version,
+                session: SESSION, cls: who.cls, seat: who.seat, type, ts: new Date().toISOString(),
+                elapsed_s: Math.round((Date.now() - T0) / 1000) }, data || {});
+            if (RESTORING) return evt;
+            eventLog.push(evt);
+            if (!reportOn()) return evt;
+            const body = JSON.stringify(evt);
+            if (REPORT.endpoint) {
+                try {
+                    if (type === 'summary' && navigator.sendBeacon) navigator.sendBeacon(REPORT.endpoint, new Blob([body], { type: 'text/plain' }));
+                    else fetch(REPORT.endpoint, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body }).catch(() => {});
+                } catch (e) { console.warn(e); }
+            }
+            if (REPORT.parentOrigin && window.parent !== window) {
+                try { window.parent.postMessage({ source: 'junyi-worksheet', event: evt }, REPORT.parentOrigin); } catch (e) { console.warn(e); }
+            }
+            return evt;
+        }
+        function cleanClass(s) { return String(s || '').replace(/[^0-9A-Za-z\-_\u4e00-\u9fff]/g, '').slice(0, 20); }
+        function saveWho(silent) {
+            const c = cleanClass($id('who-class').value), s = parseInt($id('who-seat').value, 10), m = $id('who-msg');
+            if (!c || isNaN(s) || s < 1 || s > 99) { if (!silent) m.textContent = '✏️ 請填班級代碼和座號（座號 1～99）。'; return false; }
+            who.cls = c; who.seat = String(s);
+            m.textContent = `✅ 已記下：${c} 班 ${s} 號。可以開始作答了！`;
+            sendEvent('session_start', { ua_mobile: /Mobi/i.test(navigator.userAgent) });
+            return true;
+        }
+        function bump(qid) { attempts[qid] = (attempts[qid] || 0) + 1; return attempts[qid]; }
+        // 包住原本的判題函式：先記錄，再交給原本的邏輯
+        const _checkChoice = checkChoice;
+        checkChoice = function (qid, k) {
+            const meta = Q_INDEX[qid];
+            const ob = $id(`${qid}-opt${k}`);
+            if (!meta || quizTracker.isSolved(qid) || gated[qid] || !ob || ob.disabled) return _checkChoice(qid, k);
+            const correct = k === meta.q.ans, n = bump(qid);
+            _checkChoice(qid, k);
+            sendEvent('answer', { qid, group: meta.g.gid, qtype: 'choice', response: LETTER[k], correct, attempt: n, hint_level: hintLevel[qid] || 0 });
+        };
+        const _checkFill = checkFill;
+        checkFill = function (qid) {
+            const meta = Q_INDEX[qid], inp = $id(qid + '-input');
+            const raw = inp ? inp.value.trim() : '', val = parseFloat(raw);
+            if (!meta || quizTracker.isSolved(qid) || gated[qid] || raw === '' || isNaN(val)) return _checkFill(qid);
+            const correct = Math.abs(val - meta.q.target) < 0.01, n = bump(qid);
+            _checkFill(qid);
+            sendEvent('answer', { qid, group: meta.g.gid, qtype: 'fill', response: val, correct, attempt: n, hint_level: hintLevel[qid] || 0 });
+        };
+        const _checkKind = checkKind;
+        checkKind = function (gid, pick) {
+            const kb = $id(`${gid}-kind-${pick}`);
+            if (kindDone[gid] || !kb || kb.disabled) return _checkKind(gid, pick);
+            const g = QUIZ.t3.find(x => x.gid === gid), n = bump(gid + '-kind');
+            _checkKind(gid, pick);
+            sendEvent('answer', { qid: gid + '-kind', group: gid, qtype: 'kind', response: pick, correct: !!g && pick === g.kind, attempt: n, scored: false });
+        };
+        const _showHint = showHint;
+        showHint = function (qid) {
+            const before = hintLevel[qid] || 0;
+            _showHint(qid);
+            if ((hintLevel[qid] || 0) > before) sendEvent('hint', { qid, hint_level: hintLevel[qid] });
+        };
+        function summaryData() {
+            const diag = Object.keys(DIAG_TIPS).filter(id => $id(id) && $id(id).checked);
+            return { attempted: quizTracker.attemptedCount(), first_try_correct: quizTracker.correctCount(), solved: quizTracker.solvedCount(),
+                total: TOTAL_Q, diag,
+                can_explain: document.querySelectorAll('.option-card[aria-pressed="true"]').length };
+        }
+        let summarySent = false;
+        function sendSummary() {
+            if (summarySent || quizTracker.attemptedCount() === 0) return;
+            summarySent = true; sendEvent('summary', summaryData());
+            setTimeout(() => { summarySent = false; }, 3000);
+        }
+        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') sendSummary(); });
+        window.addEventListener('pagehide', sendSummary);
+        function initReport() {
+            if (!reportOn()) return;
+            const q = new URLSearchParams(location.search);
+            $id('who-card').classList.remove('hidden');
+            if (q.get('class')) $id('who-class').value = cleanClass(q.get('class'));
+            if (q.get('seat')) $id('who-seat').value = q.get('seat');
+            if (q.get('class') && q.get('seat')) saveWho(true);
+            ['who-class', 'who-seat'].forEach(id => $id(id).addEventListener('keydown', e => { if (e.key === 'Enter') saveWho(); }));
+        }
+
+
+        // ========== 16. 啟動 ==========
+        window.onload = function () {
+            refreshIcons();               // Lucide 圖示初始化
+            renderMath(document.body);    // KaTeX 首刷渲染
+            renderQuizzes();              // 題目渲染
+            updateSysScore();
+            loadProgress();               // 接回上次的進度
+            initReport();                 // 有設定後台才會啟用
+            refreshIcons();
+        };
+    </script>
+</body>
+</html>
