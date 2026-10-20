@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N-8-5 【觀念】等差級數求和互動講義</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
+        svg { max-width: 100%; height: auto; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn.active { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .step-locked { opacity: 0.5; pointer-events: none; filter: grayscale(0.8); }
+        .step-unlocked { animation: popIn .45s ease both; }
+        @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+        .shake { animation: shake .38s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 50%{transform:translateX(5px)} 75%{transform:translateX(-3px)} }
+        .opt-correct { background:#dcfce7 !important; border-color:#22c55e !important; color:#14532d !important; }
+        .opt-wrong { background:#fee2e2 !important; border-color:#f87171 !important; color:#7f1d1d !important; }
+        .opt-dim { opacity:.5; }
+        button:disabled, input:disabled { cursor: not-allowed; }
+        button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
+        s.strike { text-decoration: none; position: relative; display: inline-block; color: #be123c; }
+        s.strike::after { content: ''; position: absolute; left: -3px; right: -3px; top: 52%; border-top: 2px solid #e11d48; }
+        .kw { transition: all .25s ease; border-radius: 4px; }
+        .kw-on .kw { background: #fef08a; box-shadow: 0 0 0 2px #facc15; padding: 0 2px; font-weight: 700; }
+        .seg[aria-pressed="true"], .tg[aria-pressed="true"] { background:#059669; color:#fff; border-color:#059669; }
+        /* 全頁字級：比 Tailwind 預設各大 3px */
+        body { font-size: 19px; }
+        .text-xs { font-size: 15px !important; line-height: 1.6 !important; }
+        .text-sm { font-size: 17px !important; line-height: 1.65 !important; }
+        .text-base { font-size: 19px !important; line-height: 1.6 !important; }
+        .text-lg { font-size: 21px !important; line-height: 1.5 !important; }
+        .text-xl { font-size: 23px !important; line-height: 1.45 !important; }
+        .text-2xl { font-size: 27px !important; line-height: 1.35 !important; }
+        .text-3xl { font-size: 33px !important; line-height: 1.25 !important; }
+        .text-\[11px\] { font-size: 14px !important; }
+        .text-\[10px\] { font-size: 13px !important; }
+        @media (min-width: 768px) { .md\:text-4xl { font-size: 39px !important; line-height: 1.2 !important; } }
+        /* 新手導覽 */
+        #tour-shade { background: transparent; }
+        #tour-ring { box-shadow: 0 0 0 4px #38bdf8, 0 0 0 9999px rgba(15, 23, 42, .55); transition: all .25s ease; }
+        #tour-card { transition: top .25s ease, left .25s ease; }
+        .tour-pulse { animation: tourPulse 1.6s ease-in-out infinite; }
+        @keyframes tourPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(14,165,233,.55); } 50% { box-shadow: 0 0 0 8px rgba(14,165,233,0); } }
+        /* 窄螢幕（手機）：縮小層層留白，讓圖可以畫大一點 */
+        @media (max-width: 640px) {
+            body.p-4 { padding: 8px !important; }
+            .p-6 { padding: 14px !important; }
+            .p-5 { padding: 10px !important; }
+            .p-4 { padding: 10px !important; }
+            .p-3 { padding: 6px !important; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- 1. Header（標題列） -->
+        <!-- 1. Header（標題列） -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 【觀念】等差級數求和</h1>
+            <p class="text-slate-600">N-8-5 互動式學習講義</p>
+        </header>
+
+        <!-- 2. 🎯 學習目標 -->
+        <!-- 2. 🎯 學習目標 -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
+                <i data-lucide="target" class="no-katex mr-2 w-5 h-5" aria-label="學習目標圖示"></i> 🎯 學習目標
+            </h2>
+            <ul class="list-disc list-inside text-slate-700 space-y-1">
+                <li>我能說出「級數」就是把數列加起來，並找出首項、末項、項數。</li>
+                <li>我能用「倒過來相加」自己找到求和的方法，並說出為什麼要除以 $2$。</li>
+                <li>我能先數出項數或先求出末項，再用（首項 ＋ 末項）× 項數 ÷ $2$ 算出總和。</li>
+            </ul>
+        </section>
+
+        <!-- 🧭 新手說明 -->
+        <section id="guide" class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-sky-500 space-y-4" aria-labelledby="guide-title">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <h2 id="guide-title" class="text-xl font-bold text-sky-800 flex items-center">
+                    <i data-lucide="compass" class="no-katex mr-2 w-5 h-5" aria-label="新手說明圖示"></i> 🧭 新手說明：這份講義怎麼用？
+                </h2>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" id="tour-btn" onclick="startTour(0)" aria-label="開始新手導覽，一步一步介紹畫面" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-bold">▶ 帶我走一遍</button>
+                    <button type="button" id="why-guide-btn" onclick="toggleWhy('guide')" aria-expanded="true" aria-controls="why-guide-panel" aria-label="收起或打開新手說明" class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-100 flex items-center gap-1">
+                        收起／打開 <i data-lucide="chevron-down" class="no-katex w-4 h-4" aria-label="展開圖示"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="why-guide-panel" class="space-y-3">
+                <p class="text-sm text-slate-700">這份講義分成第 $0$～$5$ 關，<b>每一關都已經打開</b>，不用先會公式。建議從第 $0$ 關照順序往下讀，自己就能學會「等差級數求和」。</p>
+                <ol class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs leading-relaxed">
+                    <li class="p-3 bg-amber-50 border border-amber-200 rounded-lg"><b>1️⃣ 先猜猜看：</b>在最上面的黃色框輸入你猜的答案，按「📌 記下我的猜測」。猜錯沒關係，到第 $2$ 關會揭曉。</li>
+                    <li class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg"><b>2️⃣ 看學習地圖：</b>▶️ 還沒做小檢查、✅ 小檢查已答對。按一下關卡名稱，畫面會跳過去，想先看哪一關都可以。</li>
+                    <li class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg"><b>3️⃣ 每一關這樣讀：</b>先讀綠色的「觀念解析」→ 到灰色的「🎛️ 動手做」拉滑桿、按按鈕，看圖和說明怎麼變 → 還是不懂，就點「看影片」。</li>
+                    <li class="p-3 bg-violet-50 border border-violet-200 rounded-lg"><b>4️⃣ 看到「🤔 先猜」就先猜：</b>有些工具會先停住不揭曉。先在心裡想好答案，再按按鈕對對看。</li>
+                    <li class="p-3 bg-sky-50 border border-sky-200 rounded-lg"><b>5️⃣ 做小檢查：</b>每關最後有一題藍色的「✅ 小檢查」，答對時學習地圖會打勾；答錯的選項會變灰，看完提示再選一次就好。</li>
+                    <li class="p-3 bg-slate-50 border border-slate-200 rounded-lg"><b>6️⃣ 卡住的時候：</b>右下角的「📐 重點小卡」可以隨時打開；看到「🤔 為什麼不是……？」可以點開，看看常見的錯法。</li>
+                </ol>
+                <p class="text-xs text-slate-500">🖱️ 電腦：用滑鼠拖滑桿，也可以先點一下滑桿，再按鍵盤 ← → 微調。📱 手機：用手指左右拖。</p>
+                <p class="text-xs font-bold text-slate-600">已經學過了？可以直接到 📘 【進階】等差級數求和 練習題目。</p>
+                <div class="flex flex-wrap items-center gap-2 text-xs pt-2 border-t border-slate-100">
+                    <span class="text-slate-500">💾 你的猜測和小檢查會自動存在這台裝置，下次打開會接著做。</span>
+                    <button type="button" id="reset-btn" onclick="resetProgress()" aria-label="清除這台裝置上的學習紀錄，重新開始" class="px-2.5 py-1 bg-white border border-slate-300 rounded font-bold text-slate-600 hover:bg-slate-100">🔄 清除我的紀錄，重新開始</button>
+                    <span id="reset-msg" class="font-bold text-emerald-700" aria-live="polite"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 觀念內容（綠色） ==================== -->
+        <main id="tab-1" class="space-y-6">
+
+            <!-- 🤔 開始之前：先猜猜看 -->
+            <div id="hook-box" class="bg-amber-50 border border-amber-300 rounded-xl p-5 shadow-sm space-y-3">
+                <h4 class="font-bold flex items-center text-amber-900 text-base border-b border-amber-200 pb-2">
+                    <i data-lucide="sparkles" class="no-katex mr-2 w-5 h-5 text-amber-600" aria-label="挑戰圖示"></i> 🤔 開始之前：先猜猜看
+                </h4>
+                <p class="text-sm text-amber-950 leading-relaxed">老師請全班算 $1 + 2 + 3 + \dots + 50$。一個一個加，要加 $49$ 次！<br>先別算，憑感覺猜猜看：答案大約是多少？（猜錯沒關係，到第 $2$ 關就會揭曉。）</p>
+                <div class="flex flex-wrap items-center gap-3 text-xs font-bold">
+                    <span>我猜大約是</span>
+                    <input type="number" id="hook-guess" aria-label="輸入你猜的答案" class="w-28 p-1.5 border border-amber-300 rounded text-center" placeholder="整數">
+                    <button type="button" onclick="saveGuess()" aria-label="記下我的猜測" class="px-3 py-1.5 bg-amber-500 text-white rounded hover:bg-amber-600">📌 記下我的猜測</button>
+                </div>
+                <p id="hook-msg" class="text-xs font-bold text-amber-800" aria-live="polite"></p>
+            </div>
+
+            <!-- 📖 觀念小辭典 -->
+            <div class="bg-emerald-50 border border-emerald-300 rounded-xl p-5 shadow-sm text-emerald-950 space-y-4">
+                <h4 class="font-bold flex items-center text-emerald-900 text-base border-b border-emerald-200 pb-2">
+                    <i data-lucide="book-open" class="no-katex mr-2 w-5 h-5 text-emerald-600" aria-label="辭典圖示"></i> 📖 觀念小辭典（往下讀的時候會一個一個學到，現在看不懂沒關係）
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs leading-relaxed">
+                    <div class="p-2.5 bg-white border border-emerald-200 rounded-lg">
+                        <b>1. 級數：</b>把數列用「＋」連起來，例如 $2 + 5 + 8 + 11$。前 $n$ 項的和寫成 $S_n$。
+                    </div>
+                    <div class="p-2.5 bg-white border border-emerald-200 rounded-lg">
+                        <b>2. 求和：</b>和 ＝（首項 ＋ 末項）× 項數 ÷ $2$。<br>例：$1 + 2 + \dots + 10 = (1 + 10) \times 10 \div 2 = 55$。
+                    </div>
+                    <div class="p-2.5 bg-white border border-emerald-200 rounded-lg">
+                        <b>3. 項數：</b>（末項 − 首項）÷ 公差 <b>＋ 1</b>。<br>例：$2 + 5 + 8 + 11$ → $(11 - 2) \div 3 + 1 = 4$ 項。
+                    </div>
+                </div>
+                <!-- 學習地圖 -->
+                <div id="roadmap-box" class="p-4 bg-white rounded-xl border border-emerald-200 space-y-3">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <p class="font-bold text-emerald-900 text-xs flex items-center">
+                            <i data-lucide="map" class="no-katex mr-1.5 w-4 h-4 text-emerald-600" aria-label="地圖圖示"></i> 🗺️ 學習地圖：每一關都已經打開，按一下就跳過去
+                        </p>
+                    </div>
+                    <div id="roadmap" class="flex flex-wrap gap-2"></div>
+                </div>
+            </div>
+
+            <!-- 第 0 關：暖身 等差數列 -->
+            <section id="stage-0" class="stage bg-white rounded-xl shadow-md p-6 border border-emerald-200" aria-labelledby="stage-0-title">
+                <h3 id="stage-0-title" class="text-xl font-bold text-emerald-800 mb-4 flex flex-wrap items-center gap-2">
+                    <span class="text-xs bg-emerald-600 text-white px-2 py-1 rounded font-bold">第 0 關</span>
+                    <i data-lucide="trending-up" class="no-katex text-emerald-600" aria-label="數列圖示"></i> 🪜 暖身：複習等差數列
+                </h3>
+                <div class="stage-body space-y-4">
+                    <div id="tour-concept" class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm leading-relaxed border border-emerald-100">
+                        <b>觀念解析：</b>這個單元要把等差數列「加起來」，所以先把上一節的<b>等差數列</b>複習好！<br>
+                        一串數，<b>後一項 − 前一項</b>都一樣，叫做<b>等差數列</b>；這個固定的差叫做<b>公差</b> $d$，第一個數叫做<b>首項</b> $a_1$。<br>
+                        🔑 第 $n$ 項：$a_n = a_1 + (n - 1)d$。從第 $1$ 項走到第 $n$ 項，只加了 $(n - 1)$ 次公差。<br>
+                        例：$2, 5, 8, 11, \dots$ 的第 $10$ 項 $= 2 + 9 \times 3 = 29$。
+                        <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/video/hO-i-3GkQW0?parent-topic-id=j-m8a-c06-1" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：【觀念】認識等差數列">
+                                <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>看影片：【觀念】認識等差數列</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/video/MSDQApxeR1k?parent-topic-id=j-m8a-c06-1" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：【素養動畫】【觀念】等差數列的一般項與公差">
+                                <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>看影片：【素養動畫】等差數列的一般項與公差</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/exercise/n-m8bch1-1-2b?parent-topic-id=j-m8a-c06-1" target="_blank" rel="noopener noreferrer" aria-label="開啟均一練習題：【基礎】等差數列的第 n 項公式">
+                                <i data-lucide="pencil-line" class="no-katex w-4 h-4" aria-label="練習圖示"></i>做練習：【基礎】等差數列的第 $n$ 項公式</a>
+                        </div>
+                    </div>
+
+                    <div id="tour-tool" class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <p class="font-bold text-slate-800 text-sm flex items-center">
+                            <i data-lucide="sliders-horizontal" class="no-katex mr-1.5 w-4 h-4 text-emerald-600" aria-label="滑桿圖示"></i> 🎛️ 動手做：等差數列產生器
+                        </p>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-700"><span>首項 $a_1$：</span><span id="as-a1-val">2</span></div>
+                                <input type="range" id="as-a1" min="-10" max="10" value="2" aria-label="調整首項" class="w-full h-2 bg-emerald-200 rounded-lg cursor-pointer accent-emerald-600">
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-700"><span>公差 $d$：</span><span id="as-d-val">3</span></div>
+                                <input type="range" id="as-d" min="-5" max="5" value="3" aria-label="調整公差" class="w-full h-2 bg-amber-200 rounded-lg cursor-pointer accent-amber-600">
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 items-center text-xs font-bold text-slate-700">
+                            <span>快選數列：</span>
+                            <button type="button" onclick="setAS(2,3)" aria-label="試試首項 2 公差 3" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$2, 5, 8, \dots$</button>
+                            <button type="button" onclick="setAS(10,-2)" aria-label="試試首項 10 公差負 2" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$10, 8, 6, \dots$</button>
+                            <button type="button" onclick="setAS(7,0)" aria-label="試試首項 7 公差 0" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$7, 7, 7, \dots$</button>
+                            <button type="button" onclick="setAS(-6,2)" aria-label="試試首項負 6 公差 2" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$-6, -4, -2, \dots$</button>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200">
+                            <svg id="as-svg" class="no-katex w-full" viewBox="0 0 640 290" role="img" aria-label="等差數列前 8 項的長條圖"></svg>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div id="as-panel" class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs font-bold space-y-1.5 text-emerald-950" aria-live="polite"></div>
+                            <div id="as-special" class="space-y-2" aria-live="polite"></div>
+                        </div>
+                    </div>
+                    <div id="cp-0" class="checkpoint"></div>
+                </div>
+            </section>
+
+            <!-- 第 1 關：級數與名詞 -->
+            <section id="stage-1" class="stage bg-white rounded-xl shadow-md p-6 border border-emerald-200" aria-labelledby="stage-1-title">
+                <h3 id="stage-1-title" class="text-xl font-bold text-emerald-800 mb-4 flex flex-wrap items-center gap-2">
+                    <span class="text-xs bg-emerald-600 text-white px-2 py-1 rounded font-bold">第 1 關</span>
+                    <i data-lucide="plus-circle" class="no-katex text-emerald-600" aria-label="加號圖示"></i> ➕ 級數是什麼：把數列加起來
+                </h3>
+                <div class="stage-body space-y-4">
+                    <div class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm leading-relaxed border border-emerald-100 space-y-2">
+                        <p><b>觀念解析：</b><b>數列</b>是一串排好的數，用逗號隔開：$2, 5, 8, 11$。<br>
+                        把它們用「＋」連起來：$2 + 5 + 8 + 11$，就叫做<b>級數</b>。等差數列連起來，就叫做<b>等差級數</b>。</p>
+                        <p>🏷️ 認識四個名詞（以 $2 + 5 + 8 + 11$ 為例）：</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                            <div class="p-2 bg-white rounded border border-emerald-200 text-center"><b>首項</b><br>第一個數<br><span class="text-base font-bold text-emerald-700">$2$</span></div>
+                            <div class="p-2 bg-white rounded border border-emerald-200 text-center"><b>末項</b><br>最後一個數<br><span class="text-base font-bold text-emerald-700">$11$</span></div>
+                            <div class="p-2 bg-white rounded border border-emerald-200 text-center"><b>項數</b><br>一共有幾個數<br><span class="text-base font-bold text-emerald-700">$4$</span></div>
+                            <div class="p-2 bg-white rounded border border-emerald-200 text-center"><b>和</b><br>全部加起來<br><span class="text-base font-bold text-emerald-700">$26$</span></div>
+                        </div>
+                        <p>✏️ 前 $n$ 項的和寫成 $S_n$（$S$ 是英文 Sum「總和」的第一個字母）。所以 $S_4 = 26$，$S_2 = 2 + 5 = 7$。</p>
+                        <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/video/SFSLFKAhfWo?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：【觀念】級數和等差級數 1">
+                                <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>看影片：【觀念】級數和等差級數 1</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/video/5eyB2hIW628?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：【觀念】級數和等差級數 2">
+                                <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>看影片：【觀念】級數和等差級數 2</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/exercise/mjnsl8ba?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一練習題：【基礎】認識級數與等差級數">
+                                <i data-lucide="pencil-line" class="no-katex w-4 h-4" aria-label="練習圖示"></i>做練習：【基礎】認識級數與等差級數</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/exercise/jnc-8-05-1-1a?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一練習題：【基礎】認識級數與等差級數 2">
+                                <i data-lucide="pencil-line" class="no-katex w-4 h-4" aria-label="練習圖示"></i>做練習：【基礎】認識級數與等差級數 2</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
+                        <p class="font-bold text-slate-800 text-sm flex items-center">
+                            <i data-lucide="scan-search" class="no-katex mr-1.5 w-4 h-4 text-emerald-600" aria-label="判定圖示"></i> 🔍 動手做：它是等差級數嗎？
+                        </p>
+                        <p class="text-xs text-slate-600">每一張卡都按按看。秘訣：① 有沒有用「＋」連起來？② 相鄰兩個數的差，是不是都一樣？</p>
+                        <div id="sr-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
+                        <p id="sr-score" class="text-xs font-bold text-slate-600" aria-live="polite"></p>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <p class="font-bold text-slate-800 text-sm flex items-center">
+                            <i data-lucide="blocks" class="no-katex mr-1.5 w-4 h-4 text-emerald-600" aria-label="積木圖示"></i> 🧱 動手做：一層一層數積木
+                        </p>
+                        <p class="text-xs text-slate-600">積木樓梯第 1 層 $1$ 塊、第 2 層 $2$ 塊、第 3 層 $3$ 塊……拉動滑桿蓋樓梯，數數看一共用了幾塊積木。</p>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1 text-slate-700"><span>蓋到第幾層：</span><span><span id="sb-n-val">4</span> 層</span></div>
+                            <input type="range" id="sb-n" min="1" max="10" value="4" aria-label="調整樓梯蓋到第幾層" class="w-full h-2 bg-emerald-200 rounded-lg cursor-pointer accent-emerald-600">
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200">
+                            <svg id="sb-svg" class="no-katex w-full" viewBox="0 0 640 260" role="img" aria-label="積木樓梯示意圖"></svg>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div id="sb-panel" class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs font-bold space-y-1.5 text-emerald-950" aria-live="polite"></div>
+                            <div id="sb-special" class="space-y-2" aria-live="polite"></div>
+                        </div>
+                    </div>
+                    <div id="cp-1" class="checkpoint"></div>
+                </div>
+            </section>
+
+            <!-- 第 2 關：倒過來相加 -->
+            <section id="stage-2" class="stage bg-white rounded-xl shadow-md p-6 border border-emerald-200" aria-labelledby="stage-2-title">
+                <h3 id="stage-2-title" class="text-xl font-bold text-emerald-800 mb-4 flex flex-wrap items-center gap-2">
+                    <span class="text-xs bg-emerald-600 text-white px-2 py-1 rounded font-bold">第 2 關</span>
+                    <i data-lucide="repeat" class="no-katex text-emerald-600" aria-label="倒轉圖示"></i> 🔄 倒過來相加：發現求和的妙招
+                </h3>
+                <div class="stage-body space-y-4">
+                    <div class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm leading-relaxed border border-emerald-100">
+                        <b>觀念解析：</b>上一關一層一層加，蓋到 $10$ 層就要加 $9$ 次。數學家高斯小時候想到一個妙招：<b>正著寫一次、倒著寫一次</b>，上下對齊相加：<br>
+                        $S = 1 + 2 + 3 + \dots + 10$<br>
+                        $S = 10 + 9 + 8 + \dots + 1$<br>
+                        每一欄都是 $1 + 10 = 11$，一共 $10$ 欄 → 兩份加起來 $= 11 \times 10 = 110$，一份 $= 110 \div 2 = 55$。<br>
+                        🔑 <b>求和公式（文字版）：和 ＝（首項 ＋ 末項）× 項數 ÷ 2</b><br>
+                        ✏️ 用符號寫：$S_n = \dfrac{n(a_1 + a_n)}{2}$（$a_1$ 是首項、$a_n$ 是末項、$n$ 是項數）。
+                        <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/video/431S7NPbmG4?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：【素養動畫】【觀念】等差級數求和 利用首項末項項數">
+                                <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>看影片：【素養動畫】等差級數求和（利用首項、末項、項數）</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/exercise/jnc-8-05-1-2a?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一練習題：【基礎】等差級數的和">
+                                <i data-lucide="pencil-line" class="no-katex w-4 h-4" aria-label="練習圖示"></i>做練習：【基礎】等差級數的和</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/exercise/n-m8bch1-2-1a?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一練習題：【基礎】等差級數的公式 1">
+                                <i data-lucide="pencil-line" class="no-katex w-4 h-4" aria-label="練習圖示"></i>做練習：【基礎】等差級數的公式 1</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <p class="font-bold text-slate-800 text-sm flex items-center">
+                            <i data-lucide="bar-chart-3" class="no-katex mr-1.5 w-4 h-4 text-emerald-600" aria-label="長條圖示"></i> 🧱 動手做：兩座樓梯拼成長方形
+                        </p>
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-700"><span>首項 $a_1$：</span><span id="rv-a1-val">1</span></div>
+                                <input type="range" id="rv-a1" min="1" max="6" value="1" aria-label="調整首項" class="w-full h-2 bg-emerald-200 rounded-lg cursor-pointer accent-emerald-600">
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-700"><span>公差 $d$：</span><span id="rv-d-val">1</span></div>
+                                <input type="range" id="rv-d" min="0" max="3" value="1" aria-label="調整公差" class="w-full h-2 bg-amber-200 rounded-lg cursor-pointer accent-amber-600">
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-700"><span>項數 $n$：</span><span id="rv-n-val">6</span></div>
+                                <input type="range" id="rv-n" min="2" max="10" value="6" aria-label="調整項數" class="w-full h-2 bg-sky-200 rounded-lg cursor-pointer accent-sky-600">
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 items-center text-xs font-bold text-slate-700">
+                            <span>快選級數：</span>
+                            <button type="button" onclick="setRV(1,1,10)" aria-label="試試 1 加到 10" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$1 + 2 + \dots + 10$</button>
+                            <button type="button" onclick="setRV(2,3,5)" aria-label="試試首項 2 公差 3 共 5 項" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$2 + 5 + 8 + 11 + 14$</button>
+                            <button type="button" onclick="setRV(1,2,7)" aria-label="試試首項 1 公差 2 共 7 項" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$1 + 3 + \dots + 13$</button>
+                            <button type="button" onclick="setRV(4,0,5)" aria-label="試試每項都是 4 共 5 項" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$4 + 4 + 4 + 4 + 4$</button>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200 text-xs font-bold">
+                            <span class="text-slate-700">🤔 先猜：把一模一樣的樓梯倒過來疊上去，會變成什麼形狀？猜好再按 →</span>
+                            <button type="button" id="rv-flip" class="tg px-3 py-1.5 border-2 border-emerald-300 bg-white rounded-lg" onclick="rvToggle()" aria-label="把倒著寫的級數疊上去或拿掉" aria-pressed="false">🔄 倒過來疊上去</button>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200">
+                            <svg id="rv-svg" class="no-katex w-full" viewBox="0 0 640 310" role="img" aria-label="正著排和倒著排的長條拼成長方形"></svg>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div id="rv-panel" class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs font-bold space-y-1.5 text-emerald-950" aria-live="polite"></div>
+                            <div id="rv-special" class="space-y-2" aria-live="polite"></div>
+                        </div>
+                        <div class="bg-slate-100 rounded-xl border border-slate-300 p-3">
+                            <button type="button" id="why-rv-btn" onclick="toggleWhy('rv')" aria-expanded="false" aria-controls="why-rv-panel" aria-label="開關錯誤說法對照" class="w-full text-left text-xs font-bold text-slate-700 flex justify-between items-center">
+                                <span>🤔 為什麼最後要除以 $2$？（點擊對照）</span>
+                                <i data-lucide="chevron-down" class="no-katex w-4 h-4 text-slate-500" aria-label="展開圖示"></i>
+                            </button>
+                            <div id="why-rv-panel" class="hidden mt-2 pt-2 border-t border-slate-200 text-xs text-slate-600 font-bold leading-relaxed space-y-2">
+                                <p>❌ <s class="strike">$1 + 2 + \dots + 10 = 11 \times 10 = 110$</s><br>✅ $11 \times 10$ 是<b>綠色＋橘色兩座樓梯</b>拼成的長方形，是兩份的和。只要一份，所以要 $\div 2$，答案是 $55$。</p>
+                                <p>❌ <s class="strike">項數是奇數就不能配對</s><br>✅ 「倒過來相加」不用自己找配對：中間那一項會和自己上下對齊，例如 $1 + 2 + 3 + 4 + 5$，每欄都是 $6$，共 $5$ 欄：$6 \times 5 \div 2 = 15$。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 p-5 rounded-xl border border-amber-300 space-y-2">
+                        <p class="font-bold text-amber-900 text-sm">🎯 回到開頭的挑戰：$1 + 2 + 3 + \dots + 50$ 是多少？</p>
+                        <p class="text-xs text-amber-900">先用剛學會的方法自己算算看，再按按鈕對答案。</p>
+                        <button type="button" onclick="revealHook()" aria-label="揭曉開頭挑戰的答案" class="px-3 py-1.5 bg-amber-500 text-white rounded text-xs font-bold hover:bg-amber-600">🔓 揭曉答案</button>
+                        <div id="hook-reveal" class="hidden" aria-live="polite"></div>
+                    </div>
+                    <div id="cp-2" class="checkpoint"></div>
+                </div>
+            </section>
+
+            <!-- 第 3 關：數項數 -->
+            <section id="stage-3" class="stage bg-white rounded-xl shadow-md p-6 border border-emerald-200" aria-labelledby="stage-3-title">
+                <h3 id="stage-3-title" class="text-xl font-bold text-emerald-800 mb-4 flex flex-wrap items-center gap-2">
+                    <span class="text-xs bg-emerald-600 text-white px-2 py-1 rounded font-bold">第 3 關</span>
+                    <i data-lucide="ruler" class="no-katex text-emerald-600" aria-label="尺圖示"></i> 📏 數項數：一共有幾項？
+                </h3>
+                <div class="stage-body space-y-4">
+                    <div class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm leading-relaxed border border-emerald-100">
+                        <b>觀念解析：</b>求和公式要用到<b>項數</b>。$1 + 2 + \dots + 10$ 一看就知道有 $10$ 項，可是 $3 + 7 + 11 + \dots + 27$ 呢？<br>
+                        想像青蛙從 $3$ 出發，每次跳 $4$ 格，跳到 $27$：跳了 $(27 - 3) \div 4 = 6$ 次，可是落腳的點有 $6 + 1 = 7$ 個（<b>起點也算！</b>）。<br>
+                        🔑 <b>項數 ＝（末項 − 首項）÷ 公差 ＋ 1</b><br>
+                        數出項數，就能求和：$(3 + 27) \times 7 \div 2 = 105$。<br>
+                        📐 把每一項排成一層層長條，會疊成一個<b>梯形</b>，所以求和公式和梯形面積（上底 ＋ 下底）× 高 ÷ $2$ 長得一模一樣！
+                        <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/video/i59EW5JuYHA?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：【暖身】梯形面積">
+                                <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>看影片：【暖身】梯形面積</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/video/KlL8fMKfkZs?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：【解題】等差級數求和 1">
+                                <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>看影片：【解題】等差級數求和 1</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/exercise/jnc-8-05-1-3a?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一練習題：【基礎】等差級數的公式 一">
+                                <i data-lucide="pencil-line" class="no-katex w-4 h-4" aria-label="練習圖示"></i>做練習：【基礎】等差級數的公式（一）</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <p class="font-bold text-slate-800 text-sm flex items-center">
+                            <i data-lucide="footprints" class="no-katex mr-1.5 w-4 h-4 text-emerald-600" aria-label="跳格圖示"></i> 🐸 動手做：數項數，數的是「點」不是「跳」
+                        </p>
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-700"><span>首項 $a_1$：</span><span id="ct-a1-val">3</span></div>
+                                <input type="range" id="ct-a1" min="-5" max="10" value="3" aria-label="調整首項" class="w-full h-2 bg-emerald-200 rounded-lg cursor-pointer accent-emerald-600">
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-700"><span>公差 $d$：</span><span id="ct-d-val">4</span></div>
+                                <input type="range" id="ct-d" min="1" max="5" value="4" aria-label="調整公差" class="w-full h-2 bg-amber-200 rounded-lg cursor-pointer accent-amber-600">
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-700"><span>末項 $a_n$：</span><span id="ct-an-val">27</span></div>
+                                <input type="range" id="ct-an" min="-5" max="50" value="27" aria-label="調整末項" class="w-full h-2 bg-sky-200 rounded-lg cursor-pointer accent-sky-600">
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 items-center text-xs font-bold text-slate-700">
+                            <span>快選級數：</span>
+                            <button type="button" onclick="setCT(3,4,27)" aria-label="試試 3 加 7 加到 27" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$3 + 7 + \dots + 27$</button>
+                            <button type="button" onclick="setCT(-2,1,9)" aria-label="試試負 2 加負 1 加 0 一直加到 9" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$(-2) + (-1) + 0 + \dots + 9$</button>
+                            <button type="button" onclick="setCT(6,3,6)" aria-label="試試首項和末項都是 6" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">首項 ＝ 末項 ＝ $6$</button>
+                            <button type="button" onclick="setCT(2,3,21)" aria-label="試試 2 加 5 加到 21" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$2 + 5 + \dots + 21$？</button>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200">
+                            <svg id="ct-svg" class="no-katex w-full" viewBox="0 0 640 190" role="img" aria-label="數線上的等差數列跳點圖"></svg>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6 items-center">
+                            <div class="bg-white p-3 rounded-xl border border-slate-200">
+                                <svg id="ct-svg2" class="no-katex w-full" viewBox="0 0 440 260" role="img" aria-label="把每一項排成長條的梯形示意圖"></svg>
+                            </div>
+                            <div class="space-y-3">
+                                <div id="ct-panel" class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs font-bold space-y-1.5 text-emerald-950" aria-live="polite"></div>
+                                <div id="ct-special" class="space-y-2" aria-live="polite"></div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-100 rounded-xl border border-slate-300 p-3">
+                            <button type="button" id="why-ct-btn" onclick="toggleWhy('ct')" aria-expanded="false" aria-controls="why-ct-panel" aria-label="開關錯誤說法對照" class="w-full text-left text-xs font-bold text-slate-700 flex justify-between items-center">
+                                <span>🤔 為什麼項數要「＋ 1」？（點擊對照）</span>
+                                <i data-lucide="chevron-down" class="no-katex w-4 h-4 text-slate-500" aria-label="展開圖示"></i>
+                            </button>
+                            <div id="why-ct-panel" class="hidden mt-2 pt-2 border-t border-slate-200 text-xs text-slate-600 font-bold leading-relaxed space-y-2">
+                                <p>❌ <s class="strike">$3 + 7 + \dots + 27$ 的項數是 $(27 - 3) \div 4 = 6$</s><br>✅ $6$ 是「跳了幾次」。從第 $1$ 個點出發跳 $6$ 次，會停在 $7$ 個點上，所以是 $7$ 項。就像步道長 $10$ m、每 $2$ m 種一棵樹（兩端都種），要種 $10 \div 2 + 1 = 6$ 棵。</p>
+                                <p>❌ <s class="strike">$(-2) + (-1) + 0 + 1 + \dots + 9$ 有 $9$ 項</s><br>✅ 從負數或 $0$ 開始時最容易數錯！$-2$、$-1$、$0$ 也都是項：$(9 - (-2)) \div 1 + 1 = 12$ 項。按上面的快選按鈕數數看。</p>
+                                <p>❌ <s class="strike">末項是 $27$，所以有 $27$ 項</s><br>✅ 只有從 $1$ 開始、每次加 $1$（$1 + 2 + \dots + 27$）才會剛好 $27$ 項。這裡每次跳 $4$，項數少很多。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="cp-3" class="checkpoint"></div>
+                </div>
+            </section>
+
+            <!-- 第 4 關：先求末項 -->
+            <section id="stage-4" class="stage bg-white rounded-xl shadow-md p-6 border border-emerald-200" aria-labelledby="stage-4-title">
+                <h3 id="stage-4-title" class="text-xl font-bold text-emerald-800 mb-4 flex flex-wrap items-center gap-2">
+                    <span class="text-xs bg-emerald-600 text-white px-2 py-1 rounded font-bold">第 4 關</span>
+                    <i data-lucide="calculator" class="no-katex text-emerald-600" aria-label="計算機圖示"></i> 🔚 不知道末項？先求末項
+                </h3>
+                <div class="stage-body space-y-4">
+                    <div class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm leading-relaxed border border-emerald-100">
+                        <b>觀念解析：</b>有時候題目只告訴你<b>首項</b>、<b>每次多多少（公差）</b>和<b>一共幾項</b>，沒有說最後一項是多少。<br>
+                        別急，分兩步：① 先用第 $0$ 關複習的 $a_n = a_1 + (n - 1)d$ 求出<b>末項</b>；② 再用（首項 ＋ 末項）× 項數 ÷ $2$。<br>
+                        例：首項 $4$、公差 $3$、共 $12$ 項：① 末項 $= 4 + 11 \times 3 = 37$；② 和 $= (4 + 37) \times 12 \div 2 = 246$。<br>
+                        ⚡ 熟練以後，兩步可以併成一步，叫做<b>公式二</b>：$S_n = \dfrac{n[2a_1 + (n - 1)d]}{2}$。<br>
+                        🔍 <b>怎麼選：</b>知道末項 → 直接求和（公式一）；不知道末項、知道公差 → 先求末項，或用公式二。
+                        <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/video/6eZNkA7RUMo?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：【素養動畫】【觀念】等差級數求和 利用等差數列的概念">
+                                <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>看影片：【素養動畫】等差級數求和（利用等差數列的概念）</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/video/0V14II_WuJQ?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：【觀念】等差級數 Sn 的另一個公式">
+                                <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>看影片：【觀念】等差級數 $S_n$ 的另一個公式</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/exercise/n-m8bch1-2-1b?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一練習題：【基礎】等差級數的公式 2">
+                                <i data-lucide="pencil-line" class="no-katex w-4 h-4" aria-label="練習圖示"></i>做練習：【基礎】等差級數的公式 2</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-emerald-700 hover:underline" href="https://www.junyiacademy.org/exercise/jnc-8-05-1-3b?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一練習題：【基礎】等差級數的公式 二">
+                                <i data-lucide="pencil-line" class="no-katex w-4 h-4" aria-label="練習圖示"></i>做練習：【基礎】等差級數的公式（二）</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <p class="font-bold text-slate-800 text-sm flex items-center">
+                            <i data-lucide="scale" class="no-katex mr-1.5 w-4 h-4 text-emerald-600" aria-label="比較圖示"></i> ⚖️ 動手做：先求末項再求和，和公式二答案一樣嗎？
+                        </p>
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-700"><span>首項 $a_1$：</span><span id="f2-a1-val">4</span></div>
+                                <input type="range" id="f2-a1" min="-10" max="20" value="4" aria-label="調整首項" class="w-full h-2 bg-emerald-200 rounded-lg cursor-pointer accent-emerald-600">
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-700"><span>公差 $d$：</span><span id="f2-d-val">3</span></div>
+                                <input type="range" id="f2-d" min="-5" max="5" value="3" aria-label="調整公差" class="w-full h-2 bg-amber-200 rounded-lg cursor-pointer accent-amber-600">
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-1 text-slate-700"><span>項數 $n$：</span><span id="f2-n-val">12</span></div>
+                                <input type="range" id="f2-n" min="1" max="15" value="12" aria-label="調整項數" class="w-full h-2 bg-sky-200 rounded-lg cursor-pointer accent-sky-600">
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 items-center text-xs font-bold text-slate-700">
+                            <span>快選：</span>
+                            <button type="button" onclick="setF2(4,3,12)" aria-label="試試首項 4 公差 3 項數 12" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$a_1 = 4, d = 3, n = 12$</button>
+                            <button type="button" onclick="setF2(10,-2,11)" aria-label="試試首項 10 公差負 2 項數 11" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$a_1 = 10, d = -2, n = 11$</button>
+                            <button type="button" onclick="setF2(6,0,5)" aria-label="試試首項 6 公差 0 項數 5" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$a_1 = 6, d = 0, n = 5$</button>
+                            <button type="button" onclick="setF2(-3,2,7)" aria-label="試試首項負 3 公差 2 項數 7" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-emerald-50">$a_1 = -3, d = 2, n = 7$</button>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200">
+                            <svg id="f2-svg" class="no-katex w-full" viewBox="0 0 640 290" role="img" aria-label="等差級數每一項的長條圖"></svg>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div id="f2-panel" class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs font-bold space-y-1.5 text-emerald-950" aria-live="polite"></div>
+                            <div id="f2-special" class="space-y-2" aria-live="polite"></div>
+                        </div>
+                        <div class="bg-slate-100 rounded-xl border border-slate-300 p-3">
+                            <button type="button" id="why-f2-btn" onclick="toggleWhy('f2')" aria-expanded="false" aria-controls="why-f2-panel" aria-label="開關錯誤算式對照" class="w-full text-left text-xs font-bold text-slate-700 flex justify-between items-center">
+                                <span>🤔 為什麼是 $(n - 1)d$，不是 $nd$？（點擊對照）</span>
+                                <i data-lucide="chevron-down" class="no-katex w-4 h-4 text-slate-500" aria-label="展開圖示"></i>
+                            </button>
+                            <div id="why-f2-panel" class="hidden mt-2 pt-2 border-t border-slate-200 text-xs text-slate-600 font-bold leading-relaxed space-y-2">
+                                <p>❌ <s class="strike">$3, 7, 11, \dots$ 的第 $3$ 項 $= 3 + 3 \times 4 = 15$</s><br>✅ 第 $1$ 項還沒加公差；第 $2$ 項加 $1$ 次、第 $3$ 項加 $2$ 次：$3 + 2 \times 4 = 11$。第 $n$ 項加了 $(n - 1)$ 次。</p>
+                                <p>❌ <s class="strike">公差是負數，就不能用公式</s><br>✅ 照樣用！$a_1 = 20, d = -3$ 的第 $4$ 項 $= 20 + 3 \times (-3) = 11$，數列是 $20, 17, 14, 11$。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-violet-50 p-4 rounded-xl border border-violet-200">
+                        <button type="button" id="why-adv-btn" onclick="toggleWhy('adv')" aria-expanded="false" aria-controls="why-adv-panel" aria-label="開關選讀內容" class="w-full text-left text-sm font-bold text-violet-900 flex justify-between items-center">
+                            <span>⭐ 選讀：知道總和，倒推公差（學有餘力再看）</span>
+                            <i data-lucide="chevron-down" class="no-katex w-4 h-4 text-violet-500" aria-label="展開圖示"></i>
+                        </button>
+                        <div id="why-adv-panel" class="hidden mt-3 pt-3 border-t border-violet-200 space-y-2 text-sm text-violet-950 leading-relaxed">
+                        <p>公式二裡有 $a_1$、$d$、$n$、$S_n$ 四個量。<b>知道其中三個</b>，就能把公式當成方程式，解出第四個。</p>
+                        <p>例：首項 $2$、前 $6$ 項的和是 $57$，公差是多少？<br>
+                        $\dfrac{6 \times [2 \times 2 + 5d]}{2} = 57$ → $3 \times (4 + 5d) = 57$ → $4 + 5d = 19$ → $d = 3$。<br>
+                        驗算：$2 + 5 + 8 + 11 + 14 + 17 = 57$ ✔</p>
+                        <p class="text-xs font-bold text-violet-800">⚠️ 課綱不做：只知道兩個和（例如 $S_{10}$ 和 $S_{15}$），用聯立方程式同時反求首項和公差。</p>
+                        <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                            <a class="inline-flex items-center gap-1 font-bold text-violet-700 hover:underline" href="https://www.junyiacademy.org/video/WLEh-Q5gyj4?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：【解題】已知首項和前 n 項的和求公差">
+                                <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>看影片：【解題】已知首項和前 $n$ 項的和求公差</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-violet-700 hover:underline" href="https://www.junyiacademy.org/video/GWT6E2cE2kA?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：【素養動畫】【觀念】由等差級數和反求項數與第幾項">
+                                <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>看影片：【素養動畫】由等差級數和反求項數與第幾項</a>
+                            <a class="inline-flex items-center gap-1 font-bold text-violet-700 hover:underline" href="https://www.junyiacademy.org/exercise/jnc-8-05-1-4a?parent-topic-id=j-m8a-c06-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一練習題：【基礎】利用等差級數 Sn 的公式反求項數 公差或第幾項">
+                                <i data-lucide="pencil-line" class="no-katex w-4 h-4" aria-label="練習圖示"></i>做練習：【基礎】利用 $S_n$ 的公式反求項數、公差或第幾項</a>
+                        </div>
+                        </div>
+                    </div>
+                    <div id="cp-4" class="checkpoint"></div>
+                </div>
+            </section>
+
+            <!-- 第 5 關：迷思與生活應用 -->
+            <section id="stage-5" class="stage bg-white rounded-xl shadow-md p-6 border border-slate-200 space-y-6" aria-labelledby="stage-5-title">
+                <h3 id="stage-5-title" class="text-xl font-bold text-emerald-800 flex flex-wrap items-center gap-2">
+                    <span class="text-xs bg-emerald-600 text-white px-2 py-1 rounded font-bold">第 5 關</span> 🏁 總整理：迷思與生活應用
+                </h3>
+                <div class="stage-body space-y-6">
+                    <div>
+                        <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center text-lg">
+                            <i data-lucide="alert-circle" class="no-katex mr-2 text-rose-500" aria-label="迷思圖示"></i> ⚠️ 等差級數三大常見迷思
+                        </h3>
+                        <div class="space-y-3 text-sm font-medium">
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                <p class="text-rose-600 font-bold">❌ 迷思一：項數 ＝（末項 − 首項）÷ 公差？</p>
+                                <p class="text-slate-700 mt-1">那只是「跳了幾次」，還要把第一項也算進去，<b>要 ＋ 1</b>。從負數或 $0$ 開始更容易數錯：$(-2) + (-1) + 0 + 1 + \dots + 8$ 很多人以為有 $8$ 項，其實有 $11$ 項。</p>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                <p class="text-rose-600 font-bold">❌ 迷思二：$S_n = n(a_1 + a_n)$？</p>
+                                <p class="text-slate-700 mt-1">$n(a_1 + a_n)$ 是「正著寫＋倒著寫」<b>兩份</b>的和，<b>一定要 $\div 2$</b>。例：$1 + 2 + 3 + 4 = 4 \times 5 \div 2 = 10$，不是 $20$。</p>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                <p class="text-rose-600 font-bold">❌ 迷思三：第 $n$ 項是 $a_1 + n \times d$？</p>
+                                <p class="text-slate-700 mt-1">從第 $1$ 項到第 $n$ 項只加了 $(n - 1)$ 次公差。例：$3, 7, 11$ 的第 $3$ 項是 $3 + 2 \times 4 = 11$，不是 $15$。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                        <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400 text-lg">
+                            <i data-lucide="lightbulb" class="no-katex mr-2 w-5 h-5" aria-label="生活應用圖示"></i> 💡 生活中的等差級數
+                        </h3>
+                        <ol class="list-decimal list-inside text-sm leading-relaxed opacity-90 space-y-2">
+                            <li><b>高斯的故事：</b>小學生高斯用「倒過來相加」，很快算出 $1 + 2 + \dots + 100 = 100 \times 101 \div 2 = 5050$。</li>
+                            <li><b>鋼琴練習：</b>第 $1$ 天練 $20$ 分鐘、之後每天多練 $5$ 分鐘、連續 $14$ 天：最後一天 $20 + 13 \times 5 = 85$ 分鐘，一共 $14 \times (20 + 85) \div 2 = 735$ 分鐘。</li>
+                            <li><b>紙杯金字塔：</b>最上層 $1$ 個、每往下一層多 $1$ 個、最下層 $10$ 個：一共 $10 \times (1 + 10) \div 2 = 55$ 個紙杯。</li>
+                            <li><b>老鐘報時：</b>整點敲鐘，1 點敲 $1$ 下……12 點敲 $12$ 下：半天一共敲 $12 \times (1 + 12) \div 2 = 78$ 下。</li>
+                        </ol>
+                    </div>
+                    <div id="cp-5" class="checkpoint"></div>
+                    <!-- 🎉 完成，前往練習 -->
+                    <div class="bg-amber-50 border border-amber-300 rounded-xl p-5 text-center space-y-3">
+                        <p class="font-bold text-amber-900 text-lg">🎉 觀念全部看完了！</p>
+                        <p class="text-sm text-amber-950">接下來到 <b>📘 【進階】等差級數求和</b> 試試看：⚡ 思考試煉有 $6$ 題基礎題，🔥 挑戰突破有 $6$ 題生活應用題。</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <!-- 重點小卡 -->
+    <!-- 重點小卡 -->
+    <button type="button" id="mt-btn" onclick="toggleHelper()" aria-expanded="false" aria-controls="mt-panel" aria-label="打開或關閉重點小卡"
+        class="fixed bottom-4 right-4 z-40 rounded-full bg-sky-600 text-white text-sm font-bold px-4 py-3 shadow-xl hover:bg-sky-700">📐 重點小卡</button>
+    <div id="mt-panel" class="hidden fixed bottom-20 right-4 z-40 bg-white rounded-xl border border-sky-300 shadow-2xl p-4 w-72 max-w-[calc(100vw-2rem)]" role="dialog" aria-label="重點小卡">
+        <div class="flex items-center justify-between mb-2">
+            <p class="font-bold text-sky-800 text-sm">📐 重點小卡</p>
+            <button type="button" onclick="toggleHelper()" aria-label="關閉重點小卡" class="text-slate-400 hover:text-slate-700 font-bold px-2">✕</button>
+        </div>
+        <ul class="text-xs font-medium text-slate-700 space-y-1.5">
+            <li>首項：第一個數；末項：最後一個數；項數：一共有幾個數</li>
+            <li><b>和 ＝（首項 ＋ 末項）× 項數 ÷ 2</b></li>
+            <li>項數 ＝（末項 − 首項）÷ 公差 ＋ 1</li>
+            <li>末項：$a_n = a_1 + (n - 1)d$</li>
+            <li>符號：$S_n = \dfrac{n(a_1 + a_n)}{2}$</li>
+            <li>記得：最後一定要 $\div 2$</li>
+        </ul>
+    </div>
+
+    <!-- 🧭 新手導覽圖層 -->
+    <div id="tour-layer" class="hidden" aria-hidden="true">
+        <div id="tour-shade" class="fixed inset-0 z-50"></div>
+        <div id="tour-ring" class="fixed z-50 rounded-xl pointer-events-none"></div>
+        <div id="tour-card" role="dialog" aria-modal="true" aria-labelledby="tour-title" class="fixed z-50 bg-white rounded-xl shadow-2xl border border-sky-300 p-4 w-80 max-w-[calc(100vw-2rem)] space-y-2">
+            <p id="tour-step" class="text-xs font-bold text-sky-600"></p>
+            <p id="tour-title" class="font-bold text-slate-800 text-base"></p>
+            <p id="tour-text" class="text-sm text-slate-700 leading-relaxed"></p>
+            <div class="flex items-center justify-between gap-2 pt-1">
+                <button type="button" id="tour-skip" onclick="endTour()" aria-label="結束導覽" class="text-xs font-bold text-slate-500 hover:text-slate-800 px-1">跳過導覽</button>
+                <div class="flex gap-2">
+                    <button type="button" id="tour-prev" onclick="tourGo(-1)" aria-label="上一步" class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-50">← 上一步</button>
+                    <button type="button" id="tour-next" onclick="tourGo(1)" aria-label="下一步" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-bold">下一步 →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS 邏輯 -->
+    <script>
+        // ========== 1. 核心配置（含 ignoredClasses） ==========
+        const katexConfig = {
+            delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false }
+            ],
+            ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option'],
+            ignoredClasses: ['no-katex'],
+            throwOnError: false,
+            strict: 'ignore'
+        };
+        function renderMath(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                try { renderMathInElement(element, katexConfig); } catch (e) { console.warn(e); }
+            }
+        }
+        function refreshIcons() { if (typeof lucide !== 'undefined') { try { lucide.createIcons(); } catch (e) { console.warn(e); } } }
+        const $id = (id) => document.getElementById(id);
+        function plain(s) {
+            return String(s).replace(/<[^>]+>/g, '').replace(/\\text\{([^}]*)\}/g, '$1').replace(/\^\\circ/g, '度').replace(/\\times/g, '×')
+                .replace(/\\div/g, '÷').replace(/\\dots/g, '…').replace(/\\d?frac/g, '').replace(/_\{([^}]*)\}/g, '$1').replace(/_(\w)/g, '$1')
+                .replace(/[{}]/g, '').replace(/\$/g, '').replace(/\(/g, '（').replace(/\)/g, '）').replace(/,\s*/g, '、').replace(/\s+/g, ' ').trim();
+        }
+        // 共用樣式（參考範本）
+        const FB = {
+            ok: 'mt-2 p-2.5 rounded-lg text-xs font-bold leading-relaxed bg-green-100 text-green-900 border border-green-300',
+            bad: 'mt-2 p-2.5 rounded-lg text-xs font-bold leading-relaxed bg-red-100 text-red-900 border border-red-300',
+            hint: 'mt-2 p-2.5 rounded-lg text-xs font-bold leading-relaxed bg-slate-100 text-slate-700 border border-slate-300'
+        };
+        const PANEL = {
+            ok: 'p-4 rounded-xl text-xs font-bold leading-relaxed border bg-green-50 border-green-300 text-green-950 space-y-1.5',
+            bad: 'p-4 rounded-xl text-xs font-bold leading-relaxed border bg-rose-50 border-rose-300 text-rose-950 space-y-1.5',
+            info: 'p-4 rounded-xl text-xs font-bold leading-relaxed border bg-emerald-50 border-emerald-200 text-emerald-950 space-y-1.5',
+            warn: 'p-4 rounded-xl text-xs font-bold leading-relaxed border bg-amber-50 border-amber-300 text-amber-900 space-y-1.5'
+        };
+        const NOTE = {
+            sky: 'p-2.5 rounded-lg text-xs font-bold border bg-sky-50 border-sky-200 text-sky-900',
+            violet: 'p-2.5 rounded-lg text-xs font-bold border bg-violet-50 border-violet-200 text-violet-900',
+            amber: 'p-2.5 rounded-lg text-xs font-bold border bg-amber-50 border-amber-200 text-amber-900',
+            rose: 'p-2.5 rounded-lg text-xs font-bold border bg-rose-50 border-rose-200 text-rose-900',
+            green: 'p-2.5 rounded-lg text-xs font-bold border bg-green-50 border-green-200 text-green-900'
+        };
+        // 數學小工具
+        const SUB = (n) => String(n).split('').map(c => '₀₁₂₃₄₅₆₇₈₉'[+c]).join('');
+        const fmtN = (x) => x < 0 ? `(${x})` : `${x}`;            // 只用在 $...$ 裡
+        const signed = (x) => x >= 0 ? `+${x}` : `−${Math.abs(x)}`; // SVG 顯示用
+        const arith = (a, d, n) => Array.from({ length: n }, (_, i) => a + i * d);
+        const sum = (arr) => arr.reduce((s, v) => s + v, 0);
+        function seqStr(arr, sep) {
+            sep = sep || ' + ';
+            const show = arr.map(v => v < 0 && sep === ' + ' ? `(${v})` : `${v}`);
+            return arr.length <= 6 ? show.join(sep) : `${show[0]}${sep}${show[1]}${sep}\\dots${sep}${show[show.length - 1]}`;
+        }
+        // 長條圖（正數向上、負數向下）
+        function barChart(vals, o) {
+            const W = o.W, top = o.top, bot = o.bot, n = vals.length;
+            const mx = Math.max(0, ...vals), mn = Math.min(0, ...vals), span = (mx - mn) || 1;
+            const k = (bot - top) / span, base = top + mx * k;
+            const slot = (W - 80) / n, bw = Math.min(54, slot * 0.68), fs = o.fs || 16;
+            let s = `<line x1="30" y1="${base.toFixed(1)}" x2="${W - 20}" y2="${base.toFixed(1)}" stroke="#94a3b8" stroke-width="2"/>`;
+            vals.forEach((v, i) => {
+                const cx = 50 + slot * (i + 0.5), h = Math.abs(v) * k, y = v >= 0 ? base - h : base;
+                const col = o.hl === i ? '#d97706' : (v >= 0 ? '#10b981' : '#f43f5e');
+                s += `<rect x="${(cx - bw / 2).toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(h, 2).toFixed(1)}" rx="4" fill="${col}" fill-opacity=".85"/>`;
+                const ty = v >= 0 ? y - 6 : y + h + 17;
+                s += `<text x="${cx.toFixed(1)}" y="${ty.toFixed(1)}" text-anchor="middle" font-size="${fs}" font-weight="900" fill="${v >= 0 ? '#065f46' : '#9f1239'}">${v}</text>`;
+                if (o.labels) {
+                    const ly = v >= 0 ? base + 19 : base - 8;
+                    s += `<text x="${cx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" font-size="${fs - 2}" font-weight="700" fill="${o.hl === i ? '#b45309' : '#475569'}">a${SUB(i + 1)}</text>`;
+                }
+            });
+            return s;
+        }
+
+
+        // 共用：選項字母、回饋框（原本在題目區）
+        const LETTER = ['A', 'B', 'C'];
+        function showFb(el, kind, html) { el.className = FB[kind]; el.innerHTML = html; renderMath(el); }
+
+
+        // ========== 3. 解鎖問題 ==========
+        function unlockQuestion(id) {
+            const el = $id(id);
+            if (!el) return;
+            el.classList.remove('step-locked', 'hidden');
+            el.classList.add('step-unlocked');
+            el.removeAttribute('aria-hidden');
+            renderMath(el);
+            refreshIcons();
+            setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 150);
+        }
+
+        // ========== 7-1. 窄螢幕畫布 ==========
+        // 手機上改用 360 寬的畫布（電腦 640），字就不會被縮得太小
+        const NARROW_MQ = window.matchMedia ? window.matchMedia('(max-width: 640px)') : null;
+        const isNarrow = () => !!(NARROW_MQ && NARROW_MQ.matches);
+        const CW = () => isNarrow() ? 360 : 640;
+        function setVB(id, w, h) { const el = $id(id); if (el) el.setAttribute('viewBox', `0 0 ${w} ${h}`); }
+        function onLayoutChange() { updateAS(); updateSB(); updateRV(); updateCT(); updateF2(); }
+        if (NARROW_MQ) { if (NARROW_MQ.addEventListener) NARROW_MQ.addEventListener('change', onLayoutChange); else if (NARROW_MQ.addListener) NARROW_MQ.addListener(onLayoutChange); }
+
+        // ========== 8. 第 0 關：等差數列產生器 ==========
+        function setAS(a, d) { $id('as-a1').value = a; $id('as-d').value = d; updateAS(); }
+        function initAS() { ['as-a1', 'as-d'].forEach(id => $id(id).addEventListener('input', updateAS)); updateAS(); }
+        function updateAS() {
+            const a = +$id('as-a1').value, d = +$id('as-d').value;
+            $id('as-a1-val').innerText = a; $id('as-d-val').innerText = d;
+            const vals = arith(a, d, 8);
+            const W = CW(); setVB('as-svg', W, 290);
+            let s = barChart(vals, { W, top: 52, bot: 238, labels: true });
+            const slot = (W - 80) / 8, aw = Math.min(22, slot * 0.4);
+            for (let i = 0; i < 7; i++) {
+                const x = 50 + slot * (i + 1);
+                s += `<text x="${x.toFixed(1)}" y="24" text-anchor="middle" font-size="15" font-weight="900" fill="#b45309">${signed(d)}</text>`;
+                s += `<path d="M${(x - aw).toFixed(1)} 34 Q${x.toFixed(1)} 26 ${(x + aw).toFixed(1)} 34" fill="none" stroke="#d97706" stroke-width="2"/>`;
+            }
+            s += `<text x="${W / 2}" y="282" text-anchor="middle" font-size="15" font-weight="700" fill="#475569">每往右一項，都${d === 0 ? '加 0（不變）' : (d > 0 ? '加 ' + d : '減 ' + Math.abs(d))}</text>`;
+            $id('as-svg').innerHTML = s;
+            $id('as-panel').innerHTML = `<p class="text-sm">📐 數列面板</p><p>首項 $a_1 = ${a}$，公差 $d = ${d}$</p><p>數列：$${vals.join(', ')}, \\dots$</p>` +
+                `<p class="mt-2 p-2 bg-white rounded border border-emerald-200">🔑 第 $10$ 項：$a_{10} = a_1 + 9d = ${a} + 9 \\times ${fmtN(d)} = ${a + 9 * d}$</p>`;
+            renderMath($id('as-panel'));
+            const sp = [];
+            if (d === 0) sp.push(`<div class="${NOTE.violet}">🔹 <b>邊界情況：公差是 $0$。</b>每一項都一樣（$${a}, ${a}, ${a}, \\dots$），這也是等差數列！</div>`);
+            else if (d > 0) sp.push(`<div class="${NOTE.sky}">🔹 公差是正數 → 數列<b>越來越大</b>（遞增）。</div>`);
+            else sp.push(`<div class="${NOTE.amber}">🔹 公差是負數 → 數列<b>越來越小</b>（遞減）。每一項都比前一項少 $${Math.abs(d)}$。</div>`);
+            if (vals.some(v => v < 0) && vals.some(v => v > 0)) sp.push(`<div class="${NOTE.rose}">🔹 數列裡有正數也有負數，中間會穿過 $0$。只要差都一樣，還是等差數列。</div>`);
+            sp.push(`<div class="${NOTE.green}">🔹 第 $1$ 項還沒加公差，所以第 $10$ 項只加了 $9$ 次，不是 $10$ 次。</div>`);
+            $id('as-special').innerHTML = sp.join(''); renderMath($id('as-special'));
+        }
+
+        // ========== 9. 第 1 關：等差級數判定站、累加器 ==========
+        const SR = [
+            { tex: '$2 + 5 + 8 + 11 + 14$', yes: true, why: '相鄰兩項都差 $3$ → 公差 $3$ 的等差級數。' },
+            { tex: '$1 + 2 + 4 + 8 + 16$', yes: false, why: '每次<b>乘 $2$</b>，差是 $1, 2, 4, 8$，不一樣 → 不是等差級數。' },
+            { tex: '$20 + 16 + 12 + 8$', yes: true, why: '每次減 $4$，公差 $-4$，也是等差級數！' },
+            { tex: '$3 + 8 + 3 + 8 + 3 + 8$', yes: false, why: '差是 $5, -5, 5, \\dots$，一下加一下減。<b>有規律</b>不等於<b>等差</b> → 不是等差級數。' },
+            { tex: '$7 + 7 + 7 + 7$', yes: true, why: '每次加 $0$，公差 $0$ → <b>是</b>等差級數！很多人以為「沒變化」就不算，其實算喔。' },
+            { tex: '$1, 4, 7, 10$', yes: false, why: '這是<b>數列</b>（用逗號隔開），還沒用「＋」連起來，所以不是級數。' }
+        ];
+        const srAns = {};
+        function initSR() {
+            $id('sr-grid').innerHTML = SR.map((p, i) => `
+                <div class="p-3 bg-white rounded-lg border border-slate-200 flex flex-col" id="sr-${i}">
+                    <p class="text-[11px] font-bold text-slate-400">第 ${i + 1} 張</p>
+                    <p class="text-sm font-bold text-slate-800 text-center py-2">${p.tex}</p>
+                    <div class="grid grid-cols-2 gap-1 mt-1">
+                        <button type="button" id="sr-${i}-y" onclick="srCheck(${i}, true)" aria-label="第 ${i + 1} 張是等差級數" class="p-1.5 bg-white border border-slate-300 rounded text-xs font-bold hover:bg-emerald-50">✅ 是</button>
+                        <button type="button" id="sr-${i}-n" onclick="srCheck(${i}, false)" aria-label="第 ${i + 1} 張不是等差級數" class="p-1.5 bg-white border border-slate-300 rounded text-xs font-bold hover:bg-rose-50">❌ 不是</button>
+                    </div>
+                    <p id="sr-${i}-fb" class="mt-1 text-[11px] font-bold leading-snug min-h-[2.5rem]" aria-live="polite"></p>
+                </div>`).join('');
+            renderMath($id('sr-grid'));
+            srScore();
+        }
+        function srCheck(i, pick) {
+            if (srAns[i] !== undefined) return;
+            const p = SR[i], fb = $id(`sr-${i}-fb`);
+            if (pick !== p.yes) {
+                const b = $id(`sr-${i}-${pick ? 'y' : 'n'}`); b.classList.add('opt-wrong', 'shake');
+                fb.className = 'mt-1 text-[11px] font-bold leading-snug min-h-[2.5rem] text-red-700';
+                fb.innerHTML = pick ? '🤔 檢查兩件事：有用「＋」連起來嗎？相鄰兩項的差都一樣嗎？' : '🤔 再算一次相鄰兩項的差，是不是都一樣？';
+                return;
+            }
+            srAns[i] = true;
+            $id(`sr-${i}-y`).disabled = $id(`sr-${i}-n`).disabled = true;
+            $id(`sr-${i}-${pick ? 'y' : 'n'}`).classList.add('opt-correct');
+            fb.className = 'mt-1 text-[11px] font-bold leading-snug min-h-[2.5rem] text-slate-700';
+            fb.innerHTML = p.why;
+            renderMath(fb); srScore();
+        }
+        function srScore() {
+            const n = Object.keys(srAns).length;
+            $id('sr-score').innerHTML = n >= SR.length ? '🎉 全部判斷完成！記住：用<b>「＋」連起來</b>才是級數；差都一樣，才是<b>等差</b>級數。' : `已完成 ${n}/${SR.length} 張卡。`;
+        }
+        function initSB() { $id('sb-n').addEventListener('input', updateSB); updateSB(); }
+        function updateSB() {
+            const n = +$id('sb-n').value; $id('sb-n-val').innerText = n;
+            const terms = Array.from({ length: n }, (_, i) => i + 1), S = sum(terms);
+            const nar = isNarrow(), cols = ['#10b981', '#0ea5e9', '#f59e0b', '#8b5cf6', '#f43f5e'], base = 226, bs = 20, cw = nar ? 30 : 32;
+            setVB('sb-svg', nar ? 360 : 640, nar ? 340 : 260);
+            let s = `<text x="20" y="22" font-size="15" font-weight="700" fill="#475569">積木樓梯（一格 ＝ 一塊積木）</text>`;
+            terms.forEach((v, i) => {
+                const x = 30 + i * cw;
+                for (let k = 0; k < v; k++) s += `<rect x="${x}" y="${base - (k + 1) * bs}" width="${cw - 4}" height="${bs - 2}" rx="3" fill="${cols[i % 5]}" fill-opacity=".85"/>`;
+                s += `<text x="${x + (cw - 4) / 2}" y="${base + 20}" text-anchor="middle" font-size="14" font-weight="900" fill="#334155">${v}</text>`;
+            });
+            s += `<line x1="24" y1="${base}" x2="${30 + 10 * cw}" y2="${base}" stroke="#475569" stroke-width="2"/>`;
+            s += `<text x="${30 + 5 * cw}" y="${base + 30 + 10}" text-anchor="middle" font-size="13" font-weight="700" fill="#64748b">每一層的積木數</text>`;
+            if (nar) {   // 窄螢幕：結果框放在下面
+                s += `<rect x="40" y="282" width="280" height="50" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>`;
+                s += `<text x="180" y="315" text-anchor="middle" font-size="18" font-weight="900" fill="#047857">蓋了 ${n} 層，一共 ${S} 塊</text>`;
+            } else {
+                s += `<rect x="400" y="70" width="220" height="100" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>`;
+                s += `<text x="510" y="104" text-anchor="middle" font-size="16" font-weight="700" fill="#065f46">蓋了 ${n} 層，一共</text>`;
+                s += `<text x="510" y="148" text-anchor="middle" font-size="32" font-weight="900" fill="#047857">${S} 塊</text>`;
+            }
+            $id('sb-svg').innerHTML = s;
+            $id('sb-panel').innerHTML = `<p class="text-sm">📐 一層一層加</p><p class="text-sm">$S_{${n}} = ${terms.join(' + ')} = ${S}$</p><p>首項 $1$、末項 $${n}$、項數 $${n}$</p>`;
+            renderMath($id('sb-panel'));
+            const sp = [];
+            if (n === 1) sp.push(`<div class="${NOTE.violet}">🔹 <b>只有 $1$ 層：</b>$S_1 = 1$，和就是首項自己。</div>`);
+            else sp.push(`<div class="${NOTE.sky}">🔹 一層一層加，蓋到第 $${n}$ 層要加 $${n - 1}$ 次。</div>`);
+            if (n === 10) sp.push(`<div class="${NOTE.amber}">🔹 蓋到 $10$ 層就要加 $9$ 次，好累！開頭的挑戰要蓋到 $50$ 層呢？👉 第 $2$ 關教你一個超快的方法。</div>`);
+            $id('sb-special').innerHTML = sp.join(''); renderMath($id('sb-special'));
+        }
+
+        // ========== 10. 第 2 關：倒過來相加 ==========
+        const rv = { flip: false };
+        function setRV(a, d, n) { $id('rv-a1').value = a; $id('rv-d').value = d; $id('rv-n').value = n; updateRV(); }
+        function initRV() { ['rv-a1', 'rv-d', 'rv-n'].forEach(id => $id(id).addEventListener('input', updateRV)); updateRV(); }
+        function rvToggle() { rv.flip = !rv.flip; $id('rv-flip').setAttribute('aria-pressed', rv.flip ? 'true' : 'false'); updateRV(); }
+        function updateRV() {
+            const a = +$id('rv-a1').value, d = +$id('rv-d').value, n = +$id('rv-n').value;
+            $id('rv-a1-val').innerText = a; $id('rv-d-val').innerText = d; $id('rv-n-val').innerText = n;
+            const t = arith(a, d, n), r = [...t].reverse(), an = t[n - 1], T = a + an, S = n * T / 2;
+            const W = CW(), w = Math.min(52, (W - 40) / n), x0 = (W - n * w) / 2, bot = 262, k = Math.min(20, 200 / T), topY = bot - T * k;
+            setVB('rv-svg', W, 310);
+            let s = `<rect x="16" y="10" width="14" height="14" fill="#10b981"/><text x="36" y="22" font-size="14" font-weight="700" fill="#065f46">正著排</text>`;
+            if (rv.flip) s += `<rect x="100" y="10" width="14" height="14" fill="#f59e0b"/><text x="120" y="22" font-size="14" font-weight="700" fill="#92400e">倒過來疊上去</text>`;
+            t.forEach((v, i) => {
+                const x = x0 + i * w, hg = v * k, hr = r[i] * k;
+                s += `<rect x="${(x + 1).toFixed(1)}" y="${(bot - hg).toFixed(1)}" width="${(w - 2).toFixed(1)}" height="${hg.toFixed(1)}" fill="#10b981"/>`;
+                if (hg >= 17 && w >= 22) s += `<text x="${(x + w / 2).toFixed(1)}" y="${(bot - hg / 2 + 5).toFixed(1)}" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">${v}</text>`;
+                if (rv.flip) {
+                    s += `<rect x="${(x + 1).toFixed(1)}" y="${(bot - hg - hr).toFixed(1)}" width="${(w - 2).toFixed(1)}" height="${hr.toFixed(1)}" fill="#f59e0b"/>`;
+                    if (hr >= 17 && w >= 22) s += `<text x="${(x + w / 2).toFixed(1)}" y="${(bot - hg - hr / 2 + 5).toFixed(1)}" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">${r[i]}</text>`;
+                }
+            });
+            if (rv.flip) {
+                s += `<rect x="${x0.toFixed(1)}" y="${topY.toFixed(1)}" width="${(n * w).toFixed(1)}" height="${(T * k).toFixed(1)}" fill="none" stroke="#7c3aed" stroke-width="3" stroke-dasharray="8 5"/>`;
+                s += `<text x="${W / 2}" y="${(topY - 10).toFixed(1)}" text-anchor="middle" font-size="16" font-weight="900" fill="#6d28d9">每一欄都是 ${a} ＋ ${an} ＝ ${T}</text>`;
+            }
+            s += `<line x1="${x0.toFixed(1)}" y1="${bot + 2}" x2="${(x0 + n * w).toFixed(1)}" y2="${bot + 2}" stroke="#0f172a" stroke-width="2"/>`;
+            s += `<text x="${W / 2}" y="${bot + 26}" text-anchor="middle" font-size="16" font-weight="900" fill="#0369a1">共 ${n} 欄（${n} 項）</text>`;
+            $id('rv-svg').innerHTML = s;
+            let html = `<p class="text-sm">📐 計算面板</p><p>正著寫：$S_{${n}} = ${seqStr(t)}$</p>`;
+            if (rv.flip) {
+                html += `<p>倒著寫：$S_{${n}} = ${seqStr(r)}$</p><p>上下相加：$2S_{${n}} = ${T} \\times ${n} = ${T * n}$</p>` +
+                    `<p class="mt-2 p-2 bg-white rounded border border-emerald-200">🔑 一份就好：$S_{${n}} = ${T * n} \\div 2 = ${S}$</p>`;
+            } else html += `<p class="text-slate-500">按「🔄 倒過來疊上去」，看看兩份合起來是什麼形狀！</p>`;
+            $id('rv-panel').innerHTML = html; renderMath($id('rv-panel'));
+            const sp = [];
+            if (d === 0) sp.push(`<div class="${NOTE.violet}">🔹 <b>邊界情況：公差 $0$。</b>每一項都是 $${a}$，綠色本來就是長方形：$S = ${n} \\times ${a} = ${S}$，用公式也一樣。</div>`);
+            if (n % 2 === 1) sp.push(`<div class="${NOTE.amber}">🔹 項數是<b>奇數</b>：中間那一項（$${t[(n - 1) / 2]}$）會和自己上下對齊，照樣成立！</div>`);
+            sp.push(`<div class="${NOTE.sky}">🔹 綠色和橘色一模一樣大，拼起來變成長方形：寬 $${n}$、高 $${T}$。綠色只佔一半，所以要 $\\div 2$。</div>`);
+            $id('rv-special').innerHTML = sp.join(''); renderMath($id('rv-special'));
+        }
+        // 開場挑戰：1 + 2 + … + 50
+        let hookGuess = null;
+        function saveGuess() {
+            const v = parseFloat($id('hook-guess').value), m = $id('hook-msg');
+            if (isNaN(v)) { m.textContent = '✏️ 先輸入一個數字再按喔！'; return; }
+            hookGuess = v; m.textContent = `📌 已記下：你猜 ${v}。到第 2 關就會揭曉！`;
+            PROG.guess = v; saveProgress();
+        }
+        function revealHook() {
+            const box = $id('hook-reveal'), ans = 1275;
+            let tail = '';
+            if (hookGuess !== null) tail = hookGuess === ans ? '<br>🎉 你一開始就猜中了，太厲害了！' : `<br>你一開始猜 $${hookGuess}$，和答案差了 $${Math.abs(ans - hookGuess)}$。現在不用猜，用算的就好！`;
+            box.className = FB.ok;
+            box.innerHTML = `正著寫＋倒著寫，每一欄都是 $1 + 50 = 51$，一共 $50$ 欄：<br>$(1 + 50) \\times 50 \\div 2 = 1275$` + tail;
+            renderMath(box);
+        }
+        function toggleWhy(key) {
+            const p = $id(`why-${key}-panel`), btn = $id(`why-${key}-btn`), open = p.classList.toggle('hidden') === false;
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            const icon = btn.querySelector('svg'); if (icon) icon.style.transform = open ? 'rotate(180deg)' : '';
+            renderMath(p);
+        }
+
+        // ========== 11. 第 3 關：數項數＋公式一 ==========
+        function setCT(a, d, an) { $id('ct-a1').value = a; $id('ct-d').value = d; $id('ct-an').value = an; updateCT(); }
+        function initCT() { ['ct-a1', 'ct-d', 'ct-an'].forEach(id => $id(id).addEventListener('input', updateCT)); updateCT(); }
+        function updateCT() {
+            const a = +$id('ct-a1').value, d = +$id('ct-d').value, an = +$id('ct-an').value;
+            $id('ct-a1-val').innerText = a; $id('ct-d-val').innerText = d; $id('ct-an-val').innerText = an;
+            const big = an >= a, fit = big && (an - a) % d === 0;
+            const terms = []; for (let v = a; v <= Math.max(a, an); v += d) terms.push(v);
+            const n = fit ? (an - a) / d + 1 : null;
+            // 數線
+            const W = CW(); setVB('ct-svg', W, 190);
+            const lo = a, hi = Math.max(an, a + d), X = v => 40 + (v - lo) / (hi - lo) * (W - 80), Y = 118;
+            let s = `<line x1="28" y1="${Y}" x2="${W - 28}" y2="${Y}" stroke="#94a3b8" stroke-width="3"/>`;
+            const sp = terms.length > 1 ? X(terms[1]) - X(terms[0]) : W - 80;
+            terms.forEach((v, i) => {
+                const x = X(v);
+                if (i > 0) {
+                    const px = X(terms[i - 1]);
+                    s += `<path d="M${px.toFixed(1)} ${Y - 6} Q${((px + x) / 2).toFixed(1)} ${Y - 42} ${x.toFixed(1)} ${Y - 6}" fill="none" stroke="#d97706" stroke-width="2"/>`;
+                    if (sp >= 30) s += `<text x="${((px + x) / 2).toFixed(1)}" y="${Y - 30}" text-anchor="middle" font-size="13" font-weight="900" fill="#b45309">+${d}</text>`;
+                }
+                s += `<circle cx="${x.toFixed(1)}" cy="${Y}" r="8" fill="#059669"/>`;
+                const ends = i === 0 || i === terms.length - 1;
+                if (sp >= 26 || ends) s += `<text x="${x.toFixed(1)}" y="${Y + 28}" text-anchor="middle" font-size="15" font-weight="900" fill="#065f46">${v}</text>`;
+                if (sp >= 44 || ends) s += `<text x="${x.toFixed(1)}" y="${Y + 48}" text-anchor="middle" font-size="12" font-weight="700" fill="#2563eb">第 ${i + 1} 項</text>`;
+            });
+            if (big && !fit) {
+                const x = X(an);
+                s += `<text x="${x.toFixed(1)}" y="${Y + 7}" text-anchor="middle" font-size="22" font-weight="900" fill="#e11d48">✕</text>`;
+                s += `<text x="${Math.min(Math.max(x, 80), W - 80).toFixed(1)}" y="${Y + 70}" text-anchor="middle" font-size="14" font-weight="900" fill="#e11d48">${an} 不在數列上</text>`;
+            }
+            const head = fit ? `跳了 ${n - 1} 次，停在 ${n} 個點上 → ${n} 項` : (big ? '末項跳不到，數列在它前面就停了' : '末項比首項小，這裡只看公差是正數的情況');
+            s += `<text x="${W / 2}" y="26" text-anchor="middle" font-size="${W < 400 ? 15 : 17}" font-weight="900" fill="${fit ? '#047857' : '#e11d48'}">${head}</text>`;
+            $id('ct-svg').innerHTML = s;
+            // 梯形（每一項排成一層長條）
+            let s2 = '';
+            const W2 = isNarrow() ? 360 : 440; setVB('ct-svg2', W2, 280);
+            if (fit && a > 0) {
+                const u = (W2 < 400 ? 200 : 300) / an, hgt = Math.min(26, 190 / n), x0 = 40, y0 = 34;
+                terms.forEach((v, i) => {
+                    s2 += `<rect x="${x0}" y="${(y0 + i * hgt).toFixed(1)}" width="${(v * u).toFixed(1)}" height="${(hgt - 1).toFixed(1)}" fill="${i % 2 ? '#34d399' : '#10b981'}"/>`;
+                });
+                const yb = y0 + n * hgt;
+                s2 += `<polygon points="${x0},${y0} ${(x0 + a * u).toFixed(1)},${y0} ${(x0 + an * u).toFixed(1)},${yb.toFixed(1)} ${x0},${yb.toFixed(1)}" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-dasharray="6 4"/>`;
+                s2 += `<text x="${x0}" y="${y0 - 10}" font-size="14" font-weight="900" fill="#047857">上底 ＝ 首項 ${a}</text>`;
+                s2 += `<text x="${x0}" y="${(yb + 20).toFixed(1)}" font-size="14" font-weight="900" fill="#047857">下底 ＝ 末項 ${an}</text>`;
+                s2 += `<text x="${(x0 + an * u + 12).toFixed(1)}" y="${(y0 + n * hgt / 2).toFixed(1)}" font-size="14" font-weight="900" fill="#2563eb">高 ＝ 項數 ${n}</text>`;
+                s2 += `<text x="${W2 / 2}" y="${(yb + 46).toFixed(1)}" text-anchor="middle" font-size="14" font-weight="700" fill="#6d28d9">面積 ＝（上底 ＋ 下底）× 高 ÷ 2</text>`;
+            } else if (fit) s2 = `<text x="${W2 / 2}" y="120" text-anchor="middle" font-size="16" font-weight="900" fill="#64748b">有負數或 0 的項，畫不成長條梯形</text><text x="${W2 / 2}" y="148" text-anchor="middle" font-size="16" font-weight="900" fill="#047857">但公式一照樣成立</text>`;
+            else s2 = `<text x="${W2 / 2}" y="130" text-anchor="middle" font-size="16" font-weight="900" fill="#94a3b8">先調整成合理的級數</text>`;
+            $id('ct-svg2').innerHTML = s2;
+            const panel = $id('ct-panel');
+            if (fit) {
+                const S = n * (a + an) / 2;
+                panel.className = PANEL.info;
+                panel.innerHTML = `<p class="text-sm">📐 兩步驟</p><p>級數：$${seqStr(terms)}$</p><p>① 項數：$n = (${an} - ${fmtN(a)}) \\div ${d} + 1 = ${n - 1} + 1 = ${n}$</p>` +
+                    `<p class="mt-2 p-2 bg-white rounded border border-emerald-200">② 求和：$S_{${n}} = \\dfrac{${n} \\times [${fmtN(a)} + ${fmtN(an)}]}{2} = ${S}$</p>`;
+            } else if (big) {
+                const lastIn = terms[terms.length - 1];
+                panel.className = PANEL.warn;
+                panel.innerHTML = `<p>⚠️ $(${an} - ${fmtN(a)}) \\div ${d}$ 不是整數，所以 $${an}$ <b>不是</b>這個數列的項。</p><p>數列跳到 $${lastIn}$ 之後，下一項就是 $${lastIn + d}$，跳過了 $${an}$。</p><p>試著把末項調成 $${lastIn}$ 或 $${lastIn + d}$。</p>`;
+            } else {
+                panel.className = PANEL.warn;
+                panel.innerHTML = `<p>⚠️ 末項 $${an}$ 比首項 $${a}$ 小。公差是正數時，數列越來越大，末項一定比首項大（或相等）。</p>`;
+            }
+            renderMath(panel);
+            const spc = [];
+            if (fit && n === 1) spc.push(`<div class="${NOTE.violet}">🔹 <b>邊界情況：首項 ＝ 末項。</b>一步都沒跳，只有 $1$ 項：$(${an} - ${a}) \\div ${d} + 1 = 1$，和就是 $${a}$ 自己。</div>`);
+            if (fit && a <= 0) spc.push(`<div class="${NOTE.amber}">🔹 <b>從負數或 $0$ 開始：</b>$${terms.filter(v => v <= 0).join(', ')}$ 也都是項，別只數正數！</div>`);
+            if (fit && n > 1) spc.push(`<div class="${NOTE.sky}">🔹 綠色的點有 $${n}$ 個，橘色的跳有 $${n - 1}$ 次。<b>點比跳多 $1$</b>，所以項數要 ＋ 1。</div>`);
+            $id('ct-special').innerHTML = spc.join(''); renderMath($id('ct-special'));
+        }
+
+        // ========== 12. 第 4 關：公式二 ==========
+        function setF2(a, d, n) { $id('f2-a1').value = a; $id('f2-d').value = d; $id('f2-n').value = n; updateF2(); }
+        function initF2() { ['f2-a1', 'f2-d', 'f2-n'].forEach(id => $id(id).addEventListener('input', updateF2)); updateF2(); }
+        function updateF2() {
+            const a = +$id('f2-a1').value, d = +$id('f2-d').value, n = +$id('f2-n').value;
+            $id('f2-a1-val').innerText = a; $id('f2-d-val').innerText = d; $id('f2-n-val').innerText = n;
+            const t = arith(a, d, n), an = t[n - 1], S1 = n * (a + an) / 2, inner = 2 * a + (n - 1) * d, S2 = n * inner / 2;
+            const W = CW(); setVB('f2-svg', W, 290);
+            let s = barChart(t, { W, top: 50, bot: 238, hl: n - 1, labels: true, fs: W < 400 ? (n > 10 ? 11 : (n > 6 ? 13 : 16)) : (n > 10 ? 13 : 16) });
+            s += `<text x="${W / 2}" y="22" text-anchor="middle" font-size="16" font-weight="900" fill="#b45309">橘色是第 ${n} 項（末項）</text>`;
+            s += `<text x="${W / 2}" y="282" text-anchor="middle" font-size="17" font-weight="900" fill="#047857">全部加起來 S${SUB(n)} ＝ ${S1}</text>`;
+            $id('f2-svg').innerHTML = s;
+            $id('f2-panel').innerHTML = `<p class="text-sm">📐 兩個公式比一比</p>` +
+                `<p>末項：$a_{${n}} = ${a} + ${n - 1} \\times ${fmtN(d)} = ${an}$</p>` +
+                `<p>公式一：$S_{${n}} = \\dfrac{${n} \\times (${a} + ${fmtN(an)})}{2} = ${S1}$</p>` +
+                `<p>公式二：$S_{${n}} = \\dfrac{${n} \\times [2 \\times ${fmtN(a)} + ${n - 1} \\times ${fmtN(d)}]}{2} = \\dfrac{${n} \\times ${fmtN(inner)}}{2} = ${S2}$</p>` +
+                `<p class="mt-2 p-2 bg-white rounded border border-emerald-200">✔ 兩個公式答案一樣：$${S1}$</p>`;
+            renderMath($id('f2-panel'));
+            const sp = [];
+            if (n === 1) sp.push(`<div class="${NOTE.violet}">🔹 <b>邊界情況：$n = 1$。</b>只有首項，$S_1 = a_1 = ${a}$。</div>`);
+            if (d === 0 && n > 1) sp.push(`<div class="${NOTE.violet}">🔹 <b>公差 $0$：</b>每一項都是 $${a}$，$S_{${n}} = ${n} \\times ${fmtN(a)} = ${S1}$。</div>`);
+            if (S1 === 0 && n > 1 && d !== 0) sp.push(`<div class="${NOTE.amber}">🔹 <b>和剛好是 $0$！</b>正數和負數兩兩抵消：首項 $${a}$ ＋ 末項 $${fmtN(an)}$ $= 0$，每一欄都是 $0$。</div>`);
+            else if (S1 < 0) sp.push(`<div class="${NOTE.rose}">🔹 負數的項比較多，所以總和是<b>負數</b>，公式照樣用。</div>`);
+            if (d < 0) sp.push(`<div class="${NOTE.amber}">🔹 公差是負數，每一項越來越小，記得代入時寫成 $${fmtN(d)}$。</div>`);
+            if (!sp.length) sp.push(`<div class="${NOTE.green}">🔹 不知道末項時，用公式二一步到位；或先算末項，再用公式一。</div>`);
+            $id('f2-special').innerHTML = sp.join(''); renderMath($id('f2-special'));
+        }
+
+        // ========== 14. 各關小檢查與學習地圖 ==========
+        const STAGE_NAMES = ['暖身 等差數列', '級數與名詞', '倒過來相加', '數項數', '先求末項', '總整理'];
+        const stageOpen = { 0: true, 1: true, 2: true, 3: true, 4: true, 5: true };
+        const CHECKPOINTS = [
+            { stem: '等差數列 $5, 9, 13, 17, \\dots$ 的第 $6$ 項是多少？', opts: ['$21$', '$25$', '$29$'], ans: 1,
+              fb: ['❌ $21$ 是第 $5$ 項。再往後一項是多少？', '', '❌ $29 = 5 + 6 \\times 4$。第 $1$ 項還沒加公差，到第 $6$ 項只加了幾次？'],
+              ok: '$a_6 = 5 + 5 \\times 4 = 25$，也可以一直加 $4$：$5, 9, 13, 17, 21, 25$。' },
+            { stem: '等差級數 $2 + 5 + 8 + 11 + 14$ 的和是多少？（一個一個加就可以）', opts: ['$14$', '$26$', '$40$'], ans: 2,
+              fb: ['❌ $14$ 是末項（最後一個數）。「和」要全部加起來。', '❌ $26 = 2 + 5 + 8 + 11$，最後的 $14$ 加了嗎？', ''],
+              ok: '$2 + 5 + 8 + 11 + 14 = 40$，也就是 $S_5 = 40$。' },
+            { stem: '用「倒過來相加」算 $1 + 2 + \\dots + 20$ 時，最後為什麼要除以 $2$？', opts: ['因為一共有 $20$ 項', '因為正著寫加倒著寫是兩份', '因為首項是 $1$'], ans: 1,
+              fb: ['❌ $20$ 項代表有 $20$ 欄，是用來「乘」的。除以 $2$ 是因為什麼被算了兩次？', '', '❌ 首項是多少都要除以 $2$。想想看：拼成的長方形裡有幾座樓梯？'],
+              ok: '綠色＋橘色兩座樓梯拼成長方形，是兩份的和，所以 $(1 + 20) \\times 20 \\div 2 = 210$。' },
+            { stem: '等差級數 $2 + 5 + 8 + \\dots + 29$ 共有幾項？', opts: ['$9$ 項', '$10$ 項', '$27$ 項'], ans: 1,
+              fb: ['❌ $(29 - 2) \\div 3 = 9$ 是青蛙「跳了幾次」。起點那一項有沒有數進去？', '', '❌ $27 = 29 - 2$ 是差了多少，可是每次跳 $3$ 喔！'],
+              ok: '$(29 - 2) \\div 3 + 1 = 9 + 1 = 10$ 項。' },
+            { stem: '首項 $3$、公差 $4$ 的等差級數，前 $5$ 項的和是多少？', opts: ['$55$', '$65$', '$110$'], ans: 0,
+              fb: ['', '❌ $65 = (3 + 23) \\times 5 \\div 2$，第 $5$ 項你是不是算成 $3 + 5 \\times 4$？', '❌ $110 = (3 + 19) \\times 5$，還差 $\\div 2$。'],
+              ok: '末項 $a_5 = 3 + 4 \\times 4 = 19$，和 $= (3 + 19) \\times 5 \\div 2 = 55$。' },
+            { stem: '等差級數 $4 + 7 + 10 + \\dots + 31$ 的和，哪一個算式是對的？', opts: ['$(4 + 31) \\times 9 \\div 2$', '$(4 + 31) \\times 10 \\div 2$', '$(4 + 31) \\times 10$'], ans: 1,
+              fb: ['❌ $(31 - 4) \\div 3 = 9$ 是跳了幾次，項數還要 ＋ 1。這是迷思一喔！', '', '❌ $(4 + 31) \\times 10$ 是正著加＋倒著加<b>兩份</b>的和，還差一步。這是迷思二喔！'],
+              ok: '項數 $(31 - 4) \\div 3 + 1 = 10$，和 $= 35 \\times 10 \\div 2 = 175$。兩個迷思都避開了！' }
+        ];
+        const cpDone = {};
+        function renderCheckpoints() {
+            CHECKPOINTS.forEach((cp, n) => {
+                const box = $id('cp-' + n); if (!box) return;
+                box.className = 'checkpoint p-4 bg-sky-50 rounded-xl border border-sky-200 space-y-2';
+                box.innerHTML = `
+                    <p class="text-xs font-bold text-sky-800">✅ 小檢查：確認一下這一關學會了沒</p>
+                    <p class="font-bold text-slate-800 text-sm">${cp.stem}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2" role="group" aria-label="小檢查選項">
+                        ${cp.opts.map((o, k) => `<button type="button" id="cp-${n}-opt${k}" onclick="checkCp(${n}, ${k})" aria-label="選項 ${LETTER[k]}：${plain(o)}"
+                            class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-sky-100 text-xs font-medium">（${LETTER[k]}）${o}</button>`).join('')}
+                    </div>
+                    <div id="cp-${n}-fb" class="hidden" aria-live="polite"></div>`;
+                renderMath(box);
+            });
+        }
+        function checkCp(n, k) {
+            if (cpDone[n]) return;
+            if (!RESTORING) { PROG.cp.push([n, k]); saveProgress(); }
+            const cp = CHECKPOINTS[n], fb = $id(`cp-${n}-fb`), btn = $id(`cp-${n}-opt${k}`);
+            if (k === cp.ans) {
+                cpDone[n] = true;
+                cp.opts.forEach((_, i) => { const b = $id(`cp-${n}-opt${i}`); b.disabled = true; b.classList.add(i === k ? 'opt-correct' : 'opt-dim'); });
+                const tail = STAGE_NAMES[n + 1] ? `👇 往下捲動，繼續下一關「${STAGE_NAMES[n + 1]}」吧！` : '🏁 第 $0$～$5$ 關的小檢查全部完成了！';
+                showFb(fb, 'ok', `🎉 過關！${cp.ok}<br>${tail}`);
+                renderRoadmap();
+                saveProgress();
+            } else {
+                if (!btn || btn.disabled) return;
+                btn.disabled = true;
+                btn.classList.add('opt-wrong');
+                btn.classList.remove('shake'); void btn.offsetWidth; btn.classList.add('shake');
+                showFb(fb, 'bad', cp.fb[k]);
+            }
+        }
+        function unlockStage(n, scroll) {
+            const st = $id('stage-' + n); if (!st) return;
+            stageOpen[n] = true;
+            st.classList.remove('stage-locked');
+            renderMath(st); refreshIcons(); renderRoadmap();
+            if (scroll) setTimeout(() => st.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
+        }
+        function unlockAllStages() { for (let n = 1; n <= 5; n++) unlockStage(n, false); }
+        function renderRoadmap() {
+            $id('roadmap').innerHTML = STAGE_NAMES.map((name, n) => {
+                const done = !!cpDone[n];
+                const icon = done ? '✅' : '▶️';
+                const cls = done ? 'bg-green-100 text-green-900 border-green-300' : 'bg-amber-50 text-amber-900 border-amber-300';
+                return `<button type="button" onclick="document.getElementById('stage-${n}').scrollIntoView({behavior:'smooth',block:'start'})"
+                    aria-label="前往第 ${n} 關：${name}${done ? '（小檢查已通過）' : ''}" class="px-2.5 py-1 rounded border text-xs font-bold ${cls}">${icon} ${n}. ${name}</button>`;
+            }).join('<span class="text-slate-300 self-center text-xs" aria-hidden="true">→</span>');
+        }
+        function toggleHelper() {
+            const p = $id('mt-panel'), open = p.classList.toggle('hidden') === false;
+            $id('mt-btn').setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (open) renderMath(p);
+        }
+
+
+        // ========== 14-1. 記住進度（存在這台裝置的瀏覽器裡） ==========
+        const PROG_KEY = 'junyi-n-8-5-concept-v1';
+        let PROG = { guess: null, cp: [] }, RESTORING = false;
+        function saveProgress() {
+            if (RESTORING) return;
+            try { localStorage.setItem(PROG_KEY, JSON.stringify(PROG)); } catch (e) { /* 無法儲存就算了 */ }
+        }
+        function loadProgress() {
+            let saved = null;
+            try { saved = JSON.parse(localStorage.getItem(PROG_KEY) || 'null'); } catch (e) { saved = null; }
+            if (!saved) return;
+            RESTORING = true;
+            try {
+                if (saved.guess !== null && saved.guess !== undefined) { $id('hook-guess').value = saved.guess; saveGuess(); }
+                (saved.cp || []).forEach(([n, k]) => checkCp(n, k));
+                PROG = { guess: saved.guess === undefined ? null : saved.guess, cp: saved.cp || [] };
+            } catch (e) { console.warn(e); }
+            RESTORING = false;
+            if (PROG.cp.length || PROG.guess !== null) $id('reset-msg').textContent = '💾 已經幫你接回上次的進度。';
+        }
+        let resetArmed = false;
+        function resetProgress() {
+            const btn = $id('reset-btn');
+            if (!resetArmed) { resetArmed = true; btn.textContent = '⚠️ 再按一次，確定清除'; setTimeout(() => { resetArmed = false; btn.textContent = '🔄 清除我的紀錄，重新開始'; }, 4000); return; }
+            try { localStorage.removeItem(PROG_KEY); } catch (e) { }
+            location.reload();
+        }
+
+        // ========== 15. 新手導覽 ==========
+        const TOUR = [
+            { sel: '#guide', t: '👋 歡迎！', d: '這份講義分成第 0～5 關，每一關都已經打開，不用先會公式。跟著導覽走一遍，大約 1 分鐘。之後想再看，按「▶ 帶我走一遍」就好。' },
+            { sel: '#hook-box', t: '先猜猜看', d: '在這裡輸入你猜的答案，按「📌 記下我的猜測」。猜錯沒關係，到第 2 關就會揭曉。' },
+            { sel: '#roadmap-box', t: '學習地圖', d: '▶️ 還沒做小檢查、✅ 小檢查已答對。按一下關卡名稱，畫面就會跳過去，想先看哪一關都可以。' },
+            { sel: '#tour-concept', t: '先讀觀念解析', d: '每一關都從綠色的「觀念解析」開始。看不懂的話，點下面的「看影片」。' },
+            { sel: '#tour-tool', t: '動手做', d: '拉滑桿、按快選按鈕，圖和下面的說明會跟著變。多試幾組數字，找找看有什麼規律。' },
+            { sel: '#cp-0', t: '小檢查', d: '每一關最後都有一題小檢查，確認自己學會了沒。答對時學習地圖會打勾；答錯會告訴你哪裡想錯，再選一次就好。' },
+            { sel: '#mt-btn', t: '重點小卡', d: '忘記公式的時候，按右下角這顆按鈕。準備好了，就從第 0 關開始吧！' }
+        ];
+        const TOUR_KEY = 'n-8-5-tour-seen';
+        let tourIdx = -1, tourTimer = null;
+        function startTour(i) {
+            tourIdx = i || 0;
+            const layer = $id('tour-layer');
+            layer.classList.remove('hidden'); layer.removeAttribute('aria-hidden');
+            $id('tour-btn').classList.remove('tour-pulse');
+            document.addEventListener('keydown', tourKey);
+            showTourStep();
+        }
+        function showTourStep() {
+            const s = TOUR[tourIdx], el = document.querySelector(s.sel);
+            if (!el) { tourGo(1); return; }
+            $id('tour-step').textContent = `新手導覽 ${tourIdx + 1}/${TOUR.length}`;
+            $id('tour-title').textContent = s.t;
+            $id('tour-text').textContent = s.d;
+            $id('tour-prev').disabled = tourIdx === 0;
+            $id('tour-prev').classList.toggle('opacity-40', tourIdx === 0);
+            const last = tourIdx === TOUR.length - 1;
+            $id('tour-next').textContent = last ? '開始學習 ✔' : '下一步 →';
+            $id('tour-next').setAttribute('aria-label', last ? '結束導覽，開始學習' : '下一步');
+            if (el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            placeTour();
+            clearTimeout(tourTimer); tourTimer = setTimeout(placeTour, 450);
+            $id('tour-next').focus();
+        }
+        function placeTour() {
+            if (tourIdx < 0) return;
+            const el = document.querySelector(TOUR[tourIdx].sel); if (!el) return;
+            const r = el.getBoundingClientRect(), vw = window.innerWidth, vh = window.innerHeight, pad = 8;
+            const top = Math.max(4, r.top - pad), left = Math.max(4, r.left - pad);
+            const bottom = Math.min(vh - 4, r.bottom + pad), right = Math.min(vw - 4, r.right + pad);
+            const ring = $id('tour-ring');
+            ring.style.top = top + 'px'; ring.style.left = left + 'px';
+            ring.style.width = Math.max(0, right - left) + 'px'; ring.style.height = Math.max(0, bottom - top) + 'px';
+            const card = $id('tour-card'), ch = card.offsetHeight || 180, cw = card.offsetWidth || 320;
+            let cy;
+            if (bottom + 12 + ch < vh) cy = bottom + 12;
+            else if (top - 12 - ch > 0) cy = top - 12 - ch;
+            else cy = vh - ch - 16;
+            const cx = Math.min(Math.max(12, left), Math.max(12, vw - cw - 12));
+            card.style.top = cy + 'px'; card.style.left = cx + 'px';
+        }
+        function tourGo(dir) {
+            const n = tourIdx + dir;
+            if (n < 0) return;
+            if (n >= TOUR.length) { endTour(); return; }
+            tourIdx = n; showTourStep();
+        }
+        function endTour() {
+            tourIdx = -1;
+            const layer = $id('tour-layer');
+            layer.classList.add('hidden'); layer.setAttribute('aria-hidden', 'true');
+            document.removeEventListener('keydown', tourKey);
+            try { localStorage.setItem(TOUR_KEY, '1'); } catch (e) { /* 無法儲存就算了 */ }
+            $id('tour-btn').focus();
+        }
+        function tourKey(e) {
+            if (e.key === 'Escape') endTour();
+            else if (e.key === 'ArrowRight') tourGo(1);
+            else if (e.key === 'ArrowLeft') tourGo(-1);
+        }
+        window.addEventListener('resize', placeTour);
+        window.addEventListener('scroll', placeTour, { passive: true });
+
+
+        // ========== 16. 啟動 ==========
+        window.onload = function () {
+            refreshIcons();               // Lucide 圖示初始化
+            renderMath(document.body);    // KaTeX 首刷渲染
+            renderCheckpoints();          // 各關小檢查
+            renderRoadmap();              // 學習地圖
+            initAS();                     // 第 0 關：等差數列產生器
+            initSR();                     // 第 1 關：等差級數判定站
+            initSB();                     // 第 1 關：累加器
+            initRV();                     // 第 2 關：倒過來相加
+            initCT();                     // 第 3 關：數項數＋公式一
+            initF2();                     // 第 4 關：公式二
+            loadProgress();               // 接回上次的進度
+            refreshIcons();
+            // 第一次打開：自動開始新手導覽
+            let seen = '1';
+            try { seen = localStorage.getItem(TOUR_KEY); } catch (e) { seen = '1'; }
+            if (!seen) setTimeout(() => startTour(0), 900);
+            else $id('tour-btn').classList.add('tour-pulse');
+        };
+    </script>
+</body>
+</html>
