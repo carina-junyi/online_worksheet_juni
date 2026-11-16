@@ -99,24 +99,24 @@
                             <line x1="30" y1="45" x2="30" y2="80" stroke="#94a3b8" stroke-width="1.5"/>
                             <line x1="70" y1="45" x2="70" y2="80" stroke="#94a3b8" stroke-width="1.5"/>
                             <path d="M 20,80 Q 50,95 80,80 Z" fill="#64748b"/>
-                            <!-- 左側物體標籤 -->
-                            <g id="left-items-group" transform="translate(28, 52)">
-                                <rect x="0" y="0" width="22" height="22" rx="4" fill="#3b82f6"/>
-                                <text x="11" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
-                                <rect x="25" y="0" width="22" height="22" rx="4" fill="#3b82f6"/>
-                                <text x="36" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
-                                <rect x="0" y="-24" width="47" height="20" rx="4" fill="#f59e0b"/>
-                                <text x="23.5" y="-10" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">+4</text>
+                            <!-- 左側物體標籤（放在秤盤上，不壓到橫樑） -->
+                            <g id="left-items-group" transform="translate(21, 58)">
+                                <rect x="0" y="0" width="18" height="22" rx="4" fill="#3b82f6"/>
+                                <text x="9" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
+                                <rect x="20" y="0" width="18" height="22" rx="4" fill="#3b82f6"/>
+                                <text x="29" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
+                                <rect x="40" y="0" width="18" height="22" rx="4" fill="#f59e0b"/>
+                                <text x="49" y="15" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">+4</text>
                             </g>
 
                             <!-- 右秤盤 -->
                             <line x1="150" y1="45" x2="150" y2="80" stroke="#94a3b8" stroke-width="1.5"/>
                             <line x1="190" y1="45" x2="190" y2="80" stroke="#94a3b8" stroke-width="1.5"/>
                             <path d="M 140,80 Q 170,95 200,80 Z" fill="#64748b"/>
-                            <!-- 右側物體標籤 -->
-                            <g id="right-items-group" transform="translate(148, 52)">
-                                <rect x="0" y="-10" width="45" height="32" rx="4" fill="#10b981"/>
-                                <text x="22.5" y="10" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">10</text>
+                            <!-- 右側物體標籤（放在秤盤上，不壓到橫樑） -->
+                            <g id="right-items-group" transform="translate(150, 56)">
+                                <rect x="0" y="0" width="40" height="24" rx="4" fill="#10b981"/>
+                                <text x="20" y="17" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">10</text>
                             </g>
                         </g>
                     </svg>
@@ -312,8 +312,8 @@
 
                 <!-- Challenge 2 -->
                 <div class="challenge-card">
-                    <h3 class="font-bold text-slate-700 mb-2">2. 口香糖問題情境求解與驗算</h3>
-                    <p class="text-sm text-slate-600 mb-4">小明買了 4 盒價格相同的巧克力發給班上 30 個同學，每人發 2 顆後還剩下 4 顆。請問一盒巧克力有多少顆？（列式：4x - 60 = 4）</p>
+                    <h3 class="font-bold text-slate-700 mb-2">2. 巧克力問題情境求解與驗算</h3>
+                    <p class="text-sm text-slate-600 mb-4">小明買了 4 盒一樣的巧克力（每盒顆數相同）發給班上 30 個同學，每人發 2 顆後還剩下 4 顆。請問一盒巧克力有多少顆？（列式：4x - 60 = 4）</p>
                     <div class="flex items-center gap-2 mb-3">
                         <span class="font-bold text-slate-700">一盒有：</span>
                         <input type="number" id="chal2-ans" class="p-2 border rounded-lg w-28 text-center font-bold" placeholder="顆數">
@@ -337,13 +337,13 @@
                         <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！解 x/2 + x/3 = 1 兩邊同乘 6 時，右邊的 1 也必須乘以 6 變 6（不可寫成 3x + 2x = 1）！</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        ❌ <span class="text-red-500 font-bold">未移項即提前除法？</span>
-                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！解 3x - 6 = 9 時，應先將 -6 移項變 +6 得 3x = 15，最後才除以 3（不可直接除以 3 得 x - 6 = 3）！</span>
+                        ❌ <span class="text-red-500 font-bold">兩邊同除時漏除常數項？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！解 3x - 6 = 9 時，如果想先兩邊同除以 3，左邊每一項都要除：x - 2 = 3（不可只除 3x 而寫成 x - 6 = 3）！也可以先移項得 3x = 15 再除以 3，兩種做法都得到 x = 5。</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        ❌ <span class="text-red-500 font-bold">同除以負數忘記變號？</span>
+                        ❌ <span class="text-red-500 font-bold">除以負數時正負號算錯？</span>
                         <span class="bg-amber-50 border border-amber-200 p-1.5 rounded text-amber-800 text-xs block mt-1">
-                            錯！解 -4x = 20 兩邊同除以 -4 時，右邊正負號改變為 -5！
+                            錯！解 -4x = 20 兩邊同除以 -4，右邊是 20 ÷ (-4)，正數除以負數得到負數，所以 x = -5（不是 5）！
                         </span>
                     </li>
                 </ul>
@@ -354,8 +354,8 @@
                 </h3>
                 <p class="text-sm leading-relaxed opacity-90">
                     <b>移項法則就像生活中的「收支平衡」！</b><br>
-                    1. <b>購物退貨：</b> 買衣服 3x + 200 = 800 元，辦理 200 元退貨相當於把 +200 移到右邊變成 800 - 200 = 600 元！<br>
-                    2. <b>平分帳單：</b> 3x = 600 元，平分到 3 個人身上就是 600 ÷ 3 = 200 元。<br>
+                    1. <b>扣掉已知的部分：</b> 買 3 件一樣的 T 恤和一頂 200 元的帽子，共付 800 元 ➔ 3x + 200 = 800。兩邊同時扣掉帽子的 200 元，就知道 3 件 T 恤共 3x = 800 - 200 = 600 元！<br>
+                    2. <b>平均分到每一件：</b> 3x = 600，兩邊同除以 3，每件 T 恤 x = 600 ÷ 3 = 200 元。<br>
                     3. <b>代回驗算習慣：</b> 算完結果代回生活情境驗算，確保零錢與數量完全精準！
                 </p>
             </div>
@@ -369,10 +369,50 @@
 
     <!-- 11. JavaScript 邏輯 -->
     <script>
+        // 天秤上的物體（放在秤盤上，不壓到橫樑）
+        const LEFT_INITIAL = `
+            <rect x="0" y="0" width="18" height="22" rx="4" fill="#3b82f6"/>
+            <text x="9" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
+            <rect x="20" y="0" width="18" height="22" rx="4" fill="#3b82f6"/>
+            <text x="29" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
+            <rect x="40" y="0" width="18" height="22" rx="4" fill="#f59e0b"/>
+            <text x="49" y="15" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">+4</text>
+        `;
+        const LEFT_TWO_X = `
+            <rect x="10" y="0" width="18" height="22" rx="4" fill="#3b82f6"/>
+            <text x="19" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
+            <rect x="30" y="0" width="18" height="22" rx="4" fill="#3b82f6"/>
+            <text x="39" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
+        `;
+        const LEFT_ONE_X = `
+            <rect x="20" y="0" width="18" height="22" rx="4" fill="#3b82f6"/>
+            <text x="29" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
+        `;
+        function rightBlock(n) {
+            return `
+            <rect x="0" y="0" width="40" height="24" rx="4" fill="#10b981"/>
+            <text x="20" y="17" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">${n}</text>
+        `;
+        }
+
+        const TRAP_CLASS_ON = "w-full py-2.5 px-4 bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 font-bold rounded-lg text-sm transition-all text-left flex items-center justify-between";
+        const TRAP_CLASS_OFF = "w-full py-2.5 px-4 bg-amber-100 text-amber-900 border border-amber-300 font-bold rounded-lg text-sm transition-all text-left flex items-center justify-between opacity-50 cursor-not-allowed";
+
+        // 把某區塊裡的按鈕全部鎖住（答對後使用，避免回頭按錯誤選項蓋掉回饋）
+        function lockButtons(containerId) {
+            document.querySelectorAll('#' + containerId + ' button').forEach(b => { b.disabled = true; });
+        }
+
         window.onload = function() {
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }
+            // 挑戰題：在輸入框按 Enter 也能檢查
+            [['chal1-ans', 1, 15], ['chal2-ans', 2, 16]].forEach(([id, q, ans]) => {
+                document.getElementById(id).addEventListener('keydown', e => {
+                    if (e.key === 'Enter' && !e.isComposing) checkChal(q, ans);
+                });
+            });
         };
 
         // ⚖️ 數位等量天秤實驗室邏輯
@@ -383,13 +423,19 @@
             const expl = document.getElementById('balance-lab-explanation');
             const btn1 = document.getElementById('btn-action-1');
             const btn2 = document.getElementById('btn-action-2');
+            const btnTrap = document.getElementById('btn-action-trap');
 
             if (action === 'sub4_wrong') {
-                beamGroup.style.transform = "rotate(-12deg)";
+                if (btnTrap.disabled) return;
+                // 修正：左邊變輕要往上翹（SVG 中正角度為順時針，左端上升）
+                beamGroup.style.transform = "rotate(12deg)";
+                // 修正：左盤真的拿掉 +4，右盤維持 10
+                document.getElementById('left-items-group').innerHTML = LEFT_TWO_X;
+                document.getElementById('right-items-group').innerHTML = rightBlock(10);
                 badge.className = "absolute top-2 left-3 text-xs font-bold bg-red-100 text-red-800 border border-red-300 px-2.5 py-1 rounded-full animate-bounce";
                 badge.innerText = "⚠️ 天秤傾斜！等式不成立";
                 expl.className = "bg-red-50 p-4 rounded-lg text-center text-red-900 font-bold text-sm border border-red-200 shadow-sm";
-                expl.innerHTML = "❌ 試驗結果：只把左邊減去 4，天秤立刻失去了平衡！等量公理強調『左右兩邊必須同時進行完全相同的運算』等式才會成立哦！";
+                expl.innerHTML = "❌ 試驗結果：只把左邊減去 4，左邊變輕往上翹，天秤立刻失去了平衡！等量公理強調『左右兩邊必須同時進行完全相同的運算』等式才會成立哦！";
                 return;
             }
 
@@ -399,16 +445,8 @@
                 badge.innerText = "⚖️ 天秤狀態：保持平衡 (2x = 6)";
                 eqText.innerText = "2x = 6";
 
-                document.getElementById('left-items-group').innerHTML = `
-                    <rect x="0" y="0" width="22" height="22" rx="4" fill="#3b82f6"/>
-                    <text x="11" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
-                    <rect x="25" y="0" width="22" height="22" rx="4" fill="#3b82f6"/>
-                    <text x="36" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
-                `;
-                document.getElementById('right-items-group').innerHTML = `
-                    <rect x="0" y="-10" width="45" height="32" rx="4" fill="#10b981"/>
-                    <text x="22.5" y="10" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">6</text>
-                `;
+                document.getElementById('left-items-group').innerHTML = LEFT_TWO_X;
+                document.getElementById('right-items-group').innerHTML = rightBlock(6);
 
                 expl.className = "bg-green-100 p-4 rounded-lg text-center text-green-900 font-bold text-sm border border-green-300 shadow-sm";
                 expl.innerHTML = "✅ 成功！左右兩邊同時減去 4，天秤依然保持水平平衡！相當於把左邊的 +4 移到右邊變成 10 - 4 = 6，得到算式 2x = 6！解鎖按鈕 2！";
@@ -418,20 +456,18 @@
                 
                 btn2.disabled = false;
                 btn2.className = "w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-sm transition-all text-left flex items-center justify-between shadow";
+
+                // 修正：左邊已經沒有 +4，錯誤示範不再適用
+                btnTrap.disabled = true;
+                btnTrap.className = TRAP_CLASS_OFF;
             } else if (action === 'div2_both') {
                 beamGroup.style.transform = "rotate(0deg)";
                 badge.className = "absolute top-2 left-3 text-xs font-bold bg-green-100 text-green-800 border border-green-300 px-2.5 py-1 rounded-full";
                 badge.innerText = "🎉 成功求出解答！x = 3";
                 eqText.innerText = "x = 3";
 
-                document.getElementById('left-items-group').innerHTML = `
-                    <rect x="12" y="0" width="22" height="22" rx="4" fill="#3b82f6"/>
-                    <text x="23" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
-                `;
-                document.getElementById('right-items-group').innerHTML = `
-                    <rect x="0" y="-10" width="45" height="32" rx="4" fill="#10b981"/>
-                    <text x="22.5" y="10" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">3</text>
-                `;
+                document.getElementById('left-items-group').innerHTML = LEFT_ONE_X;
+                document.getElementById('right-items-group').innerHTML = rightBlock(3);
 
                 expl.className = "bg-indigo-100 p-4 rounded-lg text-center text-indigo-900 font-extrabold text-sm border-2 border-indigo-400 shadow-md";
                 expl.innerHTML = "🎉 太棒了！左右兩邊同時除以 2，成功求得唯一解答 x = 3！這就是等量公理與移項法則的威力！";
@@ -449,28 +485,21 @@
             document.getElementById('scale-status-badge').innerText = "⚖️ 天秤狀態：平衡中 (a = b)";
             document.getElementById('current-eq-text').innerText = "2x + 4 = 10";
 
-            document.getElementById('left-items-group').innerHTML = `
-                <rect x="0" y="0" width="22" height="22" rx="4" fill="#3b82f6"/>
-                <text x="11" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
-                <rect x="25" y="0" width="22" height="22" rx="4" fill="#3b82f6"/>
-                <text x="36" y="15" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">x</text>
-                <rect x="0" y="-24" width="47" height="20" rx="4" fill="#f59e0b"/>
-                <text x="23.5" y="-10" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">+4</text>
-            `;
-            document.getElementById('right-items-group').innerHTML = `
-                <rect x="0" y="-10" width="45" height="32" rx="4" fill="#10b981"/>
-                <text x="22.5" y="10" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">10</text>
-            `;
+            document.getElementById('left-items-group').innerHTML = LEFT_INITIAL;
+            document.getElementById('right-items-group').innerHTML = rightBlock(10);
 
             document.getElementById('balance-lab-explanation').className = "bg-amber-50 p-4 rounded-lg text-center text-amber-900 font-bold text-sm shadow-inner";
             document.getElementById('balance-lab-explanation').innerHTML = "初始狀態：左邊有 2 個 x 與重量 4，右邊有重量 10。天秤保持水平平衡 (2x + 4 = 10)！";
 
             const btn1 = document.getElementById('btn-action-1');
             const btn2 = document.getElementById('btn-action-2');
+            const btnTrap = document.getElementById('btn-action-trap');
             btn1.disabled = false;
             btn1.className = "w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-sm transition-all text-left flex items-center justify-between shadow";
             btn2.disabled = true;
             btn2.className = "w-full py-2.5 px-4 bg-slate-300 text-slate-500 font-bold rounded-lg text-sm transition-all text-left flex items-center justify-between cursor-not-allowed";
+            btnTrap.disabled = false;
+            btnTrap.className = TRAP_CLASS_ON;
         }
 
         // 🔍 觀念引導邏輯（答錯時說明錯誤選項原因）
@@ -483,6 +512,7 @@
                     feedback.innerHTML = "✅ 完全正確！小華犯了去分母最常見的錯誤，忘記把右邊的常數項 1 也乘以 6！正確去分母應該是 3x + 2x = 6！解鎖下一步！";
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm";
                     document.getElementById('sq1').classList.add('opacity-50');
+                    lockButtons('sq1');
                     document.getElementById('sq2').classList.remove('hidden');
                 } else {
                     feedback.innerHTML = "❌ 答錯囉！去分母時必須左右兩邊『每一項』都乘以 6，右邊的 1 乘以 6 會變成 6，不能維持 1 哦！請再思考看看！";
@@ -493,6 +523,7 @@
                     feedback.innerHTML = "🎉 太棒了！3x + 2x = 5x ➔ 5x = 6，兩邊同除以 5 得 x = 6/5！";
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm";
                     document.getElementById('sq2').classList.add('opacity-50');
+                    lockButtons('sq2');
                 } else {
                     feedback.innerHTML = "❌ 算錯囉！從 5x = 6 兩邊同除以 5，應該是 6 ÷ 5 = 6/5 哦！請再算算看！";
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
@@ -508,6 +539,7 @@
                 if (isCorrect) {
                     f.innerHTML = "✅ 正確！將左邊的 -5 移項到右邊會變號成 +5，即 3x = 16 + 5。";
                     f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    lockButtons('p1-s1');
                     const s2 = document.getElementById('p1-s2');
                     s2.classList.remove('hidden');
                     setTimeout(() => s2.classList.add('opacity-100'), 10);
@@ -521,6 +553,7 @@
                 if (isCorrect) {
                     f.innerHTML = "✅ 太強了！3x = 21 兩邊同除以 3，得出解答 x = 7！";
                     f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    lockButtons('p1-s2');
                     const res = document.getElementById('p1-result');
                     res.classList.remove('hidden');
                     setTimeout(() => res.classList.add('opacity-100'), 10);
@@ -547,22 +580,30 @@
             } else if (qNum === 2) {
                 if (choice === 'right') {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
-                    f.innerHTML = "✅ 答對了！-4x = 20 兩邊同除以 -4，正負得負，解答為 x = -5！";
+                    f.innerHTML = "✅ 答對了！-4x = 20 兩邊同除以 -4，正數除以負數得到負數，解答為 x = -5！";
                 } else {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
-                    f.innerHTML = "❌ 答錯囉！兩邊同除以負數 -4 時，右邊的 20 ÷ (-4) 正負得負，結果應該是負數哦！請再算算看！";
+                    f.innerHTML = "❌ 答錯囉！兩邊同除以負數 -4 時，右邊的 20 ÷ (-4) 是正數除以負數，結果應該是負數哦！請再算算看！";
                 }
             }
         }
 
-        // 🚀 實戰挑戰檢查邏輯（分數方程式為 x/3 + x/5 = 8，解答為 15）
+        // 🚀 實戰挑戰檢查邏輯（挑戰 1：x/3 + x/5 = 8，解為 15；挑戰 2：4x - 60 = 4，解為 16）
         function checkChal(qNum, targetVal) {
             const feedback = document.getElementById(`chal${qNum}-feedback`);
             feedback.classList.remove('hidden');
 
+            // 修正：不用 parseInt（會把 15.9 截成 15 而判對），改用 Number 精確比對
+            const raw = document.getElementById(`chal${qNum}-ans`).value.trim();
+            if (raw === '') {
+                feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-amber-100 text-amber-800";
+                feedback.innerHTML = "✏️ 請先填入答案，再按檢查哦！";
+                return;
+            }
+            const isRight = Math.abs(Number(raw) - targetVal) < 1e-9;
+
             if (qNum === 1) {
-                const val = parseInt(document.getElementById('chal1-ans').value);
-                if (val === 15) {
+                if (isRight) {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
                     feedback.innerHTML = "🎉 完全正確！去分母同乘 15 ➔ 5x + 3x = 120 ➔ 8x = 120 ➔ x = 15！代回驗算：15/3 + 15/5 = 5 + 3 = 8，完全正確！";
                 } else {
@@ -570,8 +611,7 @@
                     feedback.innerHTML = "❌ 答錯囉！提醒：去分母時兩邊同乘以 15，右邊的 8 也要乘以 15 變成 120 哦！算式為 5x + 3x = 120，再重新算算看 x 是多少？";
                 }
             } else if (qNum === 2) {
-                const val = parseInt(document.getElementById('chal2-ans').value);
-                if (val === 16) {
+                if (isRight) {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
                     feedback.innerHTML = "🎉 太強了！答對了！4x - 60 = 4 ➔ 4x = 64 ➔ x = 16 顆！代回驗算：4 盒共 64 顆，發出 60 顆後剩 4 顆，驗算成功！";
                 } else {
