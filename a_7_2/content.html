@@ -184,7 +184,7 @@
                     </div>
                 </div>
                 <div id="sq2" class="hidden">
-                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 接著驗證解：把 x = 3 代入兩邊。左式 3(3)+1 = 10，右式 4(3)-2 = 10。兩邊相等嗎？3 是不是解？</p>
+                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 接著驗證解：把 x = 3 代入兩邊。左式 3 × 3 + 1 = 10，右式 4 × 3 - 2 = 10。兩邊相等嗎？3 是不是解？</p>
                     <div class="flex gap-2">
                         <button onclick="answerStep(2, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">相等 (10 = 10)，所以 3 是此方程式的解！</button>
                         <button onclick="answerStep(2, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">不相等，3 不是解</button>
@@ -265,7 +265,7 @@
                 <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
                     <p class="text-slate-800 font-bold mb-3">2. 驗證數字 4 是否為方程式「2x + 3 = 11」的解？</p>
                     <div class="flex flex-wrap gap-2 mb-2">
-                        <button onclick="checkP2(2, 'yes')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">是，代入後左式 2(4)+3 = 11 等於右式！</button>
+                        <button onclick="checkP2(2, 'yes')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">是，代入後左式 2 × 4 + 3 = 11 等於右式！</button>
                         <button onclick="checkP2(2, 'no')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">不是，代入後不相等</button>
                     </div>
                     <div id="p2-f2" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
@@ -449,7 +449,7 @@
                     document.getElementById('sq2').classList.add('opacity-50');
                     lockButtons('sq2');
                 } else {
-                    feedback.innerHTML = "❌ 算算看！將 x = 3 代入左式「3(3) + 1」與右式「4(3) - 2」，兩邊算出來的數值真的不相等嗎？請再認真算一次！";
+                    feedback.innerHTML = "❌ 算算看！將 x = 3 代入左式「3 × 3 + 1」與右式「4 × 3 - 2」，兩邊算出來的數值真的不相等嗎？請再認真算一次！";
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
                 }
             }
@@ -507,10 +507,10 @@
             } else if (qNum === 2) {
                 if (choice === 'yes') {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
-                    f.innerHTML = "✅ 答對了！代入 x = 4 ➔ 左式 2(4)+3 = 8+3 = 11（等於右式！），所以 4 確實是解！";
+                    f.innerHTML = "✅ 答對了！代入 x = 4 ➔ 左式 2 × 4 + 3 = 8 + 3 = 11（等於右式！），所以 4 確實是解！";
                 } else {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
-                    f.innerHTML = "❌ 算錯囉！請將 x = 4 代入左式「2(4) + 3」算算看，得出的結果真的不等於右邊的 11 嗎？請再算一次！";
+                    f.innerHTML = "❌ 算錯囉！請將 x = 4 代入左式「2 × 4 + 3」算算看，得出的結果真的不等於右邊的 11 嗎？請再算一次！";
                 }
             }
         }
@@ -523,13 +523,13 @@
             if (qNum === 1) {
                 if (choice === 'B') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
-                    feedback.innerHTML = "✅ 完全正確！代入 x = 5 至 (B) ➔ 2(5) + 1 = 11（左右相等！），因此 5 是 (B) 的解！";
+                    feedback.innerHTML = "✅ 完全正確！代入 x = 5 至 (B) ➔ 2 × 5 + 1 = 11（左右相等！），因此 5 是 (B) 的解！";
                 } else if (choice === 'A') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
-                    feedback.innerHTML = "❌ 答錯囉！將 x = 5 代入 (A) 的左式「3(5) - 2 = 13」，13 並不等於右邊的 10，所以 5 不是 (A) 的解哦！請再代入其他選項算算看！";
+                    feedback.innerHTML = "❌ 答錯囉！將 x = 5 代入 (A) 的左式「3 × 5 - 2 = 13」，13 並不等於右邊的 10，所以 5 不是 (A) 的解哦！請再代入其他選項算算看！";
                 } else if (choice === 'C') {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
-                    feedback.innerHTML = "❌ 答錯囉！將 x = 5 代入 (C) 的左式「4(5) - 5 = 15」，15 並不等於右邊的 12，所以 5 不是 (C) 的解哦！請再代入其他選項算算看！";
+                    feedback.innerHTML = "❌ 答錯囉！將 x = 5 代入 (C) 的左式「4 × 5 - 5 = 15」，15 並不等於右邊的 12，所以 5 不是 (C) 的解哦！請再代入其他選項算算看！";
                 }
             } else if (qNum === 2) {
                 if (choice === 'A') {
