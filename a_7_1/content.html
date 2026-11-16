@@ -38,6 +38,9 @@
         .tile-box:hover {
             transform: translateY(-3px) scale(1.03);
         }
+
+        /* 已鎖住的按鈕不顯示可點擊游標 */
+        button:disabled { cursor: default; }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -299,7 +302,7 @@
                     <p class="text-sm text-slate-600 mb-4">請化簡一次算式：$2x - y + 5x + 2y + 1$</p>
                     <div class="flex items-center gap-2 mb-3">
                         <span class="font-bold text-slate-700">化簡結果：</span>
-                        <input type="text" id="chal2-ans" class="p-2 border rounded-lg w-44 text-center font-bold" placeholder="如 7x+y+1">
+                        <input type="text" id="chal2-ans" class="p-2 border rounded-lg w-44 text-center font-bold" placeholder="如 3x+2y">
                         <button onclick="checkChal(2, '7x+y+1')" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 text-sm transition-all font-bold">檢查算式</button>
                     </div>
                     <div id="chal2-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
@@ -353,11 +356,31 @@
     <script>
         let isSwapped = false;
         let isAssocShifted = false;
+        let distTimer = null;               // 分配律動畫的計時器（重置時要取消）
+        let mathQueue = Promise.resolve();  // MathJax 排版佇列（避免連點時重疊排版）
 
-        function renderMath() {
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                window.MathJax.typesetPromise();
+        // 只重排指定區塊，並依序排隊執行；MathJax 還沒載入時由它啟動時統一排版
+        function renderMath(el) {
+            if (!window.MathJax || !window.MathJax.typesetPromise) return;
+            const targets = el ? [el] : undefined;
+            mathQueue = mathQueue
+                .then(() => (MathJax.startup && MathJax.startup.promise) || null)
+                .then(() => MathJax.typesetPromise(targets))
+                .catch(err => console.error('MathJax 排版錯誤：', err));
+        }
+
+        // 更新含數學式的內容：先清掉舊的排版紀錄，再換內容、重新排版
+        function setMath(el, html) {
+            if (window.MathJax && window.MathJax.typesetClear) {
+                MathJax.typesetClear([el]);
             }
+            el.innerHTML = html;
+            renderMath(el);
+        }
+
+        // 把某區塊裡的按鈕全部鎖住（答對後使用，避免回頭亂按蓋掉回饋）
+        function lockButtons(containerId) {
+            document.querySelectorAll('#' + containerId + ' button').forEach(b => { b.disabled = true; });
         }
 
         window.onload = function() {
@@ -365,7 +388,13 @@
                 lucide.createIcons();
             }
             updateAssocUI();
-            renderMath();
+
+            // 挑戰題：在輸入框按 Enter 也能檢查（避開中文輸入法選字時的 Enter）
+            [['chal1-ans', 1, 'y-3'], ['chal2-ans', 2, '7x+y+1']].forEach(([id, q, ans]) => {
+                document.getElementById(id).addEventListener('keydown', e => {
+                    if (e.key === 'Enter' && !e.isComposing) checkChal(q, ans);
+                });
+            });
         };
 
         // 🧮 運算律切換頁籤邏輯
@@ -384,36 +413,42 @@
 
             const expl = document.getElementById('lab-explanation');
             if (mode === 'comm') {
-                expl.innerHTML = "加法交換律：$3x + 5y$ 與 $5y + 3x$ 意義完全相同，位置交換結果不變！";
+                setMath(expl, "加法交換律：$3x + 5y$ 與 $5y + 3x$ 意義完全相同，位置交換結果不變！");
             } else if (mode === 'assoc') {
-                expl.innerHTML = "加法結合律：$(2x + 3x) + 4x$ 與 $2x + (3x + 4x)$ 結果皆為 $9x$，括號改變優先順序結果不變！";
+                setMath(expl, "加法結合律：$(2x + 3x) + 4x$ 與 $2x + (3x + 4x)$ 結果皆為 $9x$，括號改變優先順序結果不變！");
             } else if (mode === 'dist') {
-                expl.innerHTML = "分配律：$3 \times (x + 2) = 3x + 6$，括號外的乘數必須同時乘給括號內的每一項！";
+                // 修正：JS 字串裡的 \t 會變成 Tab，\times 必須寫成 \\times
+                setMath(expl, "分配律：$3 \\times (x + 2) = 3x + 6$，括號外的乘數必須同時乘給括號內的每一項！");
             }
-            renderMath();
         }
 
-        // 1. 交換律板塊點擊交換
-        function swapCommTiles() {
+        // 1. 交換律板塊：依 isSwapped 畫出目前狀態
+        function renderCommTiles() {
             const tileA = document.getElementById('tile-a');
             const tileB = document.getElementById('tile-b');
             const desc = document.getElementById('comm-desc');
+            const blueTile = "tile-box bg-blue-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-blue-600";
+            const greenTile = "tile-box bg-emerald-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-emerald-600";
 
-            isSwapped = !isSwapped;
             if (isSwapped) {
-                tileA.innerHTML = "$5y$";
-                tileA.className = "tile-box bg-emerald-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-emerald-600";
-                tileB.innerHTML = "$3x$";
-                tileB.className = "tile-box bg-blue-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-blue-600";
-                desc.innerHTML = "當前算式：<b>$5y + 3x$</b>（已套用加法交換律）";
+                tileA.className = greenTile;
+                setMath(tileA, "$5y$");
+                tileB.className = blueTile;
+                setMath(tileB, "$3x$");
+                setMath(desc, "當前算式：<b>$5y + 3x$</b>（已套用加法交換律）");
             } else {
-                tileA.innerHTML = "$3x$";
-                tileA.className = "tile-box bg-blue-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-blue-600";
-                tileB.innerHTML = "$5y$";
-                tileB.className = "tile-box bg-emerald-500 text-white font-black text-2xl px-6 py-4 rounded-xl shadow-md border-2 border-emerald-600";
-                desc.innerHTML = "當前算式：<b>$3x + 5y$</b>";
+                tileA.className = blueTile;
+                setMath(tileA, "$3x$");
+                tileB.className = greenTile;
+                setMath(tileB, "$5y$");
+                setMath(desc, "當前算式：<b>$3x + 5y$</b>");
             }
-            renderMath();
+        }
+
+        // 點擊板塊：切換狀態後重畫
+        function swapCommTiles() {
+            isSwapped = !isSwapped;
+            renderCommTiles();
         }
 
         // 2. 結合律括號移動
@@ -427,7 +462,7 @@
             const desc = document.getElementById('assoc-desc');
 
             if (!isAssocShifted) {
-                container.innerHTML = `
+                setMath(container, `
                     <span class="text-indigo-600 font-extrabold">(</span>
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">$2x$</span>
                     <span>+</span>
@@ -435,10 +470,10 @@
                     <span class="text-indigo-600 font-extrabold">)</span>
                     <span>+</span>
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">$4x$</span>
-                `;
-                desc.innerHTML = "先算括號內：$(2x + 3x) = 5x$，再加上 $4x$ 等於 <b>$9x$</b>！";
+                `);
+                setMath(desc, "先算括號內：$(2x + 3x) = 5x$，再加上 $4x$ 等於 <b>$9x$</b>！");
             } else {
-                container.innerHTML = `
+                setMath(container, `
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">$2x$</span>
                     <span>+</span>
                     <span class="text-indigo-600 font-extrabold">(</span>
@@ -446,10 +481,9 @@
                     <span>+</span>
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-lg border border-blue-300">$4x$</span>
                     <span class="text-indigo-600 font-extrabold">)</span>
-                `;
-                desc.innerHTML = "先算後方括號：$(3x + 4x) = 7x$，再加上 $2x$ 一樣等於 <b>$9x$</b>（套用加法結合律）！";
+                `);
+                setMath(desc, "先算後方括號：$(3x + 4x) = 7x$，再加上 $2x$ 一樣等於 <b>$9x$</b>（套用加法結合律）！");
             }
-            renderMath();
         }
 
         // 3. 分配律動態展開動畫
@@ -458,41 +492,47 @@
             const desc = document.getElementById('dist-desc');
             const btn = document.getElementById('btn-dist');
 
+            clearTimeout(distTimer);
             btn.disabled = true;
 
             // Step 1: 動態展開成 3·x + 3·2
-            container.innerHTML = `
+            setMath(container, `
                 <span class="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-lg border-2 border-amber-500 font-black">$3 \\cdot x$</span>
                 <span class="mx-1 font-bold">+</span>
                 <span class="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-lg border-2 border-amber-500 font-black">$3 \\cdot 2$</span>
-            `;
-            desc.innerHTML = "分配律展開中：<b>$3 \\cdot x + 3 \\cdot 2$</b>（$3$ 分配乘給括號內每一項）";
-            renderMath();
+            `);
+            setMath(desc, "分配律展開中：<b>$3 \\cdot x + 3 \\cdot 2$</b>（$3$ 分配乘給括號內每一項）");
 
-            // Step 2: 最終化簡結果 3x + 6
-            setTimeout(() => {
-                container.innerHTML = `
+            // Step 2: 最終化簡結果 3x + 6（存下計時器，重置時才能取消）
+            distTimer = setTimeout(() => {
+                distTimer = null;
+                setMath(container, `
                     <span class="bg-amber-200 text-amber-900 px-4 py-2 rounded-lg border-2 border-amber-500 font-black text-2xl">$3x$</span>
                     <span class="mx-2 text-2xl font-black">+</span>
                     <span class="bg-amber-200 text-amber-900 px-4 py-2 rounded-lg border-2 border-amber-500 font-black text-2xl">$6$</span>
-                `;
-                desc.innerHTML = "分配律化簡結果：<b class='text-amber-600 text-lg'>$3x + 6$</b>";
+                `);
+                setMath(desc, "分配律化簡結果：<b class='text-amber-600 text-lg'>$3x + 6$</b>");
                 btn.disabled = false;
-                renderMath();
             }, 1200);
         }
 
         function resetLab() {
+            // 取消還在跑的分配律動畫，避免重置後又被蓋回 3x + 6
+            clearTimeout(distTimer);
+            distTimer = null;
+
+            // 修正：直接畫回未交換狀態（原本會被 swapCommTiles 又翻成交換過）
             isSwapped = false;
+            renderCommTiles();
+
             isAssocShifted = false;
-            swapCommTiles();
             updateAssocUI();
-            
-            const container = document.getElementById('dist-container');
-            container.innerHTML = `<span class="bg-amber-100 text-amber-900 px-5 py-2 rounded-lg border-2 border-amber-400">$3(x + 2)$</span>`;
-            document.getElementById('dist-desc').innerHTML = "算式狀態：<b>$3(x + 2)$</b>";
+
+            setMath(document.getElementById('dist-container'), `<span class="bg-amber-100 text-amber-900 px-5 py-2 rounded-lg border-2 border-amber-400">$3(x + 2)$</span>`);
+            setMath(document.getElementById('dist-desc'), "算式狀態：<b>$3(x + 2)$</b>");
+            document.getElementById('btn-dist').disabled = false;
+
             switchLawMode('comm');
-            renderMath();
         }
 
         // 🔍 觀念引導邏輯
@@ -502,25 +542,26 @@
 
             if (step === 1) {
                 if (isCorrect) {
-                    feedback.innerHTML = "✅ 完全正確！小明犯了分配律常見錯誤，忘記把 $3$ 乘給 $1$，正確應該展開為 $3x + 3$！";
+                    setMath(feedback, "✅ 完全正確！小明犯了分配律常見錯誤，忘記把 $3$ 乘給 $1$，正確應該展開為 $3x + 3$！");
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm";
                     document.getElementById('sq1').classList.add('opacity-50');
+                    lockButtons('sq1');
                     document.getElementById('sq2').classList.remove('hidden');
                 } else {
-                    feedback.innerHTML = "❌ 答錯囉！$3 \\times 1 = 3$，不能直接寫原本的 $1$ 哦！";
+                    setMath(feedback, "❌ 答錯囉！$3 \\times 1 = 3$，不能直接寫原本的 $1$ 哦！");
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
                 }
             } else if (step === 2) {
                 if (isCorrect) {
-                    feedback.innerHTML = "🎉 太棒了！$3x - 2x = x$，數字 $3 + 1 = 4$，最終結果為 $x + 4$！";
+                    setMath(feedback, "🎉 太棒了！$3x - 2x = x$，數字 $3 + 1 = 4$，最終結果為 $x + 4$！");
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm";
                     document.getElementById('sq2').classList.add('opacity-50');
+                    lockButtons('sq2');
                 } else {
-                    feedback.innerHTML = "❌ 算錯囉！常數項是 $+3$ 再加 $1$，等於 $+4$ 哦！";
+                    setMath(feedback, "❌ 算錯囉！常數項是 $+3$ 再加 $1$，等於 $+4$ 哦！");
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
                 }
             }
-            renderMath();
         }
 
         // 🧩 練習 1 檢查邏輯
@@ -529,30 +570,31 @@
                 const f = document.getElementById('p1-f1');
                 f.classList.remove('hidden');
                 if (isCorrect) {
-                    f.innerHTML = "✅ 正確！長方形面積 = 長 $\\times$ 寬 = $5 \\times x = 5x$（平方公分）。";
+                    setMath(f, "✅ 正確！長方形面積 = 長 $\\times$ 寬 = $5 \\times x = 5x$（平方公分）。");
                     f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    lockButtons('p1-s1');
                     const s2 = document.getElementById('p1-s2');
                     s2.classList.remove('hidden');
                     setTimeout(() => s2.classList.add('opacity-100'), 10);
                 } else {
-                    f.innerHTML = "❌ 答錯囉！面積是「相乘」不是相加哦！";
+                    setMath(f, "❌ 答錯囉！面積是「相乘」不是相加哦！");
                     f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
                 }
             } else if (step === 2) {
                 const f = document.getElementById('p1-f2');
                 f.classList.remove('hidden');
                 if (isCorrect) {
-                    f.innerHTML = "✅ 太強了！周長 = $2(5 + x) = 2 \\times 5 + 2 \\times x = 10 + 2x$ 公分！";
+                    setMath(f, "✅ 太強了！周長 = $2(5 + x) = 2 \\times 5 + 2 \\times x = 10 + 2x$ 公分！");
                     f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
+                    lockButtons('p1-s2');
                     const res = document.getElementById('p1-result');
                     res.classList.remove('hidden');
                     setTimeout(() => res.classList.add('opacity-100'), 10);
                 } else {
-                    f.innerHTML = "❌ 記得分配律 $2$ 要乘給 $5$ 也要乘給 $x$ 哦！";
+                    setMath(f, "❌ 記得分配律 $2$ 要乘給 $5$ 也要乘給 $x$ 哦！");
                     f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
                 }
             }
-            renderMath();
         }
 
         // 🧮 練習 2 檢查邏輯
@@ -563,48 +605,70 @@
             if (qNum === 1) {
                 if (choice === 'right') {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
-                    f.innerHTML = "✅ 觀念超清晰！$-2x + 7x = +5x$，故化簡結果為 $3 + 5x$（不可誤算為 $3 - 9x$）！";
+                    setMath(f, "✅ 觀念超清晰！$-2x + 7x = +5x$，故化簡結果為 $3 + 5x$（不可誤算為 $3 - 9x$）！");
                 } else {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
-                    f.innerHTML = "❌ 這是常見迷思！$-2x$ 前面是負號，加上 $7x$ 後應該是 $+5x$ 哦！";
+                    setMath(f, "❌ 這是常見迷思！$-2x$ 前面是負號，加上 $7x$ 後應該是 $+5x$ 哦！");
                 }
             } else if (qNum === 2) {
                 if (choice === 'right') {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
-                    f.innerHTML = "✅ 答對了！$\\frac{9x - 3}{3} = \\frac{9x}{3} - \\frac{3}{3} = 3x - 1$！分子每一項都要除以 $3$！";
+                    setMath(f, "✅ 答對了！$\\frac{9x - 3}{3} = \\frac{9x}{3} - \\frac{3}{3} = 3x - 1$！分子每一項都要除以 $3$！");
                 } else {
                     f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
-                    f.innerHTML = "❌ 忘記把後面的 $-3$ 也除以 $3$ 囉！$\\frac{3}{3} = 1$，所以常數項是 $-1$！";
+                    setMath(f, "❌ 忘記把後面的 $-3$ 也除以 $3$ 囉！$\\frac{3}{3} = 1$，所以常數項是 $-1$！");
                 }
             }
-            renderMath();
+        }
+
+        // 🚀 實戰挑戰：答案比對工具
+        // 全形轉半形、各種減號統一、去掉空白與「歲」、轉小寫
+        function normalizeAns(s) {
+            return String(s).normalize('NFKC')
+                .replace(/[−–—]/g, '-')
+                .replace(/\s|歲/g, '')
+                .toLowerCase();
+        }
+
+        // 把一次式拆成帶正負號的項並排序，項的順序不同也算同一個式子
+        // 例：「-3+y」與「y-3」相同；「7x+1y+1」與「7x+y+1」不同（係數 1 要省略）
+        function termsOf(s) {
+            let t = normalizeAns(s);
+            if (t && !/^[+-]/.test(t)) t = '+' + t;
+            const parts = t.match(/[+-][^+-]+/g) || [];
+            if (parts.join('') !== t) return null;   // 有多餘或連續的正負號
+            return parts.sort().join('|');
+        }
+
+        function sameExpr(input, target) {
+            const a = termsOf(input);
+            return a !== null && a !== '' && a === termsOf(target);
         }
 
         // 🚀 實戰挑戰檢查邏輯
         function checkChal(qNum, correctVal) {
             const feedback = document.getElementById(`chal${qNum}-feedback`);
             feedback.classList.remove('hidden');
+            const val = document.getElementById(`chal${qNum}-ans`).value;
+            const isRight = sameExpr(val, correctVal);
 
             if (qNum === 1) {
-                const val = document.getElementById('chal1-ans').value.trim().toLowerCase().replace(/\s/g, '');
-                if (val === 'y-3' || val === 'y-3歲') {
+                if (isRight) {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
-                    feedback.innerHTML = "✅ 完全正確！哥哥比小臻大 $3$ 歲，所以小臻年齡等於哥哥的年齡減 $3$ 歲（$y - 3$ 歲）！";
+                    setMath(feedback, "✅ 完全正確！哥哥比小臻大 $3$ 歲，所以小臻年齡等於哥哥的年齡減 $3$ 歲（$y - 3$ 歲）！");
                 } else {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
-                    feedback.innerHTML = "❌ 再想想看，小臻比哥哥小 $3$ 歲，所以是用 $y$ 去減掉多少呢？";
+                    setMath(feedback, "❌ 再想想看，小臻比哥哥小 $3$ 歲，所以是用 $y$ 去減掉多少呢？");
                 }
             } else if (qNum === 2) {
-                const val = document.getElementById('chal2-ans').value.trim().toLowerCase().replace(/\s/g, '');
-                if (val === '7x+y+1' || val === '7x+1y+1') {
+                if (isRight) {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
-                    feedback.innerHTML = "🎉 太強了！答對了！$2x + 5x = 7x$，$-y + 2y = y$，加上常數 $1$，結果為 $7x + y + 1$！";
+                    setMath(feedback, "🎉 太強了！答對了！$2x + 5x = 7x$，$-y + 2y = y$，加上常數 $1$，結果為 $7x + y + 1$！");
                 } else {
                     feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
-                    feedback.innerHTML = "❌ 提示：把含有 $x$ 的項（$2x, 5x$）合併，含有 $y$ 的項（$-y, 2y$）合併，常數 $1$ 留著。";
+                    setMath(feedback, "❌ 提示：把含有 $x$ 的項（$2x, 5x$）合併，含有 $y$ 的項（$-y, 2y$）合併，常數 $1$ 留著。");
                 }
             }
-            renderMath();
         }
     </script>
 </body>
