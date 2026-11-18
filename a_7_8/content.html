@@ -76,7 +76,7 @@
                     不等式的解是一個<b>連續的範圍</b>，不單單只有整數：
                 </p>
                 <p class="text-xs text-emerald-700 font-bold bg-white p-2 rounded border border-emerald-300">
-                    例如：$x > 4$ 的解包含 $4.1, 4.5, 5, 5.14159\dots$ 等無限多個實數，並非只有 $5, 6, 7\dots$！
+                    例如：$x > 4$ 的解包含 $4.1, 4.5, 5, 5.14159\dots$ 等無限多個數，並非只有 $5, 6, 7\dots$！
                 </p>
             </div>
         </div>
@@ -183,9 +183,9 @@
                         求解 $3x - 1 \le 5$ (方向不變)
                     </h3>
                     <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
-                        <p><b>步驟 1 (同加 1)：</b>兩側同加 1 ➔ $3x \le 6$。</p>
-                        <p><b>步驟 2 (同除正數 3)：</b>除以正數 3，不等號<b>方向不變</b> ➔ <span class="math-fact text-blue-700">$x \le 2$</span>。</p>
-                        <p><b>數線圖示：</b>在 2 處標<b>實心點</b>，畫箭頭<b>向左並加上斜線陰影</b>！</p>
+                        <p><b>步驟 1 (同加 $1$)：</b>兩側同加 $1$ ➔ $3x \le 6$。</p>
+                        <p><b>步驟 2 (同除正數 $3$)：</b>除以正數 $3$，不等號<b>方向不變</b> ➔ <span class="math-fact text-blue-700">$x \le 2$</span>。</p>
+                        <p><b>數線圖示：</b>在 $2$ 處標<b>實心點</b>，畫箭頭<b>向左並加上斜線陰影</b>！</p>
                     </div>
                 </div>
 
@@ -196,7 +196,7 @@
                         求解 $-3x < 6$ (同除負數翻轉)
                     </h3>
                     <div class="text-xs text-slate-600 space-y-2 leading-relaxed">
-                        <p><b>步驟 1 (同除負數 -3)：</b>兩側同除以 $-3$。</p>
+                        <p><b>步驟 1 (同除負數 $-3$)：</b>兩側同除以 $-3$。</p>
                         <p><b>步驟 2 (變號關鍵)：</b>因除以負數，不等號<b>由 $<$ 翻轉為 $>$</b> ➔ <span class="math-fact text-blue-700">$x > -2$</span>。</p>
                         <p><b>數線圖示：</b>在 $-2$ 處標<b>空心點</b>，畫箭頭<b>向右並加上斜線陰影</b>！</p>
                     </div>
@@ -214,7 +214,7 @@
             </div>
             <div id="step-quiz" class="space-y-4">
                 <div id="sq1">
-                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 在數線上，$-3$ 位在 $-5$ 的右邊，所以 $-5$ 與 $-3$ 的大小關係為何？</p>
+                    <p class="text-slate-800 mb-2 font-medium">1️⃣ $-5$ 與 $-3$ 的大小關係為何？</p>
                     <div class="flex gap-2">
                         <button onclick="answerStep(1, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">$-5 < -3$（小於）</button>
                         <button onclick="answerStep(1, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">$-5 > -3$（大於）</button>
@@ -247,7 +247,7 @@
             <div class="space-y-6">
                 <!-- Step 1 -->
                 <div id="p1-s1">
-                    <p class="text-slate-800 mb-2 font-medium">步驟 1️⃣：兩邊同時減去 5，式子會變成什麼？</p>
+                    <p class="text-slate-800 mb-2 font-medium">步驟 1️⃣：兩邊同時減去 $5$，式子會變成什麼？</p>
                     <div class="flex flex-wrap gap-2">
                         <button onclick="checkP1(1, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$-2x \le 6$</button>
                         <button onclick="checkP1(1, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$-2x \le 16$</button>
@@ -258,11 +258,11 @@
 
                 <!-- Step 2 -->
                 <div id="p1-s2" class="hidden opacity-0 transition-all duration-500">
-                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">步驟 2️⃣：從 $-2x \le 6$，兩邊同時除以負數 $-2$。記得要翻轉不等號！正確答案為？</p>
+                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">步驟 2️⃣：從 $-2x \le 6$，兩邊同時除以負數 $-2$，正確答案為？</p>
                     <div class="flex flex-wrap gap-2">
                         <button onclick="checkP1(2, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$x \le -3$</button>
                         <button onclick="checkP1(2, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$x \ge -3$</button>
-                        <button onclick="checkP1(2, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 transition-all">$x \ge 3$</button>
+                        <button onclick="checkP1(2, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$x \ge 3$</button>
                     </div>
                     <div id="p1-f2" class="text-sm mt-2 hidden font-bold"></div>
                 </div>
@@ -395,11 +395,11 @@
                 <!-- Challenge 1 -->
                 <div class="challenge-card">
                     <h3 class="font-bold text-slate-700 mb-2">1. 筆記本採買應用題</h3>
-                    <p class="text-sm text-slate-600 mb-4">小剛帶了 200 元去文具店買筆記本。已知筆記本一本 35 元，精美包裝盒一個 10 元。設小剛買了 $x$ 本筆記本，可列出不等式 $35x + 10 \le 200$。請問小剛<b>最多</b>可以買幾本筆記本？</p>
+                    <p class="text-sm text-slate-600 mb-4">小剛帶了 $200$ 元去文具店買筆記本。已知筆記本一本 $35$ 元，精美包裝盒一個 $10$ 元。設小剛買了 $x$ 本筆記本，可列出不等式 $35x + 10 \le 200$。請問小剛<b>最多</b>可以買幾本筆記本？</p>
                     <div class="space-y-2">
-                        <button onclick="checkChal(1, 'A')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(A) 4 本</button>
-                        <button onclick="checkChal(1, 'B')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(B) 5 本</button>
-                        <button onclick="checkChal(1, 'C')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(C) 6 本</button>
+                        <button onclick="checkChal(1, 'A')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(A) $4$ 本</button>
+                        <button onclick="checkChal(1, 'B')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(B) $5$ 本</button>
+                        <button onclick="checkChal(1, 'C')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(C) $6$ 本</button>
                     </div>
                     <div id="chal1-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
                 </div>
@@ -410,8 +410,8 @@
                     <p class="text-sm text-slate-600 mb-4">關於一元一次不等式 $x > 2$ 的解，下列敘述何者完全正確？</p>
                     <div class="space-y-2">
                         <button onclick="checkChal(2, 'A')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(A) 解只有整數，例如 $3, 4, 5, 6\dots$</button>
-                        <button onclick="checkChal(2, 'B')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(B) 解包含所有比 2 大的數，例如小數 $2.1$ 與 $2.5$ 都是解</button>
-                        <button onclick="checkChal(2, 'C')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(C) 數字 2 也是這個不等式的解之一</button>
+                        <button onclick="checkChal(2, 'B')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(B) 解包含所有比 $2$ 大的數，例如小數 $2.1$ 與 $2.5$ 都是解</button>
+                        <button onclick="checkChal(2, 'C')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(C) 數字 $2$ 也是這個不等式的解之一</button>
                     </div>
                     <div id="chal2-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
                 </div>
@@ -447,9 +447,9 @@
                 </h3>
                 <p class="text-sm leading-relaxed opacity-90">
                     <b>生活處處都是不等式：</b><br>
-                    1. <b>超商湊單優惠：</b> 單筆消費滿 99 元享免運 ➔ 花費 $x \ge 99$ 元。<br>
-                    2. <b>手機資費方案：</b> 每月行動上網傳輸量不超過 10 GB 不降速 ➔ 用量 $x \le 10$ GB。<br>
-                    3. <b>電影分級制度：</b> 輔導級電影未滿 12 歲兒童不得觀賞 ➔ 年齡 $x < 12$ 歲。
+                    1. <b>超商湊單優惠：</b> 單筆消費滿 $99$ 元享免運 ➔ 花費 $x \ge 99$ 元。<br>
+                    2. <b>手機資費方案：</b> 每月行動上網傳輸量不超過 $10$ GB 不降速 ➔ 用量 $x \le 10$ GB。<br>
+                    3. <b>電影分級制度：</b> 輔12級電影，未滿 $12$ 歲兒童不得觀賞 ➔ 年齡 $x < 12$ 歲。
                 </p>
             </div>
         </footer>
@@ -480,6 +480,11 @@
                     ]
                 });
             }
+        }
+
+        // 把某區塊裡的按鈕全部鎖住（答對後使用，避免回頭按錯誤選項蓋掉回饋）
+        function lockButtons(containerId) {
+            document.querySelectorAll('#' + containerId + ' button').forEach(b => { b.disabled = true; });
         }
 
         window.onload = function() {
@@ -592,6 +597,7 @@
                     const html = "✅ 完全正確！$-3$ 位在 $-5$ 的右邊，所以在數線上 $-5 < -3$！解鎖下一步！";
                     updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm");
                     document.getElementById('sq1').classList.add('opacity-50');
+                    lockButtons('sq1');
                     document.getElementById('sq2').classList.remove('hidden');
                 } else {
                     const html = "❌ 答錯囉！在數線上越往右邊的數字越大，$-3$ 比 $-5$ 還要靠右邊，所以是 $-5 < -3$ 喔！再試試看！";
@@ -603,6 +609,7 @@
                     const html = "🎉 太棒了！原本是 $5 > 3$，同乘以 $-1$ 後大小關係顛倒變為 $-5 < -3$！這就是「兩邊同乘或同除負數時，不等號方向必須翻轉」的數學原因！";
                     updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-left bg-indigo-100 text-indigo-800 mb-4 shadow-sm");
                     document.getElementById('sq2').classList.add('opacity-50');
+                    lockButtons('sq2');
                 } else {
                     const html = "❌ 答錯囉！原本是 $5 > 3$（大於），乘以 $-1$ 後變成 $-5 < -3$（小於），不等號方向已經改變囉！";
                     updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-left bg-red-100 text-red-800 mb-4 shadow-sm");
@@ -614,22 +621,24 @@
         function checkP1(step, isCorrect, wrongType) {
             if (step === 1) {
                 if (isCorrect) {
-                    const html = "✅ 正確！兩邊同減 5 ➔ $-2x \\le 11 - 5 \\implies -2x \\le 6$！";
+                    const html = "✅ 正確！兩邊同減 $5$ ➔ $-2x \\le 11 - 5 \\implies -2x \\le 6$！";
                     updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded");
+                    lockButtons('p1-s1');
                     const s2 = document.getElementById('p1-s2');
                     s2.classList.remove('hidden');
                     setTimeout(() => s2.classList.add('opacity-100'), 10);
                 } else if (wrongType === 'A') {
-                    const html = "❌ 答錯囉！減去 5 是 $11 - 5 = 6$，不是 $11 + 5 = 16$ 喔！";
+                    const html = "❌ 答錯囉！減去 $5$ 是 $11 - 5 = 6$，不是 $11 + 5 = 16$ 喔！";
                     updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
                 } else {
-                    const html = "❌ 答錯囉！同減去正數 5 時，不等號方向是不會改變的喔！";
+                    const html = "❌ 答錯囉！同減去正數 $5$ 時，不等號方向是不會改變的喔！";
                     updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
                 }
             } else if (step === 2) {
                 if (isCorrect) {
                     const html = "✅ 太強了！同除以負數 $-2$ 時，不等號由 $\\le$ 翻轉為 $\\ge$，得到 $x \\ge -3$！";
                     updateFeedbackAndRender('p1-f2', html, "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded");
+                    lockButtons('p1-s2');
                     const res = document.getElementById('p1-result');
                     res.classList.remove('hidden');
                     setTimeout(() => res.classList.add('opacity-100'), 10);
@@ -658,13 +667,13 @@
                 }
             } else if (qNum === 2) {
                 if (choice === 'right') {
-                    const html = "✅ 答對了！帶有等號（$\\ge$）要在 2 處標示<b>實心點</b>，且代表比 2 大的範圍要畫<b>向右箭頭並加上斜線陰影</b>（即選項 (B)）！";
+                    const html = "✅ 答對了！帶有等號（$\\ge$）要在 $2$ 處標示<b>實心點</b>，且代表大於或等於 $2$ 的範圍要畫<b>向右箭頭並加上斜線陰影</b>（即選項 (B)）！";
                     updateFeedbackAndRender('p2-f2', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200");
                 } else if (choice === 'wrongA') {
-                    const html = "❌ 答錯囉！含有等號（$\\ge$）時代表包含 2，端點必須使用『實心點』，而不是空心點喔！";
+                    const html = "❌ 答錯囉！含有等號（$\\ge$）時代表包含 $2$，端點必須使用『實心點』，而不是空心點喔！";
                     updateFeedbackAndRender('p2-f2', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100");
                 } else {
-                    const html = "❌ 答錯囉！$\\ge 2$ 是指比 2 還要大的範圍，箭頭應該向右延伸，不是向左喔！";
+                    const html = "❌ 答錯囉！$x \\ge 2$ 是指大於或等於 $2$ 的範圍，箭頭應該向右延伸，不是向左喔！";
                     updateFeedbackAndRender('p2-f2', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100");
                 }
             }
@@ -674,24 +683,24 @@
         function checkChal(qNum, choice) {
             if (qNum === 1) {
                 if (choice === 'B') {
-                    const html = "🎉 完全正確！解不等式 $35x + 10 \\le 200 \\implies 35x \\le 190 \\implies x \\le 5.428\\dots$ 因為筆記本本數 $x$ 必須是整數，故最多可買 <b>5 本</b>（總花費 $35(5) + 10 = 185 \\le 200$ 元）！";
+                    const html = "🎉 完全正確！解不等式 $35x + 10 \\le 200 \\implies 35x \\le 190 \\implies x \\le 5.428\\dots$ 因為筆記本本數 $x$ 必須是整數，故最多可買 <b>$5$ 本</b>（總花費 $35 \\times 5 + 10 = 185$ 元，$185 \\le 200$）！";
                     updateFeedbackAndRender('chal1-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800");
                 } else if (choice === 'A') {
-                    const html = "❌ 答錯囉！買 4 本費用為 $35(4) + 10 = 150$ 元，雖然沒超支，但小剛還可以再多買 1 本（共 5 本，185 元），所以 4 本還不是『最多』可買本數喔！";
+                    const html = "❌ 答錯囉！買 $4$ 本費用為 $35 \\times 4 + 10 = 150$ 元，雖然沒超支，但小剛還可以再多買 $1$ 本（共 $5$ 本，$185$ 元），所以 $4$ 本還不是『最多』可買本數喔！";
                     updateFeedbackAndRender('chal1-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800");
                 } else {
-                    const html = "❌ 算算看！若買 6 本筆記本，費用為 $35(6) + 10 = 220$ 元，已經超過小剛帶的 200 元預算囉！";
+                    const html = "❌ 算算看！若買 $6$ 本筆記本，費用為 $35 \\times 6 + 10 = 220$ 元，已經超過小剛帶的 $200$ 元預算囉！";
                     updateFeedbackAndRender('chal1-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800");
                 }
             } else if (qNum === 2) {
                 if (choice === 'B') {
-                    const html = "🎉 太強了！答對了！不等式的解在數線上是一個連續區間，所有大於 2 的實數（包括小數 $2.1, 2.5$ 或分數）通通都是它的解！";
+                    const html = "🎉 太強了！答對了！不等式的解在數線上是一個連續區間，所有大於 $2$ 的數（包括小數 $2.1, 2.5$ 或分數）通通都是它的解！";
                     updateFeedbackAndRender('chal2-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800");
                 } else if (choice === 'A') {
-                    const html = "❌ 這是常見的迷思！不等式的解不只有整數，所有大於 2 的小數（如 $2.1, 2.01$）也是不等式的解喔！";
+                    const html = "❌ 這是常見的迷思！不等式的解不只有整數，所有大於 $2$ 的小數（如 $2.1, 2.01$）也是不等式的解喔！";
                     updateFeedbackAndRender('chal2-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800");
                 } else {
-                    const html = "❌ 答錯囉！因為算式是 $x > 2$（不帶等號），所以 2 本身並不包含在解裡面喔！";
+                    const html = "❌ 答錯囉！因為算式是 $x > 2$（不帶等號），所以 $2$ 本身並不包含在解裡面喔！";
                     updateFeedbackAndRender('chal2-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800");
                 }
             }
