@@ -145,9 +145,9 @@
                     <span class="text-xs font-bold text-indigo-900">列聯表</span>
                     <div class="w-[100px] h-[70px] bg-white border rounded p-1 flex flex-col justify-center">
                         <table class="w-full text-[8px] text-center border-collapse">
-                            <tr class="bg-indigo-100 border-b"><td class="border-r font-bold">欄\列</td><td>A</td><td class="font-bold">小計</td></tr>
-                            <tr class="border-b"><td class="border-r font-bold bg-slate-50">甲</td><td>12</td><td class="font-bold">12</td></tr>
-                            <tr class="bg-amber-100 font-bold"><td>小計</td><td>12</td><td class="bg-amber-300">總計</td></tr>
+                            <tr class="bg-indigo-100 border-b"><td class="border-r font-bold">列\欄</td><td>A</td><td class="font-bold">小計</td></tr>
+                            <tr class="border-b"><td class="border-r font-bold bg-slate-50">甲</td><td>$12$</td><td class="font-bold">$12$</td></tr>
+                            <tr class="bg-amber-100 font-bold"><td>小計</td><td>$12$</td><td class="bg-amber-300">總計</td></tr>
                         </table>
                     </div>
                     <span class="text-[10px] text-slate-500 font-medium">二維交叉分析</span>
@@ -177,7 +177,7 @@
                     <div>
                         <div class="flex justify-between text-xs font-bold text-blue-800 mb-1">
                             <span>男生投給小華：</span>
-                            <span id="vote-m-hua-val">8 票</span>
+                            <span id="vote-m-hua-val">$8$ 票</span>
                         </div>
                         <input type="range" id="sim-m-hua" min="0" max="20" value="8" oninput="updateVoteLab()" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
                     </div>
@@ -185,7 +185,7 @@
                     <div>
                         <div class="flex justify-between text-xs font-bold text-blue-800 mb-1">
                             <span>男生投給小明：</span>
-                            <span id="vote-m-ming-val">6 票</span>
+                            <span id="vote-m-ming-val">$6$ 票</span>
                         </div>
                         <input type="range" id="sim-m-ming" min="0" max="20" value="6" oninput="updateVoteLab()" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
                     </div>
@@ -193,7 +193,7 @@
                     <div>
                         <div class="flex justify-between text-xs font-bold text-pink-800 mb-1">
                             <span>女生投給小華：</span>
-                            <span id="vote-f-hua-val">10 票</span>
+                            <span id="vote-f-hua-val">$10$ 票</span>
                         </div>
                         <input type="range" id="sim-f-hua" min="0" max="20" value="10" oninput="updateVoteLab()" class="w-full h-2 bg-pink-200 rounded-lg appearance-none cursor-pointer">
                     </div>
@@ -201,7 +201,7 @@
                     <div>
                         <div class="flex justify-between text-xs font-bold text-pink-800 mb-1">
                             <span>女生投給小明：</span>
-                            <span id="vote-f-ming-val">4 票</span>
+                            <span id="vote-f-ming-val">$4$ 票</span>
                         </div>
                         <input type="range" id="sim-f-ming" min="0" max="20" value="4" oninput="updateVoteLab()" class="w-full h-2 bg-pink-200 rounded-lg appearance-none cursor-pointer">
                     </div>
@@ -223,21 +223,21 @@
                             <tbody class="text-slate-700">
                                 <tr class="border-b border-slate-100">
                                     <td class="p-2 font-bold bg-slate-50 border-r">男生</td>
-                                    <td id="tbl-m-hua" class="p-2">8</td>
-                                    <td id="tbl-m-ming" class="p-2">6</td>
-                                    <td id="tbl-m-sub" class="p-2 font-bold text-blue-700 bg-blue-50">14</td>
+                                    <td id="tbl-m-hua" class="p-2">$8$</td>
+                                    <td id="tbl-m-ming" class="p-2">$6$</td>
+                                    <td id="tbl-m-sub" class="p-2 font-bold text-blue-700 bg-blue-50">$14$</td>
                                 </tr>
                                 <tr class="border-b border-slate-200">
                                     <td class="p-2 font-bold bg-slate-50 border-r">女生</td>
-                                    <td id="tbl-f-hua" class="p-2">10</td>
-                                    <td id="tbl-f-ming" class="p-2">4</td>
-                                    <td id="tbl-f-sub" class="p-2 font-bold text-pink-700 bg-pink-50">14</td>
+                                    <td id="tbl-f-hua" class="p-2">$10$</td>
+                                    <td id="tbl-f-ming" class="p-2">$4$</td>
+                                    <td id="tbl-f-sub" class="p-2 font-bold text-pink-700 bg-pink-50">$14$</td>
                                 </tr>
                                 <tr class="bg-amber-50 font-bold text-amber-900">
                                     <td class="p-2 border-r border-amber-200">欄小計</td>
-                                    <td id="tbl-hua-sub" class="p-2 text-indigo-700 bg-indigo-50">18</td>
-                                    <td id="tbl-ming-sub" class="p-2 text-indigo-700 bg-indigo-50">10</td>
-                                    <td id="tbl-grand-total" class="p-2 bg-amber-200 text-amber-950 font-black text-sm">28</td>
+                                    <td id="tbl-hua-sub" class="p-2 text-indigo-700 bg-indigo-50">$18$</td>
+                                    <td id="tbl-ming-sub" class="p-2 text-indigo-700 bg-indigo-50">$10$</td>
+                                    <td id="tbl-grand-total" class="p-2 bg-amber-200 text-amber-950 font-black text-sm">$28$</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -249,17 +249,17 @@
                             <span>得票長條圖（離散資料，柱狀間有間隔）</span>
                             <span id="vote-winner-tag" class="text-amber-400">當前領先：小華</span>
                         </div>
-                        <div class="h-20 flex items-end justify-center gap-8 pt-2">
+                        <div class="h-32 flex items-end justify-center gap-8 pt-2">
                             <!-- 小華柱 -->
                             <div class="flex flex-col items-center gap-1 w-16">
-                                <span id="bar-hua-num" class="text-xs font-bold text-indigo-300">18票</span>
-                                <div id="bar-hua-height" class="w-12 bg-indigo-500 rounded-t bar-anim" style="height: 60px;"></div>
+                                <span id="bar-hua-num" class="text-xs font-bold text-indigo-300">$18$ 票</span>
+                                <div id="bar-hua-height" class="w-12 bg-indigo-500 rounded-t bar-anim" style="height: 31.5px;"></div>
                                 <span class="text-xs font-bold">小華</span>
                             </div>
                             <!-- 小明柱 -->
                             <div class="flex flex-col items-center gap-1 w-16">
-                                <span id="bar-ming-num" class="text-xs font-bold text-emerald-300">10票</span>
-                                <div id="bar-ming-height" class="w-12 bg-emerald-500 rounded-t bar-anim" style="height: 33px;"></div>
+                                <span id="bar-ming-num" class="text-xs font-bold text-emerald-300">$10$ 票</span>
+                                <div id="bar-ming-height" class="w-12 bg-emerald-500 rounded-t bar-anim" style="height: 17.5px;"></div>
                                 <span class="text-xs font-bold">小明</span>
                             </div>
                         </div>
@@ -292,32 +292,32 @@
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                     <div>
                         <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
-                            <span>🍔 伙食費：<span id="bk-food-val">500</span> 元</span>
-                            <span id="bk-food-pct" class="text-blue-600 font-bold">50.0%</span>
+                            <span>🍔 伙食費：<span id="bk-food-val">$500$</span> 元</span>
+                            <span id="bk-food-pct" class="text-blue-600 font-bold">$50.0\%$</span>
                         </div>
                         <input type="range" id="sim-bk-food" min="100" max="1000" value="500" step="50" oninput="updateBookkeepingLab()" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
                     </div>
 
                     <div>
                         <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
-                            <span>✏️ 文具書籍：<span id="bk-book-val">200</span> 元</span>
-                            <span id="bk-book-pct" class="text-emerald-600 font-bold">20.0%</span>
+                            <span>✏️ 文具書籍：<span id="bk-book-val">$200$</span> 元</span>
+                            <span id="bk-book-pct" class="text-emerald-600 font-bold">$20.0\%$</span>
                         </div>
                         <input type="range" id="sim-bk-book" min="50" max="800" value="200" step="50" oninput="updateBookkeepingLab()" class="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer">
                     </div>
 
                     <div>
                         <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
-                            <span>🎮 娛樂休閒：<span id="bk-fun-val">200</span> 元</span>
-                            <span id="bk-fun-pct" class="text-purple-600 font-bold">20.0%</span>
+                            <span>🎮 娛樂休閒：<span id="bk-fun-val">$200$</span> 元</span>
+                            <span id="bk-fun-pct" class="text-purple-600 font-bold">$20.0\%$</span>
                         </div>
                         <input type="range" id="sim-bk-fun" min="50" max="800" value="200" step="50" oninput="updateBookkeepingLab()" class="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer">
                     </div>
 
                     <div>
                         <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
-                            <span>🚌 交通公車：<span id="bk-bus-val">100</span> 元</span>
-                            <span id="bk-bus-pct" class="text-amber-600 font-bold">10.0%</span>
+                            <span>🚌 交通公車：<span id="bk-bus-val">$100$</span> 元</span>
+                            <span id="bk-bus-pct" class="text-amber-600 font-bold">$10.0\%$</span>
                         </div>
                         <input type="range" id="sim-bk-bus" min="50" max="500" value="100" step="50" oninput="updateBookkeepingLab()" class="w-full h-2 bg-amber-200 rounded-lg appearance-none cursor-pointer">
                     </div>
@@ -331,7 +331,7 @@
                         </svg>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                             <span class="text-[10px] text-slate-500 font-bold">總支出</span>
-                            <span id="bk-total-sum" class="text-base font-black text-slate-800">1000 元</span>
+                            <span id="bk-total-sum" class="text-base font-black text-slate-800">$1000$ 元</span>
                         </div>
                     </div>
 
@@ -349,7 +349,7 @@
             </h2>
             <div class="p-4 bg-slate-50 rounded-lg mb-6">
                 <p class="text-slate-700 font-bold text-sm">
-                    問題情境：某班共有 30 名學生調查搭乘公車或騎腳踏車上學。已知男學生有 16 人、其中 10 人搭公車；女學生中有 6 人騎腳踏車。請填補列聯表並求出搭公車的全班總人數。
+                    問題情境：某班共有 $30$ 名學生調查搭乘公車或騎腳踏車上學。已知男學生有 $16$ 人、其中 $10$ 人搭公車；女學生中有 $6$ 人騎腳踏車。請填補列聯表並求出搭公車的全班總人數。
                 </p>
             </div>
 
@@ -361,16 +361,16 @@
                         <span class="step-badge">1</span>
                         <p class="text-xs text-slate-700 leading-relaxed font-medium">
                             <b>步驟 1：計算男學生騎腳踏車人數</b><br>
-                            男學生總數（列小計）16 人，扣除搭公車 10 人 ➔ 男生騎腳踏車有 $16 - 10 = \mathbf{6}$ 人。
+                            男學生總數（列小計）$16$ 人，扣除搭公車 $10$ 人 ➔ 男生騎腳踏車有 $16 - 10 = \mathbf{6}$ 人。
                         </p>
                     </div>
                     <!-- Step 1 列聯表 -->
                     <div class="overflow-x-auto bg-white p-2.5 rounded-lg border">
                         <table class="w-full text-center text-xs border-collapse">
                             <tr class="bg-indigo-100 text-indigo-900 border-b"><th class="p-1 border-r">性別 \ 上學方式</th><th class="p-1">搭公車</th><th class="p-1">騎腳踏車</th><th class="p-1 bg-indigo-200 font-bold">列小計</th></tr>
-                            <tr class="border-b"><td class="p-1 font-bold bg-slate-50 border-r">男生</td><td class="p-1">10</td><td class="p-1 font-black text-red-600 bg-amber-100">6 (新填)</td><td class="p-1 font-bold">16</td></tr>
-                            <tr class="border-b text-slate-400"><td class="p-1 font-bold bg-slate-50 border-r text-slate-600">女生</td><td class="p-1">?</td><td class="p-1 text-slate-700">6</td><td class="p-1">?</td></tr>
-                            <tr class="bg-amber-50 font-bold text-slate-400"><td class="p-1 border-r border-amber-200 text-amber-900">欄小計</td><td class="p-1">?</td><td class="p-1">?</td><td class="p-1 bg-amber-200 text-amber-950 font-black">30</td></tr>
+                            <tr class="border-b"><td class="p-1 font-bold bg-slate-50 border-r">男生</td><td class="p-1">$10$</td><td class="p-1 font-black text-red-600 bg-amber-100">$6$ (新填)</td><td class="p-1 font-bold">$16$</td></tr>
+                            <tr class="border-b text-slate-400"><td class="p-1 font-bold bg-slate-50 border-r text-slate-600">女生</td><td class="p-1">?</td><td class="p-1 text-slate-700">$6$</td><td class="p-1">?</td></tr>
+                            <tr class="bg-amber-50 font-bold text-slate-400"><td class="p-1 border-r border-amber-200 text-amber-900">欄小計</td><td class="p-1">?</td><td class="p-1">?</td><td class="p-1 bg-amber-200 text-amber-950 font-black">$30$</td></tr>
                         </table>
                     </div>
                 </div>
@@ -381,17 +381,17 @@
                         <span class="step-badge">2</span>
                         <p class="text-xs text-slate-700 leading-relaxed font-medium">
                             <b>步驟 2：計算女學生總數與搭公車人數</b><br>
-                            全班 30 人扣除男生 16 人 ➔ 女生總數 $= 30 - 16 = \mathbf{14}$ 人。<br>
-                            女生總數 14 人扣除騎腳踏車 6 人 ➔ 女生搭公車有 $14 - 6 = \mathbf{8}$ 人。
+                            全班 $30$ 人扣除男生 $16$ 人 ➔ 女生總數 $= 30 - 16 = \mathbf{14}$ 人。<br>
+                            女生總數 $14$ 人扣除騎腳踏車 $6$ 人 ➔ 女生搭公車有 $14 - 6 = \mathbf{8}$ 人。
                         </p>
                     </div>
                     <!-- Step 2 列聯表 -->
                     <div class="overflow-x-auto bg-white p-2.5 rounded-lg border">
                         <table class="w-full text-center text-xs border-collapse">
                             <tr class="bg-indigo-100 text-indigo-900 border-b"><th class="p-1 border-r">性別 \ 上學方式</th><th class="p-1">搭公車</th><th class="p-1">騎腳踏車</th><th class="p-1 bg-indigo-200 font-bold">列小計</th></tr>
-                            <tr class="border-b"><td class="p-1 font-bold bg-slate-50 border-r">男生</td><td class="p-1">10</td><td class="p-1">6</td><td class="p-1 font-bold">16</td></tr>
-                            <tr class="border-b"><td class="p-1 font-bold bg-slate-50 border-r">女生</td><td class="p-1 font-black text-red-600 bg-amber-100">8 (新填)</td><td class="p-1">6</td><td class="p-1 font-black text-red-600 bg-amber-100">14 (新填)</td></tr>
-                            <tr class="bg-amber-50 font-bold text-slate-400"><td class="p-1 border-r border-amber-200 text-amber-900">欄小計</td><td class="p-1">?</td><td class="p-1">?</td><td class="p-1 bg-amber-200 text-amber-950 font-black">30</td></tr>
+                            <tr class="border-b"><td class="p-1 font-bold bg-slate-50 border-r">男生</td><td class="p-1">$10$</td><td class="p-1">$6$</td><td class="p-1 font-bold">$16$</td></tr>
+                            <tr class="border-b"><td class="p-1 font-bold bg-slate-50 border-r">女生</td><td class="p-1 font-black text-red-600 bg-amber-100">$8$ (新填)</td><td class="p-1">$6$</td><td class="p-1 font-black text-red-600 bg-amber-100">$14$ (新填)</td></tr>
+                            <tr class="bg-amber-50 font-bold text-slate-400"><td class="p-1 border-r border-amber-200 text-amber-900">欄小計</td><td class="p-1">?</td><td class="p-1">?</td><td class="p-1 bg-amber-200 text-amber-950 font-black">$30$</td></tr>
                         </table>
                     </div>
                 </div>
@@ -402,16 +402,16 @@
                         <span class="step-badge">3</span>
                         <p class="text-xs text-slate-700 leading-relaxed font-medium">
                             <b>步驟 3：欄小計求出搭公車全班總人數</b><br>
-                            男生搭公車 10 人 $+$ 女生搭公車 8 人 ➔ 搭公車共有 $10 + 8 = \mathbf{18}$ 人！（全班騎腳踏車共 $6 + 6 = \mathbf{12}$ 人，雙向總計 $18 + 12 = 30$ 人驗算成功！）
+                            男生搭公車 $10$ 人 $+$ 女生搭公車 $8$ 人 ➔ 搭公車共有 $10 + 8 = \mathbf{18}$ 人！（全班騎腳踏車共 $6 + 6 = \mathbf{12}$ 人，雙向總計 $18 + 12 = 30$ 人驗算成功！）
                         </p>
                     </div>
                     <!-- Step 3 列聯表 -->
                     <div class="overflow-x-auto bg-white p-2.5 rounded-lg border">
                         <table class="w-full text-center text-xs border-collapse">
                             <tr class="bg-indigo-100 text-indigo-900 border-b"><th class="p-1 border-r">性別 \ 上學方式</th><th class="p-1">搭公車</th><th class="p-1">騎腳踏車</th><th class="p-1 bg-indigo-200 font-bold">列小計</th></tr>
-                            <tr class="border-b"><td class="p-1 font-bold bg-slate-50 border-r">男生</td><td class="p-1">10</td><td class="p-1">6</td><td class="p-1 font-bold">16</td></tr>
-                            <tr class="border-b"><td class="p-1 font-bold bg-slate-50 border-r">女生</td><td class="p-1">8</td><td class="p-1">6</td><td class="p-1 font-bold">14</td></tr>
-                            <tr class="bg-amber-100 font-bold text-amber-950"><td class="p-1 border-r border-amber-200">欄小計</td><td class="p-1 font-black text-red-600 bg-amber-200 text-sm">18 (解答)</td><td class="p-1">12</td><td class="p-1 bg-amber-300 text-amber-950 font-black text-sm">30 (總計)</td></tr>
+                            <tr class="border-b"><td class="p-1 font-bold bg-slate-50 border-r">男生</td><td class="p-1">$10$</td><td class="p-1">$6$</td><td class="p-1 font-bold">$16$</td></tr>
+                            <tr class="border-b"><td class="p-1 font-bold bg-slate-50 border-r">女生</td><td class="p-1">$8$</td><td class="p-1">$6$</td><td class="p-1 font-bold">$14$</td></tr>
+                            <tr class="bg-amber-100 font-bold text-amber-950"><td class="p-1 border-r border-amber-200">欄小計</td><td class="p-1 font-black text-red-600 bg-amber-200 text-sm">$18$ (解答)</td><td class="p-1">$12$</td><td class="p-1 bg-amber-300 text-amber-950 font-black text-sm">$30$ (總計)</td></tr>
                         </table>
                     </div>
                 </div>
@@ -451,7 +451,7 @@
                 </div>
 
                 <div id="sq2" class="hidden">
-                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">2️⃣ 賓果！那如果小華想呈現「各項支出佔總花費的百分比」，該選哪一種圖？</p>
+                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">2️⃣ 賓果！那如果小華想呈現「各項支出占總花費的百分比」，該選哪一種圖？</p>
                     <div class="grid grid-cols-2 gap-3">
                         <button onclick="answerStep(2, false)" class="p-3 bg-white border border-indigo-300 rounded-xl hover:bg-indigo-100 font-bold text-slate-700 transition-all flex flex-col items-center gap-2">
                             <span class="text-sm">直方圖</span>
@@ -484,7 +484,7 @@
             </h2>
             
             <div class="p-4 bg-blue-50 rounded-lg mb-4 text-xs leading-relaxed text-blue-900 font-bold">
-                題目情境：調查 50 位同學記帳習慣。已知男生 25 人中有 15 人有記帳；女生有 18 人有記帳。請計算「全班沒有記帳」的總人數。
+                題目情境：調查 $50$ 位同學記帳習慣。已知男生 $25$ 人中有 $15$ 人有記帳；女生有 $18$ 人有記帳。請計算「全班沒有記帳」的總人數。
             </div>
 
             <!-- 題目專屬對照列聯表 -->
@@ -502,21 +502,21 @@
                     <tbody class="text-slate-700">
                         <tr class="border-b">
                             <td class="p-1.5 font-bold bg-slate-50 border-r">男生</td>
-                            <td class="p-1.5">15</td>
+                            <td class="p-1.5">$15$</td>
                             <td class="p-1.5 font-bold text-red-600 bg-yellow-50">? (步驟1)</td>
-                            <td class="p-1.5 font-bold">25</td>
+                            <td class="p-1.5 font-bold">$25$</td>
                         </tr>
                         <tr class="border-b">
                             <td class="p-1.5 font-bold bg-slate-50 border-r">女生</td>
-                            <td class="p-1.5">18</td>
+                            <td class="p-1.5">$18$</td>
                             <td class="p-1.5 font-bold text-red-600 bg-yellow-50">? (步驟2)</td>
-                            <td class="p-1.5 font-bold text-slate-500">? (25人)</td>
+                            <td class="p-1.5 font-bold">$25$</td>
                         </tr>
                         <tr class="bg-amber-50 font-bold">
                             <td class="p-1.5 border-r border-amber-200">欄小計</td>
-                            <td class="p-1.5">33</td>
+                            <td class="p-1.5">$33$</td>
                             <td class="p-1.5 text-red-600 bg-amber-200 font-black text-sm">? (步驟3：求解標的)</td>
-                            <td class="p-1.5 bg-amber-300 text-amber-950 font-black">50 (全班)</td>
+                            <td class="p-1.5 bg-amber-300 text-amber-950 font-black">$50$ (全班)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -525,22 +525,22 @@
             <div class="space-y-6">
                 <!-- Step 1 -->
                 <div id="p1-s1">
-                    <p class="text-slate-800 mb-2 font-medium text-xs">步驟 1️⃣：男生 25 人中有 15 人記帳，男生「沒有記帳」的有幾人？</p>
+                    <p class="text-slate-800 mb-2 font-medium text-xs">步驟 1️⃣：男生 $25$ 人中有 $15$ 人記帳，男生「沒有記帳」的有幾人？</p>
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="checkP1(1, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">10 人</button>
-                        <button onclick="checkP1(1, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">15 人</button>
-                        <button onclick="checkP1(1, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">40 人</button>
+                        <button onclick="checkP1(1, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$10$ 人</button>
+                        <button onclick="checkP1(1, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$15$ 人</button>
+                        <button onclick="checkP1(1, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$40$ 人</button>
                     </div>
                     <div id="p1-f1" class="text-sm mt-2 hidden font-bold"></div>
                 </div>
 
                 <!-- Step 2 -->
                 <div id="p1-s2" class="hidden opacity-0 transition-all duration-500">
-                    <p class="text-slate-800 mb-2 font-medium text-xs border-t pt-4">步驟 2️⃣：女生共 $50 - 25 = 25$ 人，其中 18 人有記帳，女生「沒有記帳」的有幾人？</p>
+                    <p class="text-slate-800 mb-2 font-medium text-xs border-t pt-4">步驟 2️⃣：女生共 $50 - 25 = 25$ 人，其中 $18$ 人有記帳，女生「沒有記帳」的有幾人？</p>
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="checkP1(2, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">7 人</button>
-                        <button onclick="checkP1(2, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">18 人</button>
-                        <button onclick="checkP1(2, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">25 人</button>
+                        <button onclick="checkP1(2, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">$7$ 人</button>
+                        <button onclick="checkP1(2, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">$18$ 人</button>
+                        <button onclick="checkP1(2, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">$25$ 人</button>
                     </div>
                     <div id="p1-f2" class="text-sm mt-2 hidden font-bold"></div>
                 </div>
@@ -549,9 +549,9 @@
                 <div id="p1-s3" class="hidden opacity-0 transition-all duration-500">
                     <p class="text-slate-800 mb-2 font-medium text-xs border-t pt-4">步驟 3️⃣：請計算「全班沒有記帳」的總人數（欄小計），共有幾人？</p>
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="checkP1(3, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">10 人</button>
-                        <button onclick="checkP1(3, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">17 人</button>
-                        <button onclick="checkP1(3, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 transition-all font-bold">25 人</button>
+                        <button onclick="checkP1(3, false, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">$10$ 人</button>
+                        <button onclick="checkP1(3, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all font-bold">$17$ 人</button>
+                        <button onclick="checkP1(3, false, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">$25$ 人</button>
                     </div>
                     <div id="p1-f3" class="text-sm mt-2 hidden font-bold"></div>
                 </div>
@@ -560,7 +560,7 @@
                 <div id="p1-result" class="hidden opacity-0 transition-all duration-500">
                     <div class="bg-green-50 p-6 border border-green-200 rounded-lg shadow-inner">
                         <p class="text-green-800 font-bold flex items-center mb-2 text-lg">
-                            <i data-lucide="party-popper" class="mr-2 w-6 h-6"></i> 完全正確！全班沒有記帳的共有 17 人！
+                            <i data-lucide="party-popper" class="mr-2 w-6 h-6"></i> 完全正確！全班沒有記帳的共有 $17$ 人！
                         </p>
                     </div>
                 </div>
@@ -609,7 +609,7 @@
                 <!-- Challenge 1 -->
                 <div class="challenge-card">
                     <h3 class="font-bold text-slate-700 mb-2 text-sm">1. 記帳比例與圓心角計算（填空題）</h3>
-                    <p class="text-sm text-slate-600 mb-4">小明本月伙食費佔總支出的 $40\%$，若要將此數據繪製成圓形圖，伙食費對應的圓心角應該是多少度？</p>
+                    <p class="text-sm text-slate-600 mb-4">小明本月伙食費占總支出的 $40\%$，若要將此數據繪製成圓形圖，伙食費對應的圓心角應該是多少度？</p>
                     <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
                         <div class="relative flex-1">
                             <input type="number" id="chal1-input" placeholder="請輸入計算出的度數..." class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-bold text-slate-800">
@@ -670,8 +670,8 @@
                 <p class="text-sm leading-relaxed opacity-90">
                     <b>生活處處皆圖表：</b><br>
                     1. <b>運動手錶與健康 App：</b> 透過折線圖呈現一週每日步數與心率變化，追蹤身體狀態！<br>
-                    2. <b>氣象預報圖表：</b> 結合柱狀圖與溫度折線圖，一目了然氣溫變化與降雨機率！<br>
-                    3. <b>手機螢幕與電池分析：</b> 透過圓形圖檢視各 App（社群、影音、遊戲）佔用的電量比例！
+                    2. <b>氣象預報圖表：</b> 結合降雨機率長條圖與溫度折線圖，一目了然氣溫變化與降雨機率！<br>
+                    3. <b>手機螢幕與電池分析：</b> 透過圓形圖檢視各 App（社群、影音、遊戲）占用的電量比例！
                 </p>
             </div>
         </footer>
@@ -684,6 +684,32 @@
 
     <!-- 12. JavaScript 邏輯 -->
     <script>
+        const katexConfig = {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+        };
+
+        function renderMath(el) {
+            if (el && typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(el, katexConfig);
+            }
+        }
+
+        // 寫入含數學式的內容並排版
+        function setMath(id, html) {
+            const el = document.getElementById(id);
+            el.innerHTML = html;
+            renderMath(el);
+        }
+
+        // 把某區塊裡的按鈕全部鎖住（答對後使用，避免回頭按錯誤選項蓋掉回饋）
+        function lockButtons(containerId) {
+            document.querySelectorAll('#' + containerId + ' button').forEach(b => { b.disabled = true; });
+        }
+
         // 通用 KaTeX 渲染函式，確保動態寫入的數學式完全呈現
         function updateFeedbackAndRender(elementId, htmlContent, className) {
             const el = document.getElementById(elementId);
@@ -715,6 +741,13 @@
             }
             updateVoteLab();
             updateBookkeepingLab();
+
+            // 挑戰填空題：在輸入框按 Enter 也能驗證
+            [['chal1-input', checkChal1Fill], ['chal2-input', checkChal2Fill]].forEach(([id, fn]) => {
+                document.getElementById(id).addEventListener('keydown', e => {
+                    if (e.key === 'Enter' && !e.isComposing) fn();
+                });
+            });
         };
 
         // 🧮 實驗室 1：投票與二維列聯表邏輯
@@ -724,10 +757,10 @@
             const fHua = parseInt(document.getElementById('sim-f-hua').value);
             const fMing = parseInt(document.getElementById('sim-f-ming').value);
 
-            document.getElementById('vote-m-hua-val').innerText = `${mHua} 票`;
-            document.getElementById('vote-m-ming-val').innerText = `${mMing} 票`;
-            document.getElementById('vote-f-hua-val').innerText = `${fHua} 票`;
-            document.getElementById('vote-f-ming-val').innerText = `${fMing} 票`;
+            setMath('vote-m-hua-val', `$${mHua}$ 票`);
+            setMath('vote-m-ming-val', `$${mMing}$ 票`);
+            setMath('vote-f-hua-val', `$${fHua}$ 票`);
+            setMath('vote-f-ming-val', `$${fMing}$ 票`);
 
             // 計算小計與總計
             const mSub = mHua + mMing;
@@ -736,27 +769,17 @@
             const mingSub = mMing + fMing;
             const grandTotal = mSub + fSub;
 
-            document.getElementById('tbl-m-hua').innerText = mHua;
-            document.getElementById('tbl-m-ming').innerText = mMing;
-            document.getElementById('tbl-m-sub').innerText = mSub;
+            [['tbl-m-hua', mHua], ['tbl-m-ming', mMing], ['tbl-m-sub', mSub],
+             ['tbl-f-hua', fHua], ['tbl-f-ming', fMing], ['tbl-f-sub', fSub],
+             ['tbl-hua-sub', huaSub], ['tbl-ming-sub', mingSub], ['tbl-grand-total', grandTotal]]
+                .forEach(([id, v]) => setMath(id, `$${v}$`));
 
-            document.getElementById('tbl-f-hua').innerText = fHua;
-            document.getElementById('tbl-f-ming').innerText = fMing;
-            document.getElementById('tbl-f-sub').innerText = fSub;
-
-            document.getElementById('tbl-hua-sub').innerText = huaSub;
-            document.getElementById('tbl-ming-sub').innerText = mingSub;
-            document.getElementById('tbl-grand-total').innerText = grandTotal;
-
-            // 長條圖動態高度
-            const maxVal = Math.max(1, huaSub, mingSub);
-            const huaH = Math.min(70, Math.max(4, (huaSub / maxVal) * 70));
-            const mingH = Math.min(70, Math.max(4, (mingSub / maxVal) * 70));
-
-            document.getElementById('bar-hua-num').innerText = `${huaSub}票`;
-            document.getElementById('bar-ming-num').innerText = `${mingSub}票`;
-            document.getElementById('bar-hua-height').style.height = `${huaH}px`;
-            document.getElementById('bar-ming-height').style.height = `${mingH}px`;
+            // 長條圖：固定比例尺（最多 40 票 = 70px），票數變多長條才會跟著變高，0 票就沒有長條
+            const MAX_VOTES = 40, MAX_H = 70;
+            document.getElementById('bar-hua-height').style.height = `${huaSub / MAX_VOTES * MAX_H}px`;
+            document.getElementById('bar-ming-height').style.height = `${mingSub / MAX_VOTES * MAX_H}px`;
+            setMath('bar-hua-num', `$${huaSub}$ 票`);
+            setMath('bar-ming-num', `$${mingSub}$ 票`);
 
             const winnerTag = document.getElementById('vote-winner-tag');
             if (huaSub > mingSub) {
@@ -770,18 +793,19 @@
                 winnerTag.className = "text-slate-300 font-bold";
             }
 
-            // 更新動態計算指引卡
+            // 更新動態計算指引卡（兩個列小計＋兩個欄小計都列出來）
             const guideHtml = `
                 <p class="font-bold text-indigo-950 flex items-center mb-1 text-xs">
-                    <i data-lucide="calculator" class="w-4 h-4 mr-1 text-indigo-600"></i> 💡 列聯表動態算式解密：
+                    💡 列聯表動態算式解密：
                 </p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <p>• <b>男生列小計：</b> $${mHua} + ${mMing} = \\mathbf{${mSub}}$ 票</p>
                     <p>• <b>女生列小計：</b> $${fHua} + ${fMing} = \\mathbf{${fSub}}$ 票</p>
                     <p>• <b>小華欄小計：</b> $${mHua} + ${fHua} = \\mathbf{${huaSub}}$ 票</p>
+                    <p>• <b>小明欄小計：</b> $${mMing} + ${fMing} = \\mathbf{${mingSub}}$ 票</p>
                 </div>
                 <p class="mt-1 pt-1 border-t border-indigo-200 text-indigo-900 font-bold">
-                    • <b>總計雙向驗證：</b> 列小計加總 ($${mSub} + ${fSub} = \\mathbf{${grandTotal}}$) $\\equiv$ 欄小計加總 ($${huaSub} + ${mingSub} = \\mathbf{${grandTotal}}$)！
+                    • <b>總計雙向驗證：</b> 列小計加總 $${mSub} + ${fSub} = \\mathbf{${grandTotal}}$，欄小計加總 $${huaSub} + ${mingSub} = \\mathbf{${grandTotal}}$，兩者相等！
                 </p>
             `;
             updateFeedbackAndRender('contingency-calc-guide', guideHtml, "p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-xs space-y-1.5 text-indigo-950 font-medium shadow-sm");
@@ -797,79 +821,60 @@
 
         // 🧮 實驗室 2：記帳與圓形圖邏輯 (預設值剛好 1000元 / 100%)
         function updateBookkeepingLab() {
-            const food = parseInt(document.getElementById('sim-bk-food').value);
-            const book = parseInt(document.getElementById('sim-bk-book').value);
-            const fun = parseInt(document.getElementById('sim-bk-fun').value);
-            const bus = parseInt(document.getElementById('sim-bk-bus').value);
+            const items = [
+                { key: 'food', color: '#3b82f6' },
+                { key: 'book', color: '#10b981' },
+                { key: 'fun',  color: '#a855f7' },
+                { key: 'bus',  color: '#f59e0b' }
+            ];
+            items.forEach(it => { it.val = parseInt(document.getElementById(`sim-bk-${it.key}`).value); });
+            const total = items.reduce((sum, it) => sum + it.val, 0);
+            setMath('bk-total-sum', `$${total}$ 元`);
 
-            document.getElementById('bk-food-val').innerText = food;
-            document.getElementById('bk-book-val').innerText = book;
-            document.getElementById('bk-fun-val').innerText = fun;
-            document.getElementById('bk-bus-val').innerText = bus;
-
-            const total = food + book + fun + bus;
-            document.getElementById('bk-total-sum').innerText = `${total} 元`;
-
-            // 計算百分比
-            const foodPct = Math.round((food / total) * 1000) / 10;
-            const bookPct = Math.round((book / total) * 1000) / 10;
-            const funPct = Math.round((fun / total) * 1000) / 10;
-            const busPct = Math.round((bus / total) * 1000) / 10;
-
-            document.getElementById('bk-food-pct').innerText = `${foodPct}%`;
-            document.getElementById('bk-book-pct').innerText = `${bookPct}%`;
-            document.getElementById('bk-fun-pct').innerText = `${funPct}%`;
-            document.getElementById('bk-bus-pct').innerText = `${busPct}%`;
-
-            const sumPct = Math.round((foodPct + bookPct + funPct + busPct) * 10) / 10;
+            items.forEach(it => {
+                it.exact = it.val / total * 100;              // 精確百分率：用來畫扇形，扇形才會剛好拼滿一圈
+                it.pct = Math.round(it.exact * 10) / 10;      // 四捨五入到小數第一位：用來顯示
+                setMath(`bk-${it.key}-val`, `$${it.val}$`);
+                setMath(`bk-${it.key}-pct`, `$${it.pct.toFixed(1)}\\%$`);
+            });
+            const sumPct = Math.round(items.reduce((sum, it) => sum + it.pct, 0) * 10) / 10;
 
             // 繪製 SVG 圓形圖
-            const svg = document.getElementById('pie-chart-svg');
-            const slices = [
-                { name: '伙食', val: food, pct: foodPct, color: '#3b82f6' },
-                { name: '書籍', val: book, pct: bookPct, color: '#10b981' },
-                { name: '娛樂', val: fun, pct: funPct, color: '#a855f7' },
-                { name: '交通', val: bus, pct: busPct, color: '#f59e0b' }
-            ];
-
-            let cumulativePct = 0;
+            const pt = (r, deg) => [50 + r * Math.cos(Math.PI * deg / 180), 50 + r * Math.sin(Math.PI * deg / 180)];
+            let cumulative = 0;
             let pathHtml = '';
             let textHtml = '';
+            items.forEach(it => {
+                const startAngle = cumulative / 100 * 360 - 90;
+                cumulative += it.exact;
+                const endAngle = cumulative / 100 * 360 - 90;
+                const midAngle = (startAngle + endAngle) / 2;
+                const [x1, y1] = pt(40, startAngle);
+                const [x2, y2] = pt(40, endAngle);
+                const largeArc = it.exact > 50 ? 1 : 0;
+                pathHtml += `<path d="M 50 50 L ${x1} ${y1} A 40 40 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${it.color}" opacity="0.9" stroke="#ffffff" stroke-width="0.4" />`;
 
-            slices.forEach(s => {
-                if (s.pct > 0) {
-                    const startAngle = (cumulativePct / 100) * 360 - 90;
-                    cumulativePct += s.pct;
-                    const endAngle = (cumulativePct / 100) * 360 - 90;
-                    const midAngle = (startAngle + endAngle) / 2;
-
-                    const x1 = 50 + 40 * Math.cos((Math.PI * startAngle) / 180);
-                    const y1 = 50 + 40 * Math.sin((Math.PI * startAngle) / 180);
-                    const x2 = 50 + 40 * Math.cos((Math.PI * endAngle) / 180);
-                    const y2 = 50 + 40 * Math.sin((Math.PI * endAngle) / 180);
-
-                    const largeArc = s.pct > 50 ? 1 : 0;
-                    pathHtml += `<path d="M 50 50 L ${x1} ${y1} A 40 40 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${s.color}" opacity="0.9" />`;
-
-                    if (s.pct >= 5) {
-                        const tx = 50 + 32 * Math.cos((Math.PI * midAngle) / 180);
-                        const ty = 50 + 32 * Math.sin((Math.PI * midAngle) / 180);
-                        textHtml += `<text x="${tx}" y="${ty}" font-size="3.8" font-weight="bold" fill="#ffffff" text-anchor="middle" dominant-baseline="central">${s.val}元 (${s.pct}%)</text>`;
-                    }
+                // 標籤分兩行（金額／百分率），扇形太小時不放，避免擠出扇形外
+                if (it.exact >= 7) {
+                    const [tx, ty] = pt(31, midAngle);
+                    textHtml += `<text font-size="3.6" font-weight="bold" fill="#ffffff" text-anchor="middle">`
+                        + `<tspan x="${tx}" y="${ty - 0.8}">${it.val}元</tspan>`
+                        + `<tspan x="${tx}" y="${ty + 3.4}">${it.pct.toFixed(1)}%</tspan></text>`;
                 }
             });
 
             pathHtml += `<circle cx="50" cy="50" r="22" fill="#f8fafc" />`;
-            svg.innerHTML = pathHtml + textHtml;
+            document.getElementById('pie-chart-svg').innerHTML = pathHtml + textHtml;
 
             // 提示總和檢查
-            const warnBox = document.getElementById('rounding-warning-box');
             if (sumPct === 100) {
-                warnBox.className = "text-xs p-2.5 rounded-lg font-bold w-full text-center bg-green-100 text-green-800 border border-green-300";
-                warnBox.innerHTML = `✅ 百分率總和加總為 <b>${sumPct}%</b>！完美剛好！`;
+                updateFeedbackAndRender('rounding-warning-box',
+                    `✅ 百分率加總為 <b>$${sumPct.toFixed(1)}\\%$</b>！剛好是 $100\\%$！`,
+                    "text-xs p-2.5 rounded-lg font-bold w-full text-center bg-green-100 text-green-800 border border-green-300");
             } else {
-                warnBox.className = "text-xs p-2.5 rounded-lg font-bold w-full text-center bg-amber-100 text-amber-800 border border-amber-300";
-                warnBox.innerHTML = `💡 四捨五入後加總為 <b>${sumPct}%</b>（非剛好 100%），這是求近似值常見的微小誤差現象哦！`;
+                updateFeedbackAndRender('rounding-warning-box',
+                    `💡 四捨五入後加總為 <b>$${sumPct.toFixed(1)}\\%$</b>（不是剛好 $100\\%$），這是取近似值常見的微小誤差現象哦！`,
+                    "text-xs p-2.5 rounded-lg font-bold w-full text-center bg-amber-100 text-amber-800 border border-amber-300");
             }
         }
 
@@ -888,6 +893,7 @@
                     const html = "✅ 完全正確！折線圖專門用來呈現數據隨著時間演變的高低起伏趨勢！解鎖下一步！";
                     updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm");
                     document.getElementById('sq1').classList.add('opacity-50');
+                    lockButtons('sq1');
                     document.getElementById('sq2').classList.remove('hidden');
                 } else {
                     const html = "❌ 答錯囉！圓形圖主要用來呈現『比例與百分比』，若要看『隨時間起伏的趨勢』，選擇折線圖最合適哦！";
@@ -895,11 +901,12 @@
                 }
             } else if (step === 2) {
                 if (isCorrect) {
-                    const html = "🎉 太棒了！圓形圖最適合用來呈現整體中各個部分所佔的百分率！觀念非常清晰！";
+                    const html = "🎉 太棒了！圓形圖最適合用來呈現整體中各個部分所占的百分率！觀念非常清晰！";
                     updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm");
                     document.getElementById('sq2').classList.add('opacity-50');
+                    lockButtons('sq2');
                 } else {
-                    const html = "❌ 答錯囉！直方圖是用來呈現『連續資料的次數分配』，看『佔總花費的百分比』選擇圓形圖最好哦！";
+                    const html = "❌ 答錯囉！直方圖是用來呈現『連續資料的次數分配』，看『占總花費的百分比』選擇圓形圖最好哦！";
                     updateFeedbackAndRender('step-feedback', html, "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm");
                 }
             }
@@ -909,13 +916,14 @@
         function checkP1(step, isCorrect, wrongType) {
             if (step === 1) {
                 if (isCorrect) {
-                    const html = "✅ 正確！男生 25 人扣除有記帳 15 人，沒有記帳的有 $25 - 15 = 10$ 人！解鎖步驟二！";
+                    const html = "✅ 正確！男生 $25$ 人扣除有記帳 $15$ 人，沒有記帳的有 $25 - 15 = 10$ 人！解鎖步驟二！";
                     updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded");
+                    lockButtons('p1-s1');
                     const s2 = document.getElementById('p1-s2');
                     s2.classList.remove('hidden');
                     setTimeout(() => s2.classList.add('opacity-100'), 10);
                 } else if (wrongType === 'A') {
-                    const html = "❌ 15 人是有記帳的人數，題目要算的是男生『沒有記帳』的人數喔！";
+                    const html = "❌ $15$ 人是有記帳的人數，題目要算的是男生『沒有記帳』的人數喔！";
                     updateFeedbackAndRender('p1-f1', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
                 } else {
                     const html = "❌ 算錯囉！沒有記帳應該是用『扣除』，不是相加喔！";
@@ -923,30 +931,32 @@
                 }
             } else if (step === 2) {
                 if (isCorrect) {
-                    const html = "✅ 正確！女生 25 人扣除有記帳 18 人，沒有記帳的有 $25 - 18 = 7$ 人！解鎖最後步驟！";
+                    const html = "✅ 正確！女生 $25$ 人扣除有記帳 $18$ 人，沒有記帳的有 $25 - 18 = 7$ 人！解鎖最後步驟！";
                     updateFeedbackAndRender('p1-f2', html, "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded");
+                    lockButtons('p1-s2');
                     const s3 = document.getElementById('p1-s3');
                     s3.classList.remove('hidden');
                     setTimeout(() => s3.classList.add('opacity-100'), 10);
                 } else if (wrongType === 'A') {
-                    const html = "❌ 18 人是有記帳的人數，題目要算的是女生『沒有記帳』的人數喔！";
+                    const html = "❌ $18$ 人是有記帳的人數，題目要算的是女生『沒有記帳』的人數喔！";
                     updateFeedbackAndRender('p1-f2', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
                 } else {
-                    const html = "❌ 25 人是女生的總人數喔！要扣除有記帳的 18 人！";
+                    const html = "❌ $25$ 人是女生的總人數喔！要扣除有記帳的 $18$ 人！";
                     updateFeedbackAndRender('p1-f2', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
                 }
             } else if (step === 3) {
                 if (isCorrect) {
-                    const html = "✅ 太強了！男生沒有記帳 10 人 $+$ 女生沒有記帳 7 人 ➔ 全班沒有記帳共有 $10 + 7 = 17$ 人（欄小計）！";
+                    const html = "✅ 太強了！男生沒有記帳 $10$ 人 $+$ 女生沒有記帳 $7$ 人 ➔ 全班沒有記帳共有 $10 + 7 = 17$ 人（欄小計）！";
                     updateFeedbackAndRender('p1-f3', html, "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded");
+                    lockButtons('p1-s3');
                     const res = document.getElementById('p1-result');
                     res.classList.remove('hidden');
                     setTimeout(() => res.classList.add('opacity-100'), 10);
                 } else if (wrongType === 'A') {
-                    const html = "❌ 10 人只有包含男生的部分，別忘了還要加上女生的 7 人喔！";
+                    const html = "❌ $10$ 人只有包含男生的部分，別忘了還要加上女生的 $7$ 人喔！";
                     updateFeedbackAndRender('p1-f3', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
                 } else {
-                    const html = "❌ 答錯囉！欄小計要把男生沒有記帳（10人）與女生沒有記帳（7人）相加喔！";
+                    const html = "❌ 答錯囉！欄小計要把男生沒有記帳（$10$ 人）與女生沒有記帳（$7$ 人）相加喔！";
                     updateFeedbackAndRender('p1-f3', html, "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded");
                 }
             }
@@ -967,7 +977,7 @@
                 }
             } else if (qNum === 2) {
                 if (choice === 'right') {
-                    const html = "✅ 答對了！候選人得票為離散類別，柱狀圖之間有間隔的『長條圖』最適合作數量高低比較！";
+                    const html = "✅ 答對了！候選人得票為離散類別，長條之間有間隔的『長條圖』最適合作數量高低比較！";
                     updateFeedbackAndRender('p2-f2', html, "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200");
                 } else if (choice === 'wrongA') {
                     const html = "❌ 答錯囉！折線圖是用來看『隨時間演變的趨勢』，不適合看不同候選人的得票比較喔！";
@@ -979,28 +989,30 @@
             }
         }
 
-        // 🚀 實戰挑戰 1 填空題檢查邏輯
-        function checkChal1Fill() {
-            const inputVal = document.getElementById('chal1-input').value.trim();
-            if (inputVal === '144') {
-                const html = "🎉 完全正確！圓心角計算公式：$360^\\circ \\times 40\\% = 360^\\circ \\times 0.4 = 144^\\circ$！";
-                updateFeedbackAndRender('chal1-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800 flex items-center");
+        // 🚀 實戰挑戰填空題：數值比對（144、144.0 都算對），空白先提醒
+        function checkFill(inputId, feedbackId, answer, rightHtml, wrongHtml) {
+            const raw = document.getElementById(inputId).value.trim();
+            if (raw === '') {
+                updateFeedbackAndRender(feedbackId, "✏️ 請先填入答案，再按驗證哦！", "mt-3 text-sm p-3 rounded-lg font-bold bg-amber-100 text-amber-800");
+                return;
+            }
+            if (Math.abs(Number(raw) - answer) < 1e-9) {
+                updateFeedbackAndRender(feedbackId, rightHtml, "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800");
             } else {
-                const html = "❌ 算算看！一整圈圓心角為 $360^\\circ$，伙食費佔 $40\\%$，對應角度 $= 360^\\circ \\times 40\\% = 144^\\circ$ 哦！";
-                updateFeedbackAndRender('chal1-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800 flex items-center");
+                updateFeedbackAndRender(feedbackId, wrongHtml, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800");
             }
         }
 
-        // 🚀 實戰挑戰 2 填空題檢查邏輯 (修復詳解 KaTeX 轉義)
+        function checkChal1Fill() {
+            checkFill('chal1-input', 'chal1-feedback', 144,
+                "🎉 完全正確！圓心角計算公式：$360^\\circ \\times 40\\% = 360^\\circ \\times 0.4 = 144^\\circ$！",
+                "❌ 再算算看！一整圈的圓心角是 $360^\\circ$，伙食費占 $40\\%$，對應的圓心角就是 $360^\\circ \\times 40\\%$，把 $40\\%$ 換成 $0.4$ 再乘乘看！");
+        }
+
         function checkChal2Fill() {
-            const inputVal = document.getElementById('chal2-input').value.trim();
-            if (inputVal === '26') {
-                const html = "🎉 完全正確！女生參加社團人數 $= 20 \\times 60\\% = 12$ 人；全班參加社團總人數（欄小計）$= 14 + 12 = 26$ 人！";
-                updateFeedbackAndRender('chal2-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800 flex items-center");
-            } else {
-                const html = "❌ 算算看！女生參加人數 $= 20 \\times 60\\% = 12$ 人；男學生參加 $14$ 人，再算算看總共參加社團的人數！";
-                updateFeedbackAndRender('chal2-feedback', html, "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800 flex items-center");
-            }
+            checkFill('chal2-input', 'chal2-feedback', 26,
+                "🎉 完全正確！女生參加社團人數 $= 20 \\times 60\\% = 12$ 人；全班參加社團總人數（欄小計）$= 14 + 12 = 26$ 人！",
+                "❌ 算算看！女生參加人數 $= 20 \\times 60\\% = 12$ 人；男學生參加 $14$ 人，再算算看總共參加社團的人數！");
         }
     </script>
 </body>
