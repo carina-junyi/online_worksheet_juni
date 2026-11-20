@@ -5,15 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>100 以內的質數互動講義</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 KaTeX 進行數字與數學式渲染 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
         body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
-        .number-cell { transition: all 0.3s ease; cursor: pointer; }
+        .number-cell { transition: all 0.3s ease; cursor: pointer; position: relative; }
         .is-prime { background-color: #22c55e !important; color: white; transform: scale(1.1); z-index: 10; font-weight: bold; border-radius: 50%; }
         .is-composite { background-color: #cbd5e1 !important; color: #94a3b8; text-decoration: line-through; }
+        /* KaTeX 數字不會繼承刪除線，改用一條橫線畫出「劃掉」的效果 */
+        .is-composite::after { content: ''; position: absolute; left: 18%; right: 18%; top: 50%; border-top: 2px solid #64748b; }
         .is-special { background-color: #ef4444 !important; color: white; opacity: 0.6; }
         .math-fact { background-color: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-family: sans-serif; }
-        
+
         /* Input state styles */
         .code-input:disabled { background-color: #f1f5f9; cursor: not-allowed; border-color: #e2e8f0; color: #94a3b8; }
         .code-input.solved { background-color: #f0fdf4; border-color: #22c55e; color: #166534; font-weight: bold; }
@@ -23,7 +29,7 @@
     <div class="max-w-4xl mx-auto">
         <!-- Header -->
         <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 100 以內的質數</h1>
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 $100$ 以內的質數</h1>
             <p class="text-slate-600">N-7-1 互動式學習講義</p>
         </header>
 
@@ -32,9 +38,9 @@
             <h2 class="text-xl font-bold text-blue-700 mb-3">🎯 學習目標</h2>
             <ul class="list-disc list-inside text-slate-700 space-y-1">
                 <li>說出「質數」與「合數」的定義。</li>
-                <li>知道 1 既不是質數，也不是合數。</li>
-                <li>使用「質數篩法」找出 100 以內的所有質數。</li>
-                <li>破解 <span class="font-bold underline text-slate-800">91</span> 等數字的「質數迷思」。</li>
+                <li>知道 $1$ 既不是質數，也不是合數。</li>
+                <li>使用「質數篩法」找出 $100$ 以內的所有質數。</li>
+                <li>破解 <span class="font-bold underline text-slate-800">$91$</span> 等數字的「質數迷思」。</li>
             </ul>
         </section>
 
@@ -42,18 +48,18 @@
         <div class="grid md:grid-cols-3 gap-4 mb-8">
             <div class="bg-green-50 p-5 rounded-lg border border-green-200">
                 <h3 class="font-bold text-green-700 text-lg mb-2">1️⃣ 質數 (Prime)</h3>
-                <p class="text-sm text-green-800">大於 1 的整數，因數只有 1 和自己。</p>
-                <p class="mt-2 font-mono text-xs text-green-600">範例：2, 3, 5, 7, 11 ...</p>
+                <p class="text-sm text-green-800">大於 $1$ 的整數，因數只有 $1$ 和自己。</p>
+                <p class="mt-2 text-xs text-green-600">範例：$2, 3, 5, 7, 11, \ldots$</p>
             </div>
             <div class="bg-slate-100 p-5 rounded-lg border border-slate-200">
                 <h3 class="font-bold text-slate-700 text-lg mb-2">2️⃣ 合數 (Composite)</h3>
-                <p class="text-sm text-slate-800">大於 1 的整數，除了 1 和自己還有其他因數。</p>
-                <p class="mt-2 font-mono text-xs text-slate-500">範例：4, 6, 8, 9, 91 ...</p>
+                <p class="text-sm text-slate-800">大於 $1$ 的整數，除了 $1$ 和自己還有其他因數。</p>
+                <p class="mt-2 text-xs text-slate-500">範例：$4, 6, 8, 9, 91, \ldots$</p>
             </div>
             <div class="bg-red-50 p-5 rounded-lg border border-red-200">
-                <h3 class="font-bold text-red-700 text-lg mb-2">3️⃣ 數字 1</h3>
+                <h3 class="font-bold text-red-700 text-lg mb-2">3️⃣ 數字 $1$</h3>
                 <p class="text-sm text-red-800 font-bold underline">既不是質數，也不是合數！</p>
-                <p class="mt-2 text-xs text-red-600">因為它只有 1 個因數。</p>
+                <p class="mt-2 text-xs text-red-600">因為它只有 $1$ 個因數。</p>
             </div>
         </div>
 
@@ -63,43 +69,43 @@
                 <h2 class="text-2xl font-bold text-slate-800">🧮 互動質數篩法模擬</h2>
                 <button onclick="resetSieve()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium">重置圖表</button>
             </div>
-            <p class="text-slate-600 mb-6 text-sm">跟著步驟操作：劃掉 1 → 圈出 2 並劃掉其倍數 → 圈出 3... 直到完成！</p>
-            
+            <p class="text-slate-600 mb-6 text-sm">跟著步驟操作：劃掉 $1$ → 圈出 $2$ 並劃掉其倍數 → 圈出 $3$…… 直到完成！</p>
+
             <div class="grid grid-cols-10 gap-1 md:gap-2 mb-6" id="sieve-grid">
                 <!-- Grid items will be injected by JS -->
             </div>
 
             <div class="bg-blue-50 p-4 rounded-lg flex flex-wrap gap-2 items-center justify-center">
                 <span class="text-sm font-bold text-blue-800 mr-2">快速操作：</span>
-                <button onclick="markSpecial(1)" class="px-3 py-1 bg-red-400 text-white rounded text-sm">劃掉 1</button>
-                <button onclick="sieveStep(2)" class="px-3 py-1 bg-green-500 text-white rounded text-sm">篩掉 2 的倍數</button>
-                <button onclick="sieveStep(3)" class="px-3 py-1 bg-green-500 text-white rounded text-sm">篩掉 3 的倍數</button>
-                <button onclick="sieveStep(5)" class="px-3 py-1 bg-green-500 text-white rounded text-sm">篩掉 5 的倍數</button>
-                <button onclick="sieveStep(7)" class="px-3 py-1 bg-green-500 text-white rounded text-sm">篩掉 7 的倍數</button>
+                <button onclick="markSpecial(1)" class="px-3 py-1 bg-red-400 text-white rounded text-sm">劃掉 $1$</button>
+                <button onclick="sieveStep(2)" class="px-3 py-1 bg-green-500 text-white rounded text-sm">篩掉 $2$ 的倍數</button>
+                <button onclick="sieveStep(3)" class="px-3 py-1 bg-green-500 text-white rounded text-sm">篩掉 $3$ 的倍數</button>
+                <button onclick="sieveStep(5)" class="px-3 py-1 bg-green-500 text-white rounded text-sm">篩掉 $5$ 的倍數</button>
+                <button onclick="sieveStep(7)" class="px-3 py-1 bg-green-500 text-white rounded text-sm">篩掉 $7$ 的倍數</button>
                 <button onclick="showAllPrimes()" class="px-3 py-1 bg-indigo-600 text-white rounded text-sm">直接看結果</button>
             </div>
         </section>
 
         <!-- Step-by-Step Quiz -->
         <section class="bg-amber-50 rounded-xl shadow-sm p-6 mb-8 border border-amber-200">
-            <h2 class="text-xl font-bold text-amber-800 mb-4">🔍 練習：判斷 21 是否為質數？</h2>
+            <h2 class="text-xl font-bold text-amber-800 mb-4">🔍 練習：判斷 $21$ 是否為質數？</h2>
             <div id="quiz-container" class="space-y-4">
                 <div id="q1">
-                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 21 是否大於 1？</p>
+                    <p class="text-slate-800 mb-2 font-medium">1️⃣ $21$ 是否大於 $1$？</p>
                     <div class="flex gap-2">
                         <button onclick="answerQ(1, true)" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100">是</button>
                         <button onclick="answerQ(1, false)" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100">否</button>
                     </div>
                 </div>
                 <div id="q2" class="hidden">
-                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 試試看 21 ÷ 3，能整除嗎？</p>
+                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 試試看 $21 \div 3$，能整除嗎？</p>
                     <div class="flex gap-2">
-                        <button onclick="answerQ(2, true)" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100">能 (<span class="math-fact">21 = 3 × 7</span>)</button>
+                        <button onclick="answerQ(2, true)" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100">能</button>
                         <button onclick="answerQ(2, false)" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100">不能</button>
                     </div>
                 </div>
                 <div id="q3" class="hidden">
-                    <p class="text-slate-800 mb-2 font-medium">3️⃣ 如果有除了 1 和本身以外的因數，它是？</p>
+                    <p class="text-slate-800 mb-2 font-medium">3️⃣ 如果有除了 $1$ 和本身以外的因數，它是？</p>
                     <div class="flex gap-2">
                         <button onclick="answerQ(3, 'prime')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100">質數</button>
                         <button onclick="answerQ(3, 'composite')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100">合數</button>
@@ -116,50 +122,50 @@
                 <div class="bg-white p-5 rounded-lg border border-indigo-100 shadow-inner">
                     <p class="font-bold text-lg mb-3 text-indigo-900">🔒 情境題目：</p>
                     <p class="leading-relaxed mb-4">
-                        石碑上刻著：「要開啟神廟，需**由小到大**輸入三個密碼數字」，密碼符合以下所有條件：
+                        石碑上刻著：「要開啟神廟，需<b>由小到大</b>輸入三個密碼數字」，密碼符合以下所有條件：
                     </p>
                     <ul class="list-none space-y-2 text-sm text-slate-600 mb-6 bg-indigo-50/50 p-4 rounded-md border border-indigo-50">
                         <li class="flex items-start gap-2">
-                            <span class="inline-block w-5 h-5 bg-indigo-200 text-indigo-700 rounded-full text-center text-xs font-bold leading-5">1</span>
-                            數字介於 <span class="font-bold text-indigo-700 text-base mx-1">40 到 60</span> 之間。
+                            <span class="inline-block w-5 h-5 shrink-0 bg-indigo-200 text-indigo-700 rounded-full text-center text-xs font-bold leading-5">1</span>
+                            <span>數字介於 <span class="font-bold text-indigo-700 text-base mx-1">$40$ 到 $60$</span> 之間。</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <span class="inline-block w-5 h-5 bg-indigo-200 text-indigo-700 rounded-full text-center text-xs font-bold leading-5">2</span>
-                            數字本身必須是一個 <span class="font-bold text-indigo-700 text-base mx-1">質數</span>。
+                            <span class="inline-block w-5 h-5 shrink-0 bg-indigo-200 text-indigo-700 rounded-full text-center text-xs font-bold leading-5">2</span>
+                            <span>數字本身必須是一個 <span class="font-bold text-indigo-700 text-base mx-1">質數</span>。</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <span class="inline-block w-5 h-5 bg-indigo-200 text-indigo-700 rounded-full text-center text-xs font-bold leading-5">3</span>
-                            數字的個位數是 <span class="font-bold text-indigo-700 text-base mx-1">3 或 7</span>。
+                            <span class="inline-block w-5 h-5 shrink-0 bg-indigo-200 text-indigo-700 rounded-full text-center text-xs font-bold leading-5">3</span>
+                            <span>數字的個位數是 <span class="font-bold text-indigo-700 text-base mx-1">$3$ 或 $7$</span>。</span>
                         </li>
                     </ul>
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">第一道鎖 (最小)</label>
                             <div class="flex gap-2">
-                                <input type="text" id="code-1" class="code-input w-full p-3 border-2 border-indigo-200 rounded-lg outline-none text-center font-mono text-xl" placeholder="??">
-                                <button id="btn-1" onclick="verifyStep(1)" class="px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">驗證</button>
+                                <input type="text" inputmode="numeric" autocomplete="off" id="code-1" class="code-input w-full min-w-0 p-3 border-2 border-indigo-200 rounded-lg outline-none text-center font-mono text-xl" placeholder="??">
+                                <button id="btn-1" onclick="verifyStep(1)" class="px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 shrink-0">驗證</button>
                             </div>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">第二道鎖</label>
                             <div class="flex gap-2">
-                                <input type="text" id="code-2" disabled class="code-input w-full p-3 border-2 border-indigo-200 rounded-lg outline-none text-center font-mono text-xl" placeholder="??">
-                                <button id="btn-2" disabled onclick="verifyStep(2)" class="px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50">驗證</button>
+                                <input type="text" inputmode="numeric" autocomplete="off" id="code-2" disabled class="code-input w-full min-w-0 p-3 border-2 border-indigo-200 rounded-lg outline-none text-center font-mono text-xl" placeholder="??">
+                                <button id="btn-2" disabled onclick="verifyStep(2)" class="px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 shrink-0">驗證</button>
                             </div>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">第三道鎖 (最大)</label>
                             <div class="flex gap-2">
-                                <input type="text" id="code-3" disabled class="code-input w-full p-3 border-2 border-indigo-200 rounded-lg outline-none text-center font-mono text-xl" placeholder="??">
-                                <button id="btn-3" disabled onclick="verifyStep(3)" class="px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50">驗證</button>
+                                <input type="text" inputmode="numeric" autocomplete="off" id="code-3" disabled class="code-input w-full min-w-0 p-3 border-2 border-indigo-200 rounded-lg outline-none text-center font-mono text-xl" placeholder="??">
+                                <button id="btn-3" disabled onclick="verifyStep(3)" class="px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 shrink-0">驗證</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="flex items-center justify-between pt-2">
-                    <p class="text-sm font-bold text-indigo-900 italic">💡 提示：請先找出 40~60 之間所有符合條件的質數再填入。</p>
+
+                <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
+                    <p class="text-sm font-bold text-indigo-900 italic">💡 提示：請先找出 $40 \sim 60$ 之間所有符合條件的質數再填入。</p>
                     <button onclick="resetChallenge()" class="text-sm text-slate-500 hover:text-slate-800 underline">重置所有密碼</button>
                 </div>
                 <div id="challenge-feedback" class="hidden p-4 rounded-xl font-bold text-center"></div>
@@ -172,22 +178,22 @@
                 <h3 class="font-bold text-slate-800 mb-3 border-b pb-2">⚠️ 常見迷思（易錯陷阱）</h3>
                 <ul class="text-sm space-y-3 text-slate-600">
                     <li class="flex items-center gap-2">
-                        ❌ <span class="text-red-500 font-bold">1 是質數</span> 
-                        <span class="text-slate-400">→</span> 
-                        <span class="bg-slate-100 px-2 py-1 rounded text-slate-700">不對，它只有 1 個因數。</span>
+                        ❌ <span class="text-red-500 font-bold">$1$ 是質數</span>
+                        <span class="text-slate-400">→</span>
+                        <span class="bg-slate-100 px-2 py-1 rounded text-slate-700">不對，它只有 $1$ 個因數。</span>
                     </li>
                     <li class="flex items-center gap-2">
-                        ❌ <span class="text-red-500 font-bold">91 是質數</span> 
-                        <span class="text-slate-400">→</span> 
+                        ❌ <span class="text-red-500 font-bold">$91$ 是質數</span>
+                        <span class="text-slate-400">→</span>
                         <span class="bg-amber-50 border border-amber-200 px-2 py-1 rounded text-amber-800 font-medium">
-                            它是合數，因為 <span class="math-fact">91 = 7 × 13</span>
+                            它是合數，因為 <span class="math-fact">$91 = 7 \times 13$</span>
                         </span>
                     </li>
                     <li class="flex items-center gap-2">
-                        ❌ <span class="text-red-500 font-bold">51 是質數</span> 
-                        <span class="text-slate-400">→</span> 
+                        ❌ <span class="text-red-500 font-bold">$51$ 是質數</span>
+                        <span class="text-slate-400">→</span>
                         <span class="bg-amber-50 border border-amber-200 px-2 py-1 rounded text-amber-800 font-medium">
-                            它是合數，因為 <span class="math-fact">51 = 3 × 17</span>
+                            它是合數，因為 <span class="math-fact">$51 = 3 \times 17$</span>
                         </span>
                     </li>
                 </ul>
@@ -195,8 +201,8 @@
             <div class="bg-indigo-900 text-indigo-50 p-6 rounded-xl shadow-sm">
                 <h3 class="font-bold mb-3 border-b border-indigo-700 pb-2">🤔 反思與討論</h3>
                 <p class="text-sm leading-relaxed italic">
-                    「為什麼 2 是唯一一個偶數質數？」<br><br>
-                    「如果一個數字個位數是 5，它有可能是質數嗎？（除了 5 本身之外）」
+                    「為什麼 $2$ 是唯一一個偶數質數？」<br><br>
+                    「如果一個數字個位數是 $5$，它有可能是質數嗎？（除了 $5$ 本身之外）」
                 </p>
             </div>
         </footer>
@@ -209,14 +215,37 @@
 
         // Correct sequential primes for the Secret Door challenge: 43, 47, 53
         const correctSequence = [43, 47, 53];
+        const LOCK_NAME = ['第一道鎖', '第二道鎖', '第三道鎖'];
+
+        // KaTeX：只用 $...$ 行內數學式
+        function renderMath(el) {
+            if (el && typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(el, { delimiters: [{ left: '$', right: '$', display: false }], throwOnError: false });
+            }
+        }
+        function setMath(el, html) {
+            el.innerHTML = html;
+            renderMath(el);
+        }
+        // 篩法表格裡的數字也用 KaTeX 排版（沒有載入 KaTeX 時退回一般文字）
+        function numHTML(n) {
+            return (typeof katex !== 'undefined') ? katex.renderToString(String(n), { throwOnError: false }) : String(n);
+        }
+
+        // 答對後把該題按鈕鎖住，避免回頭按錯誤選項蓋掉回饋
+        function lockButtons(id) {
+            document.querySelectorAll('#' + id + ' button').forEach(b => { b.disabled = true; b.classList.add('cursor-not-allowed'); });
+        }
+
+        const BASE_CELL = 'number-cell aspect-square flex items-center justify-center bg-white border border-slate-200 rounded text-sm md:text-base font-medium text-slate-700 shadow-sm';
 
         function initGrid() {
             grid.innerHTML = '';
             for (let i = 1; i <= 100; i++) {
                 const el = document.createElement('div');
                 el.id = `num-${i}`;
-                el.className = 'number-cell aspect-square flex items-center justify-center bg-white border border-slate-200 rounded text-sm md:text-base font-medium text-slate-700 shadow-sm';
-                el.innerText = i;
+                el.className = BASE_CELL;
+                el.innerHTML = numHTML(i);
                 el.onclick = () => toggleNumber(i);
                 grid.appendChild(el);
             }
@@ -239,7 +268,9 @@
         }
 
         function markSpecial(n) {
-            document.getElementById(`num-${n}`).className = 'number-cell aspect-square flex items-center justify-center border border-slate-200 rounded text-sm md:text-base is-special';
+            const el = document.getElementById(`num-${n}`);
+            el.className = BASE_CELL;
+            el.classList.add('is-special');
         }
 
         function sieveStep(p) {
@@ -247,11 +278,11 @@
             primeEl.classList.add('is-prime');
             primeEl.classList.remove('is-composite');
 
+            // p 的倍數（不含 p 本身）一定是合數：就算之前被誤圈成質數，也要劃掉
             for (let i = p * 2; i <= 100; i += p) {
                 const el = document.getElementById(`num-${i}`);
-                if (!el.classList.contains('is-prime')) {
-                    el.classList.add('is-composite');
-                }
+                el.classList.remove('is-prime');
+                el.classList.add('is-composite');
             }
         }
 
@@ -277,36 +308,39 @@
             const q1 = document.getElementById('q1');
             const q2 = document.getElementById('q2');
             const q3 = document.getElementById('q3');
-            
+
             feedback.classList.remove('hidden');
-            
+
             if (step === 1) {
                 if (ans === true) {
-                    feedback.innerHTML = "✅ 正確！21 > 1，我們繼續檢查。";
+                    setMath(feedback, "✅ 正確！$21 > 1$，我們繼續檢查。");
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4";
                     q1.classList.add('opacity-50');
+                    lockButtons('q1');
                     q2.classList.remove('hidden');
                 } else {
-                    feedback.innerHTML = "❌ 21 比 1 大喔，請再試一次。";
+                    setMath(feedback, "❌ $21$ 比 $1$ 大喔，請再試一次。");
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4";
                 }
             } else if (step === 2) {
                 if (ans === true) {
-                    feedback.innerHTML = "✅ 沒錯！21 = 3 × 7，除了 1 和自己還有其他因數。";
+                    setMath(feedback, "✅ 沒錯！$21 = 3 \\times 7$，除了 $1$ 和自己還有其他因數。");
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4";
                     q2.classList.add('opacity-50');
+                    lockButtons('q2');
                     q3.classList.remove('hidden');
                 } else {
-                    feedback.innerHTML = "❌ 再試算看看，3 的 7 倍是多少？";
+                    setMath(feedback, "❌ 再試算看看，$3$ 的 $7$ 倍是多少？");
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4";
                 }
             } else if (step === 3) {
                 if (ans === 'composite') {
-                    feedback.innerHTML = "🎉 太棒了！21 有多個因數，它是「合數」。";
+                    setMath(feedback, "🎉 太棒了！$21$ 的因數有 $1$、$3$、$7$、$21$，不只兩個，它是「合數」。");
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4";
                     q3.classList.add('opacity-50');
+                    lockButtons('q3');
                 } else {
-                    feedback.innerHTML = "❌ 哎呀，質數只有兩個因數。21 還有 3 和 7 喔！";
+                    setMath(feedback, "❌ 哎呀，質數只有兩個因數。$21$ 還有 $3$ 和 $7$ 喔！");
                     feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4";
                 }
             }
@@ -316,22 +350,25 @@
         function verifyStep(stepIdx) {
             const currentInput = document.getElementById(`code-${stepIdx}`);
             const currentBtn = document.getElementById(`btn-${stepIdx}`);
-            const userVal = parseInt(currentInput.value);
-            
+            const raw = currentInput.value.normalize('NFKC').trim();
+
             challengeFeedback.classList.remove('hidden');
-            
-            if (isNaN(userVal)) {
-                showChallengeMsg("⚠️ 請輸入數字！", "bg-amber-100 text-amber-800");
+
+            // 只接受整數（避免 43.5、43abc 被當成 43）
+            if (!/^\d+$/.test(raw)) {
+                showChallengeMsg(raw === '' ? "⚠️ 請先輸入數字！" : "⚠️ 密碼是整數，請只輸入數字！", "bg-amber-100 text-amber-800");
                 return;
             }
+            const userVal = Number(raw);
+            const target = correctSequence[stepIdx - 1];
 
-            if (userVal === correctSequence[stepIdx - 1]) {
+            if (userVal === target) {
                 // Correct!
                 currentInput.classList.add('solved');
                 currentInput.disabled = true;
                 currentBtn.disabled = true;
                 currentBtn.innerText = "OK";
-                
+
                 if (stepIdx < 3) {
                     // Unlock next
                     const nextInput = document.getElementById(`code-${stepIdx + 1}`);
@@ -339,33 +376,35 @@
                     nextInput.disabled = false;
                     nextBtn.disabled = false;
                     nextInput.focus();
-                    showChallengeMsg(`✅ 第一道鎖已解開！請找出下一個比 ${userVal} 大的符合條件質數。`, "bg-green-100 text-green-800 border border-green-200");
+                    showChallengeMsg(`✅ ${LOCK_NAME[stepIdx - 1]}已解開！請找出下一個比 $${userVal}$ 大的符合條件質數。`, "bg-green-100 text-green-800 border border-green-200");
                 } else {
                     // All finished
-                    showChallengeMsg("🏆 完美解鎖！神廟大門緩緩開啟，你找出了所有密碼：43, 47, 53。", "bg-green-500 text-white shadow-lg");
+                    showChallengeMsg("🏆 完美解鎖！神廟大門緩緩開啟，你找出了所有密碼：$43$、$47$、$53$。", "bg-green-500 text-white shadow-lg");
                 }
             } else {
                 // Wrong
                 let errorMsg = "❌ 密碼錯誤，請再檢查一下線索。";
-                
+
                 // Hint based on wrong input
                 if (userVal < 40 || userVal > 60) {
-                    errorMsg += "（數字必須在 40 到 60 之間）";
+                    errorMsg += "（數字必須在 $40$ 到 $60$ 之間）";
                 } else if (![3, 7].includes(userVal % 10)) {
-                    errorMsg += "（個位數必須是 3 或 7）";
+                    errorMsg += "（個位數必須是 $3$ 或 $7$）";
                 } else if (userVal === 57) {
-                    errorMsg += "（注意：57 = 3 × 19，它是合數喔！）";
+                    errorMsg += "（注意：$57 = 3 \\times 19$，它是合數喔！）";
+                } else if (correctSequence.includes(userVal) && userVal < target) {
+                    errorMsg += "（這個數字前面已經用過了，要找比它更大的喔！）";
                 } else if (correctSequence.includes(userVal)) {
-                    errorMsg += "（這個數字對，但順序不是最小的喔！）";
+                    errorMsg += "（這個數字符合條件，但還有更小的，要由小到大輸入喔！）";
                 }
-                
+
                 showChallengeMsg(errorMsg, "bg-red-100 text-red-800 border border-red-200");
             }
         }
 
         function showChallengeMsg(msg, classes) {
-            challengeFeedback.innerHTML = msg;
             challengeFeedback.className = `p-4 rounded-xl font-bold text-center mt-4 ${classes}`;
+            setMath(challengeFeedback, msg);
         }
 
         function resetChallenge() {
@@ -382,7 +421,14 @@
         }
 
         window.onload = () => {
+            renderMath(document.body);
             initGrid();
+            // 在密碼框按 Enter 也能驗證（中文輸入法選字時不觸發）
+            [1, 2, 3].forEach(i => {
+                document.getElementById(`code-${i}`).addEventListener('keydown', e => {
+                    if (e.key === 'Enter' && !e.isComposing && !document.getElementById(`btn-${i}`).disabled) verifyStep(i);
+                });
+            });
         };
     </script>
 </body>
