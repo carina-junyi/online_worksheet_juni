@@ -5,15 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>指數的意義互動講義</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- 固定 lucide 版本（原本用 @latest，版本一變圖示可能壞掉） -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <!-- 引入 KaTeX 進行數字與數學式渲染 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
             background-color: #f8fafc;
-        }
-        .math-serif {
-            font-family: 'Times New Roman', serif;
         }
         .step-hidden {
             display: none;
@@ -47,7 +49,7 @@
                 <li>理解「指數」是表示重複乘法的方式。</li>
                 <li>說出指數表示中「底數」與「指數」的意義。</li>
                 <li>正確將重複乘法改寫成指數形式，或反向展開。</li>
-                <li>理解規則：當 <span class="italic font-serif text-indigo-700 font-bold">a</span> ≠ 0 時，<span class="italic font-serif text-indigo-700 font-bold">a</span><sup>0</sup> = 1。</li>
+                <li>理解規則：當 $a \ne 0$ 時，$a^0 = 1$。</li>
                 <li>掌握同底數、不同指數的大小比較直覺。</li>
             </ul>
         </section>
@@ -57,17 +59,17 @@
             <div class="bg-green-50 p-5 rounded-lg border border-green-200">
                 <h3 class="font-bold text-green-700 text-lg mb-2">1️⃣ 底數 (Base)</h3>
                 <p class="text-sm text-green-800 leading-relaxed">算式中被「重複相乘」的那一個數字。</p>
-                <p class="mt-2 font-mono text-xs text-green-600 italic">例如：2 × 2 × 2 中的 「2」</p>
+                <p class="mt-2 text-xs text-green-600">例如：$2 \times 2 \times 2$ 中的「$2$」</p>
             </div>
             <div class="bg-slate-100 p-5 rounded-lg border border-slate-200">
                 <h3 class="font-bold text-slate-700 text-lg mb-2">2️⃣ 指數 (Exponent)</h3>
-                <p class="text-sm text-slate-800 leading-relaxed">代表那個數字「乘了幾次」，寫在右上方。</p>
-                <p class="mt-2 font-mono text-xs text-slate-500 italic">例如：2<sup>3</sup> 中的 「3」</p>
+                <p class="text-sm text-slate-800 leading-relaxed">代表有「幾個」底數相乘，寫在右上方。</p>
+                <p class="mt-2 text-xs text-slate-500">例如：$2^3$ 中的「$3$」</p>
             </div>
             <div class="bg-red-50 p-5 rounded-lg border border-red-200">
                 <h3 class="font-bold text-red-700 text-lg mb-2">3️⃣ 零次方規則</h3>
                 <p class="text-sm text-red-800 font-bold underline leading-relaxed">
-                    當底數不為 0 時，<span class="italic font-serif font-bold">a</span><sup>0</sup> = 1！
+                    當底數不為 $0$ 時，$a^0 = 1$！
                 </p>
                 <p class="mt-2 text-xs text-red-600 italic">這是透過除法規律觀察出來的結果。</p>
             </div>
@@ -81,24 +83,25 @@
             <div class="space-y-6">
                 <div class="bg-indigo-50/50 p-4 rounded-lg border border-indigo-100">
                     <p class="font-bold text-slate-800 mb-2">📌 例題 1：指數的意義</p>
-                    <p class="text-slate-600 mb-3 text-sm">將下列算式改寫成指數形式： 4 × 4 × 4 × 4</p>
+                    <p class="text-slate-600 mb-3 text-sm">將下列算式改寫成指數形式：$4 \times 4 \times 4 \times 4$</p>
                     <div class="bg-white p-3 rounded border border-indigo-100 text-sm">
                         <p class="text-indigo-800 font-medium">✏️ 解題說明：</p>
-                        <p class="text-slate-600">共有 4 個 4 相乘，底數為 4，指數為 4。</p>
-                        <p class="mt-1 font-bold text-lg text-indigo-600">答案：4<sup>4</sup></p>
+                        <p class="text-slate-600">共有 $4$ 個 $4$ 相乘，底數為 $4$，指數為 $4$。</p>
+                        <p class="mt-1 font-bold text-lg text-indigo-600">答案：$4^4$</p>
                     </div>
                 </div>
 
                 <div class="bg-indigo-50/50 p-4 rounded-lg border border-indigo-100">
                     <p class="font-bold text-slate-800 mb-2">📌 例題 2：比較大小</p>
-                    <p class="text-slate-600 mb-3 text-sm">比較 3<sup>2</sup> 與 3<sup>4</sup> 的大小。</p>
+                    <p class="text-slate-600 mb-3 text-sm">比較 $3^2$ 與 $3^4$ 的大小。</p>
                     <div class="bg-white p-3 rounded border border-indigo-100 text-sm">
                         <p class="text-indigo-800 font-medium mb-1">✏️ 解題引導：</p>
                         <div class="flex flex-col gap-1 text-slate-600 font-medium">
-                            <p>1. 底數一樣，都是 <span class="text-indigo-600 font-bold">3</span>。</p>
-                            <p>2. 比較指數：指數 <span class="text-indigo-600 font-bold">4</span> 比 <span class="text-indigo-600 font-bold">2</span> 大。</p>
+                            <p>1. 底數一樣，都是 <span class="text-indigo-600 font-bold">$3$</span>。</p>
+                            <p>2. 比較指數：指數 <span class="text-indigo-600 font-bold">$4$</span> 比 <span class="text-indigo-600 font-bold">$2$</span> 大。</p>
+                            <p>3. 底數 <span class="text-indigo-600 font-bold">$3$</span> 大於 $1$，相乘的個數越多，值越大。</p>
                         </div>
-                        <p class="mt-2 font-bold text-lg text-indigo-600">答案：3<sup>4</sup> > 3<sup>2</sup></p>
+                        <p class="mt-2 font-bold text-lg text-indigo-600">答案：$3^4 > 3^2$</p>
                     </div>
                 </div>
             </div>
@@ -106,30 +109,30 @@
 
         <!-- Exponent Builder -->
         <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex justify-between items-center gap-2 mb-4">
                 <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                    <i data-lucide="zap" class="text-indigo-600 w-6 h-6 fill-indigo-600"></i> 互動指數構造器
+                    <i data-lucide="zap" class="text-indigo-600 w-6 h-6 fill-indigo-600 shrink-0"></i> 互動指數構造器
                 </h2>
-                <button onclick="resetBuilder()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium transition-colors">重置數值</button>
+                <button onclick="resetBuilder()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium transition-colors shrink-0">重置數值</button>
             </div>
             <p class="text-slate-600 mb-6 text-sm">調整底數與指數，觀察展開與計算結果：</p>
-            
+
             <div class="flex flex-col items-center justify-center p-8 bg-slate-50 rounded-xl mb-6">
                 <div class="flex items-end gap-1 mb-6">
-                    <span id="display-base" class="text-7xl font-bold text-slate-800 leading-none">2</span>
-                    <span id="display-power" class="text-3xl font-bold text-indigo-600 leading-none pb-8">3</span>
+                    <span id="display-base" class="text-7xl font-bold text-slate-800 leading-none">$2$</span>
+                    <span id="display-power" class="text-3xl font-bold text-indigo-600 leading-none pb-8">$3$</span>
                 </div>
-                
+
                 <div class="bg-white px-8 py-5 rounded-xl border border-slate-200 shadow-sm w-full max-w-lg text-center">
-                    <div class="mb-2 text-slate-400 text-xs font-bold uppercase tracking-widest">展開式</div>
-                    <div id="display-expansion" class="text-xl font-serif tracking-widest text-slate-600 italic mb-4">
-                        = 2 × 2 × 2
+                    <div class="mb-2 text-slate-400 text-xs font-bold tracking-widest">展開式</div>
+                    <div id="display-expansion" class="text-xl text-slate-600 mb-4">
+                        $= 2 \times 2 \times 2$
                     </div>
-                    
+
                     <div class="pt-4 border-t border-slate-100 flex flex-col items-center">
-                        <div class="mb-1 text-slate-400 text-xs font-bold uppercase tracking-widest">計算結果</div>
+                        <div class="mb-1 text-slate-400 text-xs font-bold tracking-widest">計算結果</div>
                         <div id="display-result" class="text-4xl font-black text-indigo-600 font-sans tracking-normal">
-                            = 8
+                            $= 8$
                         </div>
                     </div>
                 </div>
@@ -137,13 +140,13 @@
 
             <div class="bg-blue-50 p-4 rounded-lg flex flex-wrap gap-4 items-center justify-center">
                 <div class="flex items-center gap-2">
-                    <span class="text-sm font-bold text-blue-800">底數：</span>
+                    <span class="text-sm font-bold text-blue-800 whitespace-nowrap shrink-0">底數：</span>
                     <div class="flex gap-1" id="base-buttons">
                         <!-- Buttons injected by JS -->
                     </div>
                 </div>
-                <div class="flex items-center gap-2 border-l border-blue-200 pl-4">
-                    <span class="text-sm font-bold text-blue-800">指數：</span>
+                <div class="flex items-center gap-2 md:border-l md:border-blue-200 md:pl-4">
+                    <span class="text-sm font-bold text-blue-800 whitespace-nowrap shrink-0">指數：</span>
                     <div class="flex gap-1" id="power-buttons">
                         <!-- Buttons injected by JS -->
                     </div>
@@ -153,32 +156,32 @@
 
         <!-- Guided Quiz -->
         <section class="bg-amber-50 rounded-xl shadow-sm p-6 mb-8 border border-amber-200">
-            <h2 class="text-xl font-bold text-amber-800 mb-4 flex items-center gap-2">
-                <i data-lucide="help-circle" class="w-5 h-5"></i> 🔍 引導練習：將「2 × 2 × 2 × 2 × 2」改寫
+            <h2 class="text-xl font-bold text-amber-800 mb-4 flex flex-wrap items-center gap-2">
+                <i data-lucide="help-circle" class="w-5 h-5"></i> 🔍 引導練習：將「$2 \times 2 \times 2 \times 2 \times 2$」改寫
             </h2>
             <div class="space-y-4" id="quiz-steps">
                 <!-- Step 1 -->
                 <div id="step-1" class="animate-fade-in">
                     <p class="text-slate-800 mb-2 font-medium">1️⃣ 重複出現的「底數」是多少？</p>
                     <div class="flex gap-2">
-                        <button onclick="handleStep(1, true, '正確！底數就是 2。')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100 font-bold">2</button>
-                        <button onclick="handleStep(1, false, '不對喔，5 是相乘的次數。')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100 font-bold">5</button>
+                        <button onclick="handleStep(1, true, '正確！底數就是 $2$。')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100 font-bold">$2$</button>
+                        <button onclick="handleStep(1, false, '不對喔，$5$ 是 $2$ 相乘的個數。')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100 font-bold">$5$</button>
                     </div>
                 </div>
                 <!-- Step 2 -->
                 <div id="step-2" class="step-hidden animate-fade-in">
-                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 數字 2 總共乘了幾次？（指數）</p>
+                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 總共有幾個 $2$ 相乘？（指數）</p>
                     <div class="flex gap-2">
-                        <button onclick="handleStep(2, false, '再數一次？')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100 font-bold">4 次</button>
-                        <button onclick="handleStep(2, true, '沒錯！一共乘了 5 次。')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100 font-bold">5 次</button>
+                        <button onclick="handleStep(2, false, '再數一次？$4$ 是乘號的個數，數數看有幾個 $2$。')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100 font-bold">$4$ 個</button>
+                        <button onclick="handleStep(2, true, '沒錯！一共有 $5$ 個 $2$ 相乘。')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100 font-bold">$5$ 個</button>
                     </div>
                 </div>
                 <!-- Step 3 -->
                 <div id="step-3" class="step-hidden animate-fade-in">
                     <p class="text-slate-800 mb-2 font-medium">3️⃣ 最後，把它寫成指數形式會是？</p>
                     <div class="flex gap-2">
-                        <button onclick="handleStep(3, false, '這是 2 乘以 5。')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100 font-bold">2 × 5</button>
-                        <button onclick="handleStep(3, true, '太棒了！指數形式就是 2 的 5 次方。')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100 font-bold">2<sup>5</sup></button>
+                        <button onclick="handleStep(3, false, '這是 $2$ 乘以 $5$。')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100 font-bold">$2 \times 5$</button>
+                        <button onclick="handleStep(3, true, '太棒了！指數形式就是 $2$ 的 $5$ 次方。')" class="px-4 py-2 bg-white border border-amber-300 rounded hover:bg-amber-100 font-bold">$2^5$</button>
                     </div>
                 </div>
                 <div id="quiz-feedback" class="p-4 rounded-lg font-bold text-center mt-4 hidden"></div>
@@ -191,46 +194,46 @@
                 <i data-lucide="trophy" class="w-6 h-6 text-emerald-600"></i>
                 <h2 class="text-2xl font-bold text-slate-800">🎯 自我挑戰：互動練習題</h2>
             </div>
-            
+
             <div class="grid md:grid-cols-2 gap-6">
                 <!-- Q1 -->
                 <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                    <p class="text-slate-800 font-bold mb-3">Q1. 計算 2<sup>4</sup> 的結果：</p>
+                    <p class="text-slate-800 font-bold mb-3">Q1. 計算 $2^4$ 的結果：</p>
                     <div class="flex gap-2">
-                        <input type="number" id="ans-q1" class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="輸入數字">
-                        <button onclick="checkAnswer('q1', 16)" class="p-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"><i data-lucide="send" class="w-5 h-5"></i></button>
+                        <input type="number" id="ans-q1" class="flex-1 min-w-0 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="輸入數字">
+                        <button onclick="checkAnswer('q1', 16)" class="p-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700" aria-label="送出"><i data-lucide="send" class="w-5 h-5"></i></button>
                     </div>
                     <p id="feedback-q1" class="mt-2 text-sm font-bold hidden"></p>
                 </div>
                 <!-- Q2 -->
                 <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                    <p class="text-slate-800 font-bold mb-3">Q2. 計算 135<sup>0</sup> 的結果：</p>
+                    <p class="text-slate-800 font-bold mb-3">Q2. 計算 $135^0$ 的結果：</p>
                     <div class="flex gap-2">
-                        <input type="number" id="ans-q2" class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="輸入數字">
-                        <button onclick="checkAnswer('q2', 1)" class="p-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"><i data-lucide="send" class="w-5 h-5"></i></button>
+                        <input type="number" id="ans-q2" class="flex-1 min-w-0 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="輸入數字">
+                        <button onclick="checkAnswer('q2', 1)" class="p-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700" aria-label="送出"><i data-lucide="send" class="w-5 h-5"></i></button>
                     </div>
                     <p id="feedback-q2" class="mt-2 text-sm font-bold hidden"></p>
                 </div>
                 <!-- Q3 -->
                 <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                    <p class="text-slate-800 font-bold mb-3">Q3. 比較：5<sup>2</sup> __ 5<sup>3</sup> (填入 < 或 >)</p>
+                    <p class="text-slate-800 font-bold mb-3">Q3. 比較：$5^2$ __ $5^3$（填入 $<$ 或 $>$）</p>
                     <div class="flex gap-2">
-                        <input type="text" id="ans-q3" class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="輸入 < 或 >">
-                        <button onclick="checkAnswer('q3', '<')" class="p-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"><i data-lucide="send" class="w-5 h-5"></i></button>
+                        <input type="text" id="ans-q3" autocomplete="off" class="flex-1 min-w-0 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="輸入 < 或 >">
+                        <button onclick="checkAnswer('q3', '<')" class="p-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700" aria-label="送出"><i data-lucide="send" class="w-5 h-5"></i></button>
                     </div>
                     <p id="feedback-q3" class="mt-2 text-sm font-bold hidden"></p>
                 </div>
                 <!-- Q4 -->
                 <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                    <p class="text-slate-800 font-bold mb-3">Q4. 在 7<sup>9</sup> 中，指數是哪一個數字？</p>
+                    <p class="text-slate-800 font-bold mb-3">Q4. 在 $7^9$ 中，指數是哪一個數字？</p>
                     <div class="flex gap-2">
-                        <input type="number" id="ans-q4" class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="輸入數字">
-                        <button onclick="checkAnswer('q4', 9)" class="p-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"><i data-lucide="send" class="w-5 h-5"></i></button>
+                        <input type="number" id="ans-q4" class="flex-1 min-w-0 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="輸入數字">
+                        <button onclick="checkAnswer('q4', 9)" class="p-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700" aria-label="送出"><i data-lucide="send" class="w-5 h-5"></i></button>
                     </div>
                     <p id="feedback-q4" class="mt-2 text-sm font-bold hidden"></p>
                 </div>
             </div>
-            
+
             <div class="mt-6 flex justify-center">
                 <button onclick="resetPractice()" class="px-6 py-2 bg-slate-200 text-slate-600 rounded-lg font-bold hover:bg-slate-300 transition-colors flex items-center gap-2">
                     <i data-lucide="rotate-ccw" class="w-4 h-4"></i> 全部清除重新練習
@@ -246,16 +249,16 @@
                 </h3>
                 <ul class="text-sm space-y-4 text-slate-600 font-medium">
                     <li class="flex items-start gap-2">
-                        <span class="text-red-500 font-bold">❌ a<sup>0</sup> = 0</span>
-                        <span>→ 不對，a<sup>0</sup> = 1 (當 a ≠ 0)。</span>
+                        <span class="text-red-500 font-bold shrink-0">❌ $a^0 = 0$</span>
+                        <span>→ 不對，$a^0 = 1$（當 $a \ne 0$）。</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="text-red-500 font-bold">❌ 2<sup>3</sup> = 2 × 3</span>
-                        <span>→ 指數是連乘，2<sup>3</sup> = 2 × 2 × 2 = 8。</span>
+                        <span class="text-red-500 font-bold shrink-0">❌ $2^3 = 2 \times 3$</span>
+                        <span>→ 指數是連乘，$2^3 = 2 \times 2 \times 2 = 8$。</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="text-red-500 font-bold">❌ 指數越大就越大</span>
-                        <span>→ 陷阱！如果底數比 1 小，例如 0.1，指數越大值反而越小。</span>
+                        <span class="text-red-500 font-bold shrink-0">❌ 指數越大就越大</span>
+                        <span>→ 陷阱！如果底數在 $0$ 和 $1$ 之間（例如 $0.1$），指數越大值反而越小。</span>
                     </li>
                 </ul>
             </div>
@@ -263,10 +266,10 @@
                 <h3 class="font-bold mb-3 border-b border-indigo-700 pb-2 flex items-center gap-2">
                     <i data-lucide="message-square" class="w-5 h-5 text-indigo-300"></i> 🤔 反思與討論
                 </h3>
-                <p class="text-sm leading-relaxed italic mb-4">「為什麼指數可以讓算式變簡潔？想像一下，如果要寫出 2 的 100 次方，展開來會有多長？」</p>
+                <p class="text-sm leading-relaxed italic mb-4">「為什麼指數可以讓算式變簡潔？想像一下，如果要寫出 $2$ 的 $100$ 次方，展開來會有多長？」</p>
                 <div class="bg-white/10 p-3 rounded-lg border border-white/20">
                     <p class="text-xs font-bold text-indigo-200 mb-1">思考題：</p>
-                    <p class="text-sm leading-relaxed">如果一個數字的底數是 1，不論指數是多少（例如 1<sup>500</sup>），它的結果會是多少呢？</p>
+                    <p class="text-sm leading-relaxed">如果一個數字的底數是 $1$，不論指數是多少（例如 $1^{500}$），它的結果會是多少呢？</p>
                 </div>
             </div>
         </footer>
@@ -277,8 +280,23 @@
     </div>
 
     <script>
-        // Initialize Lucide Icons
-        lucide.createIcons();
+        // KaTeX：只用 $...$ 行內數學式
+        function renderMath(el) {
+            if (el && typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(el, { delimiters: [{ left: '$', right: '$', display: false }], throwOnError: false });
+            }
+        }
+        function setMath(el, html) {
+            if (typeof el === 'string') el = document.getElementById(el);
+            el.innerHTML = html;
+            renderMath(el);
+        }
+        // lucide 沒載入時不要讓整段程式停掉（原本會連指數構造器都不能用）
+        function icons() {
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+        }
+        // 三位一撇，KaTeX 裡用 {,} 讓逗號後面不多空格
+        const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '{,}');
 
         // State for Builder
         let currentBase = 2;
@@ -294,22 +312,26 @@
 
             baseOptions.forEach(n => {
                 const btn = document.createElement('button');
-                btn.className = `base-btn px-3 py-1 rounded text-sm font-bold transition-all ${currentBase === n ? 'bg-blue-600 text-white' : 'bg-white border border-blue-200 text-blue-600'}`;
-                btn.innerText = n;
+                btn.dataset.val = n;   // 用 data-val 記數值，不從按鈕文字讀（數字改成 KaTeX 後文字會不同）
+                btn.className = 'base-btn px-3 py-1 rounded text-sm font-bold transition-all';
+                btn.innerHTML = `$${n}$`;
                 btn.onclick = () => setBase(n);
                 baseContainer.appendChild(btn);
             });
 
             powerOptions.forEach(n => {
                 const btn = document.createElement('button');
-                btn.className = `power-btn px-3 py-1 rounded text-sm font-bold transition-all ${currentPower === n ? 'bg-indigo-600 text-white' : 'bg-white border border-indigo-200 text-indigo-600'}`;
-                btn.innerText = n;
-                if (n === 0) btn.className = `power-btn px-3 py-1 rounded text-sm font-bold transition-all ${currentPower === n ? 'bg-red-600 text-white' : 'bg-white border border-red-200 text-red-600'}`;
+                btn.dataset.val = n;
+                btn.className = 'power-btn px-3 py-1 rounded text-sm font-bold transition-all';
+                btn.innerHTML = `$${n}$`;
                 btn.onclick = () => setPower(n);
                 powerContainer.appendChild(btn);
             });
 
+            renderMath(baseContainer);
+            renderMath(powerContainer);
             updateDisplay();
+            updateButtonStyles();
         }
 
         function setBase(n) {
@@ -325,26 +347,26 @@
         }
 
         function updateDisplay() {
-            document.getElementById('display-base').innerText = currentBase;
-            document.getElementById('display-power').innerText = currentPower;
-            
-            let expansion = "";
+            setMath('display-base', `$${currentBase}$`);
+            setMath('display-power', `$${currentPower}$`);
+
             if (currentPower === 0) {
-                expansion = "1";
+                // 零次方沒有乘法可以展開，改成說明規定
+                setMath('display-expansion', `<span class="text-base font-bold text-red-600">沒有可以展開的乘法，規定 $${currentBase}^0 = 1$</span>`);
             } else {
-                expansion = Array(currentPower).fill(currentBase).join(' × ');
+                const expansion = Array(currentPower).fill(currentBase).join(' \\times ');
+                setMath('display-expansion', `$= ${expansion}$`);
             }
-            document.getElementById('display-expansion').innerText = `= ${expansion}`;
-            document.getElementById('display-result').innerText = `= ${Math.pow(currentBase, currentPower).toLocaleString()}`;
+            setMath('display-result', `$= ${fmt(Math.pow(currentBase, currentPower))}$`);
         }
 
         function updateButtonStyles() {
             document.querySelectorAll('.base-btn').forEach(btn => {
-                const val = parseInt(btn.innerText);
+                const val = Number(btn.dataset.val);
                 btn.className = `base-btn px-3 py-1 rounded text-sm font-bold transition-all ${currentBase === val ? 'bg-blue-600 text-white' : 'bg-white border border-blue-200 text-blue-600'}`;
             });
             document.querySelectorAll('.power-btn').forEach(btn => {
-                const val = parseInt(btn.innerText);
+                const val = Number(btn.dataset.val);
                 if (val === 0) {
                     btn.className = `power-btn px-3 py-1 rounded text-sm font-bold transition-all ${currentPower === val ? 'bg-red-600 text-white shadow-md' : 'bg-white border border-red-200 text-red-600'}`;
                 } else {
@@ -364,17 +386,17 @@
         function handleStep(step, isCorrect, feedbackText) {
             const feedbackDiv = document.getElementById('quiz-feedback');
             feedbackDiv.classList.remove('hidden');
-            
+
             if (isCorrect) {
-                feedbackDiv.innerText = `✅ ${feedbackText}`;
+                setMath(feedbackDiv, `✅ ${feedbackText}`);
                 feedbackDiv.className = "p-4 rounded-lg font-bold text-center mt-4 bg-green-100 text-green-800 animate-fade-in";
-                
+                // 每一步答對都鎖住（原本最後一步沒鎖，答對後再按錯的會蓋掉回饋）
+                document.getElementById(`step-${step}`).classList.add('opacity-50', 'pointer-events-none');
                 if (step < 3) {
-                    document.getElementById(`step-${step}`).classList.add('opacity-50', 'pointer-events-none');
                     document.getElementById(`step-${step + 1}`).classList.remove('step-hidden');
                 }
             } else {
-                feedbackDiv.innerText = `❌ ${feedbackText}`;
+                setMath(feedbackDiv, `❌ ${feedbackText}`);
                 feedbackDiv.className = "p-4 rounded-lg font-bold text-center mt-4 bg-red-100 text-red-800 animate-fade-in";
             }
         }
@@ -383,18 +405,25 @@
         function checkAnswer(id, correct) {
             const input = document.getElementById(`ans-${id}`);
             const feedback = document.getElementById(`feedback-${id}`);
-            const val = input.value.trim();
-            
+            // 全形符號轉半形（中文輸入法打的「＜」也能判斷）
+            const val = input.value.normalize('NFKC').trim();
+
             feedback.classList.remove('hidden');
-            if (val == correct) {
-                feedback.innerText = "🎉 答對了！太優秀了。";
+            if (val === '') {
+                setMath(feedback, "✏️ 請先輸入答案喔！");
+                feedback.className = "mt-2 text-sm font-bold text-amber-600 animate-fade-in";
+                return;
+            }
+            const ok = typeof correct === 'number' ? Number(val) === correct : val === correct;
+            if (ok) {
+                setMath(feedback, "🎉 答對了！太優秀了。");
                 feedback.className = "mt-2 text-sm font-bold text-emerald-600 animate-fade-in";
             } else {
                 let hint = "再想一下喔！";
-                if (id === 'q1') hint = "是 4 個 2 連乘喔。";
+                if (id === 'q1') hint = "是 $4$ 個 $2$ 連乘喔。";
                 if (id === 'q2') hint = "記得零次方規則嗎？";
-                if (id === 'q3') hint = "底數大於 1 時，乘越多次值越大。";
-                feedback.innerText = `❌ ${hint}`;
+                if (id === 'q3') hint = "底數大於 $1$ 時，相乘的個數越多，值越大。";
+                setMath(feedback, `❌ ${hint}`);
                 feedback.className = "mt-2 text-sm font-bold text-rose-600 animate-fade-in";
             }
         }
@@ -406,7 +435,17 @@
             });
         }
 
-        window.onload = initBuilder;
+        window.onload = () => {
+            renderMath(document.body);
+            icons();
+            initBuilder();
+            // 練習題：按 Enter 也能檢查
+            [['q1', 16], ['q2', 1], ['q3', '<'], ['q4', 9]].forEach(([id, ans]) => {
+                document.getElementById(`ans-${id}`).addEventListener('keydown', e => {
+                    if (e.key === 'Enter' && !e.isComposing) checkAnswer(id, ans);
+                });
+            });
+        };
     </script>
 </body>
 </html>
