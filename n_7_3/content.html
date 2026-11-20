@@ -87,7 +87,7 @@
             <div class="flex flex-wrap gap-3 justify-center">
                 <div class="flex items-center gap-2 mr-4">
                     <span class="text-sm font-bold text-slate-700">當前位置：</span>
-                    <span id="current-val" class="text-2xl font-black text-indigo-600">0</span>
+                    <span id="current-val" class="text-2xl font-black text-indigo-600">$0$</span>
                 </div>
                 <div class="h-8 w-px bg-slate-300 mx-2"></div>
                 <button onclick="moveMarker(1)" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg shadow-sm font-bold">$+ 1$</button>
@@ -95,13 +95,14 @@
                 <button onclick="moveMarker(5)" class="px-4 py-2 bg-green-700 hover:bg-green-800 text-white rounded-lg shadow-sm font-bold">$+ 5$</button>
                 <button onclick="moveMarker(-5)" class="px-4 py-2 bg-red-700 hover:bg-red-800 text-white rounded-lg shadow-sm font-bold">$- 5$</button>
             </div>
+            <p id="line-msg" class="hidden mt-3 text-center text-sm font-bold text-amber-700"></p>
         </section>
 
         <!-- Dynamic Multi-Question Quiz -->
         <section class="bg-amber-50 rounded-xl shadow-sm p-6 mb-8 border border-amber-200">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-amber-800" id="quiz-title">🔍 引導練習</h2>
-                <span id="quiz-progress" class="text-sm font-bold bg-amber-200 text-amber-800 px-3 py-1 rounded-full">第 1 / 3 題</span>
+                <h2 class="text-xl font-bold text-amber-800 mr-2" id="quiz-title">🔍 引導練習</h2>
+                <span id="quiz-progress" class="text-sm font-bold bg-amber-200 text-amber-800 px-3 py-1 rounded-full shrink-0">第 $1$ / $3$ 題</span>
             </div>
             
             <div id="quiz-content" class="space-y-6">
@@ -119,7 +120,7 @@
         <section class="bg-indigo-50 rounded-xl shadow-md p-6 mb-8 border border-indigo-200">
             <div class="flex items-center gap-2 mb-4">
                 <span class="text-2xl">🚀</span>
-                <h2 class="text-xl font-bold text-indigo-800">五、應用題／挑戰題</h2>
+                <h2 class="text-xl font-bold text-indigo-800">應用題／挑戰題</h2>
             </div>
             
             <div class="bg-white rounded-lg p-5 shadow-sm mb-6 border border-indigo-100">
@@ -139,7 +140,7 @@
 
             <!-- Challenge Interaction -->
             <div class="text-center">
-                <p class="text-slate-800 font-medium mb-3">請問最後的餘額是多少元？代表什麼意義？</p>
+                <p class="text-slate-800 font-medium mb-3">請問最後的餘額是多少元？</p>
                 <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
                     <input type="number" id="challenge-answer" placeholder="輸入數字..." class="px-4 py-2 border-2 border-indigo-300 rounded-lg focus:outline-none focus:border-indigo-600 w-32 text-center font-bold">
                     <button onclick="checkChallenge()" class="px-6 py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition">檢查答案</button>
@@ -167,6 +168,13 @@
                             <p class="text-xs text-slate-500 mt-1">錯！如果 $a = -2$，那 $-a = -(-2) = 2$，會變成正數！</p>
                         </div>
                     </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-red-500 font-bold">❌</span> 
+                        <div>
+                            <span class="font-bold text-slate-800">負負得正，所以 $(-3) + (-5) = 8$？</span>
+                            <p class="text-xs text-slate-500 mt-1">錯！「負負得正」是<b>乘法</b>的規則：$(-3) \times (-5) = 15$。加法要在數線上從 $-3$ 再往左走 $5$ 格：$(-3) + (-5) = -8$。</p>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div class="bg-slate-800 text-slate-100 p-6 rounded-xl shadow-sm">
@@ -179,6 +187,15 @@
     </div>
 
     <script>
+        // KaTeX：只用 $...$ 行內數學式（auto-render 預設不認得單一 $，所以每次都要帶設定）
+        const KATEX_OPT = { delimiters: [{ left: '$', right: '$', display: false }], throwOnError: false };
+        function renderMath(el) {
+            if (el && typeof renderMathInElement !== 'undefined') renderMathInElement(el, KATEX_OPT);
+        }
+        function tex(str) {
+            return (typeof katex !== 'undefined') ? katex.renderToString(String(str), { throwOnError: false }) : String(str);
+        }
+
         // Number Line Logic
         const range = 10;
         let currentPos = 0;
@@ -190,12 +207,13 @@
             lineContainer.innerHTML = '';
             for (let i = -range; i <= range; i++) {
                 const tick = document.createElement('div');
-                tick.className = 'flex flex-col items-center z-10';
+                // 每個刻度寬度設為 0，讓刻度「中心」等距排列（原本負數標籤比較寬，間隔會不一樣）
+                tick.className = 'flex flex-col items-center z-10 w-0';
                 const line = document.createElement('div');
                 line.className = `w-0.5 ${i === 0 ? 'h-4 bg-slate-800' : 'h-2 bg-slate-400'}`;
                 const label = document.createElement('span');
-                label.className = `text-[10px] mt-1 font-bold ${i < 0 ? 'text-red-500' : i > 0 ? 'text-green-600' : 'text-slate-800'}`;
-                label.innerText = i;
+                label.className = `text-[10px] mt-1 font-bold whitespace-nowrap ${i < 0 ? 'text-red-500' : i > 0 ? 'text-green-600' : 'text-slate-800'}${i % 2 !== 0 ? ' invisible sm:visible' : ''}`;
+                label.innerHTML = tex(i);
                 tick.appendChild(line);
                 tick.appendChild(label);
                 lineContainer.appendChild(tick);
@@ -204,10 +222,15 @@
         }
 
         function updatePointer() {
-            const percentage = ((currentPos + range) / (range * 2)) * 100;
-            pointer.style.left = `calc(${percentage}% - 16px)`;
-            pointer.innerText = currentPos;
-            currentValDisplay.innerText = currentPos;
+            // 依照實際刻度的位置對齊小點（原本用百分比計算，沒算到左右留白，會偏離刻度）
+            const tick = lineContainer.children[currentPos + range];
+            if (tick) {
+                const box = pointer.offsetParent.getBoundingClientRect();
+                const mark = tick.firstElementChild.getBoundingClientRect();
+                pointer.style.left = `${mark.left + mark.width / 2 - box.left - pointer.offsetWidth / 2}px`;
+            }
+            pointer.innerHTML = tex(currentPos);
+            currentValDisplay.innerHTML = tex(currentPos);
             if (currentPos > 0) pointer.className = "marker absolute top-1/2 -translate-y-1/2 w-8 h-8 bg-green-600 rounded-full border-4 border-white shadow-lg flex items-center justify-center text-white text-xs font-bold z-20";
             else if (currentPos < 0) pointer.className = "marker absolute top-1/2 -translate-y-1/2 w-8 h-8 bg-red-600 rounded-full border-4 border-white shadow-lg flex items-center justify-center text-white text-xs font-bold z-20";
             else pointer.className = "marker absolute top-1/2 -translate-y-1/2 w-8 h-8 bg-indigo-600 rounded-full border-4 border-white shadow-lg flex items-center justify-center text-white text-xs font-bold z-20";
@@ -215,15 +238,22 @@
 
         function moveMarker(step) {
             const next = currentPos + step;
+            const msg = document.getElementById('line-msg');
             if (next >= -range && next <= range) {
                 currentPos = next;
                 updatePointer();
+                msg.classList.add('hidden');
+            } else {
+                // 超出數線範圍時給提示，避免以為按鈕壞掉
+                msg.innerHTML = `⚠️ 這條數線只畫到 ${tex(-range)} 到 ${tex(range)}，再走就超出範圍囉！`;
+                msg.classList.remove('hidden');
             }
         }
 
         function resetMarker() {
             currentPos = 0;
             updatePointer();
+            document.getElementById('line-msg').classList.add('hidden');
         }
 
         // Quiz Logic
@@ -241,14 +271,14 @@
                     {
                         question: "2️⃣ 題目是「減 $5$」，代表我們要往哪個方向移動？",
                         options: [
-                            { text: "往左移動 $5$ 格", correct: true, feedback: "✅ 沒錯！「減法」就是往左（變小）走。" },
+                            { text: "往左移動 $5$ 格", correct: true, feedback: "✅ 沒錯！「減去正數」就是往左（變小）走。" },
                             { text: "往右移動 $5$ 格", correct: false, feedback: "❌ 往右走是加法喔！" }
                         ]
                     },
                     {
                         question: "3️⃣ 最後會停在哪個數字上？",
                         options: [
-                            { text: "$2$", correct: false, feedback: "❌ 不對，這是在 $0$ 的左邊喔。" },
+                            { text: "$2$", correct: false, feedback: "❌ 不對，答案應該在 $0$ 的左邊喔。" },
                             { text: "$-8$", correct: true, feedback: "🎉 太棒了！ $(-3)$ 往左走 $5$ 格就是 $-8$。" },
                             { text: "$-2$", correct: false, feedback: "❌ 算算看：$-3, -4, -5, -6, -7$... 再一格是？" }
                         ]
@@ -295,12 +325,12 @@
                     {
                         question: "2️⃣ 從 $-4$ 往右移動 $4$ 格後，會到達哪裡？",
                         options: [
-                            { text: "$-8$", correct: false, feedback: "❌ 往右移動，負值應該會增加。" },
+                            { text: "$-8$", correct: false, feedback: "❌ 往右移動，數會變大喔。" },
                             { text: "$0$", correct: true, feedback: "✅ 沒錯！ $-4 + 4 = 0$。" }
                         ]
                     },
                     {
-                        question: "3️⃣ 既然要往右移動 $9$ 格，剛到 $0$ (走了4格)，還要再往右走幾格？",
+                        question: "3️⃣ 既然要往右移動 $9$ 格，剛到 $0$（走了 $4$ 格），還要再往右走幾格？",
                         options: [
                             { text: "再走 $5$ 格，停在 $5$", correct: true, feedback: "🎉 答對了！ $(-4) + 9 = 5$。" },
                             { text: "再走 $9$ 格，停在 $9$", correct: false, feedback: "❌ 別忘了我們已經先從 $-4$ 走到 $0$ 囉。" }
@@ -323,8 +353,11 @@
             const question = quizData[currentQuestionIndex];
             const step = question.steps[currentStepIndex];
             
-            quizTitle.innerText = question.title;
-            progressDisplay.innerText = `第 ${currentQuestionIndex + 1} / ${quizData.length} 題`;
+            quizTitle.innerHTML = question.title;
+            renderMath(quizTitle);
+            progressDisplay.innerHTML = `第 $${currentQuestionIndex + 1}$ / $${quizData.length}$ 題`;
+            renderMath(progressDisplay);
+            answering = false;
 
             let html = `
                 <div class="animate-in fade-in duration-500">
@@ -334,7 +367,7 @@
 
             step.options.forEach((opt, i) => {
                 html += `
-                    <button onclick="handleAnswer(${opt.correct}, '${opt.feedback.replace(/'/g, "\\'")}')" 
+                    <button onclick="handleAnswer(${i}, this)" 
                             class="px-5 py-3 bg-white border-2 border-amber-200 rounded-xl hover:border-amber-500 hover:bg-amber-100 transition shadow-sm font-medium">
                         ${opt.text}
                     </button>
@@ -344,20 +377,23 @@
             html += `</div></div>`;
             quizContent.innerHTML = html;
             // Re-render math in the injected content
-            renderMathInElement(quizContent, {
-                delimiters: [
-                    {left: '$', right: '$', display: false},
-                    {left: '$$', right: '$$', display: true}
-                ]
-            });
+            renderMath(quizContent);
         }
 
-        function handleAnswer(isCorrect, fbText) {
+        let answering = false;   // 答對後等待換題時，不接受再次作答
+        function handleAnswer(optIndex, btn) {
+            if (answering) return;
+            const opt = quizData[currentQuestionIndex].steps[currentStepIndex].options[optIndex];
+            const isCorrect = opt.correct;
             quizFeedback.classList.remove('hidden');
-            quizFeedback.innerHTML = fbText;
-            renderMathInElement(quizFeedback);
+            quizFeedback.innerHTML = opt.feedback;
+            renderMath(quizFeedback);
 
             if (isCorrect) {
+                // 鎖住這一步的所有選項，避免連按跳過下一步
+                answering = true;
+                quizContent.querySelectorAll('button').forEach(b => { b.disabled = true; b.classList.add('opacity-60', 'cursor-not-allowed'); });
+                btn.classList.remove('opacity-60');
                 quizFeedback.className = "mt-6 p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 border-2 border-green-200";
                 setTimeout(() => {
                     quizFeedback.classList.add('hidden');
@@ -397,32 +433,37 @@
 
         // Challenge Logic
         function checkChallenge() {
-            const val = document.getElementById('challenge-answer').value;
+            const raw = document.getElementById('challenge-answer').value.trim();
+            const val = Number(raw);
             const fb = document.getElementById('challenge-feedback');
             fb.classList.remove('hidden');
             
-            if (val === "-700") {
+            if (raw === '') {
+                fb.innerHTML = `✏️ 請先輸入餘額，再按「檢查答案」喔！`;
+                fb.className = "mt-4 p-4 rounded-lg font-bold bg-amber-50 text-amber-800 border-2 border-amber-200";
+            } else if (val === -700) {
                 fb.innerHTML = `✅ 完全正確！最後餘額為 $-700$ 元。<br>這代表帳戶處於「透支」狀態，比 $0$ 元還少了 $700$ 元！`;
                 fb.className = "mt-4 p-4 rounded-lg font-bold bg-green-100 text-green-800 border-2 border-green-200";
-            } else if (val === "700") {
+            } else if (val === 700) {
                 fb.innerHTML = `❌ 數字對了，但符號不對喔！<br>支出比存入多，餘額應該是正還是負？`;
                 fb.className = "mt-4 p-4 rounded-lg font-bold bg-red-100 text-red-800 border-2 border-red-200";
             } else {
                 fb.innerHTML = `❌ 算算看：$500 - 1200$ 是多少？<br>從 $500$ 往左走 $1200$ 步。`;
                 fb.className = "mt-4 p-4 rounded-lg font-bold bg-red-100 text-red-800 border-2 border-red-200";
             }
-            renderMathInElement(fb);
+            renderMath(fb);
         }
 
         window.onload = () => {
             initNumberLine();
             renderStep();
             // Initial Math Render
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: '$', right: '$', display: false},
-                    {left: '$$', right: '$$', display: true}
-                ]
+            renderMath(document.body);
+            // 視窗大小改變時重新對齊數線小點；挑戰題按 Enter 也能檢查
+            window.addEventListener('resize', updatePointer);
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(updatePointer);   // 字型載入後刻度位置會微調，再對齊一次
+            document.getElementById('challenge-answer').addEventListener('keydown', e => {
+                if (e.key === 'Enter' && !e.isComposing) checkChallenge();
             });
         };
     </script>
