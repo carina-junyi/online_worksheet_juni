@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>N-7-4 數的運算規律互動講義</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- 固定 lucide 版本（原本用 @latest，版本一變圖示可能壞掉） -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <!-- 引入 KaTeX 進行數字與數學式渲染 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         body {
@@ -18,9 +23,9 @@
             padding: 2px 6px;
             border-radius: 4px;
             font-weight: bold;
-            font-family: monospace;
             border: 1px solid #fde68a;
             margin: 0 2px;
+            display: inline-block;
         }
         .section-card {
             background-color: white;
@@ -69,9 +74,9 @@
             </h2>
             <ul class="grid md:grid-cols-2 gap-3 text-slate-700 font-medium">
                 <li class="flex items-center gap-2">● 掌握加法與乘法的交換律、結合律</li>
-                <li className="flex items-center gap-2">● 靈活運用乘法對加法的分配律</li>
-                <li className="flex items-center gap-2">● 破解負號去括號的變號陷阱</li>
-                <li className="flex items-center gap-2">● 養成「先觀察、再計算」的數感</li>
+                <li class="flex items-center gap-2">● 靈活運用乘法對加法的分配律</li>
+                <li class="flex items-center gap-2">● 破解負號去括號的變號陷阱</li>
+                <li class="flex items-center gap-2">● 養成「先觀察、再計算」的數感</li>
             </ul>
         </section>
 
@@ -79,22 +84,22 @@
         <div class="grid md:grid-cols-3 gap-4 mb-8">
             <div class="bg-green-50 p-5 rounded-xl border border-green-200">
                 <h3 class="font-bold text-green-700 text-lg mb-2">1️⃣ 交換律</h3>
-                <div class="space-y-2 text-xs font-mono">
-                    <span class="math-fact text-xs">a + b = b + a</span>
-                    <span class="math-fact text-xs">a × b = b × a</span>
+                <div class="space-y-2 text-xs">
+                    <span class="math-fact text-xs">$a + b = b + a$</span>
+                    <span class="math-fact text-xs">$a \times b = b \times a$</span>
                 </div>
             </div>
             <div class="bg-slate-100 p-5 rounded-xl border border-slate-200">
                 <h3 class="font-bold text-slate-700 text-lg mb-2">2️⃣ 結合律</h3>
-                <div class="space-y-2 text-xs font-mono">
-                    <span class="math-fact text-xs">(a+b)+c = a+(b+c)</span>
-                    <span class="math-fact text-xs">(a×b)×c = a×(b×c)</span>
+                <div class="space-y-2 text-xs">
+                    <span class="math-fact text-xs">$(a + b) + c = a + (b + c)$</span>
+                    <span class="math-fact text-xs">$(a \times b) \times c = a \times (b \times c)$</span>
                 </div>
             </div>
             <div class="bg-orange-50 p-5 rounded-xl border border-orange-200">
                 <h3 class="font-bold text-orange-700 text-lg mb-2">3️⃣ 分配律</h3>
-                <div class="text-xs font-mono">
-                    <span class="math-fact text-xs">a(b + c) = ab + ac</span>
+                <div class="text-xs">
+                    <span class="math-fact text-xs">$a(b + c) = ab + ac$</span>
                 </div>
             </div>
         </div>
@@ -105,9 +110,9 @@
                 <i data-lucide="alert-circle"></i> 4️⃣ 去括號陷阱
             </h2>
             <p class="text-sm text-red-800 font-bold mb-4">💡 訣竅：負號進入括號，內部「每一項」都要變號。</p>
-            <div class="grid md:grid-cols-2 gap-4 font-mono font-bold">
-                <div class="bg-white p-3 rounded-xl border border-red-100 text-center">-(a + b) = - a - b</div>
-                <div class="bg-white p-3 rounded-xl border border-red-100 text-center">-(a - b) = - a + b</div>
+            <div class="grid md:grid-cols-2 gap-4 font-bold">
+                <div class="bg-white p-3 rounded-xl border border-red-100 text-center">$-(a + b) = -a - b$</div>
+                <div class="bg-white p-3 rounded-xl border border-red-100 text-center">$-(a - b) = -a + b$</div>
             </div>
         </section>
 
@@ -150,8 +155,8 @@
         <!-- 6. 速算挑戰 -->
         <section class="bg-indigo-900 text-white p-8 rounded-3xl shadow-xl mb-8 relative overflow-hidden">
             <div class="relative z-10">
-                <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 italic tracking-wide">
-                    🚀 速算挑戰：<span class="font-mono text-yellow-300">99 × 6 + 6</span>
+                <h2 class="text-2xl font-bold mb-4 flex flex-wrap items-center gap-2 italic tracking-wide">
+                    🚀 速算挑戰：<span class="text-yellow-300 not-italic">$99 \times 6 + 6$</span>
                 </h2>
                 <div id="speed-challenge-container" class="bg-white/10 p-6 rounded-2xl border border-white/20 mb-6 min-h-[160px] flex flex-col justify-center">
                     <!-- Speed challenge state here -->
@@ -193,14 +198,21 @@
                         <span class="text-red-500">❌</span>
                         <div>
                             <span class="font-bold">減法交換律</span>
-                            <p class="text-slate-400 font-normal">3 - 5 不等於 5 - 3，順序不可隨便換。</p>
+                            <p class="text-slate-400 font-normal">$3 - 5$ 不等於 $5 - 3$，順序不可隨便換。</p>
                         </div>
                     </li>
                     <li class="flex items-start gap-2">
                         <span class="text-red-500">❌</span>
                         <div>
                             <span class="font-bold">漏掉分配律的後項</span>
-                            <p class="text-slate-400 font-normal">2 × (3 + 5) 必須兩項都乘到，不能只乘 3。</p>
+                            <p class="text-slate-400 font-normal">$2 \times (3 + 5)$ 必須兩項都乘到，不能只乘 $3$。</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-red-500">❌</span>
+                        <div>
+                            <span class="font-bold">$-(8 - 3) = -8 - 3$？</span>
+                            <p class="text-slate-400 font-normal">錯！負號要讓括號內每一項都變號，應該是 $-8 + 3$。</p>
                         </div>
                     </li>
                 </ul>
@@ -220,19 +232,46 @@
     </div>
 
     <script>
+        // --- 共用工具 ---
+        // KaTeX：只用 $...$ 行內數學式
+        function renderMath(el) {
+            if (el && typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(el, { delimiters: [{ left: '$', right: '$', display: false }], throwOnError: false });
+            }
+        }
+        // lucide 沒載入時不要讓整頁壞掉
+        function icons() {
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+        }
+        // 統一答案寫法：全形轉半形、各種負號轉成 -、去掉空白和千分位逗號
+        function normAns(s) {
+            return String(s).normalize('NFKC').replace(/[−–—﹣－]/g, '-').replace(/[\s,]/g, '');
+        }
+        // 比對答案：數字題比數值（-29、−29、-29.0 都算對），文字題比文字
+        function sameAns(input, answer) {
+            const a = normAns(input), b = normAns(answer);
+            const num = /^[+-]?\d+(\.\d+)?$/;
+            if (num.test(a) && num.test(b)) return Number(a) === Number(b);
+            return a === b;
+        }
+        // 放進 HTML 屬性前先跳脫，避免學生輸入引號把頁面弄壞
+        function esc(s) {
+            return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
         // --- Data ---
         const lawQuizData = [
-            { q: "7 + 9 = 9 + 7", a: "交換律", detail: "這是把數字的順序對換，結果不變。" },
-            { q: "(3 + 5) + 2 = 3 + (5 + 2)", a: "結合律", detail: "括號先圍住誰都一樣，常用來湊整數。" },
-            { q: "6 × (4 + 1) = 6 × 4 + 6 × 1", a: "分配律", detail: "將括號外的 6 分別乘進去。" }
+            { q: "$7 + 9 = 9 + 7$", a: "交換律", detail: "這是把數字的順序對換，結果不變。" },
+            { q: "$(3 + 5) + 2 = 3 + (5 + 2)$", a: "結合律", detail: "括號先圍住誰都一樣，常用來湊整數。" },
+            { q: "$6 \\times (4 + 1) = 6 \\times 4 + 6 \\times 1$", a: "分配律", detail: "將括號外的 $6$ 分別乘進去。" }
         ];
 
         const testQuestions = [
-            { id: 1, title: "基礎計算 (分配律)", q: "計算 123 × 45 + 123 × 55 = ?", answer: "12300", hint: "觀察兩項都有公因數 123，先合併後面的 (45 + 55)。" },
-            { id: 2, title: "去括號規則", q: "化簡算式 -(15 - 8 + 22) 的最後數值為？", answer: "-29", hint: "先去括號變號為 -15 + 8 - 22，再由左向右計算。" },
-            { id: 3, title: "進階速算 (拆解法)", q: "計算 99 × 13 = ?", answer: "1287", hint: "將 99 拆成 (100 - 1)，利用分配律 100 × 13 - 1 × 13。" },
-            { id: 4, title: "混合運算與正負號", q: "計算 -(-18) + (-25) - 13 = ?", answer: "-20", hint: "-(-18) 變號為 18，算式變為 18 - 25 - 13。" },
-            { id: 5, title: "觀念判斷", q: "若 a = 15, b = 20，則 (a - b) 是否等於 (b - a)？(請填「是」或「否」)", answer: "否", hint: "減法不符合交換律，15-20 = -5 而 20-15 = 5。" }
+            { id: 1, title: "基礎計算 (分配律)", q: "計算 $123 \\times 45 + 123 \\times 55 = ?$", answer: "12300", hint: "觀察兩項都有公因數 $123$，先合併後面的 $(45 + 55)$。" },
+            { id: 2, title: "去括號規則", q: "化簡算式 $-(15 - 8 + 22)$ 的最後數值為？", answer: "-29", hint: "先去括號變號為 $-15 + 8 - 22$，再由左向右計算。" },
+            { id: 3, title: "進階速算 (拆解法)", q: "計算 $99 \\times 13 = ?$", answer: "1287", hint: "將 $99$ 拆成 $(100 - 1)$，利用分配律 $100 \\times 13 - 1 \\times 13$。" },
+            { id: 4, title: "混合運算與正負號", q: "計算 $-(-18) + (-25) - 13 = ?$", answer: "-20", hint: "$-(-18)$ 變號為 $18$，算式變為 $18 - 25 - 13$。" },
+            { id: 5, title: "觀念判斷", q: "若 $a = 15$，$b = 20$，則 $(a - b)$ 是否等於 $(b - a)$？(請填「是」或「否」)", answer: "否", hint: "減法不符合交換律，$15 - 20 = -5$ 而 $20 - 15 = 5$。", placeholder: "填入是或否" }
         ];
 
         const depthProblems = [
@@ -240,20 +279,20 @@
                 title: "基礎：去括號與變號挑戰",
                 expression: "-(8 - 3)",
                 steps: [
-                    { text: "1. 觀察括號外的「-」號", detail: "負號準備進入括號內部。這會讓內部的每一項都「反過來」。", type: "info" },
-                    { text: "2. 第一項「8」的符號", detail: "8 原本是正的。分配到負號後，它會變號成：", type: "sign", answer: "-", prefix: "", suffix: "8", hint: "括號外是負號，裡面的正數 8 必須變號。" },
-                    { text: "3. 第二項「3」的符號", detail: "原本是「-3」。遇到負號「負負得正」後會變成：", type: "sign", answer: "+", prefix: "-8 ", suffix: "3", hint: "關鍵點！負號分配給負 3，會變成正的。" },
-                    { text: "4. 最後計算結果", detail: "現在請計算 -8 + 3：", type: "input", answer: "-5", hint: "欠 8 元還了 3 元，還欠 5 元。" }
+                    { text: "1. 觀察括號外的「$-$」號", detail: "負號準備進入括號內部。這會讓內部的每一項都「反過來」。", type: "info" },
+                    { text: "2. 第一項「$8$」的符號", detail: "$8$ 原本是正的。分配到負號後，它會變號成：", type: "sign", answer: "-", prefix: "", suffix: "8", hint: "括號外是負號，裡面的正數 $8$ 必須變號。" },
+                    { text: "3. 第二項「$3$」的符號", detail: "原本是「$-3$」。遇到負號「負負得正」後會變成：", type: "sign", answer: "+", prefix: "-8", suffix: "3", hint: "關鍵點！負號分配給負 $3$，會變成正的。" },
+                    { text: "4. 最後計算結果", detail: "現在請計算 $-8 + 3$：", type: "input", answer: "-5", hint: "欠 $8$ 元還了 $3$ 元，還欠 $5$ 元。" }
                 ]
             },
             {
                 title: "進階：多項式變號挑戰",
                 expression: "-(12 - 5 + 7)",
                 steps: [
-                    { text: "1. 觀察三項的變號", detail: "負號要對 12, -5, +7 分別進行分配。", type: "info" },
-                    { text: "2. 第一項 12 與第二項 5", detail: "去括號後，12 變 -12，那麼 -5 會變成什麼符號？", type: "sign", answer: "+", prefix: "-12 ", suffix: "5", hint: "負號對上原本的 -5，負負得正。" },
-                    { text: "3. 最後一項 7", detail: "原本的 +7 遇到負號會變什麼符號？", type: "sign", answer: "-", prefix: "-12 + 5 ", suffix: "7", hint: "每一項都要變號，包含最後的正 7。" },
-                    { text: "4. 計算結果", detail: "計算 -12 + 5 - 7：", type: "input", answer: "-14", hint: "可以先算 -12+5=-7，再算 -7-7。" }
+                    { text: "1. 觀察三項的變號", detail: "負號要對 $12$、$-5$、$+7$ 分別進行分配。", type: "info" },
+                    { text: "2. 第一項 $12$ 與第二項 $5$", detail: "去括號後，$12$ 變 $-12$，那麼 $-5$ 會變成什麼符號？", type: "sign", answer: "+", prefix: "-12", suffix: "5", hint: "負號對上原本的 $-5$，負負得正。" },
+                    { text: "3. 最後一項 $7$", detail: "原本的 $+7$ 遇到負號會變什麼符號？", type: "sign", answer: "-", prefix: "-12 + 5", suffix: "7", hint: "每一項都要變號，包含最後的正 $7$。" },
+                    { text: "4. 計算結果", detail: "計算 $-12 + 5 - 7$：", type: "input", answer: "-14", hint: "可以先算 $-12 + 5 = -7$，再算 $-7 - 7$。" }
                 ]
             }
         ];
@@ -264,10 +303,13 @@
         let speedStep = 0;
         let checkedQuestions = {};
         let userAnswers = {};
+        let draftAnswers = {};   // 還沒按「對答案」的作答內容，重畫畫面時要保留
+        let wrongTimes = {};     // 每題答錯幾次：第一次只給解題建議，第二次才公布答案
 
         // --- Initialization ---
         window.onload = () => {
-            lucide.createIcons();
+            renderMath(document.body);
+            icons();
             initLawQuiz();
             renderLab();
             renderSpeedChallenge();
@@ -279,15 +321,16 @@
             const container = document.getElementById('law-quiz-container');
             container.innerHTML = lawQuizData.map((item, idx) => `
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <p class="text-lg font-mono font-bold text-slate-700 mb-3">${item.q}</p>
-                    <div class="flex flex-wrap gap-2">
+                    <p class="text-lg font-bold text-slate-700 mb-3">${item.q}</p>
+                    <div id="law-btns-${idx}" class="flex flex-wrap gap-2">
                         ${["交換律", "結合律", "分配律"].map(btn => `
-                            <button onclick="checkLaw(${idx}, '${btn}')" class="px-4 py-1.5 bg-white border border-slate-300 hover:border-indigo-500 rounded-lg text-sm font-bold transition-all">${btn}</button>
+                            <button onclick="checkLaw(${idx}, '${btn}')" class="px-4 py-1.5 bg-white border border-slate-300 hover:border-indigo-500 rounded-lg text-sm font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed">${btn}</button>
                         `).join('')}
                     </div>
                     <p id="law-feedback-${idx}" class="mt-2 text-sm font-bold hidden"></p>
                 </div>
             `).join('');
+            renderMath(container);
         }
 
         function checkLaw(idx, choice) {
@@ -297,13 +340,23 @@
             if (choice === item.a) {
                 feedback.className = "mt-2 text-sm font-bold text-green-600";
                 feedback.innerHTML = `✅ 正確！${item.detail}`;
+                // 答對後鎖住這一題，避免回頭按錯誤選項蓋掉回饋
+                document.querySelectorAll(`#law-btns-${idx} button`).forEach(b => { b.disabled = true; });
             } else {
                 feedback.className = "mt-2 text-sm font-bold text-red-600";
-                feedback.innerHTML = `❌ 再想想看喔！${item.detail}`;
+                feedback.innerHTML = `❌ 再想想看喔！看看等號兩邊哪裡不一樣：順序？括號位置？還是乘進括號？`;
             }
+            renderMath(feedback);
         }
 
         // --- Lab ---
+        // 已完成步驟右邊要顯示的結果（原本讀取不存在的欄位，永遠是空框）
+        function labResult(s) {
+            if (s.type === 'info') return '✓';
+            if (s.type === 'sign') return `$${s.prefix ? s.prefix + ' ' : ''}${s.answer === '-' ? '-' : (s.prefix ? '+' : '')} ${s.suffix}$`;
+            return `$= ${s.answer}$`;
+        }
+
         function renderLab() {
             const problem = depthProblems[labProblemIdx];
             const header = document.getElementById('lab-header');
@@ -311,8 +364,8 @@
             const successDiv = document.getElementById('lab-success');
 
             header.innerHTML = `
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest bg-slate-100 px-3 py-1 rounded-full">${problem.title}</span>
-                <div class="text-5xl font-mono font-black text-slate-800 mt-4">${problem.expression}</div>
+                <span class="text-xs font-bold text-slate-400 tracking-widest bg-slate-100 px-3 py-1 rounded-full">${problem.title}</span>
+                <div class="text-4xl md:text-5xl font-black text-slate-800 mt-4">$${problem.expression}$</div>
             `;
 
             successDiv.classList.add('hidden');
@@ -320,7 +373,7 @@
                 const isActive = labStep === i;
                 const isPast = labStep > i;
                 const stateClass = isActive ? 'step-active' : (isPast ? 'bg-slate-50 border-slate-100 opacity-60' : 'step-inactive');
-                
+
                 let actionHtml = '';
                 if (isActive) {
                     if (s.type === 'info') {
@@ -328,42 +381,41 @@
                     } else if (s.type === 'sign') {
                         actionHtml = `
                             <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-slate-200">
-                                <span class="font-mono font-bold text-slate-400">${s.prefix}</span>
-                                <button onclick="checkLabInput('+')" class="p-2 border rounded-lg hover:bg-blue-50 text-blue-600"><i data-lucide="plus"></i></button>
-                                <button onclick="checkLabInput('-')" class="p-2 border rounded-lg hover:bg-red-50 text-red-600"><i data-lucide="minus"></i></button>
-                                <span class="font-mono font-bold text-slate-800">${s.suffix}</span>
+                                <span class="font-bold text-slate-400">${s.prefix ? '$' + s.prefix + '$' : ''}</span>
+                                <button onclick="checkLabInput('+')" class="p-2 border rounded-lg hover:bg-blue-50 text-blue-600" aria-label="正號"><i data-lucide="plus"></i></button>
+                                <button onclick="checkLabInput('-')" class="p-2 border rounded-lg hover:bg-red-50 text-red-600" aria-label="負號"><i data-lucide="minus"></i></button>
+                                <span class="font-bold text-slate-800">$${s.suffix}$</span>
                             </div>
                         `;
                     } else if (s.type === 'input') {
                         actionHtml = `
                             <div class="flex items-center gap-2">
-                                <input id="lab-input-field" type="text" class="w-24 p-2 border-2 rounded-lg text-center font-bold" placeholder="答案">
-                                <button onclick="checkLabInput()" class="p-2 bg-amber-500 text-white rounded-lg"><i data-lucide="send" class="w-4 h-4"></i></button>
+                                <input id="lab-input-field" type="text" inputmode="text" autocomplete="off" class="w-24 p-2 border-2 rounded-lg text-center font-bold" placeholder="答案">
+                                <button onclick="checkLabInput()" class="p-2 bg-amber-500 text-white rounded-lg" aria-label="送出"><i data-lucide="send" class="w-4 h-4"></i></button>
                             </div>
                         `;
                     }
                 } else if (isPast) {
-                    const resultText = s.final ? `= ${s.final}` : (s.result || '');
-                    actionHtml = `<div class="px-3 py-1 bg-amber-50 text-amber-700 font-mono font-bold rounded">${resultText}</div>`;
+                    actionHtml = `<div class="px-3 py-1 bg-amber-50 text-amber-700 font-bold rounded">${labResult(s)}</div>`;
                 }
 
                 return `
                     <div class="p-5 rounded-xl border-2 transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-4 ${stateClass}">
                         <div class="flex-1">
                             <h4 class="font-bold text-slate-800 flex items-center gap-2">
-                                ${isPast ? '<i data-lucide="check-circle-2" class="text-green-500 w-4 h-4"></i>' : '<span class="w-4 h-4 rounded-full border border-slate-300"></span>'}
-                                ${s.text}
+                                ${isPast ? '<i data-lucide="check-circle-2" class="text-green-500 w-4 h-4"></i>' : '<span class="w-4 h-4 rounded-full border border-slate-300 shrink-0"></span>'}
+                                <span>${s.text}</span>
                             </h4>
                             ${isActive ? `<p class="text-sm text-slate-600 mt-1 pl-6">${s.detail}</p>` : ''}
                         </div>
                         <div class="flex flex-col items-end gap-1">
                             ${actionHtml}
-                            <div id="lab-hint-${i}" class="text-red-500 text-xs font-bold hidden">提示：${s.hint}</div>
+                            <div id="lab-hint-${i}" class="text-red-500 text-xs font-bold hidden">提示：${s.hint || ''}</div>
                         </div>
                     </div>
                 `;
             }).join('');
-            
+
             if (labStep === problem.steps.length) {
                 successDiv.classList.remove('hidden');
                 successDiv.innerHTML = `
@@ -374,21 +426,27 @@
                     </div>
                 `;
             }
-            lucide.createIcons();
+            renderMath(header);
+            renderMath(stepsContainer);
+            icons();
+            const field = document.getElementById('lab-input-field');
+            if (field) field.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) checkLabInput(); });
         }
 
         function checkLabInput(value) {
             const problem = depthProblems[labProblemIdx];
             const step = problem.steps[labStep];
             const val = value || document.getElementById('lab-input-field').value.trim();
-            
-            if (val === step.answer) {
+
+            if (val !== '' && sameAns(val, step.answer)) {
                 labStep++;
                 renderLab();
             } else {
                 const container = document.querySelector('.step-active');
                 container.classList.add('animate-shake');
-                document.getElementById(`lab-hint-${labStep}`).classList.remove('hidden');
+                const hint = document.getElementById(`lab-hint-${labStep}`);
+                hint.classList.remove('hidden');
+                renderMath(hint);
                 setTimeout(() => container.classList.remove('animate-shake'), 400);
             }
         }
@@ -404,22 +462,22 @@
             if (speedStep === 0) {
                 content = `
                     <div class="text-center">
-                        <p class="mb-4 text-indigo-100">1. 哪個數字是<b>「共同因數」</b>？</p>
+                        <p class="mb-4 text-indigo-100">1. 哪個數字是<b>「公因數」</b>？</p>
                         <div class="flex gap-4 justify-center">
-                            <button onclick="checkSpeed('99')" class="px-8 py-2 bg-white text-indigo-900 rounded-xl font-bold">99</button>
-                            <button onclick="checkSpeed('6')" class="px-8 py-2 bg-white text-indigo-900 rounded-xl font-bold">6</button>
+                            <button onclick="checkSpeed('99')" class="px-8 py-2 bg-white text-indigo-900 rounded-xl font-bold">$99$</button>
+                            <button onclick="checkSpeed('6')" class="px-8 py-2 bg-white text-indigo-900 rounded-xl font-bold">$6$</button>
                         </div>
                     </div>
                 `;
             } else if (speedStep === 1) {
                 content = `
                     <div class="text-center">
-                        <p class="mb-4 text-indigo-100">2. 提取公因數 6 後，括號內填入什麼？</p>
-                        <div class="flex items-center gap-3 justify-center">
+                        <p class="mb-4 text-indigo-100">2. 提取公因數 $6$ 後，括號內填入什麼？</p>
+                        <div class="flex flex-wrap items-center gap-3 justify-center">
                             <span class="text-2xl">(</span>
-                            <input id="speed-in-1" type="text" placeholder="? + ?" class="w-32 bg-transparent border-b-2 text-center text-white outline-none font-mono">
-                            <span class="text-2xl">) × 6</span>
-                            <button onclick="checkSpeed()" class="p-2 bg-yellow-400 text-indigo-900 rounded-lg"><i data-lucide="send" class="w-4 h-4"></i></button>
+                            <input id="speed-in-1" type="text" autocomplete="off" placeholder="? + ?" class="w-32 bg-transparent border-b-2 text-center text-white outline-none font-mono">
+                            <span class="text-2xl">) $\\times 6$</span>
+                            <button onclick="checkSpeed()" class="p-2 bg-yellow-400 text-indigo-900 rounded-lg" aria-label="送出"><i data-lucide="send" class="w-4 h-4"></i></button>
                         </div>
                     </div>
                 `;
@@ -428,8 +486,8 @@
                     <div class="text-center">
                         <p class="mb-4 text-indigo-100">3. 最終答案是多少？</p>
                         <div class="flex items-center gap-3 justify-center">
-                            <input id="speed-in-2" type="text" placeholder="答案" class="w-32 bg-transparent border-b-2 text-center text-white outline-none font-mono">
-                            <button onclick="checkSpeed()" class="p-2 bg-yellow-400 text-indigo-900 rounded-lg"><i data-lucide="check" class="w-4 h-4"></i></button>
+                            <input id="speed-in-2" type="text" autocomplete="off" placeholder="答案" class="w-32 bg-transparent border-b-2 text-center text-white outline-none font-mono">
+                            <button onclick="checkSpeed()" class="p-2 bg-yellow-400 text-indigo-900 rounded-lg" aria-label="送出"><i data-lucide="check" class="w-4 h-4"></i></button>
                         </div>
                     </div>
                 `;
@@ -438,32 +496,47 @@
                     <div class="text-center">
                         <div class="bg-green-500/40 p-4 rounded-xl border border-green-500/50 inline-block mb-2">
                             <i data-lucide="trophy" class="w-8 h-8 text-yellow-300 mx-auto mb-1"></i>
-                            <p class="text-xl font-bold">600</p>
+                            <p class="text-xl font-bold">$600$</p>
                         </div>
                         <p class="text-xs opacity-70">太棒了！</p>
                         <button onclick="speedStep=0;renderSpeedChallenge()" class="text-white underline text-xs mt-2 block mx-auto">再練一次</button>
                     </div>
                 `;
             }
+            content += `<p id="speed-msg" class="text-center text-sm font-bold text-amber-300 mt-3 hidden"></p>`;
             container.innerHTML = content;
-            lucide.createIcons();
+            renderMath(container);
+            icons();
+            ['speed-in-1', 'speed-in-2'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) checkSpeed(); });
+            });
+        }
+
+        // 答錯時只搖一下並提示，不重畫畫面（原本會把學生剛打的答案清掉）
+        function speedWrong(msg) {
+            const box = document.getElementById('speed-challenge-container');
+            box.classList.add('animate-shake');
+            setTimeout(() => box.classList.remove('animate-shake'), 400);
+            const m = document.getElementById('speed-msg');
+            m.innerHTML = msg;
+            m.classList.remove('hidden');
+            renderMath(m);
         }
 
         function checkSpeed(val) {
             if (speedStep === 0) {
-                if (val === '6') speedStep++;
-                else document.getElementById('speed-challenge-container').classList.add('animate-shake');
+                if (val === '6') { speedStep++; renderSpeedChallenge(); }
+                else speedWrong('再看看：$99 \\times 6$ 和 $6$ 這兩項，哪個數字兩邊都有？');
             } else if (speedStep === 1) {
-                const input = document.getElementById('speed-in-1').value.replace(/\s/g, '');
-                if (input === '99+1' || input === '1+99') speedStep++;
-                else document.getElementById('speed-challenge-container').classList.add('animate-shake');
+                const input = normAns(document.getElementById('speed-in-1').value);
+                if (input === '99+1' || input === '1+99') { speedStep++; renderSpeedChallenge(); }
+                else speedWrong(input === '' ? '請先填入括號裡的算式喔！' : '提示：$6$ 可以看成 $1 \\times 6$。');
             } else if (speedStep === 2) {
                 const input = document.getElementById('speed-in-2').value.trim();
-                if (input === '600') speedStep++;
-                else document.getElementById('speed-challenge-container').classList.add('animate-shake');
+                if (input !== '' && sameAns(input, '600')) { speedStep++; renderSpeedChallenge(); }
+                else speedWrong(input === '' ? '請先填入答案喔！' : '再算一次：$(99 + 1) \\times 6 = ?$');
             }
-            renderSpeedChallenge();
-            setTimeout(() => document.getElementById('speed-challenge-container').classList.remove('animate-shake'), 400);
         }
 
         // --- Test ---
@@ -471,20 +544,21 @@
             const container = document.getElementById('test-container');
             container.innerHTML = testQuestions.map((q, idx) => {
                 const isChecked = checkedQuestions[q.id];
-                const isCorrect = userAnswers[q.id] === q.answer;
+                const isCorrect = isChecked && sameAns(userAnswers[q.id], q.answer);
                 const statusClass = isChecked ? (isCorrect ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50') : 'border-slate-200 focus:border-indigo-500';
+                const shown = isChecked ? userAnswers[q.id] : (draftAnswers[q.id] || '');
 
                 return `
                     <div class="relative pl-8">
                         <span class="absolute left-0 top-0 text-3xl font-black text-indigo-100">${idx + 1}</span>
                         <div class="mb-4">
                             <h3 class="font-bold text-indigo-900 text-lg mb-1">${q.title}</h3>
-                            <p class="text-slate-800 text-xl font-mono bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-inner">${q.q}</p>
+                            <p class="text-slate-800 text-xl bg-slate-50 p-4 rounded-xl border border-slate-100 shadow-inner">${q.q}</p>
                         </div>
                         <div class="flex flex-wrap items-center gap-4">
                             <div class="flex items-center gap-2">
-                                <span class="font-bold text-slate-500">答：</span>
-                                <input id="test-input-${q.id}" type="text" value="${userAnswers[q.id] || ''}" ${isChecked ? 'disabled' : ''} class="w-full md:w-48 px-4 py-2 border-2 rounded-lg font-mono ${statusClass}" placeholder="填入數字">
+                                <span class="font-bold text-slate-500 shrink-0">答：</span>
+                                <input id="test-input-${q.id}" type="text" autocomplete="off" value="${esc(shown)}" ${isChecked ? 'disabled' : ''} class="w-full md:w-48 px-4 py-2 border-2 rounded-lg font-mono ${statusClass}" placeholder="${q.placeholder || '填入數字'}">
                             </div>
                             ${!isChecked ? `
                                 <button onclick="checkTestAnswer(${q.id})" class="px-6 py-2 bg-indigo-500 text-white rounded-lg font-bold hover:bg-indigo-600 transition-all flex items-center gap-1">
@@ -499,9 +573,11 @@
                                 </div>
                             `}
                         </div>
+                        <p id="test-msg-${q.id}" class="mt-2 text-sm font-bold text-amber-700 hidden">✏️ 請先填入答案，再按「對答案」喔！</p>
                         ${isChecked ? `
                             <div class="mt-4 p-4 bg-indigo-50 rounded-xl border border-indigo-100 text-sm text-indigo-900">
-                                ${!isCorrect ? `<p class="mb-2 font-black text-red-600 italic">正確答案是：${q.answer}</p>` : ''}
+                                ${!isCorrect && (wrongTimes[q.id] || 0) < 2 ? `<p class="mb-2 font-black text-red-600">再算一次！看完下面的建議，按「重寫」重新作答。</p>` : ''}
+                                ${!isCorrect && (wrongTimes[q.id] || 0) >= 2 ? `<p class="mb-2 font-black text-red-600 italic">正確答案是：${/^-?\d+$/.test(q.answer) ? '$' + q.answer + '$' : q.answer}</p>` : ''}
                                 <span class="font-bold flex items-center gap-1 mb-1"><i data-lucide="lightbulb" class="w-4 h-4"></i> 解題建議：</span>
                                 ${q.hint}
                             </div>
@@ -509,14 +585,29 @@
                     </div>
                 `;
             }).join('');
+            renderMath(container);
             updateSummary();
-            lucide.createIcons();
+            icons();
+            // 隨時記下還沒對答案的作答，按 Enter 也能對答案
+            testQuestions.forEach(q => {
+                const el = document.getElementById(`test-input-${q.id}`);
+                if (!el || el.disabled) return;
+                el.addEventListener('input', () => { draftAnswers[q.id] = el.value; });
+                el.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) checkTestAnswer(q.id); });
+            });
         }
 
         function checkTestAnswer(id) {
             const val = document.getElementById(`test-input-${id}`).value.trim();
+            if (val === '') {
+                document.getElementById(`test-msg-${id}`).classList.remove('hidden');
+                return;
+            }
             userAnswers[id] = val;
             checkedQuestions[id] = true;
+            delete draftAnswers[id];
+            const q = testQuestions.find(t => t.id === id);
+            if (!sameAns(val, q.answer)) wrongTimes[id] = (wrongTimes[id] || 0) + 1;
             renderTest();
         }
 
@@ -529,29 +620,32 @@
         function updateSummary() {
             const summary = document.getElementById('test-summary');
             const done = Object.keys(checkedQuestions).length;
-            const correctCount = testQuestions.filter(q => checkedQuestions[q.id] && userAnswers[q.id] === q.answer).length;
+            const correctCount = testQuestions.filter(q => checkedQuestions[q.id] && sameAns(userAnswers[q.id], q.answer)).length;
 
             summary.innerHTML = `
                 <div class="flex gap-2 mb-4">
                     ${testQuestions.map(q => `
-                        <div class="w-4 h-4 rounded-full ${checkedQuestions[q.id] ? (userAnswers[q.id] === q.answer ? 'bg-green-500' : 'bg-red-500') : 'bg-slate-200'}"></div>
+                        <div class="w-4 h-4 rounded-full ${checkedQuestions[q.id] ? (sameAns(userAnswers[q.id], q.answer) ? 'bg-green-500' : 'bg-red-500') : 'bg-slate-200'}"></div>
                     `).join('')}
                 </div>
-                <p class="text-slate-500 font-bold italic text-sm">目前進度：已完成 ${done} / ${testQuestions.length} 題 (答對 ${correctCount} 題)</p>
+                <p class="text-slate-500 font-bold italic text-sm">目前進度：已完成 $${done}$ / $${testQuestions.length}$ 題 (答對 $${correctCount}$ 題)</p>
                 ${done === testQuestions.length ? `
-                    <div class="mt-6 animate-in zoom-in">
+                    <div class="mt-6">
                         <i data-lucide="trophy" class="w-12 h-12 text-yellow-400 mx-auto mb-2"></i>
-                        <p class="text-3xl font-black text-indigo-900">${correctCount * 20} 分！</p>
+                        <p class="text-3xl font-black text-indigo-900">$${correctCount * 20}$ 分！</p>
                         <button onclick="resetAllTest()" class="mt-4 px-6 py-2 bg-slate-200 text-slate-700 rounded-full font-bold">全部重考</button>
                     </div>
                 ` : ''}
             `;
-            lucide.createIcons();
+            renderMath(summary);
+            icons();
         }
 
         function resetAllTest() {
             userAnswers = {};
             checkedQuestions = {};
+            draftAnswers = {};
+            wrongTimes = {};
             renderTest();
         }
     </script>
