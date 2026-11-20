@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>國中數學 N-7-5：數線與絕對值互動講義</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 KaTeX 進行數字與數學式渲染 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
         body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
-        .math-fact { background-color: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-family: monospace; border: 1px solid #fde68a; display: inline-block; }
+        .math-fact { background-color: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-weight: bold; border: 1px solid #fde68a; display: inline-block; }
         .math-fact-blue { background-color: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
         .math-fact-red { background-color: #fee2e2; color: #b91c1c; border-color: #fecaca; }
         .math-fact-green { background-color: #dcfce7; color: #15803d; border-color: #bbf7d0; }
-        .var { font-style: italic; font-weight: bold; font-family: serif; color: #0f172a; margin: 0 2px; }
         .hidden { display: none; }
         .animate-bounce-short { animation: bounce 1s infinite; }
         @keyframes bounce {
@@ -23,7 +26,7 @@
 </head>
 <body class="p-4 md:p-8">
     <div class="max-w-4xl mx-auto">
-        
+
         <!-- Header -->
         <header class="text-center mb-10">
             <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 數線與絕對值</h1>
@@ -46,44 +49,44 @@
             <div class="bg-red-50 p-5 rounded-xl border border-red-200 shadow-sm">
                 <h3 class="font-bold text-red-700 mb-2">❶ 數線三要素</h3>
                 <p class="text-xs text-red-800 leading-relaxed">
-                    包含 <span class="font-bold text-red-600">原點(0)</span>、<span class="font-bold text-blue-600">正向(右)</span>、與固定長度的 <span class="font-bold text-green-600">單位長</span>。
+                    包含 <span class="font-bold text-red-600">原點（$0$）</span>、<span class="font-bold text-blue-600">正向（右）</span>、與固定長度的 <span class="font-bold text-green-600">單位長</span>。
                 </p>
             </div>
             <div class="bg-blue-50 p-5 rounded-xl border border-blue-200 shadow-sm">
                 <h3 class="font-bold text-blue-700 mb-2">❷ 相反數</h3>
                 <p class="text-xs text-blue-800 leading-relaxed">
-                    原點兩側且距離相等。範例：<span class="math-fact math-fact-blue">4</span> 與 <span class="math-fact math-fact-blue">-4</span>。
+                    原點兩側且距離相等。範例：<span class="math-fact math-fact-blue">$4$</span> 與 <span class="math-fact math-fact-blue">$-4$</span>。
                 </p>
             </div>
             <div class="bg-orange-50 p-5 rounded-xl border border-orange-200 shadow-sm">
                 <h3 class="font-bold text-orange-700 mb-2">❸ 絕對值</h3>
                 <p class="text-xs text-orange-800 leading-relaxed font-bold underline">
-                    數值到原點的「距離」。範例：<span class="math-fact">|-3| = 3</span>。
+                    數值到原點的「距離」。範例：<span class="math-fact">$|{-3}| = 3$</span>。
                 </p>
             </div>
         </div>
 
         <!-- 3. Worked Examples -->
         <section class="mb-10">
-            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">📖 三、例題與解答</h2>
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">📖 例題與解答</h2>
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <span class="text-xs font-bold bg-indigo-100 text-indigo-700 px-2 py-1 rounded mb-3 inline-block">例題 1：比較負數大小</span>
-                    <p class="text-slate-700 font-medium mb-4">比較 <span class="math-fact">-15</span> 和 <span class="math-fact">-18</span> 的大小。</p>
+                    <p class="text-slate-700 font-medium mb-4">比較 <span class="math-fact">$-15$</span> 和 <span class="math-fact">$-18$</span> 的大小。</p>
                     <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-500 text-sm">
                         <p class="text-slate-700 font-bold mb-1">✏️ 解題引導：</p>
-                        <p class="text-slate-600">-15 比 -18 更靠近原點 0。<br>在數線上，越靠右邊的數越大。</p>
-                        <div class="mt-3 text-lg font-bold text-indigo-700">結論：<span class="math-fact math-fact-green">-15 > -18</span></div>
+                        <p class="text-slate-600">$-15$ 比 $-18$ 更靠近原點 $0$。<br>在數線上，越靠右邊的數越大。</p>
+                        <div class="mt-3 text-lg font-bold text-indigo-700">結論：<span class="math-fact math-fact-green">$-15 > -18$</span></div>
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <span class="text-xs font-bold bg-indigo-100 text-indigo-700 px-2 py-1 rounded mb-3 inline-block">例題 2：數線距離</span>
-                    <p class="text-slate-700 font-medium mb-4">求數線上 <span class="math-fact">-6</span> 與 <span class="math-fact">8</span> 的距離。</p>
+                    <p class="text-slate-700 font-medium mb-4">求數線上 <span class="math-fact">$-6$</span> 與 <span class="math-fact">$8$</span> 的距離。</p>
                     <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-500 text-sm">
                         <p class="text-slate-700 font-bold mb-1">✏️ 解題說明：</p>
-                        <p class="mb-2">公式：<span class="math-fact">|<span class="var">a</span> - <span class="var">b</span>|</span></p>
-                        <p class="font-mono font-bold text-slate-800">| 8 - (-6) | = | 8 + 6 | = 14</p>
-                        <div class="mt-3 text-lg font-bold text-indigo-700">結論：距離為 14 單位</div>
+                        <p class="mb-2">公式：<span class="math-fact">$|a - b|$</span></p>
+                        <p class="font-bold text-slate-800">$|8 - (-6)| = |8 + 6| = 14$</p>
+                        <div class="mt-3 text-lg font-bold text-indigo-700">結論：距離為 $14$ 單位</div>
                     </div>
                 </div>
             </div>
@@ -95,13 +98,13 @@
                 <h2 class="text-2xl font-bold text-slate-800">🧮 互動數線實驗室</h2>
                 <div class="flex gap-2">
                     <button onclick="toggleElements()" class="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-bold shadow-sm">三要素開關</button>
-                    <button onclick="resetPoint()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium">重設點 A</button>
+                    <button onclick="resetPoint()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium">重設點 $A$</button>
                 </div>
             </div>
 
             <!-- Main container for number line -->
             <div class="relative w-full h-48 flex items-center justify-center my-4 bg-slate-50 rounded-xl px-6 border border-slate-200" id="number-line-container">
-                
+
                 <!-- Elements Overlay (Origin, Direction, Unit) -->
                 <div id="elements-overlay" class="absolute w-11/12 h-full flex items-center pointer-events-none">
                     <!-- Origin Label -->
@@ -133,12 +136,12 @@
                 <div class="absolute w-11/12 flex justify-between items-center h-full" id="ticks-container">
                     <!-- Ticks injected by JS -->
                 </div>
-                
+
                 <!-- Active Point A (Centered on the line vertically and horizontally) -->
                 <div id="point-a" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center z-30 transition-all duration-300 ease-out" style="left: 50%;">
                     <!-- Label above the point -->
                     <div class="absolute bottom-full mb-3 bg-blue-600 text-white text-xs px-2 py-1 rounded shadow-lg animate-bounce-short font-bold whitespace-nowrap" id="point-label">
-                        座標 a: 0
+                        座標 $a$：$0$
                     </div>
                     <!-- Point circle -->
                     <div class="w-6 h-6 bg-blue-600 rounded-full ring-4 ring-blue-200 shadow-md"></div>
@@ -147,44 +150,45 @@
 
             <div class="grid grid-cols-2 gap-4 mt-8">
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center shadow-sm">
-                    <span class="text-xs text-slate-500 block mb-1 font-bold uppercase tracking-wider">座標 <span class="var text-blue-600">a</span></span>
-                    <div class="text-3xl font-mono font-bold text-blue-600" id="display-pos">0</div>
+                    <span class="text-xs text-slate-500 block mb-1 font-bold tracking-wider">座標 <span class="text-blue-600">$a$</span></span>
+                    <div class="text-3xl font-bold text-blue-600" id="display-pos">$0$</div>
                 </div>
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center shadow-sm">
-                    <span class="text-xs text-slate-500 block mb-1 font-bold uppercase tracking-wider">距離 <span class="var text-orange-600">|a|</span></span>
-                    <div class="text-3xl font-mono font-bold text-orange-600" id="display-abs">0</div>
+                    <span class="text-xs text-slate-500 block mb-1 font-bold tracking-wider">距離 <span class="text-orange-600">$|a|$</span></span>
+                    <div class="text-3xl font-bold text-orange-600" id="display-abs">$0$</div>
                 </div>
             </div>
 
             <div class="flex justify-center gap-3 mt-6">
-                <button onclick="movePoint(-5)" class="px-5 py-2 bg-slate-700 text-white rounded-lg font-bold hover:bg-slate-800 active:scale-95 transition-all">-5</button>
-                <button onclick="movePoint(-1)" class="px-5 py-2 bg-slate-700 text-white rounded-lg font-bold hover:bg-slate-800 active:scale-95 transition-all">-1</button>
-                <button onclick="movePoint(1)" class="px-5 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 active:scale-95 transition-all">+1</button>
-                <button onclick="movePoint(5)" class="px-5 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 active:scale-95 transition-all">+5</button>
+                <button onclick="movePoint(-5)" class="px-5 py-2 bg-slate-700 text-white rounded-lg font-bold hover:bg-slate-800 active:scale-95 transition-all">$-5$</button>
+                <button onclick="movePoint(-1)" class="px-5 py-2 bg-slate-700 text-white rounded-lg font-bold hover:bg-slate-800 active:scale-95 transition-all">$-1$</button>
+                <button onclick="movePoint(1)" class="px-5 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 active:scale-95 transition-all">$+1$</button>
+                <button onclick="movePoint(5)" class="px-5 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 active:scale-95 transition-all">$+5$</button>
             </div>
+            <p id="line-msg" class="hidden mt-3 text-center text-sm font-bold text-amber-700"></p>
         </section>
 
         <!-- 5. Step Quiz: -3 + 7 -->
         <section class="bg-amber-50 rounded-xl shadow-sm p-6 mb-10 border border-amber-200">
-            <h2 class="text-xl font-bold text-amber-800 mb-6 flex items-center gap-2">🔍 四、練習：計算 <span class="math-fact">(-3) + 7</span></h2>
-            
+            <h2 class="text-xl font-bold text-amber-800 mb-6 flex flex-wrap items-center gap-2">🔍 練習一：計算 <span class="math-fact">$(-3) + 7$</span></h2>
+
             <div class="space-y-4" id="step-quiz">
                 <div id="step-1" class="p-4 bg-white rounded-lg border border-amber-200 transition-opacity">
-                    <p class="text-sm font-bold mb-3">1️⃣ 首先，<span class="math-fact">-3</span> 在哪裡？</p>
-                    <button onclick="nextStep(1, true)" class="px-4 py-1 border rounded hover:bg-amber-100 font-medium transition-colors">在原點左邊</button>
-                    <button onclick="nextStep(1, false)" class="px-4 py-1 border rounded hover:bg-amber-100 font-medium transition-colors">在原點右邊</button>
+                    <p class="text-sm font-bold mb-3">1️⃣ 首先，<span class="math-fact">$-3$</span> 在哪裡？</p>
+                    <button onclick="nextStep(1, true)" class="px-4 py-1 border rounded hover:bg-amber-100 font-medium transition-colors disabled:cursor-not-allowed">在原點左邊</button>
+                    <button onclick="nextStep(1, false)" class="px-4 py-1 border rounded hover:bg-amber-100 font-medium transition-colors disabled:cursor-not-allowed">在原點右邊</button>
                 </div>
                 <div id="step-2" class="p-4 bg-white rounded-lg border border-amber-200 hidden">
-                    <p class="text-sm font-bold mb-3">2️⃣ 「加上 7」代表往哪裡移動？</p>
-                    <button onclick="nextStep(2, false)" class="px-4 py-1 border rounded hover:bg-amber-100 font-medium transition-colors">⬅️ 向左</button>
-                    <button onclick="nextStep(2, true)" class="px-4 py-1 border rounded hover:bg-amber-100 font-medium transition-colors">➡️ 向右</button>
+                    <p class="text-sm font-bold mb-3">2️⃣ 「加上 $7$」代表往哪裡移動？</p>
+                    <button onclick="nextStep(2, false)" class="px-4 py-1 border rounded hover:bg-amber-100 font-medium transition-colors disabled:cursor-not-allowed">⬅️ 向左</button>
+                    <button onclick="nextStep(2, true)" class="px-4 py-1 border rounded hover:bg-amber-100 font-medium transition-colors disabled:cursor-not-allowed">➡️ 向右</button>
                 </div>
                 <div id="step-3" class="p-4 bg-white rounded-lg border border-amber-200 hidden">
                     <p class="text-sm font-bold mb-3">3️⃣ 最後停在哪個數字？</p>
                     <div class="flex gap-2">
-                        <button onclick="nextStep(3, false)" class="w-12 py-1 border rounded hover:bg-amber-100 font-bold transition-colors">-10</button>
-                        <button onclick="nextStep(3, true)" class="w-12 py-1 border rounded hover:bg-amber-100 font-bold transition-colors">4</button>
-                        <button onclick="nextStep(3, false)" class="w-12 py-1 border rounded hover:bg-amber-100 font-bold transition-colors">-4</button>
+                        <button onclick="nextStep(3, false)" class="w-12 py-1 border rounded hover:bg-amber-100 font-bold transition-colors disabled:cursor-not-allowed">$-10$</button>
+                        <button onclick="nextStep(3, true)" class="w-12 py-1 border rounded hover:bg-amber-100 font-bold transition-colors disabled:cursor-not-allowed">$4$</button>
+                        <button onclick="nextStep(3, false)" class="w-12 py-1 border rounded hover:bg-amber-100 font-bold transition-colors disabled:cursor-not-allowed">$-4$</button>
                     </div>
                 </div>
                 <div id="step-feedback" class="p-3 rounded-lg text-sm font-bold text-center hidden"></div>
@@ -195,16 +199,16 @@
         <section class="bg-slate-50 rounded-xl p-6 mb-10 border border-slate-200">
             <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2 underline decoration-blue-400">🧮 練習二：正確性判斷</h2>
             <div class="space-y-4">
-                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-                    <p class="text-lg font-mono font-bold mb-3">|-9| = 9</p>
-                    <button onclick="judge(1, true, true)" class="px-4 py-1 bg-slate-100 rounded border hover:bg-slate-200 transition-colors">正確 ✅</button>
-                    <button onclick="judge(1, false, true)" class="px-4 py-1 bg-slate-100 rounded border hover:bg-slate-200 transition-colors">錯誤 ❌</button>
+                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm" id="judge-1">
+                    <p class="text-lg font-bold mb-3">$|{-9}| = 9$</p>
+                    <button onclick="judge(1, true, true)" class="px-4 py-1 bg-slate-100 rounded border hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">正確 ✅</button>
+                    <button onclick="judge(1, false, true)" class="px-4 py-1 bg-slate-100 rounded border hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">錯誤 ❌</button>
                     <div id="judge-1-feedback" class="mt-2 text-xs hidden p-2 rounded"></div>
                 </div>
-                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-                    <p class="text-lg font-mono font-bold mb-3">絕對值越大，數值一定越大</p>
-                    <button onclick="judge(2, true, false)" class="px-4 py-1 bg-slate-100 rounded border hover:bg-slate-200 transition-colors">正確 ✅</button>
-                    <button onclick="judge(2, false, false)" class="px-4 py-1 bg-slate-100 rounded border hover:bg-slate-200 transition-colors">錯誤 ❌</button>
+                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm" id="judge-2">
+                    <p class="text-lg font-bold mb-3">絕對值越大，數值一定越大</p>
+                    <button onclick="judge(2, true, false)" class="px-4 py-1 bg-slate-100 rounded border hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">正確 ✅</button>
+                    <button onclick="judge(2, false, false)" class="px-4 py-1 bg-slate-100 rounded border hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">錯誤 ❌</button>
                     <div id="judge-2-feedback" class="mt-2 text-xs hidden p-2 rounded"></div>
                 </div>
             </div>
@@ -213,10 +217,10 @@
         <!-- 7. Application Challenge -->
         <section class="bg-indigo-900 text-white rounded-2xl p-8 mb-10 shadow-xl relative overflow-hidden">
             <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full -mr-16 -mt-16"></div>
-            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2 text-indigo-100">📍 五、應用題：距離計算</h2>
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2 text-indigo-100">📍 應用題：距離計算</h2>
             <div class="bg-white/10 p-6 rounded-xl border border-white/20">
                 <p class="text-blue-100 mb-6 leading-relaxed">
-                    甲地位於 <span class="math-fact math-fact-red">0</span>，乙地位於 <span class="math-fact">-12</span>，丙地位於 <span class="math-fact">5</span>。
+                    甲地位於 <span class="math-fact math-fact-red">$0$</span>，乙地位於 <span class="math-fact">$-12$</span>，丙地位於 <span class="math-fact">$5$</span>。
                 </p>
                 <div class="space-y-6">
                     <div>
@@ -239,25 +243,73 @@
             </div>
         </section>
 
+        <!-- 常見迷思 & 生活中的數學 -->
+        <div class="grid md:grid-cols-2 gap-6 mb-10">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center gap-2">⚠️ 數線與絕對值三大常見迷思</h3>
+                <ul class="text-sm space-y-3 text-slate-600 font-medium">
+                    <li>
+                        ❌ <span class="text-red-500 font-bold">$|{-5}| = -5$？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！絕對值是到原點的距離，不會是負數：$|{-5}| = 5$。</span>
+                    </li>
+                    <li>
+                        ❌ <span class="text-red-500 font-bold">$-18 > -15$？</span>
+                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！$-18$ 在 $-15$ 的左邊，越左邊越小，所以 $-18 < -15$。</span>
+                    </li>
+                    <li>
+                        ❌ <span class="text-red-500 font-bold">$-6$ 與 $8$ 的距離是 $8 - 6 = 2$？</span>
+                        <span class="bg-amber-50 border border-amber-200 p-1.5 rounded text-amber-800 text-xs block mt-1">錯！兩點距離要用 $|a - b|$：$|8 - (-6)| = 14$，不能把負號丟掉。</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
+                <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center gap-2 text-amber-400">💡 生活中的數線與絕對值</h3>
+                <p class="text-sm leading-relaxed opacity-90">
+                    1. <b>溫度計：</b>$-3^\circ\mathrm{C}$ 和 $3^\circ\mathrm{C}$ 離 $0^\circ\mathrm{C}$ 一樣遠，絕對值都是 $3$，但一個冷、一個暖。<br>
+                    2. <b>海拔高度：</b>以海平面為 $0$ 公尺，潛水員在 $-20$ 公尺、海鷗在 $15$ 公尺，兩者相距 $|15 - (-20)| = 35$ 公尺。<br>
+                    3. <b>時間線：</b>以今天為 $0$，$3$ 天前記為 $-3$、$5$ 天後記為 $5$，兩天相隔 $|5 - (-3)| = 8$ 天。
+                </p>
+            </div>
+        </div>
+
         <!-- 8. Reflection -->
         <footer class="bg-slate-200 rounded-xl p-8 mb-10">
-            <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">💭 六、反思與討論</h2>
+            <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">💭 反思與討論</h2>
             <div class="space-y-4">
                 <div class="bg-white/60 p-4 rounded-xl border border-slate-300 flex gap-4 hover:shadow-sm transition-shadow">
                     <span class="w-8 h-8 rounded-full bg-slate-800 text-white flex-shrink-0 flex items-center justify-center font-bold">1</span>
-                    <p class="text-sm font-bold text-slate-800">為什麼「距離」不能是負數？試著用走路的感覺說明。<br><span class="text-xs text-slate-500 font-normal mt-1 block italic">提示：倒退走 3 步，你移動的距離是 3 還是 -3？</span></p>
+                    <p class="text-sm font-bold text-slate-800">為什麼「距離」不能是負數？試著用走路的感覺說明。<br><span class="text-xs text-slate-500 font-normal mt-1 block italic">提示：倒退走 $3$ 步，你移動的距離是 $3$ 還是 $-3$？</span></p>
                 </div>
                 <div class="bg-white/60 p-4 rounded-xl border border-slate-300 flex gap-4 hover:shadow-sm transition-shadow">
                     <span class="w-8 h-8 rounded-full bg-slate-800 text-white flex-shrink-0 flex items-center justify-center font-bold">2</span>
                     <p class="text-sm font-bold text-slate-800">絕對值和「去括號」是一樣的事情嗎？差別在哪？<br><span class="text-xs text-slate-500 font-normal mt-1 block italic">提示：絕對值代表距離，脫離絕對值後必為非負值。</span></p>
                 </div>
             </div>
-            <div class="mt-10 text-center text-xs text-slate-500 font-medium italic">© 2025 互動式數學講義 · N-7-5 數線與絕對值</div>
+            <div class="mt-10 text-center text-xs text-slate-500 font-medium italic">© 2026 互動式數學講義 · N-7-5 數線與絕對值</div>
         </footer>
 
     </div>
 
     <script>
+        // KaTeX：只用 $...$ 行內數學式
+        function renderMath(el) {
+            if (el && typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(el, { delimiters: [{ left: '$', right: '$', display: false }], throwOnError: false });
+            }
+        }
+        function setMath(el, html) {
+            if (typeof el === 'string') el = document.getElementById(el);
+            el.innerHTML = html;
+            renderMath(el);
+        }
+        function tex(str) {
+            return (typeof katex !== 'undefined') ? katex.renderToString(String(str), { throwOnError: false }) : String(str);
+        }
+        // 把某區塊的按鈕全部鎖住（答對後使用，避免回頭按錯誤選項蓋掉回饋）
+        function lockButtons(id) {
+            document.querySelectorAll('#' + id + ' button').forEach(b => { b.disabled = true; });
+        }
+
         let currentPos = 0;
 
         // 初始化數線刻度
@@ -268,8 +320,8 @@
                 const tick = document.createElement('div');
                 tick.className = 'relative flex flex-col items-center justify-center w-0';
                 tick.innerHTML = `
-                    <div class="h-3 w-0.5 ${i % 5 === 0 ? 'bg-slate-800 h-5 w-1' : 'bg-slate-400'}"></div>
-                    <span class="absolute top-6 text-[10px] md:text-xs font-medium ${i === 0 ? 'text-red-600 font-black' : 'text-slate-500'}">${i}</span>
+                    <div class="${i % 5 === 0 ? 'bg-slate-800 h-5 w-1' : 'bg-slate-400 h-3 w-0.5'}"></div>
+                    <span class="absolute top-6 text-[10px] md:text-xs font-medium whitespace-nowrap ${i === 0 ? 'text-red-600 font-black' : 'text-slate-500'}${i % 2 !== 0 ? ' invisible sm:visible' : ''}">${tex(i)}</span>
                 `;
                 container.appendChild(tick);
             }
@@ -277,12 +329,22 @@
 
         // 移動點 A
         function movePoint(val) {
-            currentPos = Math.max(-10, Math.min(10, currentPos + val));
+            const msg = document.getElementById('line-msg');
+            const next = currentPos + val;
+            if (next < -10 || next > 10) {
+                // 超出範圍時提示，避免以為按鈕壞掉
+                msg.innerHTML = `⚠️ 這條數線只畫到 ${tex(-10)} 到 ${tex(10)}，點 ${tex('A')} 停在最邊邊囉！`;
+                msg.classList.remove('hidden');
+            } else {
+                msg.classList.add('hidden');
+            }
+            currentPos = Math.max(-10, Math.min(10, next));
             updateUI();
         }
 
         function resetPoint() {
             currentPos = 0;
+            document.getElementById('line-msg').classList.add('hidden');
             updateUI();
         }
 
@@ -294,14 +356,19 @@
 
             // 精確百分比計算：(-10 到 10) 映射到 (0% 到 100%)
             const percentage = ((currentPos + 10) / 20) * 100;
-            
+
             // 由於線段寬度是 11/12 (91.6666%)，左右邊距各是 4.1666%
             const leftOffset = (percentage * 0.91666) + 4.1666;
             point.style.left = `${leftOffset}%`;
-            
-            label.innerText = `座標 a: ${currentPos}`;
-            dPos.innerText = currentPos;
-            dAbs.innerText = Math.abs(currentPos);
+
+            // 點靠近左右兩端時，標籤往內靠，避免超出數線框（手機上會被切掉）
+            label.style.left = currentPos >= 7 ? 'auto' : (currentPos <= -7 ? '0' : '50%');
+            label.style.right = currentPos >= 7 ? '0' : 'auto';
+            label.style.translate = (currentPos > -7 && currentPos < 7) ? '-50% 0' : '0 0';
+
+            label.innerHTML = `座標 ${tex('a')}：${tex(currentPos)}`;
+            dPos.innerHTML = tex(currentPos);
+            dAbs.innerHTML = tex(Math.abs(currentPos));
         }
 
         function toggleElements() {
@@ -315,36 +382,48 @@
             fb.classList.remove('hidden');
 
             if (isCorrect) {
-                fb.innerText = "✅ 正確！繼續下一步...";
+                setMath(fb, "✅ 正確！繼續下一步...");
                 fb.className = "p-3 rounded-lg text-sm font-bold text-center mt-2 bg-green-100 text-green-700 animate-pulse";
-                
+
                 document.getElementById(`step-${step}`).classList.add('opacity-50');
+                lockButtons(`step-${step}`);
                 if (step < 3) {
                     setTimeout(() => {
                         document.getElementById(`step-${step + 1}`).classList.remove('hidden');
                     }, 300);
                 } else {
-                    fb.innerText = "🎉 挑戰成功！(-3) + 7 = 4";
+                    setMath(fb, "🎉 挑戰成功！$(-3) + 7 = 4$");
                     fb.className = "p-3 rounded-lg text-sm font-bold text-center mt-2 bg-green-600 text-white shadow-md";
                 }
             } else {
-                fb.innerText = "❌ 再想想看喔，方向很重要！";
+                const STEP_HINT = {
+                    1: "❌ 再想想看喔！負數在原點的哪一邊？",
+                    2: "❌ 再想想看喔！加上正數，要往數變大的方向走。",
+                    3: "❌ 再想想看喔！從 $-3$ 往右數 $7$ 格，會停在哪裡？"
+                };
+                setMath(fb, STEP_HINT[step]);
                 fb.className = "p-3 rounded-lg text-sm font-bold text-center mt-2 bg-red-100 text-red-700";
             }
         }
 
-        // 判斷練習邏輯
+        // 判斷練習邏輯（每一題有自己的說明；原本兩題共用同一句，第 2 題的說明對不上題目）
+        const JUDGE_TEXT = {
+            1: { right: "✅ 沒錯！絕對值是到原點的距離，恆為非負。", wrong: "❌ 答錯囉！絕對值只看距離。" },
+            2: { right: "✅ 沒錯！例如 $|{-5}| = 5$ 比 $|3| = 3$ 大，但 $-5 < 3$。絕對值大只代表離原點遠，不代表數比較大。",
+                 wrong: "❌ 答錯囉！想想 $-5$ 和 $3$：$|{-5}|$ 比較大，但哪個數比較大？" }
+        };
         function judge(id, choice, correctAns) {
             const fb = document.getElementById(`judge-${id}-feedback`);
             fb.classList.remove('hidden');
             const isCorrect = (choice === correctAns);
-            
+
             if (isCorrect) {
                 fb.className = "mt-2 text-xs p-2 rounded bg-green-100 text-green-800 border border-green-200";
-                fb.innerText = "✅ 沒錯！絕對值是到原點的距離，恆為非負。";
+                setMath(fb, JUDGE_TEXT[id].right);
+                lockButtons(`judge-${id}`);
             } else {
                 fb.className = "mt-2 text-xs p-2 rounded bg-red-100 text-red-800 border border-red-200";
-                fb.innerText = "❌ 答錯囉！絕對值只看距離。";
+                setMath(fb, JUDGE_TEXT[id].wrong);
             }
         }
 
@@ -352,20 +431,34 @@
         function checkApp(id, answer) {
             const input = document.getElementById(`app-q${id}`);
             const fb = document.getElementById(`app-q${id}-feedback`);
+            const raw = input.value.trim();
             fb.classList.remove('hidden');
-            
-            if (parseInt(input.value) === answer) {
-                fb.innerHTML = `✅ 答對了！計算過程：${id === 1 ? '|0 - (-12)| = 12' : '|5 - (-12)| = 17'}`;
+
+            if (raw === '') {
+                setMath(fb, "✏️ 請先輸入答案，再按「檢查」喔！");
+                fb.className = "mt-2 text-xs p-2 rounded bg-amber-500/20 text-amber-200 border border-amber-500/40";
+                return;
+            }
+            // 用數值比對（原本 parseInt 會把 12.5 當成 12 判對）
+            if (Number(raw) === answer) {
+                setMath(fb, `✅ 答對了！計算過程：${id === 1 ? '$|0 - (-12)| = 12$' : '$|5 - (-12)| = 17$'}`);
                 fb.className = "mt-2 text-xs p-2 rounded bg-green-500/20 text-green-300 border border-green-500/40";
             } else {
-                fb.innerText = "❌ 數值不太對喔，記得距離公式：|a - b|";
+                setMath(fb, "❌ 數值不太對喔，記得距離公式：$|a - b|$");
                 fb.className = "mt-2 text-xs p-2 rounded bg-red-500/20 text-red-300 border border-red-500/40";
             }
         }
 
         window.onload = () => {
+            renderMath(document.body);
             initTicks();
             updateUI();
+            // 應用題：按 Enter 也能檢查
+            [[1, 12], [2, 17]].forEach(([id, ans]) => {
+                document.getElementById(`app-q${id}`).addEventListener('keydown', e => {
+                    if (e.key === 'Enter' && !e.isComposing) checkApp(id, ans);
+                });
+            });
         };
     </script>
 </body>
