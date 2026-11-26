@@ -32,20 +32,20 @@
             </h2>
             <ul class="list-disc list-inside text-slate-700 space-y-1">
                 <li>理解二次方根（平方根）的幾何與代數意義，精準辨析「正平方根」與「負平方根」。</li>
-                <li>掌握最簡根式化簡方法（將完全平方數寫成次方形式），熟練根式的乘除與分母有理化。</li>
+                <li>掌握最簡根式化簡方法（將完全平方數寫成次方形式），熟練根式的乘除運算。</li>
                 <li>理解「同類根式」概念，能正確進行同類根式的加減合併與四則運算。</li>
             </ul>
         </section>
 
         <!-- 3. 分頁切換按鈕區 -->
-        <div class="flex justify-center gap-3 md:gap-6 mb-8">
-            <button id="btn-tab-1" onclick="switchTab(1)" class="tab-btn active bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow flex items-center gap-2">
+        <div class="flex flex-wrap justify-center gap-2 md:gap-6 mb-8">
+            <button id="btn-tab-1" onclick="switchTab(1)" class="tab-btn active bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 md:px-6 py-3 text-sm md:text-base rounded-xl shadow flex items-center gap-2">
                 🌱 觀念起步
             </button>
-            <button id="btn-tab-2" onclick="switchTab(2)" class="tab-btn bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3 rounded-xl shadow flex items-center gap-2 opacity-70">
+            <button id="btn-tab-2" onclick="switchTab(2)" class="tab-btn bg-amber-500 hover:bg-amber-600 text-white font-bold px-3 md:px-6 py-3 text-sm md:text-base rounded-xl shadow flex items-center gap-2 opacity-70">
                 ⚡ 思考試煉
             </button>
-            <button id="btn-tab-3" onclick="switchTab(3)" class="tab-btn bg-rose-600 hover:bg-rose-700 text-white font-bold px-6 py-3 rounded-xl shadow flex items-center gap-2 opacity-70">
+            <button id="btn-tab-3" onclick="switchTab(3)" class="tab-btn bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 md:px-6 py-3 text-sm md:text-base rounded-xl shadow flex items-center gap-2 opacity-70">
                 🔥 挑戰突破
             </button>
         </div>
@@ -178,7 +178,7 @@
                     <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
                         <h4 class="font-bold text-amber-900 text-base border-b pb-2 flex items-center justify-between">
                             <span>📌 題組一：平方根概念與正負號判斷</span>
-                            <span id="set1-progress" class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded">進度：1/2</span>
+                            <span id="set1-progress" class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded">進度：$1/2$</span>
                         </h4>
 
                         <!-- 1-1 (正確：B) -->
@@ -208,7 +208,7 @@
                     <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
                         <h4 class="font-bold text-amber-900 text-base border-b pb-2 flex items-center justify-between">
                             <span>📌 題組二：最簡根式的化簡</span>
-                            <span id="set2-progress" class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded">進度：1/2</span>
+                            <span id="set2-progress" class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded">進度：$1/2$</span>
                         </h4>
 
                         <!-- 2-1 (數值由小至大：2√5 < 5√2 < 4√5；即 √20 < √50 < √80，正確：A) -->
@@ -238,7 +238,7 @@
                     <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
                         <h4 class="font-bold text-amber-900 text-base border-b pb-2 flex items-center justify-between">
                             <span>📌 題組三：同類根式與加減運算</span>
-                            <span id="set3-progress" class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded">進度：1/2</span>
+                            <span id="set3-progress" class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded">進度：$1/2$</span>
                         </h4>
 
                         <!-- 同類根式提醒 -->
@@ -259,7 +259,7 @@
 
                         <!-- 3-2 (數值由小至大：√39 < 4√3 < 5√3；即 √39 < √48 < √75，正確：C) -->
                         <div id="set3-q2" class="space-y-2 step-locked hidden">
-                            <p class="font-bold text-slate-800 text-sm border-t pt-3">第 $2$ 題：計算 $\sqrt{12} + \sqrt{27}$，化簡後的結果為何？（注意：化簡結果不超過兩個根式）</p>
+                            <p class="font-bold text-slate-800 text-sm border-t pt-3">第 $2$ 題：計算 $\sqrt{12} + \sqrt{27}$，化簡後的結果為何？（請化成最簡根式）</p>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                                 <button onclick="checkSet3(2, 'A')" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(A) $\sqrt{39}$</button>
                                 <button onclick="checkSet3(2, 'B')" class="p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-amber-50 text-xs font-medium">(B) $4\sqrt{3}$</button>
@@ -283,7 +283,7 @@
                 <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 mb-6 space-y-4">
                     <h4 class="font-bold text-rose-900 text-base border-b pb-2 flex items-center justify-between">
                         <span>🎯 應用題組一：正方形草坪工程與邊長計算</span>
-                        <span id="chal1-progress" class="text-xs bg-rose-200 text-rose-900 px-2 py-1 rounded">進度：1/3</span>
+                        <span id="chal1-progress" class="text-xs bg-rose-200 text-rose-900 px-2 py-1 rounded">進度：$1/3$</span>
                     </h4>
 
                     <p class="text-xs text-slate-600">情境：一個正方形草坪的面積為 $72$ 平方公尺。</p>
@@ -324,7 +324,7 @@
                 <div class="p-5 bg-slate-50 rounded-xl border border-slate-200 mb-6 space-y-4">
                     <h4 class="font-bold text-rose-900 text-base border-b pb-2 flex items-center justify-between">
                         <span>🎯 應用題組二：畢氏定理與四則混合運算</span>
-                        <span id="chal2-progress" class="text-xs bg-rose-200 text-rose-900 px-2 py-1 rounded">進度：1/2</span>
+                        <span id="chal2-progress" class="text-xs bg-rose-200 text-rose-900 px-2 py-1 rounded">進度：$1/2$</span>
                     </h4>
 
                     <!-- 2-1 (數值由小至大：3 < 9，正確：B) -->
@@ -382,7 +382,7 @@
                                     <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
                                 </button>
                                 <button onclick="toggleOption(this)" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
-                                    <span>怎樣把根號數字變最簡根式，還有做分母有理化</span>
+                                    <span>怎樣把根號數字變成最簡根式</span>
                                     <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
                                 </button>
                             </div>
@@ -403,7 +403,7 @@
                                     <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
                                 </button>
                                 <button onclick="toggleOption(this)" class="option-card p-3 text-left bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium hover:bg-rose-50/50 transition-all flex items-center justify-between">
-                                    <span>根號在做乘除法時可以直接把裡面的數字拿來乘除（$\sqrt{a} \times \sqrt{b} = \sqrt{ab}$）</span>
+                                    <span>根號在做乘除法時可以直接把裡面的數字拿來乘除（$\sqrt{a} \times \sqrt{b} = \sqrt{ab}$，$a \ge 0$、$b \ge 0$）</span>
                                     <span class="check-icon opacity-0 text-rose-600 font-bold ml-2">✓</span>
                                 </button>
                             </div>
@@ -458,9 +458,9 @@
     <script>
         const katexConfig = {
             delimiters: [
-                {left: '$$', right: '$$', display: true},
                 {left: '$', right: '$', display: false}
-            ]
+            ],
+            throwOnError: false
         };
 
         function renderMath(element) {
@@ -475,6 +475,9 @@
             updateConceptLab1();
             updateSquareRootLab();
             updateReflection();
+            // 輸入框按 Enter 也能送出
+            document.getElementById('gen-a').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) updateSquareRootLab(); });
+            document.getElementById('chal1-a').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) checkChal1(2, 'SUBMIT'); });
         };
 
         // 分頁切換 logic
@@ -561,15 +564,22 @@
                 res.innerHTML = "💡 數字 $0$ 的平方根只有一個，就是 $0$（即 $\\sqrt{0} = 0$）。";
             } else {
                 const sq = Math.sqrt(a);
-                const isPerfect = Number.isInteger(sq);
-                const posStr = isPerfect ? `${sq}` : `\\sqrt{${a}}`;
-                const negStr = isPerfect ? `-${sq}` : `-\\sqrt{${a}}`;
-                const pmStr = isPerfect ? `\\pm ${sq}` : `\\pm \\sqrt{${a}}`;
+                // 開得盡（含 2.25 這類小數）就寫出數值；整數有平方因數就化成最簡根式；否則只寫根號
+                // （原本 √12 這類會顯示成「√12 = √12」）
+                const sqR = Math.round(sq * 10000) / 10000;
+                const isPerfect = Math.abs(sqR * sqR - a) < 1e-9;
+                const simp = Number.isInteger(a) ? simplifyRadical(a) : { a: 1, b: a };
+                let posStr, show;
+                if (isPerfect) { posStr = `${sqR}`; show = true; }
+                else if (simp.a > 1) { posStr = `${simp.a}\\sqrt{${simp.b}}`; show = true; }
+                else { posStr = `\\sqrt{${a}}`; show = false; }
+                const negStr = `-${posStr}`;
+                const pmStr = `\\pm ${posStr}`;
 
                 res.innerHTML = `
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-center my-1">
-                        <div class="p-2.5 bg-white rounded-lg border border-emerald-200">正平方根 $\\sqrt{${a}} = ${posStr}$</div>
-                        <div class="p-2.5 bg-white rounded-lg border border-emerald-200">負平方根 $-\\sqrt{${a}} = ${negStr}$</div>
+                        <div class="p-2.5 bg-white rounded-lg border border-emerald-200">正平方根 $\\sqrt{${a}}${show ? ' = ' + posStr : ''}$</div>
+                        <div class="p-2.5 bg-white rounded-lg border border-emerald-200">負平方根 $-\\sqrt{${a}}${show ? ' = ' + negStr : ''}$</div>
                         <div class="p-2.5 bg-white rounded-lg border border-emerald-200">所有平方根 $= ${pmStr}$</div>
                     </div>
                     <p class="mt-2 text-xs font-normal text-emerald-900 leading-relaxed">
@@ -594,6 +604,19 @@
             }
         }
 
+        // 進度標籤（數字用 LaTeX）
+        function setProgress(id, text) {
+            const el = document.getElementById(id);
+            el.innerHTML = `進度：$${text}$`;
+            renderMath(el);
+        }
+
+        // 答對後把這一題的選項鎖住，避免回頭按錯誤選項蓋掉回饋
+        function lockBlock(id) {
+            const el = document.getElementById(id);
+            if (el) el.querySelectorAll('button, input').forEach(b => { b.disabled = true; b.classList.add('cursor-not-allowed'); });
+        }
+
         // 解鎖邏輯輔助函式
         function unlockQuestion(elemId) {
             const elem = document.getElementById(elemId);
@@ -611,9 +634,10 @@
             if (step === 1) {
                 if (choice === 'B') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
-                    f.innerHTML = "✅ 完全正確！$25$ 的平方根包含了正負兩個值（$\\pm 5$）；而 $\\sqrt{25} = \\sqrt{5^2} = 5$ 專指正平方根！解鎖第 2 題！";
+                    lockBlock(`set1-q${step}`);
+                    f.innerHTML = "✅ 完全正確！$25$ 的平方根包含了正負兩個值（$\\pm 5$）；而 $\\sqrt{25} = \\sqrt{5^2} = 5$ 專指正平方根！解鎖第 $2$ 題！";
                     unlockQuestion('set1-q2');
-                    document.getElementById('set1-progress').innerText = "進度：2/2";
+                    setProgress('set1-progress', '2/2');
                 } else if (choice === 'A') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
                     f.innerHTML = "❌ 迷思引導：根號符號 $\\sqrt{\\phantom{x}}$ 在數學上特指「正平方根」，所以結果只會取非負數喔！試著想想哪個選項精準表達了 $25$ 的所有平方根？";
@@ -624,6 +648,7 @@
             } else if (step === 2) {
                 if (choice === 'B') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    lockBlock(`set1-q${step}`);
                     f.innerHTML = "🎉 恭喜通關題組一！$49$ 的負平方根即為 $-\\sqrt{49} = -\\sqrt{7^2} = -7$！觀念非常清晰！";
                 } else if (choice === 'C') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
@@ -644,9 +669,10 @@
             if (step === 1) {
                 if (choice === 'A') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
-                    f.innerHTML = "✅ 正確！把 $20$ 寫成 $2^2 \\times 5$，將 $2^2$ 開出根號得 $2\\sqrt{5}$！解鎖第 2 題！";
+                    lockBlock(`set2-q${step}`);
+                    f.innerHTML = "✅ 正確！把 $20$ 寫成 $2^2 \\times 5$，將 $2^2$ 開出根號得 $2\\sqrt{5}$！解鎖第 $2$ 題！";
                     unlockQuestion('set2-q2');
-                    document.getElementById('set2-progress').innerText = "進度：2/2";
+                    setProgress('set2-progress', '2/2');
                 } else if (choice === 'C') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
                     f.innerHTML = "❌ 解題引導：如果把 $4$ 放回根號內，會變成 $\\sqrt{4^2 \\times 5} = \\sqrt{80}$，這超過原本的 $20$ 了！試著把 $20$ 拆成包含平方數（如 $2^2=4$）的乘積再試試！";
@@ -657,6 +683,7 @@
             } else if (step === 2) {
                 if (choice === 'C') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    lockBlock(`set2-q${step}`);
                     f.innerHTML = "🎉 恭喜通關題組二！$50 = 5^2 \\times 2$，將 $5^2$ 開出根號得 $5\\sqrt{2}$！完全正確！";
                 } else if (choice === 'A') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
@@ -677,9 +704,10 @@
             if (step === 1) {
                 if (choice === 'A') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
-                    f.innerHTML = "✅ 觀念超棒！$\\sqrt{8} = \\sqrt{2^2 \\times 2} = 2\\sqrt{2}$，化簡後根號內都是 $2$，故為同類根式！解鎖第 2 題！";
+                    lockBlock(`set3-q${step}`);
+                    f.innerHTML = "✅ 觀念超棒！$\\sqrt{8} = \\sqrt{2^2 \\times 2} = 2\\sqrt{2}$，化簡後根號內都是 $2$，故為同類根式！解鎖第 $2$ 題！";
                     unlockQuestion('set3-q2');
-                    document.getElementById('set3-progress').innerText = "進度：2/2";
+                    setProgress('set3-progress', '2/2');
                 } else if (choice === 'B') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
                     f.innerHTML = "❌ 觀念引導：把 $\\sqrt{12}$ 拆成 $\\sqrt{2^2 \\times 3} = 2\\sqrt{3}$，最簡根式裡面的數字是 $3$。試著化簡選項 (A)，看看它的最簡根式內部數字是多少呢？";
@@ -690,6 +718,7 @@
             } else if (step === 2) {
                 if (choice === 'C') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    lockBlock(`set3-q${step}`);
                     f.innerHTML = "🎉 恭喜通關題組三！$\\sqrt{12} + \\sqrt{27} = 2\\sqrt{3} + 3\\sqrt{3} = 5\\sqrt{3}$！觀念非常紮實！";
                 } else if (choice === 'A') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
@@ -710,20 +739,30 @@
             if (step === 1) {
                 if (choice === 'B') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
-                    f.innerHTML = "✅ 邊長計算正確！邊長 $= \\sqrt{72} = \\sqrt{6^2 \\times 2} = 6\\sqrt{2}$ 公尺！解鎖第 2 題！";
+                    lockBlock(`chal1-q${step}`);
+                    f.innerHTML = "✅ 邊長計算正確！邊長 $= \\sqrt{72} = \\sqrt{6^2 \\times 2} = 6\\sqrt{2}$ 公尺！解鎖第 $2$ 題！";
                     unlockQuestion('chal1-q2');
-                    document.getElementById('chal1-progress').innerText = "進度：2/3";
+                    setProgress('chal1-progress', '2/3');
                 } else {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
                     f.innerHTML = "❌ 解題引導：$2\\sqrt{6} = \\sqrt{2^2 \\times 6} = \\sqrt{24}$，不等於原本的 $72$ 喔！試著把 $72$ 拆成 $6^2 \\times 2$，提出根號外的數字應該是多少？";
                 }
             } else if (step === 2) {
-                const valA = parseInt(document.getElementById('chal1-a').value);
+                const rawA = document.getElementById('chal1-a').value.trim();
+                if (rawA === '') {
+                    f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300";
+                    f.innerHTML = "✏️ 請先填入整數 $a$，再按「驗證答案」喔！";
+                    renderMath(f);
+                    return;
+                }
+                // 用數值比對（原本 parseInt 會把 24.9 當成 24 判對）
+                const valA = Number(rawA);
                 if (valA === 24) {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
-                    f.innerHTML = "✅ 欄杆總長 $= 4 \\times 6\\sqrt{2} = 24\\sqrt{2}$ 公尺，故 $a = 24$！解鎖第 3 題！";
+                    lockBlock(`chal1-q${step}`);
+                    f.innerHTML = "✅ 欄杆總長 $= 4 \\times 6\\sqrt{2} = 24\\sqrt{2}$ 公尺，故 $a = 24$！解鎖第 $3$ 題！";
                     unlockQuestion('chal1-q3');
-                    document.getElementById('chal1-progress').innerText = "進度：3/3";
+                    setProgress('chal1-progress', '3/3');
                 } else {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
                     f.innerHTML = "❌ 計算引導：正方形共有 $4$ 個相等的邊。若單邊長為 $6\\sqrt{2}$，把 $4$ 乘以 $6\\sqrt{2}$，整數部分的係數會是多少呢？";
@@ -731,6 +770,7 @@
             } else if (step === 3) {
                 if (choice === 'A') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    lockBlock(`chal1-q${step}`);
                     f.innerHTML = "🎉 挑戰應用題組一成功！新面積為 $4$ 倍，新邊長 $= \\sqrt{2^2 \\times 72} = 2 \\times \\sqrt{72}$，恰為原邊長之 $2$ 倍！";
                 } else {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
@@ -748,9 +788,10 @@
             if (step === 1) {
                 if (choice === 'B') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
-                    f.innerHTML = "✅ 畢氏定理應用正確！斜邊平方 $c = (\\sqrt{3})^2 + (\\sqrt{6})^2 = 3 + 6 = 9$！解鎖第 2 題！";
+                    lockBlock(`chal2-q${step}`);
+                    f.innerHTML = "✅ 畢氏定理應用正確！斜邊平方 $c = (\\sqrt{3})^2 + (\\sqrt{6})^2 = 3 + 6 = 9$！解鎖第 $2$ 題！";
                     unlockQuestion('chal2-q2');
-                    document.getElementById('chal2-progress').innerText = "進度：2/2";
+                    setProgress('chal2-progress', '2/2');
                 } else {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
                     f.innerHTML = "❌ 觀念引導：由畢氏定理，斜邊長度的平方等於兩股平方和，即 $c = (\\sqrt{3})^2 + (\\sqrt{6})^2$。算算看 $3 + 6$ 的結果是多少呢？";
@@ -758,6 +799,7 @@
             } else if (step === 2) {
                 if (choice === 'B') {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-green-100 text-green-900 border border-green-300";
+                    lockBlock(`chal2-q${step}`);
                     f.innerHTML = "🎉 挑戰應用題組二成功！$\\sqrt{48} \\div \\sqrt{3} + \\sqrt{25} = \\sqrt{16} + 5 = 4 + 5 = 9$！完美通關！";
                 } else {
                     f.className = "mt-2 p-2.5 rounded-lg text-xs font-bold bg-red-100 text-red-900 border border-red-300";
