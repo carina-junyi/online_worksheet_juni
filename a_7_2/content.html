@@ -4,546 +4,937 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A-7-2 一元一次方程式的意義互動講義</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.0/lucide.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
         body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; }
-        .math-fact { background-color: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 6px; font-weight: bold; }
-        .step-badge { background-color: #3b82f6; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-        .feedback-box { transition: all 0.3s ease; }
-        
-        /* 網格與線段圖動畫特效 */
-        .grid-bg {
-            background-size: 20px 20px;
-            background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px), linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
-        }
-        .challenge-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-
-        .segment-bar {
-            transition: width 0.4s ease-out, background-color 0.3s ease;
-        }
-
-        /* 已鎖住的按鈕不顯示可點擊游標 */
-        button:disabled { cursor: default; }
-
-        /* 手機窄螢幕：滑桿說明文字獨立一行，避免把滑桿擠扁（電腦版不受影響） */
+        svg { max-width: 100%; height: auto; }
+        .shake { animation: shake .38s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 50%{transform:translateX(5px)} 75%{transform:translateX(-3px)} }
+        .opt-correct { background:#dcfce7 !important; border-color:#22c55e !important; color:#14532d !important; }
+        .opt-wrong { background:#fee2e2 !important; border-color:#f87171 !important; color:#7f1d1d !important; }
+        .opt-dim { opacity:.5; }
+        .think-wait { opacity:.45; pointer-events:none; }
+        button:disabled, input:disabled { cursor: not-allowed; }
+        button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
+        s.strike { text-decoration: none; position: relative; display: inline-block; color: #be123c; }
+        s.strike::after { content: ''; position: absolute; left: -3px; right: -3px; top: 52%; border-top: 2px solid #e11d48; }
+        /* 語音說題按鈕 */
+        .say-btn { white-space: nowrap; }
+        .say-btn.saying { background:#0284c7; color:#fff; border-color:#0284c7; }
+        /* 分類站的條件燈 */
+        .light { transition: all .25s ease; }
+        .light-on { background:#dcfce7; border-color:#22c55e; color:#14532d; }
+        .light-off { background:#fee2e2; border-color:#f87171; color:#7f1d1d; }
+        .light-na { background:#f1f5f9; border-color:#cbd5e1; color:#64748b; }
+        /* 列式積木 */
+        .tile { min-width: 58px; min-height: 50px; touch-action: manipulation; transition: transform .15s ease, opacity .2s ease; }
+        .tile:not(:disabled):hover { transform: translateY(-2px); }
+        .tile:disabled { opacity: .25; }
+        .slot { min-width: 64px; min-height: 56px; transition: background .2s ease, border-color .2s ease; }
+        .slot.drag-over { background: #e0f2fe; border-color: #0284c7; }
+        /* 煙火 */
+        #fx-layer { position: fixed; inset: 0; pointer-events: none; z-index: 60; overflow: hidden; }
+        .fx-p { position: fixed; width: 9px; height: 9px; border-radius: 50%; animation: fxBurst 1.2s cubic-bezier(.15,.7,.35,1) forwards; }
+        @keyframes fxBurst { from { transform: translate(0, 0) scale(1); opacity: 1; } to { transform: translate(var(--dx), var(--dy)) scale(.35); opacity: 0; } }
+        .fx-still { position: fixed; left: 50%; top: 35%; transform: translate(-50%, -50%); font-size: 72px; }
+        /* 接回進度的小提示 */
+        #toast { transition: opacity .4s ease; }
+        /* 全頁字級：比 Tailwind 預設各大 3px */
+        body { font-size: 19px; }
+        .text-xs { font-size: 15px !important; line-height: 1.6 !important; }
+        .text-sm { font-size: 17px !important; line-height: 1.65 !important; }
+        .text-base { font-size: 19px !important; line-height: 1.6 !important; }
+        .text-lg { font-size: 21px !important; line-height: 1.5 !important; }
+        .text-xl { font-size: 23px !important; line-height: 1.45 !important; }
+        .text-2xl { font-size: 27px !important; line-height: 1.35 !important; }
+        .text-3xl { font-size: 33px !important; line-height: 1.25 !important; }
+        @media (min-width: 768px) { .md\:text-4xl { font-size: 39px !important; line-height: 1.2 !important; } }
+        /* 窄螢幕（手機）：縮小層層留白，讓圖可以畫大一點 */
         @media (max-width: 640px) {
-            .age-slider-row { flex-wrap: wrap; row-gap: 8px; }
-            .age-slider-row label { flex-basis: 100%; white-space: normal; }
-            .age-slider-row input[type="range"] { flex: 1 1 0; min-width: 0; }
+            body.p-4 { padding: 8px !important; }
+            .p-6 { padding: 14px !important; }
+            .p-5 { padding: 10px !important; }
+            .p-4 { padding: 10px !important; }
+            .p-3 { padding: 6px !important; }
+            .tile { min-width: 50px; min-height: 46px; }
+            .slot { min-width: 52px; min-height: 50px; }
         }
     </style>
 </head>
 <body class="p-4 md:p-8">
+    <!-- 🔊 音效開關 -->
+    <button type="button" id="snd-btn" onclick="toggleSound()" aria-pressed="true" aria-label="音效目前打開，按一下關掉"
+        class="fixed top-3 right-3 z-40 rounded-full bg-white border border-slate-300 shadow text-xs font-bold px-3 py-1.5 text-slate-700 hover:bg-slate-100">🔊 音效：開</button>
+    <div id="toast" class="fixed top-3 left-1/2 -translate-x-1/2 z-40 bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow opacity-0 pointer-events-none" aria-live="polite"></div>
+    <div id="fx-layer" aria-hidden="true"></div>
+
     <div class="max-w-4xl mx-auto">
-        <!-- 1. Header (標題列) -->
-        <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 一元一次方程式的意義</h1>
+        <!-- 1. 標題列 -->
+        <header class="text-center mb-6 pt-6 md:pt-0">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">📘 用等號寫出生活問題：一元一次方程式的意義</h1>
             <p class="text-slate-600">A-7-2 互動式學習講義</p>
         </header>
 
-        <!-- 2. 🎯 學習目標 (Learning Objectives) -->
-        <section class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500">
-            <h2 class="text-xl font-bold text-blue-700 mb-3 flex items-center">
-                <i data-lucide="target" class="mr-2 w-5 h-5"></i> 🎯 學習目標
-            </h2>
-            <ul class="list-disc list-inside text-slate-700 space-y-1">
-                <li>理解「方程式」代表含有未知數的等式，「一元一次」代表恰有 1 個未知數且最高次方為 1。</li>
-                <li>能區分「代數式」（沒有等號）與「方程式」（含有等號）。</li>
-                <li>理解方程式「解」的定義：代入未知數後能讓「左式等於右式」的數值。</li>
-                <li>能透過線段圖與數線理解生活情境，並列出一元一次方程式。</li>
-            </ul>
-        </section>
-
-        <!-- 3. 1️⃣ 2️⃣ 3️⃣ 核心概念卡片 (Concept Cards) -->
-        <div class="grid md:grid-cols-3 gap-4 mb-8">
-            <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
-                <h3 class="font-bold text-blue-700 text-lg mb-2">1️⃣ 什麼是一元一次方程式？</h3>
-                <p class="text-sm text-blue-800 font-bold mb-1">必須滿足三個條件：</p>
-                <ul class="list-disc list-inside text-xs text-blue-800 space-y-1 mb-2">
-                    <li><b>有等號 =</b></li>
-                    <li><b>只有 1 個未知數 (一元)</b></li>
-                    <li><b>未知數次方為 1 (一次)</b></li>
-                </ul>
-                <p class="text-xs text-blue-600 font-bold">例：3x + 1 = 4x - 2 (是) ｜ 3x + 1 (否，無等號)</p>
-            </div>
-            <div class="bg-green-50 p-5 rounded-lg border border-green-200">
-                <h3 class="font-bold text-green-700 text-lg mb-2">2️⃣ 什麼是方程式的「解」？</h3>
-                <p class="text-sm text-green-800">把某個實際數值帶入未知數後，如果能讓<b>「左邊的算式 = 右邊的算式」</b>，這個數就是方程式的解！</p>
-                <p class="mt-2 text-xs text-green-600 font-bold">例：3x + 1 = 4x - 2，當 x = 3 時兩邊都等於 10！</p>
-            </div>
-            <div class="bg-emerald-50 p-5 rounded-lg border border-emerald-200">
-                <h3 class="font-bold text-emerald-700 text-lg mb-2">3️⃣ 線段圖與生活列式</h3>
-                <p class="text-sm text-emerald-800">畫出數線或線段圖，將未知數與已知數量對齊。<b>「左邊線段總長 = 右邊線段總長」</b>即可列出方程式！</p>
-                <p class="mt-2 text-xs text-emerald-600 font-bold">用等量關係記錄生活中的數學！</p>
-            </div>
-        </div>
-
-        <!-- 4. 🧮 互動模擬實驗室：年齡問題與動態線段圖 -->
-        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold text-slate-800 flex items-center">
-                    <i data-lucide="line-chart" class="mr-2 text-indigo-600"></i> 🧮 互動實驗室：年齡問題動態線段對齊器
+        <!-- 2. 📍 今天的情境 -->
+        <section id="hook-box" class="bg-white rounded-xl shadow-sm p-6 mb-6 border-l-4 border-blue-500 space-y-4" aria-labelledby="hook-title">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+                <h2 id="hook-title" class="text-xl font-bold text-blue-700 flex items-center">
+                    <i data-lucide="map-pin" class="no-katex mr-2 w-5 h-5" aria-label="情境圖示"></i> 📍 小華忘記一杯多少錢
                 </h2>
-                <button onclick="resetAgeSim()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md text-sm font-medium transition-colors">🔄 重置經過年數</button>
+                <button type="button" class="say-btn no-say px-3 py-1.5 bg-white border border-sky-300 rounded-lg text-xs font-bold text-sky-700 hover:bg-sky-50" onclick="sayEl('hook-say', this)" aria-label="唸出這段文字">🔈 唸給我聽</button>
             </div>
-            
-            <div class="p-4 bg-indigo-50 rounded-lg mb-4 text-sm text-indigo-900 leading-relaxed border border-indigo-100">
-                <b>情境探索：</b>小桐今年 12 歲，爸爸今年 40 歲。請問<b>經過 x 年後</b>，爸爸的年齡剛好是小桐年齡的 <b>2 倍</b>？<br>
-                • 小桐 x 年後的年齡 = <b>12 + x</b> 歲 ｜ 爸爸 x 年後的年齡 = <b>40 + x</b> 歲<br>
-                • 等量關係：<b>2 × (12 + x) = 40 + x</b>
-            </div>
-
-            <!-- 控制桿與動態線段視覺區 -->
-            <div class="space-y-6 mb-6">
-                <div class="age-slider-row flex items-center gap-4 bg-slate-50 p-4 rounded-xl border">
-                    <label class="font-bold text-slate-700 text-sm whitespace-nowrap">拖移滑桿改變經過年數 x：</label>
-                    <input type="range" id="sim-age-x" min="0" max="25" value="0" oninput="updateAgeSim()" class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer">
-                    <span id="sim-x-val" class="font-black text-indigo-700 text-lg min-w-[4rem]">x = 0 年</span>
+            <div class="grid md:grid-cols-5 gap-4 items-center">
+                <div class="md:col-span-2 bg-amber-50 rounded-xl border border-amber-200 p-2">
+                    <svg id="hook-svg" class="no-katex w-full" viewBox="0 0 300 200" role="img" aria-label="三杯珍珠奶茶，每杯價錢是問號"></svg>
                 </div>
-
-                <!-- SVG 動態線段對比視覺 -->
-                <div class="bg-slate-900 text-white p-6 rounded-xl relative overflow-hidden shadow-inner space-y-5">
-                    <!-- 小桐線段 (12 + x) 的兩倍 -->
-                    <div>
-                        <div class="flex justify-between text-xs font-bold text-slate-300 mb-1">
-                            <span>小桐年齡的 2 倍：2 × (12 + x) = <span id="tong-val-text" class="text-amber-300">24</span> 歲</span>
-                            <span class="text-amber-400">藍色線段 (含兩倍延長段)</span>
-                        </div>
-                        <div class="w-full bg-slate-800 h-8 rounded-lg relative overflow-hidden flex items-center p-1">
-                            <!-- 12 + x 第一段 -->
-                            <div id="tong-bar-1" class="segment-bar bg-blue-500 h-6 rounded flex items-center justify-center text-xs font-bold text-white shadow" style="width: 20%;">
-                                <span id="tong-seg1-label">12</span>
-                            </div>
-                            <!-- 12 + x 第二段 (虛線倍數段) -->
-                            <div id="tong-bar-2" class="segment-bar bg-blue-400/80 border-2 border-dashed border-amber-300 h-6 rounded ml-1 flex items-center justify-center text-xs font-bold text-white shadow" style="width: 20%;">
-                                <span id="tong-seg2-label">12</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 爸爸線段 (40 + x) -->
-                    <div>
-                        <div class="flex justify-between text-xs font-bold text-slate-300 mb-1">
-                            <span>爸爸的年齡：40 + x = <span id="dad-val-text" class="text-emerald-300">40</span> 歲</span>
-                            <span class="text-emerald-400">綠色線段</span>
-                        </div>
-                        <div class="w-full bg-slate-800 h-8 rounded-lg relative overflow-hidden flex items-center p-1">
-                            <div id="dad-bar" class="segment-bar bg-emerald-500 h-6 rounded flex items-center justify-center text-xs font-bold text-white shadow" style="width: 50%;">
-                                <span id="dad-seg-label">40</span>
-                            </div>
-                        </div>
-                    </div>
+                <div id="hook-say" class="md:col-span-3 text-sm text-slate-800 leading-relaxed space-y-2">
+                    <p>小華買了 <b class="text-blue-700">$3$ 杯一樣的珍奶</b>，用折價券 <b class="text-rose-700">折 $15$ 元</b>，<b class="text-emerald-700">付了 $135$ 元</b>。</p>
+                    <p>可是他忘了<b>一杯多少錢</b>……你能幫他找回來嗎？</p>
                 </div>
             </div>
-
-            <div id="age-sim-explanation" class="bg-amber-50 p-4 rounded-lg text-center text-amber-900 font-bold text-sm shadow-inner">
-                <!-- 由 JS 動態更新 -->
+            <div class="flex flex-wrap items-center gap-2 text-xs font-bold">
+                <span class="px-2.5 py-1 bg-blue-50 border border-blue-200 rounded-lg text-blue-900">① 認識方程式</span>
+                <span class="text-slate-300" aria-hidden="true">→</span>
+                <span class="px-2.5 py-1 bg-blue-50 border border-blue-200 rounded-lg text-blue-900">② 把故事寫成方程式</span>
+                <span class="text-slate-300" aria-hidden="true">→</span>
+                <span class="px-2.5 py-1 bg-blue-50 border border-blue-200 rounded-lg text-blue-900">③ 找出答案</span>
+                <button type="button" onclick="goStage(0)" aria-label="出發，前往第 1 關" class="ml-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold">出發 →</button>
             </div>
         </section>
 
-        <!-- 5. ✏️ 解題示範：發口香糖列式 (Worked Example) -->
-        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border border-slate-200">
-            <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center">
-                <i data-lucide="pencil" class="mr-2 text-blue-600"></i> 解題示範：發口香糖問題與驗證方程式的解
-            </h2>
-            <div class="p-4 bg-slate-50 rounded-lg mb-4">
-                <p class="text-slate-700 font-bold">情境：老師帶了 2 盒一樣的口香糖發給全班 26 個學生，每人發 2 條後，還剩 8 條。假設一盒有 x 條口香糖，請列出方程式並驗證一盒是否有 30 條？</p>
-            </div>
-            <div class="space-y-4">
-                <div class="flex items-start gap-3">
-                    <span class="step-badge">1</span>
-                    <p class="text-slate-600"><b>列出總條數：</b>2 盒口香糖共有 <b>2x</b> 條。發給 26 人一人 2 條，共發出 26 × 2 = <b>52 條</b>。</p>
-                </div>
-                <div class="flex items-start gap-3">
-                    <span class="step-badge">2</span>
-                    <p class="text-slate-600"><b>列出方程式：</b>總條數扣掉發出的條數等於剩下的條數 ➔ 一元一次方程式為 <span class="math-fact text-blue-700">2x - 52 = 8</span>。</p>
-                </div>
-                <div class="flex items-start gap-3">
-                    <span class="step-badge">3</span>
-                    <p class="text-slate-600 font-bold"><b>驗證是否為解：</b>將 x = 30 代入左式 ➔ 2 × 30 - 52 = 60 - 52 = 8（等於右式！）。因此，<span class="math-fact text-blue-700">30 是此方程式的解</span>，代表一盒有 30 條口香糖！</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. 🔍 觀念引導：辨識「一元一次方程式」與「驗證解」 -->
-        <section class="bg-indigo-50 rounded-xl shadow-sm p-6 mb-8 border border-indigo-200">
-            <h2 class="text-xl font-bold text-indigo-800 mb-4 flex items-center">
-                <i data-lucide="check-square" class="mr-2 w-5 h-5"></i> 🔍 觀念引導：透視一元一次方程式的火眼金睛
-            </h2>
-            <div class="mb-4 text-slate-700 p-3 bg-white rounded-lg border border-indigo-100 italic text-sm">
-                挑戰：請檢查算式「3x + 1 = 4x - 2」，這是「一元一次方程式」嗎？數字 3 是它的解嗎？
-            </div>
-            <div id="step-quiz" class="space-y-4">
-                <div id="sq1">
-                    <p class="text-slate-800 mb-2 font-medium">1️⃣ 先看結構：含有等號 =、只有 1 個未知數 x、且 x 次方為 1，它是一元一次方程式嗎？</p>
-                    <div class="flex gap-2">
-                        <button onclick="answerStep(1, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">是的，完全符合三個條件</button>
-                        <button onclick="answerStep(1, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">不是，因為兩邊都有 x</button>
-                    </div>
-                </div>
-                <div id="sq2" class="hidden">
-                    <p class="text-slate-800 mb-2 font-medium">2️⃣ 接著驗證解：把 x = 3 代入兩邊。左式 3 × 3 + 1 = 10，右式 4 × 3 - 2 = 10。兩邊相等嗎？3 是不是解？</p>
-                    <div class="flex gap-2">
-                        <button onclick="answerStep(2, true)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">相等 (10 = 10)，所以 3 是此方程式的解！</button>
-                        <button onclick="answerStep(2, false)" class="px-4 py-2 bg-white border border-indigo-300 rounded hover:bg-indigo-100 font-bold text-slate-700 transition-all">不相等，3 不是解</button>
-                    </div>
-                </div>
-                <div id="step-feedback" class="hidden p-4 rounded-lg font-bold text-center"></div>
-            </div>
-        </section>
-
-        <!-- 7. 🧩 引導式實踐練習 -->
-        <!-- 練習 1：步驟引導列一元一次方程式 -->
-        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-blue-500">
-            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-                <i data-lucide="pencil-line" class="mr-2 text-blue-600"></i> 🧩 練習 1：步驟引導！買飲料情境列方程式
-            </h2>
-            
-            <div class="p-4 bg-blue-50 rounded-lg mb-6 border border-blue-100">
-                <p class="text-blue-900 font-bold leading-relaxed">
-                    題目情境：小華買了 3 杯每杯 x 元的珍珠奶茶，結帳時使用折價券折抵 15 元，最後付了 135 元。請列出滿足此情境的一元一次方程式。
-                </p>
-            </div>
-            
-            <div class="space-y-6">
-                <!-- Step 1 -->
-                <div id="p1-s1">
-                    <p class="text-slate-800 mb-2 font-medium">步驟 1️⃣：買 3 杯珍珠奶茶總共要多少錢？折抵 15 元後應付多少錢？</p>
-                    <div class="flex gap-2">
-                        <button onclick="checkP1(1, false)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">3x + 15 元</button>
-                        <button onclick="checkP1(1, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">3x - 15 元</button>
-                    </div>
-                    <div id="p1-f1" class="text-sm mt-2 hidden font-bold"></div>
-                </div>
-
-                <!-- Step 2 -->
-                <div id="p1-s2" class="hidden opacity-0 transition-all duration-500">
-                    <p class="text-slate-800 mb-2 font-medium border-t pt-4">步驟 2️⃣：將應付金額與實際付出的 135 元用等號連接，正確的一元一次方程式為何？</p>
-                    <div class="flex gap-2">
-                        <button onclick="checkP1(2, true)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">3x - 15 = 135</button>
-                        <button onclick="checkP1(2, false)" class="px-5 py-2 bg-white border border-slate-300 rounded-lg font-bold text-slate-800 hover:bg-slate-100 transition-all">3x = 135 - 15</button>
-                    </div>
-                    <div id="p1-f2" class="text-sm mt-2 hidden font-bold"></div>
-                </div>
-
-                <!-- Result -->
-                <div id="p1-result" class="hidden opacity-0 transition-all duration-500">
-                    <div class="bg-green-50 p-6 border border-green-200 rounded-lg shadow-inner">
-                        <p class="text-green-800 font-bold flex items-center mb-2 text-lg">
-                            <i data-lucide="party-popper" class="mr-2 w-6 h-6"></i> 完全正確！列式為 3x - 15 = 135！
-                        </p>
-                        <p class="text-green-700 leading-relaxed">
-                            <b>觀念點撥：</b>方程式必須將「包含未知數的代數式」與「實際結果」用<b>等號 = </b>連接！
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 練習 2：方程式識別與驗證解快問快答 -->
-        <section class="bg-white rounded-xl shadow-md p-6 mb-8 border-t-4 border-emerald-500">
-            <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center">
-                <i data-lucide="layers" class="mr-2 text-emerald-600"></i> 🧮 練習 2：一元一次方程式觀念快問快答
-            </h2>
-            <p class="text-slate-600 mb-6 text-sm font-medium">請判斷下列算式的性質與驗證結果：</p>
-            
-            <div class="space-y-6">
-                <!-- Case 1 -->
-                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
-                    <p class="text-slate-800 font-bold mb-3">1. 下列何者是「一元一次方程式」？</p>
-                    <div class="flex flex-wrap gap-2 mb-2">
-                        <button onclick="checkP2(1, 'A')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">2x + 5 = 11</button>
-                        <button onclick="checkP2(1, 'B')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">3x + 2y = 7</button>
-                        <button onclick="checkP2(1, 'C')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">5x - 4</button>
-                    </div>
-                    <div id="p2-f1" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
-                </div>
-
-                <!-- Case 2 -->
-                <div class="p-4 border rounded-xl bg-slate-50 border-slate-200">
-                    <p class="text-slate-800 font-bold mb-3">2. 驗證數字 4 是否為方程式「2x + 3 = 11」的解？</p>
-                    <div class="flex flex-wrap gap-2 mb-2">
-                        <button onclick="checkP2(2, 'yes')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-emerald-50 font-bold text-slate-700 transition-all">是，代入後左式 2 × 4 + 3 = 11 等於右式！</button>
-                        <button onclick="checkP2(2, 'no')" class="px-5 py-2 bg-white border border-slate-300 rounded-lg hover:bg-blue-50 font-bold text-slate-700 transition-all">不是，代入後不相等</button>
-                    </div>
-                    <div id="p2-f2" class="feedback-box text-sm px-4 py-3 rounded-lg hidden font-bold"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 8. 🚀 實戰挑戰：生活綜合練習 & 測驗 -->
-        <section class="bg-slate-50 rounded-2xl p-6 mb-8 border-2 border-slate-200">
-            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
-                <i data-lucide="rocket" class="mr-2 text-orange-500"></i> 實戰挑戰：一元一次方程式生活列式大考驗
-            </h2>
-            
-            <div class="space-y-8">
-                <!-- Challenge 1 -->
-                <div class="challenge-card">
-                    <h3 class="font-bold text-slate-700 mb-2">1. 驗證方程式的解</h3>
-                    <p class="text-sm text-slate-600 mb-4">請問 x = 5 是下列哪一個方程式的解？</p>
-                    <div class="flex flex-wrap gap-3">
-                        <button onclick="checkChal(1, 'A')" class="px-4 py-2 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all">(A) 3x - 2 = 10</button>
-                        <button onclick="checkChal(1, 'B')" class="px-4 py-2 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all">(B) 2x + 1 = 11</button>
-                        <button onclick="checkChal(1, 'C')" class="px-4 py-2 bg-white border border-slate-300 rounded-lg font-bold hover:bg-indigo-50 transition-all">(C) 4x - 5 = 12</button>
-                    </div>
-                    <div id="chal1-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
-                </div>
-
-                <!-- Challenge 2 -->
-                <div class="challenge-card">
-                    <h3 class="font-bold text-slate-700 mb-2">2. 年齡問題列式題</h3>
-                    <p class="text-sm text-slate-600 mb-4">媽媽今年 36 歲，小美今年 10 歲。經過 x 年後，媽媽的年齡剛好是小美年齡的 3 倍。請列出正確的一元一次方程式：</p>
-                    <div class="space-y-2">
-                        <button onclick="checkChal(2, 'A')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(A) 36 + x = 3 × (10 + x)</button>
-                        <button onclick="checkChal(2, 'B')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(B) 36 + x = 10 × 3</button>
-                        <button onclick="checkChal(2, 'C')" class="w-full text-left p-3 border rounded-lg font-bold bg-white hover:bg-indigo-50 transition-all text-slate-700">(C) 36 = 3 × (10 + x)</button>
-                    </div>
-                    <div id="chal2-feedback" class="mt-3 hidden text-sm p-3 rounded-lg font-bold"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 9. ⚠️ 易錯迷思陷阱 & 💡 生活中的數學 (Footer) -->
-        <footer class="grid md:grid-cols-2 gap-6 mb-12">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2 flex items-center">
-                    <i data-lucide="alert-circle" class="mr-2 text-red-500"></i> ⚠️ 一元一次方程式的三大常見迷思
+        <main id="tab-1" class="space-y-6">
+            <!-- 第 1 關：哪些是方程式？ -->
+            <section id="stage-0" class="stage bg-white rounded-xl shadow-md p-6 border border-emerald-200" aria-labelledby="stage-0-title">
+                <h3 id="stage-0-title" class="text-xl font-bold text-emerald-800 mb-4 flex flex-wrap items-center gap-2">
+                    <span class="text-xs bg-emerald-600 text-white px-2 py-1 rounded font-bold">第 1 關</span>
+                    <i data-lucide="filter" class="no-katex text-emerald-600" aria-label="分類圖示"></i> 🔎 哪些是方程式？
                 </h3>
-                <ul class="text-sm space-y-3 text-slate-600 font-medium">
-                    <li class="flex items-start gap-2">
-                        ❌ <span class="text-red-500 font-bold">代數式與方程式混淆？</span>
-                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！3x + 1 只是「代數式」；必須有「等號 =」如 3x + 1 = 7 才是「方程式」！</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        ❌ <span class="text-red-500 font-bold">年齡問題只給一個人加時間？</span>
-                        <span class="bg-slate-100 p-1.5 rounded text-slate-700 text-xs block mt-1">錯！經過 x 年後，媽媽長大 x 歲 (36 + x)，小美也同樣會長大 x 歲 (10 + x)，不可寫成 36 + x = 10 × 3！</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        ❌ <span class="text-red-500 font-bold">以為只要算出數字就是解？</span>
-                        <span class="bg-amber-50 border border-amber-200 p-1.5 rounded text-amber-800 text-xs block mt-1">
-                            錯！只有將數字代入代數式後，能讓「左邊等於右邊」成立的數，才是真正的解！
-                        </span>
-                    </li>
-                </ul>
-            </div>
-            <div class="bg-slate-900 text-slate-50 p-6 rounded-xl shadow-sm">
-                <h3 class="font-bold mb-3 border-b border-slate-700 pb-2 flex items-center text-amber-400">
-                    <i data-lucide="lightbulb" class="mr-2 w-5 h-5"></i> 💡 生活中的等量平衡
-                </h3>
-                <p class="text-sm leading-relaxed opacity-90">
-                    <b>方程式就像一座精密的「等量天秤」！</b><br>
-                    1. <b>超商購物找零：</b> 付 500 元買了 3 瓶 x 元的飲料找回 350 元 ➔ 方程式：500 - 3x = 350。<br>
-                    2. <b>分攤餐費：</b> 全店總消費 1200 元，x 個人平分每人付 150 元 ➔ 方程式：1200 / x = 150。<br>
-                    3. <b>等量平衡思維：</b> 左天秤等於右天秤，這就是數學等式的魅力！
-                </p>
-            </div>
-        </footer>
+                <div class="stage-body space-y-4">
+                    <div class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm leading-relaxed border border-emerald-100">
+                        <div class="flex justify-end mb-1"><button type="button" class="say-btn no-say px-2.5 py-1 bg-white border border-sky-300 rounded-lg text-xs font-bold text-sky-700 hover:bg-sky-50" onclick="sayEl('intro-0', this)" aria-label="唸出這段文字">🔈 唸給我聽</button></div>
+                        <div id="intro-0" class="space-y-1">
+                            <p>小華的收據可以寫成：<span class="font-bold text-base">$3x - 15 = 135$</span></p>
+                            <p>• $x$ 是還不知道的數，叫做<b>未知數</b>。</p>
+                            <p>• 有等號、又有未知數，就是<b>方程式</b>。</p>
+                            <p>• 只有一種未知數、沒有自己乘自己，就是<b>一元一次方程式</b>。</p>
+                        </div>
+                    </div>
 
-        <!-- 10. 頁腳宣告 -->
-        <footer class="text-center text-slate-400 text-sm pb-12">
-            本講義依據 108 課綱 A-7-2 標準編製 &copy; 2026 互動式教學系統
-        </footer>
+                    <div id="tour-tool" class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <p class="font-bold text-slate-800 text-sm">🤔 這張卡是不是一元一次方程式？</p>
+                            <span id="sort-count" class="text-xs font-bold text-slate-500" aria-live="polite"></span>
+                        </div>
+                        <div class="relative">
+                            <div id="sort-card" class="bg-white rounded-xl border-2 border-slate-300 p-5 text-center text-2xl font-bold text-slate-800 shadow-sm" aria-live="polite"></div>
+                            <button type="button" class="say-btn no-say absolute top-2 right-2 px-2 py-0.5 bg-white border border-sky-300 rounded-lg text-xs font-bold text-sky-700 hover:bg-sky-50" onclick="sayEl('sort-card', this)" aria-label="唸出這張卡">🔈</button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button type="button" id="sort-yes" onclick="sortAnswer(true)" aria-label="是一元一次方程式" class="p-3 bg-white border-2 border-green-400 rounded-xl font-bold text-green-800 hover:bg-green-50 text-sm">✅ 是</button>
+                            <button type="button" id="sort-no" onclick="sortAnswer(false)" aria-label="不是一元一次方程式" class="p-3 bg-white border-2 border-rose-400 rounded-xl font-bold text-rose-800 hover:bg-rose-50 text-sm">❌ 不是</button>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 text-xs font-bold" role="group" aria-label="三個條件燈">
+                            <div id="light-0" class="light p-2 rounded-lg border text-center light-na">有等號</div>
+                            <div id="light-1" class="light p-2 rounded-lg border text-center light-na">只有一種未知數</div>
+                            <div id="light-2" class="light p-2 rounded-lg border text-center light-na">沒有自己乘自己</div>
+                        </div>
+                        <div id="sort-fb" class="hidden" aria-live="polite"></div>
+                        <div class="flex flex-wrap gap-2 justify-end">
+                            <button type="button" id="sort-next" onclick="sortNext()" aria-label="下一張卡" class="hidden px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold">下一張 →</button>
+                            <button type="button" id="sort-again" onclick="sortReset()" aria-label="再玩一次" class="hidden px-4 py-2 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-100">🔄 再玩一次</button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="p-3 bg-green-50 rounded-xl border border-green-200 min-h-[64px]">
+                                <p class="font-bold text-green-800 mb-1.5">🧺 是</p>
+                                <div id="bk-yes" class="flex flex-wrap gap-1.5"></div>
+                            </div>
+                            <div class="p-3 bg-rose-50 rounded-xl border border-rose-200 min-h-[64px]">
+                                <p class="font-bold text-rose-800 mb-1.5">🧺 不是</p>
+                                <div id="bk-no" class="flex flex-wrap gap-1.5"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-slate-200">
+                        <button type="button" id="why-m1-btn" onclick="toggleWhy('m1')" aria-expanded="false" aria-controls="why-m1-panel" aria-label="點開看看很多人會怎麼想" class="w-full p-3 text-left text-xs font-bold text-slate-700 flex items-center justify-between">
+                            🙋 很多人會這樣想（點開看看） <i data-lucide="chevron-down" class="no-katex w-4 h-4" aria-label="展開圖示"></i>
+                        </button>
+                        <div id="why-m1-panel" class="hidden px-4 pb-4 text-xs leading-relaxed space-y-1.5 text-slate-700">
+                            <p><s class="strike">有等號就是方程式</s> 👉 $5 + 7 = 12$ 沒有未知數，只是等式。</p>
+                            <p><s class="strike">兩邊都有 $x$ 就不是一元</s> 👉 兩邊是同一個 $x$，還是一元。</p>
+                        </div>
+                    </div>
+                    <div id="cp-0" class="checkpoint"></div>
+                </div>
+            </section>
+
+            <!-- 第 2 關：把收據寫成方程式 -->
+            <section id="stage-1" class="stage bg-white rounded-xl shadow-md p-6 border border-emerald-200" aria-labelledby="stage-1-title">
+                <h3 id="stage-1-title" class="text-xl font-bold text-emerald-800 mb-4 flex flex-wrap items-center gap-2">
+                    <span class="text-xs bg-emerald-600 text-white px-2 py-1 rounded font-bold">第 2 關</span>
+                    <i data-lucide="puzzle" class="no-katex text-emerald-600" aria-label="拼圖圖示"></i> 🧾 把收據寫成方程式
+                </h3>
+                <div class="stage-body space-y-4">
+                    <div class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm leading-relaxed border border-emerald-100">
+                        <div class="flex justify-end mb-1"><button type="button" class="say-btn no-say px-2.5 py-1 bg-white border border-sky-300 rounded-lg text-xs font-bold text-sky-700 hover:bg-sky-50" onclick="sayEl('intro-1', this)" aria-label="唸出這段文字">🔈 唸給我聽</button></div>
+                        <div id="intro-1" class="space-y-1">
+                            <p>把故事寫成方程式，叫做<b>列式</b>。</p>
+                            <p>① 設一杯珍奶 $x$ 元。② 找出「誰等於誰」。</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div class="bg-white p-3 rounded-xl border border-slate-200">
+                            <svg id="rc-svg" class="no-katex w-full" viewBox="0 0 640 240" role="img" aria-label="小華的收據：珍珠奶茶 3 杯，每杯 x 元，折價券減 15 元，實付 135 元"></svg>
+                        </div>
+                        <p class="text-xs font-bold text-slate-600">👇 點或拖數字卡放進空格，點空格可以拿回。有些卡用不到。</p>
+                        <div id="eq-slots" class="flex flex-wrap justify-center gap-2 p-3 bg-white rounded-xl border-2 border-dashed border-slate-300" role="group" aria-label="方程式的五個空格"></div>
+                        <div id="eq-tiles" class="flex flex-wrap justify-center gap-2" role="group" aria-label="數字卡"></div>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            <button type="button" id="eq-check" onclick="eqCheck()" aria-label="檢查我的方程式" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold">✔ 檢查</button>
+                            <button type="button" id="eq-clear" onclick="eqClear()" aria-label="把卡片全部拿回來" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-100">🔄 全部拿回</button>
+                        </div>
+                        <div id="eq-fb" class="hidden" aria-live="polite"></div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-slate-200">
+                        <button type="button" id="why-m2-btn" onclick="toggleWhy('m2')" aria-expanded="false" aria-controls="why-m2-panel" aria-label="點開看看很多人會怎麼想" class="w-full p-3 text-left text-xs font-bold text-slate-700 flex items-center justify-between">
+                            🙋 很多人會這樣想（點開看看） <i data-lucide="chevron-down" class="no-katex w-4 h-4" aria-label="展開圖示"></i>
+                        </button>
+                        <div id="why-m2-panel" class="hidden px-4 pb-4 text-xs leading-relaxed space-y-1.5 text-slate-700">
+                            <p><s class="strike">$3x + 15 = 135$</s> 👉 折價券是少付錢，要用減的。</p>
+                            <p><s class="strike">$x - 15 = 135$</s> 👉 買了 $3$ 杯，要寫成 $3x$。</p>
+                        </div>
+                    </div>
+                    <div id="cp-1" class="checkpoint"></div>
+                </div>
+            </section>
+
+            <!-- 第 3 關：一杯多少錢？ -->
+            <section id="stage-2" class="stage bg-white rounded-xl shadow-md p-6 border border-emerald-200" aria-labelledby="stage-2-title">
+                <h3 id="stage-2-title" class="text-xl font-bold text-emerald-800 mb-4 flex flex-wrap items-center gap-2">
+                    <span class="text-xs bg-emerald-600 text-white px-2 py-1 rounded font-bold">第 3 關</span>
+                    <i data-lucide="scale" class="no-katex text-emerald-600" aria-label="天平圖示"></i> ⚖️ 一杯多少錢？讓天平平衡
+                </h3>
+                <div class="stage-body space-y-4">
+                    <div class="p-4 bg-emerald-50 rounded-lg text-emerald-900 text-sm leading-relaxed border border-emerald-100">
+                        <div class="flex justify-end mb-1"><button type="button" class="say-btn no-say px-2.5 py-1 bg-white border border-sky-300 rounded-lg text-xs font-bold text-sky-700 hover:bg-sky-50" onclick="sayEl('intro-2', this)" aria-label="唸出這段文字">🔈 唸給我聽</button></div>
+                        <p id="intro-2">方程式像一座<b>天平</b>。把一個數代進 $x$，兩邊一樣多，天平就平衡，這個數就是<b>解</b>。</p>
+                    </div>
+
+                    <div id="bal-tool" class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div class="flex flex-wrap items-center gap-2 text-xs font-bold text-violet-800 bg-violet-50 border border-violet-200 rounded-lg p-2">
+                            <span>🤔 先猜一杯多少錢：</span>
+                            <button type="button" onclick="balSet(30, true)" aria-label="猜一杯 30 元" class="px-2.5 py-1 bg-white border border-violet-300 rounded hover:bg-violet-100">$30$ 元</button>
+                            <button type="button" onclick="balSet(45, true)" aria-label="猜一杯 45 元" class="px-2.5 py-1 bg-white border border-violet-300 rounded hover:bg-violet-100">$45$ 元</button>
+                            <button type="button" onclick="balSet(60, true)" aria-label="猜一杯 60 元" class="px-2.5 py-1 bg-white border border-violet-300 rounded hover:bg-violet-100">$60$ 元</button>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200">
+                            <svg id="bal-svg" class="no-katex w-full" viewBox="0 0 640 344" role="img" aria-label="天平：左邊放 3 杯珍奶和一張折 15 元的折價券，右邊放 135 元"></svg>
+                        </div>
+                        <div class="flex flex-wrap items-center justify-center gap-2">
+                            <button type="button" onclick="balStep(-10)" aria-label="價錢減 10 元" class="px-2.5 py-1.5 bg-white border border-slate-300 rounded text-xs font-bold hover:bg-slate-100">−$10$</button>
+                            <button type="button" onclick="balStep(-1)" aria-label="價錢減 1 元" class="px-2.5 py-1.5 bg-white border border-slate-300 rounded text-xs font-bold hover:bg-slate-100">−$1$</button>
+                            <span id="bal-p-val" class="min-w-[5rem] text-center text-lg font-black text-blue-700" aria-live="polite"></span>
+                            <button type="button" onclick="balStep(1)" aria-label="價錢加 1 元" class="px-2.5 py-1.5 bg-white border border-slate-300 rounded text-xs font-bold hover:bg-slate-100">＋$1$</button>
+                            <button type="button" onclick="balStep(10)" aria-label="價錢加 10 元" class="px-2.5 py-1.5 bg-white border border-slate-300 rounded text-xs font-bold hover:bg-slate-100">＋$10$</button>
+                        </div>
+                        <input type="range" id="bal-p" min="10" max="90" value="20" aria-label="拖動來改變一杯的價錢" class="w-full h-2 bg-blue-200 rounded-lg cursor-pointer accent-blue-600">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div id="bal-panel" class="p-4 rounded-xl text-xs font-bold border" aria-live="polite"></div>
+                            <div class="p-4 bg-white rounded-xl border border-slate-200 text-xs space-y-1.5">
+                                <p class="font-bold text-slate-700">📝 試過的價錢</p>
+                                <div id="bal-log" class="flex flex-wrap gap-1.5"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-slate-200">
+                        <button type="button" id="why-m3-btn" onclick="toggleWhy('m3')" aria-expanded="false" aria-controls="why-m3-panel" aria-label="點開看看很多人會怎麼想" class="w-full p-3 text-left text-xs font-bold text-slate-700 flex items-center justify-between">
+                            🙋 很多人會這樣想（點開看看） <i data-lucide="chevron-down" class="no-katex w-4 h-4" aria-label="展開圖示"></i>
+                        </button>
+                        <div id="why-m3-panel" class="hidden px-4 pb-4 text-xs leading-relaxed text-slate-700">
+                            <p><s class="strike">算出一個數就是解</s> 👉 要代回去兩邊一樣多才算。例：$3 \times 40 - 15 = 105$，不是 $135$，所以 $40$ 不是解。</p>
+                        </div>
+                    </div>
+                    <div id="cp-2" class="checkpoint"></div>
+                </div>
+            </section>
+
+            <!-- 🎉 結尾卡 -->
+            <section id="end-box" class="bg-slate-900 text-slate-50 rounded-xl shadow-md p-6 space-y-4" aria-labelledby="end-title">
+                <h3 id="end-title" class="text-xl font-bold text-amber-400 flex items-center">
+                    <i data-lucide="party-popper" class="no-katex mr-2 w-6 h-6" aria-label="慶祝圖示"></i> 🎉 完成！
+                </h3>
+                <p class="p-4 bg-slate-800 rounded-xl text-sm">🧋 小華的一杯珍奶是 <b class="text-amber-300">$50$ 元</b>：$3 \times 50 - 15 = 135$ ✔</p>
+                <div class="space-y-2">
+                    <p class="font-bold text-amber-300 text-sm">🌏 生活中的方程式：$x$ 是多少？</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <div class="p-3 bg-slate-800 rounded-xl space-y-2">
+                            <p>🏪 買 $4$ 瓶一樣的飲料，付 $500$ 元，找回 $340$ 元。</p>
+                            <p class="text-base font-bold text-center">$500 - 4x = 340$</p>
+                            <button type="button" id="why-life1-btn" onclick="toggleWhy('life1')" aria-expanded="false" aria-controls="why-life1-panel" aria-label="看答案" class="px-2.5 py-1 bg-slate-700 hover:bg-slate-600 rounded font-bold">看答案 👀</button>
+                            <p id="why-life1-panel" class="hidden text-emerald-300 font-bold">$x = 40$：$500 - 4 \times 40 = 340$ ✔</p>
+                        </div>
+                        <div class="p-3 bg-slate-800 rounded-xl space-y-2">
+                            <p>🍲 火鍋共 $1200$ 元，每人付 $150$ 元，有 $x$ 個人。</p>
+                            <p class="text-base font-bold text-center">$150x = 1200$</p>
+                            <button type="button" id="why-life2-btn" onclick="toggleWhy('life2')" aria-expanded="false" aria-controls="why-life2-panel" aria-label="看答案" class="px-2.5 py-1 bg-slate-700 hover:bg-slate-600 rounded font-bold">看答案 👀</button>
+                            <p id="why-life2-panel" class="hidden text-emerald-300 font-bold">$x = 8$：$150 \times 8 = 1200$ ✔</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm opacity-90">上課會學更快的解法，不用一個一個試。</p>
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <a class="inline-flex items-center gap-1 text-sm font-bold text-sky-300 hover:underline" href="https://www.junyiacademy.org/video/FILM2ZJ-ScM?parent-topic-id=j-m7a-c03-2" target="_blank" rel="noopener noreferrer" aria-label="開啟均一影片：一元一次方程式及其解的意義">
+                        <i data-lucide="play-circle" class="no-katex w-4 h-4" aria-label="播放圖示"></i>🎬 看影片：一元一次方程式及其解的意義</a>
+                    <button type="button" id="reset-btn" onclick="resetProgress()" aria-label="清除這台裝置上的紀錄，重新開始" class="px-2.5 py-1 bg-slate-700 hover:bg-slate-600 rounded text-xs font-bold">🔄 清除紀錄，重新開始</button>
+                </div>
+            </section>
+        </main>
     </div>
 
-    <!-- 11. JavaScript 邏輯 -->
+    <!-- 重點小卡 -->
+    <button type="button" id="mt-btn" onclick="toggleHelper()" aria-expanded="false" aria-controls="mt-panel" aria-label="打開或關閉重點小卡"
+        class="fixed bottom-4 right-4 z-40 rounded-full bg-sky-600 text-white text-sm font-bold px-4 py-3 shadow-xl hover:bg-sky-700">📐 重點小卡</button>
+    <div id="mt-panel" class="hidden fixed bottom-20 right-4 z-40 bg-white rounded-xl border border-sky-300 shadow-2xl p-4 w-72 max-w-[calc(100vw-2rem)]" role="dialog" aria-label="重點小卡">
+        <div class="flex items-center justify-between mb-2">
+            <p class="font-bold text-sky-800 text-sm">📐 重點小卡</p>
+            <button type="button" onclick="toggleHelper()" aria-label="關閉重點小卡" class="text-slate-400 hover:text-slate-700 font-bold px-2">✕</button>
+        </div>
+        <ul class="text-xs font-medium text-slate-700 space-y-1.5">
+            <li><b>方程式</b>：有等號，又有未知數</li>
+            <li><b>一元一次</b>：只有一種未知數，沒有自己乘自己</li>
+            <li><b>列式</b>：設好 $x$，找出「誰等於誰」</li>
+            <li><b>解</b>：代進去後，兩邊一樣多的數</li>
+        </ul>
+    </div>
+
+    <!-- JS 邏輯 -->
     <script>
-        // 把某區塊裡的按鈕全部鎖住（答對後使用，避免回頭按錯誤選項蓋掉回饋）
-        function lockButtons(containerId) {
-            document.querySelectorAll('#' + containerId + ' button').forEach(b => { b.disabled = true; });
-        }
-
-        window.onload = function() {
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-            updateAgeSim();
+        // ========== 1. 核心配置 ==========
+        const katexConfig = {
+            delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false }
+            ],
+            ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option'],
+            ignoredClasses: ['no-katex'],
+            throwOnError: false,
+            strict: 'ignore'
         };
+        function renderMath(element) {
+            if (typeof renderMathInElement !== 'undefined' && element) {
+                try { renderMathInElement(element, katexConfig); } catch (e) { console.warn(e); }
+            }
+        }
+        function refreshIcons() { if (typeof lucide !== 'undefined') { try { lucide.createIcons(); } catch (e) { console.warn(e); } } }
+        const $id = (id) => document.getElementById(id);
+        function plain(s) {
+            return String(s).replace(/<[^>]+>/g, '').replace(/\\text\{([^}]*)\}/g, '$1').replace(/\^\\circ/g, '度').replace(/\\times/g, '×')
+                .replace(/\\div/g, '÷').replace(/\\dots/g, '…').replace(/\\d?frac/g, '').replace(/_\{([^}]*)\}/g, '$1').replace(/_(\w)/g, '$1')
+                .replace(/[{}]/g, '').replace(/\$/g, '').replace(/\(/g, '（').replace(/\)/g, '）').replace(/,\s*/g, '、').replace(/\s+/g, ' ').trim();
+        }
+        const FB = {
+            ok: 'mt-2 p-2.5 rounded-lg text-xs font-bold leading-relaxed bg-green-100 text-green-900 border border-green-300',
+            bad: 'mt-2 p-2.5 rounded-lg text-xs font-bold leading-relaxed bg-red-100 text-red-900 border border-red-300',
+            hint: 'mt-2 p-2.5 rounded-lg text-xs font-bold leading-relaxed bg-slate-100 text-slate-700 border border-slate-300'
+        };
+        const PANEL = {
+            ok: 'p-4 rounded-xl text-xs font-bold leading-relaxed border bg-green-50 border-green-300 text-green-950 space-y-1.5',
+            info: 'p-4 rounded-xl text-xs font-bold leading-relaxed border bg-emerald-50 border-emerald-200 text-emerald-950 space-y-1.5',
+            warn: 'p-4 rounded-xl text-xs font-bold leading-relaxed border bg-amber-50 border-amber-300 text-amber-900 space-y-1.5'
+        };
+        const LETTER = ['A', 'B', 'C'];
+        function showFb(el, kind, html) { el.className = FB[kind]; el.innerHTML = html; renderMath(el); }
+        function shake(el) { if (!el) return; el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+        function goStage(n) { const st = $id('stage-' + n); if (st) st.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        function toggleWhy(key) {
+            const p = $id(`why-${key}-panel`), b = $id(`why-${key}-btn`);
+            const open = p.classList.toggle('hidden') === false;
+            if (b) b.setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (open) renderMath(p);
+        }
+        function toast(msg) {
+            const t = $id('toast'); t.textContent = msg; t.style.opacity = '1';
+            setTimeout(() => { t.style.opacity = '0'; }, 2600);
+        }
 
-        // 🧮 年齡問題動態線段圖模擬器邏輯
-        function updateAgeSim() {
-            const x = parseInt(document.getElementById('sim-age-x').value);
-            document.getElementById('sim-x-val').innerText = `x = ${x} 年`;
+        // 進度（先宣告，音效與煙火會用到 RESTORING）
+        const PROG_KEY = 'junyi-a-7-2-preview-v1';
+        let PROG = { sort: [], eq: null, price: null, cp: [] }, RESTORING = false, BOOTING = true; // BOOTING：啟動畫圖時先不存檔，免得蓋掉上次的進度
 
-            const tongAge = 12 + x;
-            const tongDouble = 2 * tongAge;
-            const dadAge = 40 + x;
+        // ========== 2. 音效（用瀏覽器內建的 Web Audio 合成，不需要音檔） ==========
+        const SND_KEY = 'junyi-a-7-2-sound';
+        let soundOn = true;
+        try { soundOn = localStorage.getItem(SND_KEY) !== 'off'; } catch (e) { soundOn = true; }
+        let actx = null;
+        function tone(f, t0, dur, type, vol) {
+            const o = actx.createOscillator(), g = actx.createGain();
+            o.type = type; o.frequency.value = f;
+            g.gain.setValueAtTime(0.0001, t0);
+            g.gain.exponentialRampToValueAtTime(vol, t0 + 0.02);
+            g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+            o.connect(g); g.connect(actx.destination);
+            o.start(t0); o.stop(t0 + dur + 0.05);
+        }
+        function sfx(kind) {
+            if (!soundOn || RESTORING) return;
+            const AC = window.AudioContext || window.webkitAudioContext;
+            if (!AC) return;
+            try {
+                if (!actx) actx = new AC();
+                if (actx.state === 'suspended') actx.resume();
+                const now = actx.currentTime;
+                if (kind === 'ok') { tone(659.25, now, 0.14, 'sine', 0.2); tone(987.77, now + 0.12, 0.26, 'sine', 0.2); }
+                else if (kind === 'bad') { tone(233.08, now, 0.18, 'triangle', 0.22); tone(174.61, now + 0.15, 0.28, 'triangle', 0.22); }
+                else if (kind === 'win') { [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => tone(f, now + i * 0.13, 0.32, 'sine', 0.18)); }
+                else if (kind === 'tap') { tone(880, now, 0.06, 'sine', 0.07); }
+            } catch (e) { /* 播不出聲音就算了 */ }
+        }
+        function renderSoundBtn() {
+            const b = $id('snd-btn');
+            b.textContent = soundOn ? '🔊 音效：開' : '🔇 音效：關';
+            b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+            b.setAttribute('aria-label', soundOn ? '音效目前打開，按一下關掉' : '音效目前關閉，按一下打開');
+        }
+        function toggleSound() {
+            soundOn = !soundOn;
+            try { localStorage.setItem(SND_KEY, soundOn ? 'on' : 'off'); } catch (e) { }
+            renderSoundBtn();
+            if (soundOn) sfx('tap');
+        }
 
-            document.getElementById('tong-val-text').innerText = tongDouble;
-            document.getElementById('dad-val-text').innerText = dadAge;
+        // ========== 2-1. 語音說題（瀏覽器內建語音，把數學式轉成口語再唸） ==========
+        const SAY_OK = typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined';
+        let sayBtn = null, sayLabel = '';
+        function texSay(t) {
+            return ' ' + t.replace(/\\times/g, ' 乘 ').replace(/\\div/g, ' 除以 ').replace(/\\[a-zA-Z]+/g, ' ')
+                .replace(/=/g, ' 等於 ').replace(/\+/g, ' 加 ').replace(/-/g, ' 減 ').replace(/</g, ' 小於 ').replace(/>/g, ' 大於 ')
+                .replace(/(\d)([a-z])/g, '$1 $2').replace(/[{}]/g, '') + ' ';
+        }
+        function sayText(t) {
+            return t.replace(/[①②③]/g, m => '第' + '一二三'['①②③'.indexOf(m)] + '，')
+                .replace(/×/g, ' 乘 ').replace(/[−－]/g, ' 減 ').replace(/＋/g, ' 加 ').replace(/＝/g, ' 等於 ')
+                .replace(/[\u{1F000}-\u{1FAFF}\u{2190}-\u{21FF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{20E3}]/gu, ' ')
+                .replace(/\s+/g, ' ').trim();
+        }
+        function readable(el) {
+            if (!el) return '';
+            const c = el.cloneNode(true);
+            c.querySelectorAll('.katex').forEach(k => {
+                const a = k.querySelector('annotation');
+                k.replaceWith(document.createTextNode(texSay(a ? a.textContent : k.textContent)));
+            });
+            c.querySelectorAll('.no-say, svg').forEach(e => e.remove());
+            return sayText(c.textContent);
+        }
+        function pickVoice() {
+            const vs = window.speechSynthesis.getVoices() || [];
+            return vs.find(v => /zh[-_]TW/i.test(v.lang)) || vs.find(v => /zh[-_](HK|Hant)/i.test(v.lang)) || vs.find(v => /^(zh|cmn)/i.test(v.lang)) || null;
+        }
+        function stopSay() {
+            if (SAY_OK) { try { window.speechSynthesis.cancel(); } catch (e) { } }
+            if (sayBtn) { sayBtn.textContent = sayLabel; sayBtn.classList.remove('saying'); sayBtn.setAttribute('aria-label', '唸出這段文字'); }
+            sayBtn = null;
+        }
+        function speak(text, btn) {
+            if (!SAY_OK || !text) return;
+            const again = sayBtn === btn;
+            stopSay();
+            if (again) return;                       // 正在唸的按鈕再按一次＝停止
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'zh-TW'; u.rate = 0.9;
+            const v = pickVoice(); if (v) u.voice = v;
+            u.onend = u.onerror = () => { if (sayBtn === btn) stopSay(); };
+            sayBtn = btn; sayLabel = btn.textContent;
+            btn.textContent = '⏹ 停止'; btn.classList.add('saying'); btn.setAttribute('aria-label', '停止朗讀');
+            window.speechSynthesis.speak(u);
+        }
+        function sayEl(id, btn) { speak(readable($id(id)), btn); }
+        function sayCp(n, btn) {
+            let text = readable($id(`cp-${n}-stem`));
+            CHECKPOINTS[n].opts.forEach((_, k) => { text += ` 選項 ${LETTER[k]}，${readable($id(`cp-${n}-opt${k}`)).replace(/^（[ABC]）/, '')}。`; });
+            speak(text, btn);
+        }
+        function initSay() {
+            if (!SAY_OK) { document.querySelectorAll('.say-btn').forEach(b => b.classList.add('hidden')); return; }
+            try { window.speechSynthesis.getVoices(); } catch (e) { }
+        }
 
-            document.getElementById('tong-seg1-label').innerText = `${tongAge}`;
-            document.getElementById('tong-seg2-label').innerText = `${tongAge}`;
-            document.getElementById('dad-seg-label').innerText = `${dadAge}`;
+        // ========== 3. 煙火（全部小檢查答對時） ==========
+        function fireworks() {
+            if (RESTORING) return;
+            const layer = $id('fx-layer');
+            const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reduce) {
+                layer.innerHTML = '<div class="fx-still">🎉</div>';
+                setTimeout(() => { layer.innerHTML = ''; }, 1800);
+                return;
+            }
+            const cols = ['#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#a855f7', '#ec4899'];
+            const vw = window.innerWidth || 800, vh = window.innerHeight || 600;
+            [0, 380, 760, 1100].forEach((delay, b) => setTimeout(() => {
+                const x = vw * [0.3, 0.7, 0.5, 0.2][b], y = vh * [0.3, 0.35, 0.22, 0.4][b];
+                for (let i = 0; i < 32; i++) {
+                    const a = i / 32 * Math.PI * 2, r = 90 + Math.random() * 90;
+                    const s = document.createElement('span');
+                    s.className = 'fx-p';
+                    s.style.left = x + 'px'; s.style.top = y + 'px';
+                    s.style.background = cols[(i + b) % cols.length];
+                    s.style.setProperty('--dx', (Math.cos(a) * r).toFixed(0) + 'px');
+                    s.style.setProperty('--dy', (Math.sin(a) * r + 50).toFixed(0) + 'px');
+                    layer.appendChild(s);
+                    setTimeout(() => s.remove(), 1400);
+                }
+            }, delay));
+        }
 
-            // 修正：比例尺要容得下最長的線段 2 × (12 + 25) = 74，原本 60 會在 x ≥ 19 時被擠壓變形
-            const maxVal = 80;
-            const seg1Pct = Math.min(100, (tongAge / maxVal) * 100);
-            const dadPct = Math.min(100, (dadAge / maxVal) * 100);
+        // ========== 4. 窄螢幕畫布 ==========
+        // 手機上改用 360 寬的畫布（電腦 640），字就不會被縮得太小
+        const NARROW_MQ = window.matchMedia ? window.matchMedia('(max-width: 640px)') : null;
+        const isNarrow = () => !!(NARROW_MQ && NARROW_MQ.matches);
+        const CW = () => isNarrow() ? 360 : 640;
+        function setVB(id, w, h) { const el = $id(id); if (el) el.setAttribute('viewBox', `0 0 ${w} ${h}`); }
+        function onLayoutChange() { drawReceipt(); updateBal(); }
+        if (NARROW_MQ) {
+            if (NARROW_MQ.addEventListener) NARROW_MQ.addEventListener('change', onLayoutChange);
+            else if (NARROW_MQ.addListener) NARROW_MQ.addListener(onLayoutChange);
+        }
 
-            const bar1 = document.getElementById('tong-bar-1');
-            const bar2 = document.getElementById('tong-bar-2');
-            const dadBar = document.getElementById('dad-bar');
+        // 一杯珍奶（共用小圖）：x 是左上角，y0 是杯底，label 寫在杯身
+        function cupSVG(x, y0, w, label, fs) {
+            const h = w * 1.3, top = y0 - h;
+            let s = `<line x1="${(x + w * 0.62).toFixed(1)}" y1="${(top - w * 0.42).toFixed(1)}" x2="${(x + w * 0.5).toFixed(1)}" y2="${(top + w * 0.5).toFixed(1)}" stroke="#334155" stroke-width="${Math.max(2, w / 10).toFixed(1)}" stroke-linecap="round"/>`;
+            s += `<path d="M${x.toFixed(1)} ${top.toFixed(1)} L${(x + w).toFixed(1)} ${top.toFixed(1)} L${(x + w * 0.86).toFixed(1)} ${y0.toFixed(1)} L${(x + w * 0.14).toFixed(1)} ${y0.toFixed(1)} Z" fill="#fde68a" stroke="#b45309" stroke-width="2"/>`;
+            s += `<rect x="${(x - 1).toFixed(1)}" y="${(top - 4).toFixed(1)}" width="${(w + 2).toFixed(1)}" height="6" rx="2" fill="#f59e0b"/>`;
+            for (let i = 0; i < 3; i++) s += `<circle cx="${(x + w * (0.32 + i * 0.18)).toFixed(1)}" cy="${(y0 - w * 0.16).toFixed(1)}" r="${(w * 0.07).toFixed(1)}" fill="#44403c"/>`;
+            if (label !== '') s += `<text x="${(x + w / 2).toFixed(1)}" y="${(top + h * 0.52).toFixed(1)}" text-anchor="middle" font-size="${fs}" font-weight="900" fill="#1d4ed8">${label}</text>`;
+            return s;
+        }
 
-            // 修正：兩段藍線中間有 4px 間距（ml-1），每段各扣 2px，對齊時才會和綠線等長
-            bar1.style.width = `calc(${seg1Pct}% - 2px)`;
-            bar2.style.width = `calc(${seg1Pct}% - 2px)`;
-            dadBar.style.width = `${dadPct}%`;
+        // 開場插圖
+        function drawHook() {
+            const W = 300, H = 200;
+            let s = `<rect x="0" y="0" width="${W}" height="${H}" fill="#fffbeb"/>`;
+            [40, 120, 200].forEach(x => { s += cupSVG(x, 160, 60, '？', 26); });
+            s += `<text x="150" y="190" text-anchor="middle" font-size="16" font-weight="700" fill="#92400e">一杯多少錢？</text>`;
+            $id('hook-svg').innerHTML = s;
+        }
 
-            const expl = document.getElementById('age-sim-explanation');
-
-            if (tongDouble === dadAge) {
-                bar1.className = "segment-bar bg-amber-500 h-6 rounded flex items-center justify-center text-xs font-bold text-white shadow ring-2 ring-amber-300";
-                bar2.className = "segment-bar bg-amber-400 border-2 border-dashed border-white h-6 rounded ml-1 flex items-center justify-center text-xs font-bold text-white shadow ring-2 ring-amber-300";
-                dadBar.className = "segment-bar bg-emerald-400 h-6 rounded flex items-center justify-center text-xs font-bold text-white shadow ring-2 ring-amber-300";
-
-                expl.className = "bg-green-100 p-4 rounded-lg text-center text-green-900 font-extrabold text-sm border-2 border-green-400 shadow-md";
-                expl.innerHTML = `
-                    🎉 完美對齊！當經過 x = 16 年時：<br>
-                    小桐 28 歲的 2 倍 (28 × 2 = 56) 剛好等於爸爸的年齡 (40 + 16 = 56 歲)！<br>
-                    因此，<span class="underline text-green-950 text-base">x = 16 就是方程式 2(12 + x) = 40 + x 的解</span>！
-                `;
+        // ========== 5. 第 1 關：方程式分類站 ==========
+        const LIGHT_NAMES = ['有等號', '只有一種未知數', '沒有自己乘自己'];
+        const CARDS = [
+            { tex: '3x - 15 = 135', ans: true, lights: [true, true, true], why: '這就是小華的方程式。' },
+            { tex: '3x - 15', ans: false, lights: [false, true, true], why: '沒有等號，只是算式。' },
+            { tex: '5 + 7 = 12', ans: false, lights: [true, false, null], why: '沒有未知數，只是等式。' },
+            { tex: '4x = x + 12', ans: true, lights: [true, true, true], why: '兩邊是同一個 $x$。' },
+            { tex: '3x + 2y = 7', ans: false, lights: [true, false, true], why: '有 $x$、$y$ 兩種未知數。' },
+            { tex: 'x \\times x = 49', ans: false, lights: [true, true, false], why: '$x \\times x$ 是自己乘自己。' }
+        ];
+        let sortIdx = 0, sortPicked = null, sortScore = 0;
+        function renderSort() {
+            const done = sortIdx >= CARDS.length;
+            const card = $id('sort-card');
+            LIGHT_NAMES.forEach((nm, i) => { const L = $id('light-' + i); L.className = 'light p-2 rounded-lg border text-center light-na'; L.textContent = nm; });
+            $id('sort-next').classList.add('hidden');
+            $id('sort-fb').className = 'hidden'; $id('sort-fb').innerHTML = '';
+            if (done) {
+                card.innerHTML = `🎉 分對 $${sortScore}$／$${CARDS.length}$ 張`;
+                $id('sort-count').innerHTML = '';
+                $id('sort-yes').disabled = true; $id('sort-no').disabled = true;
+                $id('sort-again').classList.remove('hidden');
             } else {
-                bar1.className = "segment-bar bg-blue-500 h-6 rounded flex items-center justify-center text-xs font-bold text-white shadow";
-                bar2.className = "segment-bar bg-blue-400/80 border-2 border-dashed border-amber-300 h-6 rounded ml-1 flex items-center justify-center text-xs font-bold text-white shadow";
-                dadBar.className = "segment-bar bg-emerald-500 h-6 rounded flex items-center justify-center text-xs font-bold text-white shadow";
+                card.innerHTML = `$${CARDS[sortIdx].tex}$`;
+                $id('sort-count').innerHTML = `$${sortIdx + 1}$／$${CARDS.length}$`;
+                $id('sort-yes').disabled = false; $id('sort-no').disabled = false;
+                $id('sort-again').classList.add('hidden');
+            }
+            renderMath(card); renderMath($id('sort-count'));
+        }
+        function sortAnswer(choice) {
+            if (sortIdx >= CARDS.length || sortPicked !== null) return;
+            sortPicked = choice;
+            if (!RESTORING) { PROG.sort.push(choice); saveProgress(); }
+            const c = CARDS[sortIdx], right = choice === c.ans;
+            if (right) sortScore++;
+            $id('sort-yes').disabled = true; $id('sort-no').disabled = true;
+            c.lights.forEach((v, i) => {
+                const L = $id('light-' + i);
+                L.className = 'light p-2 rounded-lg border text-center ' + (v === true ? 'light-on' : v === false ? 'light-off' : 'light-na');
+                L.textContent = (v === true ? '✔ ' : v === false ? '✘ ' : '－ ') + LIGHT_NAMES[i];
+            });
+            showFb($id('sort-fb'), right ? 'ok' : 'bad', (right ? '✅ 對！' : `❌ 它${c.ans ? '是' : '不是'}喔！`) + c.why);
+            if (right) sfx('ok'); else { sfx('bad'); shake($id('sort-card')); }
+            const chip = document.createElement('span');
+            chip.className = 'px-2 py-1 bg-white rounded border text-xs font-bold ' + (c.ans ? 'border-green-300 text-green-900' : 'border-rose-300 text-rose-900');
+            chip.innerHTML = `$${c.tex}$`;
+            $id(c.ans ? 'bk-yes' : 'bk-no').appendChild(chip); renderMath(chip);
+            const nx = $id('sort-next');
+            nx.textContent = sortIdx === CARDS.length - 1 ? '看結果 →' : '下一張 →';
+            nx.classList.remove('hidden');
+        }
+        function sortNext() {
+            if (sortPicked === null) return;
+            sortIdx++; sortPicked = null;
+            renderSort();
+        }
+        function sortReset() {
+            sortIdx = 0; sortPicked = null; sortScore = 0;
+            $id('bk-yes').innerHTML = ''; $id('bk-no').innerHTML = '';
+            if (!RESTORING) { PROG.sort = []; saveProgress(); }
+            renderSort();
+        }
 
-                const diff = Math.abs(tongDouble - dadAge);
-                // 修正：超過解之後（藍線比綠線長）要提示往回拖，而不是繼續往前
-                const hint = tongDouble > dadAge ? '往回拖移滑桿試試！' : '繼續拖移滑桿試試！';
-                expl.className = "bg-amber-50 p-4 rounded-lg text-center text-amber-900 font-bold text-sm shadow-inner";
-                expl.innerHTML = `
-                    目前經過 x = ${x} 年：<br>
-                    小桐年齡 2 倍為 ${tongDouble} 歲 ｜ 爸爸年齡為 ${dadAge} 歲（兩條線段差距 ${diff} 歲，還沒對齊哦！${hint}）
-                `;
+        // ========== 6. 第 2 關：收據＋數字卡拼方程式 ==========
+        function drawReceipt() {
+            const W = CW(), H = 240; setVB('rc-svg', W, H);
+            const pw = Math.min(400, W - 30), x0 = (W - pw) / 2, xL = x0 + 18, xR = x0 + pw - 18;
+            const fs = isNarrow() ? 17 : 19;
+            // 收據紙：下緣是鋸齒
+            const n = 2 * Math.round(pw / 40);
+            let d = `M${x0} 10 L${x0 + pw} 10`;
+            for (let i = n; i >= 0; i--) d += ` L${(x0 + pw * i / n).toFixed(1)} ${i % 2 ? 224 : 212}`;
+            let s = `<path d="${d} Z" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>`;
+            s += `<text x="${W / 2}" y="40" text-anchor="middle" font-size="${fs}" font-weight="900" fill="#334155">收據</text>`;
+            s += `<line x1="${xL}" y1="54" x2="${xR}" y2="54" stroke="#cbd5e1" stroke-width="2"/>`;
+            s += `<text x="${xL}" y="88" font-size="${fs}" font-weight="700" fill="#1d4ed8">珍珠奶茶 × 3 杯</text>`;
+            s += `<text x="${xR - 34}" y="88" text-anchor="end" font-size="${fs}" font-weight="700" fill="#1d4ed8">每杯</text>`;
+            s += `<circle cx="${xR - 18}" cy="82" r="14" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>`;
+            s += `<text x="${xR - 18}" y="89" text-anchor="middle" font-size="${fs}" font-weight="900" fill="#1d4ed8">x</text>`;
+            s += `<text x="${xL}" y="128" font-size="${fs}" font-weight="700" fill="#be123c">折價券</text>`;
+            s += `<text x="${xR}" y="128" text-anchor="end" font-size="${fs}" font-weight="700" fill="#be123c">−15 元</text>`;
+            s += `<line x1="${xL}" y1="150" x2="${xR}" y2="150" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>`;
+            s += `<text x="${xL}" y="186" font-size="${fs + 1}" font-weight="900" fill="#047857">實付</text>`;
+            s += `<text x="${xR}" y="186" text-anchor="end" font-size="${fs + 1}" font-weight="900" fill="#047857">135 元</text>`;
+            $id('rc-svg').innerHTML = s;
+        }
+        const TILES = [
+            { t: '3x', name: '3x', col: 'bg-blue-100 border-blue-400 text-blue-900' },
+            { t: 'x', name: 'x', col: 'bg-blue-100 border-blue-400 text-blue-900' },
+            { t: '+', name: '加號', col: 'bg-rose-100 border-rose-400 text-rose-900' },
+            { t: '-', name: '減號', col: 'bg-rose-100 border-rose-400 text-rose-900' },
+            { t: '15', name: '15', col: 'bg-rose-100 border-rose-400 text-rose-900' },
+            { t: '=', name: '等號', col: 'bg-slate-100 border-slate-400 text-slate-900' },
+            { t: '135', name: '135', col: 'bg-emerald-100 border-emerald-400 text-emerald-900' }
+        ];
+        const slots = [null, null, null, null, null];
+        let eqSolved = false, dragIdx = null;
+        function renderEq() {
+            $id('eq-tiles').innerHTML = TILES.map((tl, i) => {
+                const used = slots.includes(i);
+                return `<button type="button" class="tile px-3 rounded-xl border-2 font-black text-lg ${tl.col}" draggable="${used || eqSolved ? 'false' : 'true'}"
+                    ondragstart="dragTile(event, ${i})" onclick="placeTile(${i})" ${used || eqSolved ? 'disabled' : ''}
+                    aria-label="數字卡 ${tl.name}${used ? '，已經放進空格' : ''}">$${tl.t}$</button>`;
+            }).join('');
+            $id('eq-slots').innerHTML = slots.map((ti, s) => {
+                const tl = ti === null ? null : TILES[ti];
+                const cls = tl ? `border-solid ${tl.col}` : 'border-dashed border-slate-300 bg-slate-50 text-slate-300';
+                return `<button type="button" class="slot rounded-xl border-2 font-black text-lg ${cls}" onclick="removeSlot(${s})"
+                    ondragover="slotOver(event, ${s})" ondragleave="slotLeave(${s})" ondrop="dropTile(event, ${s})" ${eqSolved ? 'disabled' : ''}
+                    aria-label="第 ${s + 1} 格${tl ? '，放了 ' + tl.name + '，點一下拿回來' : '，空格'}">${tl ? '$' + tl.t + '$' : '？'}</button>`;
+            }).join('');
+            renderMath($id('eq-tiles')); renderMath($id('eq-slots'));
+            $id('eq-check').disabled = eqSolved; $id('eq-clear').disabled = eqSolved;
+        }
+        function placeTile(i, target) {
+            if (eqSolved || slots.includes(i)) return;
+            if (target === undefined) target = slots.indexOf(null);
+            if (target < 0) { showFb($id('eq-fb'), 'hint', '空格滿了，點空格可以把卡拿回來。'); return; }
+            slots[target] = i;
+            sfx('tap');
+            $id('eq-fb').className = 'hidden';
+            renderEq();
+        }
+        function removeSlot(s) {
+            if (eqSolved || slots[s] === null) return;
+            slots[s] = null;
+            renderEq();
+        }
+        function eqClear() {
+            if (eqSolved) return;
+            for (let s = 0; s < slots.length; s++) slots[s] = null;
+            $id('eq-fb').className = 'hidden';
+            renderEq();
+        }
+        function dragTile(e, i) { dragIdx = i; try { e.dataTransfer.setData('text/plain', String(i)); e.dataTransfer.effectAllowed = 'move'; } catch (err) { } }
+        function slotOver(e, s) { e.preventDefault(); const b = $id('eq-slots').children[s]; if (b) b.classList.add('drag-over'); }
+        function slotLeave(s) { const b = $id('eq-slots').children[s]; if (b) b.classList.remove('drag-over'); }
+        function dropTile(e, s) {
+            e.preventDefault();
+            let i = dragIdx;
+            try { const v = e.dataTransfer.getData('text/plain'); if (v !== '') i = +v; } catch (err) { }
+            dragIdx = null;
+            if (i === null || isNaN(i)) return;
+            placeTile(i, s);
+        }
+        function eqCheck() {
+            if (eqSolved) return;
+            const toks = slots.map(i => i === null ? null : TILES[i].t);
+            const empty = toks.filter(t => t === null).length;
+            const fb = $id('eq-fb');
+            if (empty) { showFb(fb, 'hint', `還有 $${empty}$ 格空著。`); return; }
+            const s = toks.join(' ');
+            const read = '$' + s + '$';
+            if (s === '3x - 15 = 135' || s === '135 = 3x - 15') {
+                eqSolved = true;
+                if (!RESTORING) { PROG.eq = toks; saveProgress(); }
+                renderEq();
+                fb.className = PANEL.ok;
+                fb.innerHTML = `✅ 拼對了！${read}${s.startsWith('135') ? '（左右對調也可以）' : ''}<br>
+                    <span class="text-blue-700">$3$ 杯的錢</span> <span class="text-rose-700">扣掉折價券</span> ＝ <span class="text-emerald-700">付的錢</span>`;
+                renderMath(fb);
+                sfx('ok');
+                return;
+            }
+            let msg;
+            if (!toks.includes('=')) msg = '要有等號，說出「誰等於誰」。';
+            else if (s === '3x + 15 = 135' || s === '135 = 3x + 15') msg = '折價券是少付錢，要用「＋」還是「−」？';
+            else if (toks.includes('x') && !toks.includes('3x')) msg = '$x$ 是一杯，買了 $3$ 杯呢？';
+            else if (s === '3x - 135 = 15' || s === '15 = 3x - 135') msg = '$15$ 和 $135$ 放反了。';
+            else msg = `唸唸看：${read}，和收據一樣嗎？`;
+            showFb(fb, 'bad', '❌ ' + msg);
+            sfx('bad'); shake($id('eq-slots'));
+        }
+
+        // ========== 7. 第 3 關：天平 ==========
+        const BAL_R = 135;
+        let balWasEq = false;
+        const balTried = [];
+        function balSet(p, log) { $id('bal-p').value = p; updateBal(); if (log) balLog(); }
+        function balStep(d) {
+            const r = $id('bal-p'), p = Math.min(+r.max, Math.max(+r.min, +r.value + d));
+            r.value = p; updateBal(); balLog();
+        }
+        function balLog() {
+            const p = +$id('bal-p').value;
+            if (balTried.length && balTried[balTried.length - 1] === p) return;
+            balTried.push(p); if (balTried.length > 6) balTried.shift();
+            const box = $id('bal-log');
+            box.innerHTML = balTried.map(v => {
+                const l = 3 * v - 15, tag = l === BAL_R ? '平衡' : (l < BAL_R ? '太輕' : '太重');
+                const cls = l === BAL_R ? 'bg-green-100 border-green-300 text-green-900' : 'bg-slate-50 border-slate-300 text-slate-700';
+                return `<span class="px-2 py-1 rounded border font-bold ${cls}">$${v}$ 元 → $${l}$（${tag}）</span>`;
+            }).join('');
+            renderMath(box);
+        }
+        function initBal() {
+            const r = $id('bal-p');
+            r.addEventListener('input', updateBal);
+            r.addEventListener('change', balLog);
+            updateBal();
+        }
+        function updateBal() {
+            const p = +$id('bal-p').value, L = 3 * p - 15, R = BAL_R, diff = R - L, eq = diff === 0;
+            if (!RESTORING) { PROG.price = p; saveProgress(); }
+            const pv = $id('bal-p-val'); pv.innerHTML = `$${p}$ 元`; renderMath(pv);
+            const W = CW(), H = 344, nar = isNarrow(); setVB('bal-svg', W, H);
+            const cx = W / 2, py = 112, h = Math.round(W * (nar ? 0.33 : 0.34));
+            const deg = eq ? 0 : Math.sign(diff) * Math.min(14, 3 + Math.abs(diff) * 0.15);
+            const t = deg * Math.PI / 180;
+            const lx = cx - h * Math.cos(t), ly = py - h * Math.sin(t), rx = cx + h * Math.cos(t), ry = py + h * Math.sin(t);
+            const panW = nar ? 108 : 150, drop = nar ? 100 : 110, lpy = ly + drop, rpy = ry + drop;
+            const beamCol = eq ? '#10b981' : '#64748b';
+            let s = '';
+            // 底座與支柱
+            s += `<line x1="20" y1="336" x2="${W - 20}" y2="336" stroke="#cbd5e1" stroke-width="3"/>`;
+            s += `<rect x="${cx - 6}" y="${py}" width="12" height="${324 - py}" fill="#94a3b8"/>`;
+            s += `<path d="M${cx - 46} 336 L${cx + 46} 336 L${cx + 24} 320 L${cx - 24} 320 Z" fill="#64748b"/>`;
+            // 兩邊的吊繩與托盤
+            [[lx, ly, lpy], [rx, ry, rpy]].forEach(([ex, ey, pyy]) => {
+                s += `<line x1="${ex.toFixed(1)}" y1="${ey.toFixed(1)}" x2="${(ex - panW / 2).toFixed(1)}" y2="${pyy.toFixed(1)}" stroke="#94a3b8" stroke-width="2"/>`;
+                s += `<line x1="${ex.toFixed(1)}" y1="${ey.toFixed(1)}" x2="${(ex + panW / 2).toFixed(1)}" y2="${pyy.toFixed(1)}" stroke="#94a3b8" stroke-width="2"/>`;
+                s += `<path d="M${(ex - panW / 2).toFixed(1)} ${pyy.toFixed(1)} Q${ex.toFixed(1)} ${(pyy + 24).toFixed(1)} ${(ex + panW / 2).toFixed(1)} ${pyy.toFixed(1)} Z" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>`;
+            });
+            // 橫桿
+            s += `<line x1="${lx.toFixed(1)}" y1="${ly.toFixed(1)}" x2="${rx.toFixed(1)}" y2="${ry.toFixed(1)}" stroke="${beamCol}" stroke-width="9" stroke-linecap="round"/>`;
+            s += `<circle cx="${cx}" cy="${py}" r="9" fill="${beamCol}" stroke="#fff" stroke-width="3"/>`;
+            // 左盤：3 杯珍奶＋折價券
+            const cw = nar ? 26 : 36, gap = nar ? 5 : 8, tot = 3 * cw + 2 * gap, c0 = lx - tot / 2;
+            for (let i = 0; i < 3; i++) s += cupSVG(c0 + i * (cw + gap), lpy - 1, cw, String(p), nar ? 12 : 15);
+            const tagY = lpy - cw * 1.3 - (nar ? 30 : 36), tagW = nar ? 64 : 80;
+            s += `<rect x="${(lx - tagW / 2).toFixed(1)}" y="${tagY.toFixed(1)}" width="${tagW}" height="${nar ? 22 : 26}" rx="6" fill="#ffe4e6" stroke="#e11d48" stroke-width="2"/>`;
+            s += `<text x="${lx.toFixed(1)}" y="${(tagY + (nar ? 16 : 19)).toFixed(1)}" text-anchor="middle" font-size="${nar ? 13 : 16}" font-weight="900" fill="#be123c">折 15 元</text>`;
+            // 右盤：135 元
+            const bw = panW * 0.7, bh = nar ? 30 : 36;
+            s += `<rect x="${(rx - bw / 2 + 5).toFixed(1)}" y="${(rpy - bh - 7).toFixed(1)}" width="${bw.toFixed(1)}" height="${bh}" rx="5" fill="#a7f3d0" stroke="#059669" stroke-width="2"/>`;
+            s += `<rect x="${(rx - bw / 2).toFixed(1)}" y="${(rpy - bh - 2).toFixed(1)}" width="${bw.toFixed(1)}" height="${bh}" rx="5" fill="#d1fae5" stroke="#059669" stroke-width="2"/>`;
+            s += `<text x="${rx.toFixed(1)}" y="${(rpy - bh / 2 + 4).toFixed(1)}" text-anchor="middle" font-size="${nar ? 15 : 18}" font-weight="900" fill="#047857">135 元</text>`;
+            // 盤子下方：兩邊各是多少
+            const vfs = nar ? 17 : 21;
+            s += `<text x="${lx.toFixed(1)}" y="${(lpy + 44).toFixed(1)}" text-anchor="middle" font-size="${vfs}" font-weight="900" fill="${eq ? '#047857' : '#1d4ed8'}">左 ${L} 元</text>`;
+            s += `<text x="${rx.toFixed(1)}" y="${(rpy + 44).toFixed(1)}" text-anchor="middle" font-size="${vfs}" font-weight="900" fill="#047857">右 135 元</text>`;
+            if (eq) s += `<text x="${cx}" y="34" text-anchor="middle" font-size="${nar ? 18 : 22}" font-weight="900" fill="#047857">平衡了！</text>`;
+            $id('bal-svg').innerHTML = s;
+            $id('bal-svg').setAttribute('aria-label', `天平：左邊 3 杯每杯 ${p} 元再折 15 元，共 ${L} 元；右邊 135 元；${eq ? '平衡了' : (L < R ? '左邊比較輕' : '左邊比較重')}`);
+
+            // 說明面板
+            const panel = $id('bal-panel');
+            const line = `一杯 $${p}$ 元：$3 \\times ${p} - 15 = ${L}$`;
+            if (eq) {
+                panel.className = PANEL.ok;
+                panel.innerHTML = `${line}<br>⚖️ 平衡！$${p}$ 就是 $3x - 15 = 135$ 的<b>解</b>。`;
+                if (!balWasEq) sfx('ok');
+            } else if (L < R) {
+                panel.className = PANEL.info;
+                panel.innerHTML = `${line}<br>⬅️ 比 $135$ 少，左邊太輕。價錢要調高還是調低？`;
+            } else {
+                panel.className = PANEL.warn;
+                panel.innerHTML = `${line}<br>➡️ 比 $135$ 多，左邊太重。價錢要調高還是調低？`;
+            }
+            renderMath(panel);
+            balWasEq = eq;
+        }
+
+        // ========== 8. 各關小檢查 ==========
+        const STAGE_NAMES = ['哪些是方程式？', '把收據寫成方程式', '一杯多少錢？'];
+        const CHECKPOINTS = [
+            { stem: '哪一個是一元一次方程式？', opts: ['$2x + 9$', '$x + y = 10$', '$x + 6 = 3x$'], ans: 2,
+              fb: ['❌ 沒有等號，只是算式。', '❌ 有 $x$、$y$ 兩種未知數。', ''],
+              ok: '有等號，只有一種未知數 $x$。' },
+            { stem: '小安買 $4$ 個一樣的飯糰，折價券折 $10$ 元，付了 $90$ 元。設一個 $x$ 元，哪個方程式對？',
+              opts: ['$4x - 10 = 90$', '$4x + 10 = 90$', '$x - 10 = 90$'], ans: 0,
+              fb: ['', '❌ 折價券是少付錢，要加還是減？', '❌ $x$ 是一個，買了 $4$ 個呢？'],
+              ok: '$4$ 個的錢扣掉 $10$，等於付的 $90$。' },
+            { stem: '小美買 $2$ 本一樣的筆記本和一支 $10$ 元的筆，共付 $40$ 元。設一本 $x$ 元，哪個說法對？',
+              opts: ['方程式 $2x - 10 = 40$，解是 $25$', '方程式 $2x + 10 = 40$，解是 $15$', '方程式 $2x + 10 = 40$，解是 $25$'], ans: 1,
+              fb: ['❌ 多買一支筆，錢變多還是變少？', '', '❌ 代回去：$2 \\times 25 + 10 = 60$，不是 $40$。'],
+              ok: '$2 \\times 15 + 10 = 40$，兩邊一樣多。' }
+        ];
+        const cpDone = {}, cpReady = {};
+        const THINK_SEC = 3;
+        function renderCheckpoints() {
+            CHECKPOINTS.forEach((cp, n) => {
+                const box = $id('cp-' + n); if (!box) return;
+                box.dataset.n = n;
+                box.className = 'checkpoint p-4 bg-sky-50 rounded-xl border border-sky-200 space-y-2';
+                box.innerHTML = `
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <p class="text-xs font-bold text-sky-800">✅ 小檢查 <span id="cp-${n}-wait" class="text-amber-700" aria-live="polite">⏳ $${THINK_SEC}$ 秒後可以作答</span></p>
+                        <button type="button" class="say-btn px-2.5 py-1 bg-white border border-sky-300 rounded-lg text-xs font-bold text-sky-700 hover:bg-sky-50" onclick="sayCp(${n}, this)" aria-label="唸出這段文字">🔈 唸給我聽</button>
+                    </div>
+                    <p id="cp-${n}-stem" class="font-bold text-slate-800 text-sm">${cp.stem}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2" role="group" aria-label="小檢查選項">
+                        ${cp.opts.map((o, k) => `<button type="button" id="cp-${n}-opt${k}" onclick="checkCp(${n}, ${k})" aria-label="選項 ${LETTER[k]}：${plain(o)}" aria-disabled="true"
+                            class="think-wait p-2.5 text-left bg-white border border-slate-300 rounded-lg hover:bg-sky-100 text-xs font-medium">（${LETTER[k]}）${o}</button>`).join('')}
+                    </div>
+                    <div id="cp-${n}-fb" class="hidden" aria-live="polite"></div>`;
+                renderMath(box);
+            });
+        }
+        // 思考時間：小檢查捲到畫面上，倒數 3 秒才能作答
+        function setReady(n) {
+            cpReady[n] = true;
+            const w = $id(`cp-${n}-wait`);
+            if (w) w.innerHTML = cpDone[n] ? '' : '✏️ 可以作答了';
+            CHECKPOINTS[n].opts.forEach((_, k) => { const b = $id(`cp-${n}-opt${k}`); if (b) { b.classList.remove('think-wait'); b.removeAttribute('aria-disabled'); } });
+        }
+        function startThink(n) {
+            if (cpReady[n]) return;
+            let s = THINK_SEC;
+            const w = $id(`cp-${n}-wait`);
+            const tick = () => {
+                if (cpReady[n]) return;
+                if (s <= 0) { setReady(n); return; }
+                w.innerHTML = `⏳ $${s}$ 秒後可以作答`; renderMath(w);
+                s--; setTimeout(tick, 1000);
+            };
+            tick();
+        }
+        function initThink() {
+            if (!('IntersectionObserver' in window)) { CHECKPOINTS.forEach((_, n) => setReady(n)); return; }
+            const io = new IntersectionObserver(es => es.forEach(e => {
+                if (e.isIntersecting) { io.unobserve(e.target); startThink(+e.target.dataset.n); }
+            }), { threshold: 0.5 });
+            CHECKPOINTS.forEach((_, n) => { if (cpDone[n]) setReady(n); else io.observe($id('cp-' + n)); });
+        }
+        function checkCp(n, k) {
+            if (cpDone[n]) return;
+            if (!RESTORING && !cpReady[n]) return;
+            const cp = CHECKPOINTS[n], fb = $id(`cp-${n}-fb`), btn = $id(`cp-${n}-opt${k}`);
+            if (k !== cp.ans && (!btn || btn.disabled)) return;
+            if (!RESTORING) { PROG.cp.push([n, k]); saveProgress(); }
+            if (k === cp.ans) {
+                cpDone[n] = true;
+                cp.opts.forEach((_, i) => { const b = $id(`cp-${n}-opt${i}`); b.disabled = true; b.classList.remove('think-wait'); b.classList.add(i === k ? 'opt-correct' : 'opt-dim'); });
+                const w = $id(`cp-${n}-wait`); if (w) w.innerHTML = '';
+                const allDone = CHECKPOINTS.every((_, i) => cpDone[i]);
+                const tail = STAGE_NAMES[n + 1] ? `<br>👇 下一關：${STAGE_NAMES[n + 1]}` : '';
+                const fin = allDone ? '<br>🏁 全部完成！' : '';
+                showFb(fb, 'ok', `🎉 過關！${cp.ok}${tail}${fin}`);
+                saveProgress();
+                if (allDone) { sfx('win'); fireworks(); } else sfx('ok');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('opt-wrong');
+                shake(btn);
+                showFb(fb, 'bad', cp.fb[k]);
+                sfx('bad');
             }
         }
-
-        function resetAgeSim() {
-            document.getElementById('sim-age-x').value = 0;
-            updateAgeSim();
+        function unlockAllStages() { /* 章首版：所有關卡一開始就打開，保留給 QA 用 */ }
+        function toggleHelper() {
+            const p = $id('mt-panel'), open = p.classList.toggle('hidden') === false;
+            $id('mt-btn').setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (open) renderMath(p);
         }
 
-        // 🔍 觀念引導邏輯（答錯時解析該選項為何錯誤，不直接透露正確答案）
-        function answerStep(step, isCorrect) {
-            const feedback = document.getElementById('step-feedback');
-            feedback.classList.remove('hidden');
-
-            if (step === 1) {
-                if (isCorrect) {
-                    feedback.innerHTML = "✅ 完全正確！含有等號 =、恰有 1 個未知數 x、且 x 為一次方，它是一元一次方程式！解鎖下一步！";
-                    feedback.className = "p-4 rounded-lg font-bold text-center bg-green-100 text-green-800 mb-4 shadow-sm";
-                    document.getElementById('sq1').classList.add('opacity-50');
-                    lockButtons('sq1');
-                    document.getElementById('sq2').classList.remove('hidden');
-                } else {
-                    feedback.innerHTML = "❌ 答錯囉！未知數可以同時出現在等號兩邊，只要兩邊都是同一個未知數 x，且最高次方為 1，它依然是一元一次方程式。請再思考看看！";
-                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
+        // ========== 9. 記住進度（存在這台裝置的瀏覽器裡） ==========
+        function saveProgress() {
+            if (RESTORING || BOOTING) return;
+            try { localStorage.setItem(PROG_KEY, JSON.stringify(PROG)); } catch (e) { /* 無法儲存就算了 */ }
+        }
+        function loadProgress() {
+            let saved = null;
+            try { saved = JSON.parse(localStorage.getItem(PROG_KEY) || 'null'); } catch (e) { saved = null; }
+            if (!saved) return;
+            RESTORING = true;
+            try {
+                (saved.sort || []).forEach(c => { sortAnswer(c); sortNext(); });
+                if (Array.isArray(saved.eq)) {
+                    saved.eq.forEach((t, s) => { const i = TILES.findIndex(tl => tl.t === t); if (i >= 0) slots[s] = i; });
+                    eqCheck();
                 }
-            } else if (step === 2) {
-                if (isCorrect) {
-                    feedback.innerHTML = "🎉 太棒了！代入 x = 3 後左式等於右式 (10 = 10)，因此 3 就是這個方程式的解！";
-                    feedback.className = "p-4 rounded-lg font-bold text-center bg-indigo-100 text-indigo-800 mb-4 shadow-sm";
-                    document.getElementById('sq2').classList.add('opacity-50');
-                    lockButtons('sq2');
-                } else {
-                    feedback.innerHTML = "❌ 算算看！將 x = 3 代入左式「3 × 3 + 1」與右式「4 × 3 - 2」，兩邊算出來的數值真的不相等嗎？請再認真算一次！";
-                    feedback.className = "p-4 rounded-lg font-bold text-center bg-red-100 text-red-800 mb-4 shadow-sm";
-                }
-            }
+                if (typeof saved.price === 'number') { $id('bal-p').value = saved.price; updateBal(); }
+                (saved.cp || []).forEach(([n, k]) => checkCp(n, k));
+                PROG = { sort: saved.sort || [], eq: saved.eq || null, price: typeof saved.price === 'number' ? saved.price : null, cp: saved.cp || [] };
+            } catch (e) { console.warn(e); }
+            RESTORING = false;
+            if (PROG.sort.length || PROG.eq || PROG.cp.length) toast('💾 接回上次的進度');
+        }
+        let resetArmed = false;
+        function resetProgress() {
+            const btn = $id('reset-btn');
+            if (!resetArmed) { resetArmed = true; btn.textContent = '⚠️ 再按一次確定清除'; setTimeout(() => { resetArmed = false; btn.textContent = '🔄 清除紀錄，重新開始'; }, 4000); return; }
+            try { localStorage.removeItem(PROG_KEY); } catch (e) { }
+            location.reload();
         }
 
-        // 🧩 練習 1 檢查邏輯（答錯時說明錯誤選項原因）
-        function checkP1(step, isCorrect) {
-            if (step === 1) {
-                const f = document.getElementById('p1-f1');
-                f.classList.remove('hidden');
-                if (isCorrect) {
-                    f.innerHTML = "✅ 正確！3 杯珍奶 3x 元，折抵 15 元為 3x - 15 元。";
-                    f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
-                    lockButtons('p1-s1');
-                    const s2 = document.getElementById('p1-s2');
-                    s2.classList.remove('hidden');
-                    setTimeout(() => s2.classList.add('opacity-100'), 10);
-                } else {
-                    f.innerHTML = "❌ 答錯囉！折抵 15 元代表優惠結帳，應該是指把金額「扣掉/減去 15」，而不是「加上 15」哦！請再選選看！";
-                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
-                }
-            } else if (step === 2) {
-                const f = document.getElementById('p1-f2');
-                f.classList.remove('hidden');
-                if (isCorrect) {
-                    f.innerHTML = "✅ 太強了！應付金額等於付出的 135 元，列式為 3x - 15 = 135！";
-                    f.className = "text-sm mt-2 text-green-600 font-bold p-2 bg-green-50 rounded";
-                    lockButtons('p1-s2');
-                    const res = document.getElementById('p1-result');
-                    res.classList.remove('hidden');
-                    setTimeout(() => res.classList.add('opacity-100'), 10);
-                } else {
-                    f.innerHTML = "❌ 答錯囉！這個選項是已經經過移項計算的式子，但題目要我們依據「買 3 杯珍珠奶茶扣掉 15 元等於總共付了 135 元」的原始過程列式哦！請再思考看看！";
-                    f.className = "text-sm mt-2 text-red-600 font-bold p-2 bg-red-50 rounded";
-                }
-            }
-        }
-
-        // 🧮 練習 2 檢查邏輯（答錯時針對選項說明原因，不透露答案）
-        function checkP2(qNum, choice) {
-            const f = document.getElementById('p2-f' + qNum);
-            f.classList.remove('hidden');
-
-            if (qNum === 1) {
-                if (choice === 'A') {
-                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
-                    f.innerHTML = "✅ 觀念超清晰！2x + 5 = 11 有等號、1 個未知數 x、最高次方為 1，是一元一次方程式！";
-                } else if (choice === 'B') {
-                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
-                    f.innerHTML = "❌ 答錯囉！算式「3x + 2y = 7」裡面含有 x 與 y 兩個不同的未知數，這屬於「二元」方程式，不符合「一元」的條件哦！請再試試看！";
-                } else if (choice === 'C') {
-                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
-                    f.innerHTML = "❌ 答錯囉！算式「5x - 4」裡面完全沒有「等號 =」，這只是普通的代數式，並非「方程式」哦！請再試試看！";
-                }
-            } else if (qNum === 2) {
-                if (choice === 'yes') {
-                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-green-100 text-green-800 border border-green-200";
-                    f.innerHTML = "✅ 答對了！代入 x = 4 ➔ 左式 2 × 4 + 3 = 8 + 3 = 11（等於右式！），所以 4 確實是解！";
-                } else {
-                    f.className = "feedback-box text-sm px-4 py-3 rounded-lg mt-2 bg-red-50 text-red-700 border border-red-100";
-                    f.innerHTML = "❌ 算錯囉！請將 x = 4 代入左式「2 × 4 + 3」算算看，得出的結果真的不等於右邊的 11 嗎？請再算一次！";
-                }
-            }
-        }
-
-        // 🚀 實戰挑戰檢查邏輯（答錯說明選項原因，不直接給答案）
-        function checkChal(qNum, choice) {
-            const feedback = document.getElementById(`chal${qNum}-feedback`);
-            feedback.classList.remove('hidden');
-
-            if (qNum === 1) {
-                if (choice === 'B') {
-                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
-                    feedback.innerHTML = "✅ 完全正確！代入 x = 5 至 (B) ➔ 2 × 5 + 1 = 11（左右相等！），因此 5 是 (B) 的解！";
-                } else if (choice === 'A') {
-                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
-                    feedback.innerHTML = "❌ 答錯囉！將 x = 5 代入 (A) 的左式「3 × 5 - 2 = 13」，13 並不等於右邊的 10，所以 5 不是 (A) 的解哦！請再代入其他選項算算看！";
-                } else if (choice === 'C') {
-                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
-                    feedback.innerHTML = "❌ 答錯囉！將 x = 5 代入 (C) 的左式「4 × 5 - 5 = 15」，15 並不等於右邊的 12，所以 5 不是 (C) 的解哦！請再代入其他選項算算看！";
-                }
-            } else if (qNum === 2) {
-                if (choice === 'A') {
-                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-green-100 text-green-800";
-                    feedback.innerHTML = "🎉 太強了！答對了！經過 x 年後，媽媽是 (36 + x) 歲，小美是 (10 + x) 歲，媽媽年齡是小美的 3 倍 ➔ 列式為 36 + x = 3 × (10 + x)！";
-                } else if (choice === 'B') {
-                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
-                    feedback.innerHTML = "❌ 答錯囉！如果選 (B)，代表經過 x 年後小美的年齡依然是 10 歲未長大！但實際上經過 x 年後小美也會長大變為 (10 + x) 歲哦！請再思考看看！";
-                } else if (choice === 'C') {
-                    feedback.className = "mt-3 text-sm p-3 rounded-lg font-bold bg-red-100 text-red-800";
-                    feedback.innerHTML = "❌ 答錯囉！如果選 (C)，代表經過 x 年後媽媽的年齡停留在 36 歲未長大！但實際上經過 x 年後媽媽也會長大變為 (36 + x) 歲哦！請再思考看看！";
-                }
-            }
-        }
+        // ========== 10. 啟動 ==========
+        window.onload = function () {
+            refreshIcons();               // Lucide 圖示初始化
+            renderMath(document.body);    // KaTeX 首刷渲染
+            renderSoundBtn();             // 音效開關
+            drawHook();                   // 開場插圖
+            renderCheckpoints();          // 各關小檢查
+            renderSort();                 // 第 1 關：分類站
+            drawReceipt(); renderEq();    // 第 2 關：收據與數字卡
+            initBal();                    // 第 3 關：天平
+            initSay();                    // 語音說題
+            BOOTING = false;
+            loadProgress();               // 接回上次的進度
+            initThink();                  // 小檢查的思考時間
+            refreshIcons();
+        };
+        window.addEventListener('pagehide', stopSay);
     </script>
 </body>
 </html>
